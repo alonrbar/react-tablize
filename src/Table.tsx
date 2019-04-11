@@ -1,7 +1,7 @@
-import * as classNames from 'classnames';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
+import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead as StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
 import { TableBody } from './TableBody';
 import { CellContent, CellContentRender, CellContentRenderContext, CellRender, CellType, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -11,8 +11,6 @@ import { ErrorBoundary } from './utils/ErrorBoundary';
 import { ReactUtils } from './utils/reactUtils';
 import * as utils from './utils/utils';
 const flattenDeep = require('lodash.flattendeep');
-
-const tableClass = 'table-view';
 
 interface Heights {
     height: any;
@@ -35,7 +33,7 @@ export class TableViewProps<T> {
     // appearance
     //
 
-    public dir: CssDir = 'ltr';
+    public dir: DocDir = 'ltr';
     public className?: string;
     public style?: React.CSSProperties;
     /**
@@ -43,11 +41,7 @@ export class TableViewProps<T> {
      * Default: 50
      */
     public rowHeight?= 50;
-    /**
-     * Default: true
-     */
-    public lineNumber?= true;
-    public emptyMessage? = "No Items to Display";
+    public emptyMessage?= "No Items to Display";
 
     //
     // virtualization
@@ -120,13 +114,13 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         // render
         return (
             <ErrorBoundary>
-                <div
-                    className={classNames(tableClass, this.props.className)}
+                <StyledTableView
+                    className={this.props.className}
                     style={Object.assign({}, this.props.style, this.getHeights())}
                 >
                     {this.renderTableHead(head)}
                     {this.renderTableBody(head, body)}
-                </div>
+                </StyledTableView>
             </ErrorBoundary>
         );
     }
@@ -138,14 +132,9 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
         return (
 
-            <div className={`${tableClass}-head`} style={{ height: head.props.height }}>
-                <div className={`${tableClass}-head-row`}>
+            <StyledTableHead style={{ height: head.props.height }}>
+                <StyledTableHeadRow>
                     <ErrorBoundary>
-
-                        {/* number column */}
-                        {this.props.lineNumber && (
-                            <div className={`${tableClass}-head-cell ${tableClass}-index-column`}></div>
-                        )}
 
                         {/* main columns */}
                         {React.Children.map(head.props.children, (cell, index) => {
@@ -157,17 +146,20 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
                             const cellContent = this.getHeadCellContent(headCell);
                             return (
-                                <div key={index} className={classNames(`${tableClass}-head-cell`, cellProps.className)} style={cellProps.style}>
+                                <StyledTableHeadCell 
+                                    key={index} 
+                                    style={cellProps.style}
+                                >
                                     <ErrorBoundary>
                                         {cellContent}
                                     </ErrorBoundary>
-                                </div>
+                                </StyledTableHeadCell>
                             );
                         })}
 
                     </ErrorBoundary>
-                </div>
-            </div>
+                </StyledTableHeadRow>
+            </StyledTableHead>
         );
     }
 
@@ -180,8 +172,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         const bodyMaxHeight = `calc(${heightValues.maxHeight} - ${headProps.height})`;
 
         return (
-            <div
-                className={`${tableClass}-body`}
+            <StyledTableBody
                 style={{
                     direction: this.props.dir,
                     height: bodyHeight,
@@ -192,7 +183,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                 <ErrorBoundary>
                     {this.renderTableRows(body)}
                 </ErrorBoundary>
-            </div>
+            </StyledTableBody>
         );
     }
 
@@ -227,17 +218,12 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                             const rowContent = this.getRowContent(row, item, rowRenderContext);
 
                             return (
-                                <div
-                                    className={classNames(`${tableClass}-body-row`, rowProps.className)}
+                                <StyledTableBodyRow
+                                    className={rowProps.className}
                                     style={Object.assign({}, style, rowProps.style || {})}
                                     key={rowKey}
                                 >
                                     <ErrorBoundary>
-
-                                        {/* number column */}
-                                        {this.props.lineNumber && (
-                                            <div className={`${tableClass}-body-cell ${tableClass}-index-column`}>{index + 1}</div>
-                                        )}
 
                                         {/* main columns */}
                                         {utils.asArray(rowContent).map((cell, columnIndex) => {
@@ -249,9 +235,9 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                                                 return null;
 
                                             return (
-                                                <div
+                                                <StyledTableBodyCell
                                                     key={columnIndex}
-                                                    className={classNames(`${tableClass}-body-cell`, cellProps.className)}
+                                                    className={cellProps.className}
                                                     style={cellProps.style}
                                                     title={cellProps.title}
                                                     onClick={cellProps.onClick}
@@ -259,12 +245,12 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                                                     <ErrorBoundary>
                                                         {this.getCellContent(cell, item, cellRenderContext)}
                                                     </ErrorBoundary>
-                                                </div>
+                                                </StyledTableBodyCell>
                                             );
                                         })}
 
                                     </ErrorBoundary>
-                                </div>
+                                </StyledTableBodyRow>
                             );
                         }}
                     </FixedSizeList>
@@ -276,10 +262,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     private renderItemsPlaceHolder() {
         return (
             <div>
-                <div
-                    className={`${tableClass}-placeholder padding-lg`}
-                    style={{ textAlign: 'center' }}
-                >
+                <div style={{ textAlign: 'center' }}>
                     {this.props.emptyMessage}
                 </div>
             </div>

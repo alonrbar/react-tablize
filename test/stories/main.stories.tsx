@@ -4,25 +4,30 @@ import { TableView, TableHead, TableBody } from '../../src';
 
 storiesOf('TableView', module)
     .add('basic state', () => {
-        const items = [
+        const people = [
             {
                 id: 1,
-                name: 'Alon'
+                name: 'Alon',
+                age: 34
             },
             {
                 id: 2,
-                name: 'Gilad'
+                name: 'Gilad',
+                age: 31
             }
         ];
         return (
             <TableView
-                items={items}
+                items={people}
             >
                 <TableHead>
-                    {[ 'Name' ]}
+                    {['Name', 'Age']}
                 </TableHead>
                 <TableBody>
-                    {item => item.name}
+                    {(person: any) => ([
+                        person.name,
+                        person.age
+                    ])}
                 </TableBody>
             </TableView>
         );

@@ -15,7 +15,7 @@
     "release": "yarn lint && yarn test && webpack --config webpack.dev.js && webpack --config webpack.release.js"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
+    "@emotion/styled": "^10.0.10",
     "lodash.flattendeep": "^4.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -39,6 +39,7 @@
     "@typescript-eslint/eslint-plugin": "1.6.0",
     "@typescript-eslint/parser": "1.6.0",
     "babel-loader": "8.0.5",
+    "babel-plugin-emotion": "10.0.9",
     "eslint": "5.16.0",
     "eslint-plugin-react": "7.12.4",
     "typescript": "3.4.3",

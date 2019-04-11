@@ -17,4 +17,4 @@ interface IIdentifiable {
     id: Id;
 }
 
-type CssDir = 'ltr' | 'rtl';
+type DocDir = 'ltr' | 'rtl';
