@@ -19,7 +19,7 @@ module.exports = {
         }]
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
         modules: [path.resolve('./src'), 'node_modules']
     },
     plugins: [
