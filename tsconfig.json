@@ -1,0 +1,41 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+
+        "jsx": "react",
+
+        // --- output --- //
+        
+        "declaration": false,
+        "outDir": "./.tmp/compiled",
+        "sourceMap": true,
+        "target": "es5",
+        "module": "es2015",
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "downlevelIteration": true,
+        
+        // --- module resolution --- //
+
+        "typeRoots" : ["./node_modules/@types","./src/@types"],
+        "moduleResolution": "node",
+        "baseUrl": ".",        
+
+        // --- validation options --- //
+
+        "alwaysStrict": true,
+        "allowSyntheticDefaultImports": false,
+        "allowUnreachableCode": false,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["dom", "es2017"],
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "skipLibCheck": true,
+        "strictNullChecks": false
+    }
+}

@@ -1,0 +1,20 @@
+@import './tableView.scss';
+
+.#{$base-class-name} {
+    &-head {
+        & &-row {
+            padding-left: $scrollbar-width;
+            padding-right: 0;
+        }
+    }
+}
+
+.#{$base-class-name}.bordered {
+    
+    .#{$base-class-name}-body {
+
+        .#{$base-class-name}-body-cell {
+            border-left: table-border();
+        }
+    }
+}
