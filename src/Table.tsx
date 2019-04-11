@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
-import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead as StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
+import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
 import { TableBody } from './TableBody';
 import { CellContent, CellContentRender, CellContentRenderContext, CellRender, CellType, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -33,7 +33,7 @@ export class TableViewProps<T> {
     // appearance
     //
 
-    public dir: DocDir = 'ltr';
+    public dir?: DocDir = 'ltr';
     public className?: string;
     public style?: React.CSSProperties;
     /**
