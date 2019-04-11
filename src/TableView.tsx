@@ -10,6 +10,7 @@ import { RowContent, RowContentRender, RowContentRenderContext, RowRender, RowTy
 import { ErrorBoundary } from './utils/ErrorBoundary';
 import { ReactUtils } from './utils/reactUtils';
 import * as utils from './utils/utils';
+const flattenDeep = require('lodash.flattendeep');
 
 const tableClass = 'table-view';
 
@@ -416,7 +417,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
         // actual content
         if (Array.isArray(content)) {
-            content = _.flattenDeep(content);
+            content = flattenDeep(content);
         }
         return content;
     }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CellType } from './TableBodyCell';
+import { CellType } from './TableCell';
 
 export class TableColumnProps<T> {
     public header?: React.ReactNode;

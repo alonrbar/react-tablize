@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RowType } from './TableBodyRow';
+import { RowType } from './TableRow';
 
 //
 // body content
