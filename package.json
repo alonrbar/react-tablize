@@ -2,9 +2,14 @@
   "name": "react-tablize",
   "version": "0.0.0",
   "description": "React virtual table component",
-  "main": "index.js",
   "author": "Alon Bar",
   "license": "MIT",
+  "main": "dist/react-tablize.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "storybook": "start-storybook",
     "dev": "webpack --config webpack.dev.js --watch",

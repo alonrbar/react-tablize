@@ -1,5 +1,5 @@
 
-type Constructor<T>  = new (...args: any[]) => T;
+type Constructor<T> = new (...args: any[]) => T;
 
 interface IMap<T> {
     [key: string]: T;
