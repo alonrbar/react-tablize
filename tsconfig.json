@@ -33,8 +33,6 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": false,
         "skipLibCheck": true,
         "strictNullChecks": false
     }

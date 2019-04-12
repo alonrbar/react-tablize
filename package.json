@@ -9,7 +9,8 @@
     "storybook": "start-storybook",
     "dev": "webpack --config webpack.dev.js --watch",
     "typecheck": "tsc --watch",
-    "lint": "eslint \"./{src,test}/**/*.ts\" --exclude \"./**/*.d.ts\"",
+    "lint": "eslint \"./{src,test}/**/!(*.d).ts\"",
+    "lint-fix": "yarn lint --fix",
     "test": "mocha-webpack --require source-map-support/register --webpack-config webpack.test.js \"test/**/*.tests.ts\"",
     "test-watch": "yarn test --watch",
     "release": "yarn lint && yarn test && webpack --config webpack.dev.js && webpack --config webpack.release.js"
