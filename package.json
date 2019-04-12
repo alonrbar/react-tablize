@@ -13,7 +13,7 @@
     "lint-fix": "yarn lint --fix",
     "test": "mocha-webpack --require source-map-support/register --webpack-config webpack.test.js \"test/**/*.tests.ts\"",
     "test-watch": "yarn test --watch",
-    "release": "yarn lint && yarn test && webpack --config webpack.dev.js && webpack --config webpack.release.js"
+    "release": "yarn lint && webpack --config webpack.dev.js && webpack --config webpack.release.js"
   },
   "dependencies": {
     "@emotion/styled": "^10.0.10",
@@ -27,6 +27,7 @@
     "@babel/core": "7.4.3",
     "@babel/plugin-proposal-class-properties": "7.4.0",
     "@babel/plugin-proposal-object-rest-spread": "7.4.3",
+    "@babel/preset-env": "7.4.3",
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
     "@storybook/react": "5.0.6",
