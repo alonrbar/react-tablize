@@ -3,10 +3,10 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
 import { TableBody } from './TableBody';
-import { CellContent, CellContentRender, CellContentRenderContext, CellRender, CellType, TableCell, TableCellProps } from './TableCell';
+import { CellContent, CellRender, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
 import { TableHead, TableHeadProps } from './TableHead';
-import { RowContent, RowContentRender, RowContentRenderContext, RowRender, RowType, TableRow, TableRowProps } from './TableRow';
+import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
 import { ErrorBoundary } from './utils/ErrorBoundary';
 import { ReactUtils } from './utils/reactUtils';
 import * as utils from './utils/utils';
@@ -18,6 +18,10 @@ interface Heights {
     maxHeight: any;
 }
 
+type RowsSyntaxChildren<T> = [ React.SubComp<TableHead<T>>, React.SubComp<TableBody<T>> ];
+
+type ColumnsSyntaxChildren<T> = OneOrMore<React.SubComp<TableColumn<T>>>;
+
 export type ItemIdCallback<T> = (item: T, index: number) => Id;
 
 export class TableViewProps<T> {
@@ -28,6 +32,7 @@ export class TableViewProps<T> {
 
     public items: T[];
     public itemId?: ItemIdCallback<T>;
+    public children?: RowsSyntaxChildren<T> | ColumnsSyntaxChildren<T>;
 
     //
     // appearance
@@ -146,8 +151,8 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
                             const cellContent = this.getHeadCellContent(headCell);
                             return (
-                                <StyledTableHeadCell 
-                                    key={index} 
+                                <StyledTableHeadCell
+                                    key={index}
                                     style={cellProps.style}
                                 >
                                     <ErrorBoundary>

@@ -1,25 +1,7 @@
 import * as React from 'react';
-import { CellType } from './TableCell';
+import { TableCell, CellContent } from './TableCell';
 
-//
-// row content
-//
-
-export type RowContent<T> = OneOrMore<CellType<T>>;
-
-//
-// row content render function
-//
-
-export interface RowContentRenderContext {
-    itemIndex: number;
-}
-
-export type RowContentRender<T> = (item: T, context: RowContentRenderContext) => RowContent<T>;
-
-//
-// row component
-//
+export type RowContent<T> = OneOrMore<React.SubComp<TableCell<T>> | CellContent>;
 
 export class TableRowProps<T> {
 
@@ -31,14 +13,4 @@ export class TableRowProps<T> {
 
 export class TableRow<T> extends React.PureComponent<TableRowProps<T>> { }
 
-//
-// row component render function
-//
-
-export type RowRender<T> = (item: T, context: RowContentRenderContext) => TableRow<T>;
-
-//
-// row type
-//
-
-export type RowType<T> = RowRender<T> | TableRow<T> | RowContentRender<T> | RowContent<T>;
+export type RowRender<T> = (item: T, itemIndex: number) => React.SubComp<TableRow<T>> | RowContent<T>;

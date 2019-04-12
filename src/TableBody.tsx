@@ -1,18 +1,8 @@
 import * as React from 'react';
-import { RowType } from './TableRow';
-
-//
-// body content
-//
-
-export type BodyContent<T> = RowType<T>;
-
-//
-// body component
-//
+import { RowRender } from './TableRow';
 
 export class TableBodyProps<T> {
-    public children: BodyContent<T>;
+    public children?: RowRender<T>;
 }
 
 export class TableBody<T> extends React.PureComponent<TableBodyProps<T>> { }
