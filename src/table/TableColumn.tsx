@@ -3,7 +3,6 @@ import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
 
 export class TableColumnProps<T> {
-    public header?: React.ReactNode;
     public children?: [React.SubComp<ColumnHead<T>>, React.SubComp<ColumnBody<T>>];
 }
 

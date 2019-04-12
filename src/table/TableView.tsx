@@ -4,12 +4,14 @@ import { FixedSizeList } from 'react-window';
 import { ErrorBoundary } from '../utils/ErrorBoundary';
 import { ReactUtils } from '../utils/reactUtils';
 import * as utils from '../utils/utils';
+import { ColumnBody } from './ColumnBody';
+import { ColumnHead } from './ColumnHead';
 import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
 import { TableBody } from './TableBody';
-import { CellContent, CellRender, TableCell, TableCellProps } from './TableCell';
+import { CellContent, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
 import { TableHead, TableHeadProps } from './TableHead';
-import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
+import { RowContent, TableRow, TableRowProps } from './TableRow';
 const flattenDeep = require('lodash.flattendeep');
 
 interface Heights {
@@ -18,7 +20,7 @@ interface Heights {
     maxHeight: any;
 }
 
-type RowsSyntaxChildren<T> = [ React.SubComp<TableHead<T>>, React.SubComp<TableBody<T>> ];
+type RowsSyntaxChildren<T> = [React.SubComp<TableHead<T>>, React.SubComp<TableBody<T>>];
 
 type ColumnsSyntaxChildren<T> = OneOrMore<React.SubComp<TableColumn<T>>>;
 
@@ -204,8 +206,9 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
             <AutoSizer>
                 {({ width, height }) => (
                     <FixedSizeList
-                        style={{ direction: this.props.dir, outline: 'none' }}
-                        direction="vertical"
+                        style={{ outline: 'none' }}
+                        direction={this.props.dir}
+                        layout="vertical"
                         height={height}
                         width={width}
                         itemCount={this.props.items.length}
@@ -213,14 +216,16 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                     >
                         {({ index, style }) => {
 
-                            const rowRenderContext = { itemIndex: index };
+                            const rowRender = body.props.children;
+                            if (!rowRender)
+                                return null;
 
                             const item = this.props.items[index];
-                            const row = body.props.children;
-                            const rowProps = this.getRowProps(row, item, rowRenderContext);
 
+                            const row = rowRender(item, index);
+                            const rowProps = this.getRowProps(row);
                             const rowKey = this.getRowKey(rowProps, item, index);
-                            const rowContent = this.getRowContent(row, item, rowRenderContext);
+                            const rowContent = this.getRowContent(row);
 
                             return (
                                 <StyledTableBodyRow
@@ -233,9 +238,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                                         {/* main columns */}
                                         {utils.asArray(rowContent).map((cell, columnIndex) => {
 
-                                            const cellRenderContext = { itemIndex: index, columnIndex };
-
-                                            const cellProps = this.getCellProps(cell, item, cellRenderContext);
+                                            const cellProps = this.getCellProps(cell);
                                             if (!cellProps.visible)
                                                 return null;
 
@@ -248,7 +251,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                                                     onClick={cellProps.onClick}
                                                 >
                                                     <ErrorBoundary>
-                                                        {this.getCellContent(cell, item, cellRenderContext)}
+                                                        {this.getCellContent(cell)}
                                                     </ErrorBoundary>
                                                 </StyledTableBodyCell>
                                             );
@@ -308,7 +311,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     private createHeadFromColumns(columns: TableColumn<T>[]): TableHead<T> {
         const head: any = (
             <TableHead>
-                {columns.map(col => col.props.header || null)}
+                {columns.map(col => ReactUtils.singleChildOfType(col, ColumnHead).props.children)}
             </TableHead>
         );
         return head;
@@ -317,7 +320,12 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     private createBodyFromColumns(columns: TableColumn<T>[]): TableBody<T> {
         const body: any = (
             <TableBody>
-                {columns.map(col => col.props.children)}
+                {(item: T, itemIndex: number) => columns.map((col, columnIndex) => {
+                    const cellRender = ReactUtils.singleChildOfType(col, ColumnBody).props.children;
+                    if (!cellRender)
+                        return null;
+                    return cellRender(item, itemIndex, columnIndex);
+                })}
             </TableBody>
         );
         return body;
@@ -365,13 +373,8 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return childrenCount > 0;
     }
 
-    private getRowProps(row: RowType<T>, item: T, context: RowContentRenderContext): TableRowProps<T> {
+    private getRowProps(row: any): TableRowProps<T> {
 
-        // row element render
-        if (typeof row === 'function')
-            row = (row as RowRender<T>)(item, context);
-
-        // row element
         if (ReactUtils.elementInstanceOf(row, TableRow))
             return row.props;
 
@@ -379,13 +382,9 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return new TableRowProps();
     }
 
-    private getRowContent(row: RowType<T>, item: T, context: RowContentRenderContext): RowContent<T> {
+    private getRowContent(row: any): RowContent<T> {
 
         let content: RowContent<T> = row;
-
-        // row element render
-        if (typeof content === 'function')
-            content = (content as RowRender<T>)(item, context);
 
         // fragment element
         if (ReactUtils.isReactFragment(content)) {
@@ -394,13 +393,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
         // row element
         if (ReactUtils.elementInstanceOf(content, TableRow)) {
-
             content = content.props.children;
-
-            // row content render
-            if (typeof content === 'function') {
-                content = (content as RowContentRender<T>)(item, context);
-            }
         }
 
         // actual content
@@ -422,11 +415,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return index;
     }
 
-    private getCellProps(cell: CellType<T>, item: T, context: CellContentRenderContext): TableCellProps<T> {
-
-        // cell render - function that creates a cell element
-        if (typeof cell === 'function')
-            cell = (cell as CellRender<T>)(item, context);
+    private getCellProps(cell: any): TableCellProps<T> {
 
         // cell element
         if (ReactUtils.elementInstanceOf(cell, TableCell))
@@ -436,22 +425,14 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return new TableCellProps();
     }
 
-    private getCellContent(cell: CellType<T>, item: T, context: CellContentRenderContext): CellContent {
+    private getCellContent(cell: any): CellContent {
 
         let content = cell;
-
-        // cell render - function that creates a cell element
-        if (typeof content === 'function')
-            content = (content as CellRender<T>)(item, context);
 
         // cell element
         if (ReactUtils.elementInstanceOf(content, TableCell)) {
             content = content.props.children;
         }
-
-        // cell content render - function that creates cell content
-        if (typeof content === 'function')
-            content = (content as CellContentRender<T>)(item, context);
 
         // actual content
         return content || null;

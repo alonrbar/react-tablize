@@ -10,25 +10,31 @@ interface Person {
     age: number;
 }
 
-const people: Person[] = [
-    {
-        id: 1,
-        name: 'Alon',
-        age: 34
-    },
-    {
-        id: 2,
-        name: 'Gilad',
-        age: 31
-    }
-];
+function getTestItems(postfix: string): Person[] {
+    const people: Person[] = [
+        {
+            id: 1,
+            name: 'Alon',
+            age: 34
+        },
+        {
+            id: 2,
+            name: 'Gilad',
+            age: 31
+        }
+    ];
+    return people.map(p => ({
+        ...p,
+        name: `${p.name} (${postfix})`
+    }));
+}
 
 stories.add('empty table', () => (
     <TableView items={[]} />
 ));
 
 stories.add('terse syntax', () => (
-    <TableView items={people}>
+    <TableView items={getTestItems('terse')}>
         <TableHead>
             {['Name', 'Age']}
         </TableHead>
@@ -42,7 +48,7 @@ stories.add('terse syntax', () => (
 ));
 
 stories.add('rows and cells syntax', () => (
-    <TableView items={people}>
+    <TableView items={getTestItems('rows and cells')}>
         <TableHead>
             <TableCell>
                 Name
@@ -67,7 +73,7 @@ stories.add('rows and cells syntax', () => (
 ));
 
 stories.add('rows with terse cells syntax', () => (
-    <TableView items={people}>
+    <TableView items={getTestItems('rows and cells - terse')}>
         <TableHead>
             {['Name', 'Age']}
         </TableHead>
@@ -85,7 +91,7 @@ stories.add('rows with terse cells syntax', () => (
 ));
 
 stories.add('columns syntax', () => (
-    <TableView items={people}>
+    <TableView items={getTestItems('columns')}>
 
         <TableColumn>
             <ColumnHead>Name</ColumnHead>

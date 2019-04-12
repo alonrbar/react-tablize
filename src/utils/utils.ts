@@ -8,4 +8,4 @@ export function asArray<T>(val: T | T[]): T[] {
         return val;
 
     return [val];
-};
+}
