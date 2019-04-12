@@ -1,15 +1,15 @@
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
+import { ErrorBoundary } from '../utils/ErrorBoundary';
+import { ReactUtils } from '../utils/reactUtils';
+import * as utils from '../utils/utils';
 import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
 import { TableBody } from './TableBody';
 import { CellContent, CellRender, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
 import { TableHead, TableHeadProps } from './TableHead';
 import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
-import { ErrorBoundary } from './utils/ErrorBoundary';
-import { ReactUtils } from './utils/reactUtils';
-import * as utils from './utils/utils';
 const flattenDeep = require('lodash.flattendeep');
 
 interface Heights {
