@@ -46,10 +46,6 @@ $base-class-name: "table-view";
             border-bottom: table-border();
         }
     }
-
-    .#{$base-class-name}-index-column {
-        border-left: none !important;
-    }
 }
 
 .#{$base-class-name}.hover {
