@@ -3,12 +3,8 @@ import { TableCell, CellContent } from './TableCell';
 
 export type RowContent<T> = OneOrMore<React.SubComp<TableCell<T>> | CellContent>;
 
-export class TableRowProps<T> {
-
-    public key?: React.Key;
-    public className?: string;
-    public style?: React.CSSProperties;
-    public children: RowContent<T>;
+export interface TableRowProps<T> extends React.DivProps {
+    children?: RowContent<T>;
 }
 
 export class TableRow<T> extends React.PureComponent<TableRowProps<T>> { }

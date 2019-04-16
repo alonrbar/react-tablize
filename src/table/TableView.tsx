@@ -152,14 +152,14 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
                             const headCell: TableCell<T> = cell as any;
                             const cellProps = this.getHeadCellProps(headCell);
-                            if (!cellProps.visible)
+                            if (cellProps.visible === false)
                                 return null;
 
                             const cellContent = this.getHeadCellContent(headCell);
                             return (
                                 <StyledTableHeadCell
                                     key={index}
-                                    style={cellProps.style}
+                                    {...cellProps}
                                 >
                                     <ErrorBoundary>
                                         {cellContent}
@@ -227,15 +227,15 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                             const item = this.props.items[index];
 
                             const row = rowRender(item, index);
-                            const rowProps = this.getRowProps(row);
+                            const { style: rowStyle, ...rowProps } = this.getRowProps(row);
                             const rowKey = this.getRowKey(rowProps, item, index);
                             const rowContent = this.getRowContent(row);
 
                             return (
                                 <StyledTableBodyRow
-                                    className={rowProps.className}
-                                    style={Object.assign({}, style, rowProps.style || {})}
+                                    style={Object.assign({}, style, rowStyle || {})}
                                     key={rowKey}
+                                    {...rowProps}
                                 >
                                     <ErrorBoundary>
 
@@ -243,16 +243,13 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                                         {utils.asArray(rowContent).map((cell, columnIndex) => {
 
                                             const cellProps = this.getCellProps(cell);
-                                            if (!cellProps.visible)
+                                            if (cellProps.visible === false)
                                                 return null;
 
                                             return (
                                                 <StyledTableBodyCell
                                                     key={columnIndex}
-                                                    className={cellProps.className}
-                                                    style={cellProps.style}
-                                                    title={cellProps.title}
-                                                    onClick={cellProps.onClick}
+                                                    {...cellProps}
                                                 >
                                                     <ErrorBoundary>
                                                         {this.getCellContent(cell)}
@@ -355,10 +352,13 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     }
 
     private getHeadCellProps(cell: TableCell<T>): TableCellProps<T> {
-        if (ReactUtils.elementInstanceOf(cell, TableCell)) {
-            return new TableCellProps(cell.props);
-        }
-        return new TableCellProps();
+
+        // cell element
+        if (ReactUtils.elementInstanceOf(cell, TableCell))
+            return cell.props || {};
+
+        // default props
+        return {};
     }
 
     private getHeadCellContent(cell: TableCell<T>): CellContent {
@@ -391,10 +391,10 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     private getRowProps(row: any): TableRowProps<T> {
 
         if (ReactUtils.elementInstanceOf(row, TableRow))
-            return row.props;
+            return row.props || {};
 
         // default props
-        return new TableRowProps();
+        return {};
     }
 
     private getRowContent(row: any): RowContent<T> {
@@ -434,10 +434,10 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
         // cell element
         if (ReactUtils.elementInstanceOf(cell, TableCell))
-            return new TableCellProps(cell.props);
+            return cell.props || {};
 
         // default props
-        return new TableCellProps();
+        return {};
     }
 
     private getCellContent(cell: any): CellContent {

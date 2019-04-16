@@ -2,18 +2,9 @@ import * as React from 'react';
 
 export type CellContent = React.ReactNode;
 
-export class TableCellProps<T> {
-    
-    public children?: CellContent;
-    public className?: string;
-    public style?: React.CSSProperties;
-    public title?: string;
-    public visible? = true;
-    public onClick?: VoidFunction;
-
-    constructor(initial?: Partial<TableCellProps<T>>) {
-        Object.assign(this, initial);
-    }
+export interface TableCellProps<T> extends React.DivProps {
+    children?: CellContent;
+    visible?: boolean;
 }
 
 export class TableCell<T> extends React.PureComponent<TableCellProps<T>> { }

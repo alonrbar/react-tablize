@@ -3,6 +3,14 @@ import * as React from 'react';
 export class ReactUtils {
 
     //
+    // props
+    //
+
+    public static getProps<T>(elem: any): T {
+        return (elem && (elem as any).props) || {};
+    }
+
+    //
     // react element
     //
 
