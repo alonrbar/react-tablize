@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { styled } from '../styled';
 
 //
 // constants
@@ -36,7 +36,7 @@ export const StyledTableHeadRow = styled.div`
     display: flex;
     justify-content: stretch;
 
-    padding-right: ${scrollbarWidth};
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-dir')}: ${scrollbarWidth};
 
     border-bottom: ${tableBorder};
 `;

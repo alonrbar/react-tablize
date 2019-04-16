@@ -1,6 +1,8 @@
+import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
+import { Theme } from '../styled';
 import { ErrorBoundary } from '../utils/ErrorBoundary';
 import { ReactUtils } from '../utils/reactUtils';
 import * as utils from '../utils/utils';
@@ -121,13 +123,15 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         // render
         return (
             <ErrorBoundary>
-                <StyledTableView
-                    className={this.props.className}
-                    style={Object.assign({}, this.props.style, this.getHeights())}
-                >
-                    {this.renderTableHead(head)}
-                    {this.renderTableBody(head, body)}
-                </StyledTableView>
+                <ThemeProvider theme={this.getTheme()}>
+                    <StyledTableView
+                        className={this.props.className}
+                        style={Object.assign({}, this.props.style, this.getHeights())}
+                    >
+                        {this.renderTableHead(head)}
+                        {this.renderTableBody(head, body)}
+                    </StyledTableView>
+                </ThemeProvider>
             </ErrorBoundary>
         );
     }
@@ -275,6 +279,12 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                 </div>
             </div>
         );
+    }
+
+    private getTheme(): Theme {
+        return {
+            dir: this.props.dir
+        };
     }
 
     private getHeights(): Heights {
