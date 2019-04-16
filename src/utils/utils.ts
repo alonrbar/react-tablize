@@ -9,3 +9,9 @@ export function asArray<T>(val: T | T[]): T[] {
 
     return [val];
 }
+
+export function cssSizeString(size: any): string {
+    if (Number.isFinite(size))
+        return size + 'px';
+    return size;
+}

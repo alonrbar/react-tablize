@@ -289,12 +289,17 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
 
     private getHeights(): Heights {
         let height = (this.props.style || {}).height;
-        const minHeight = (this.props.style || {}).minHeight;
-        const maxHeight = (this.props.style || {}).maxHeight;
+        let minHeight = (this.props.style || {}).minHeight;
+        let maxHeight = (this.props.style || {}).maxHeight;
 
         if (height === undefined && minHeight === undefined) {
             height = TableView.defaultHeight;
         }
+
+        height = utils.cssSizeString(height);
+        minHeight = utils.cssSizeString(minHeight);
+        maxHeight = utils.cssSizeString(maxHeight);
+
         return {
             height,
             minHeight,
