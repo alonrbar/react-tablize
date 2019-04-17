@@ -27,7 +27,7 @@ export declare class TableBody<T> extends React.PureComponent<TableBodyProps<T>>
 
 export declare type RowContent<T> = OneOrMore<SubComp<TableCell<T>> | CellContent>;
 
-export interface TableRowProps<T> extends React.DivProps {
+export interface TableRowProps<T> extends DivProps {
     children?: RowContent<T>;
 }
 
@@ -41,7 +41,7 @@ export declare type RowRender<T> = (item: T, itemIndex: number) => SubComp<Table
 
 export declare type CellContent = React.ReactNode;
 
-export interface TableCellProps<T> extends React.DivProps {
+export interface TableCellProps<T> extends DivProps {
     children?: CellContent;
     visible?: boolean;
 }

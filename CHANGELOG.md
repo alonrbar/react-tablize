@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Fixed
+
+- Div props typing
+
 ## [0.2.0 - 2019-17-04](https://github.com/alonrbar/react-tablize/tree/v0.2.0)
 
 ### Added
