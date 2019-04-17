@@ -1,9 +1,17 @@
 {
   "name": "react-tablize",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React virtual table component",
   "author": "Alon Bar",
   "license": "MIT",
+  "homepage": "https://github.com/alonrbar/react-tablize",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alonrbar/react-tablize.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alonrbar/react-tablize/issues"
+  },
   "main": "dist/react-tablize.js",
   "typings": "dist/index.d.ts",
   "files": [

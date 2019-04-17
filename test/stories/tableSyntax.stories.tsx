@@ -72,7 +72,7 @@ stories.add('rows and cells syntax', () => (
     </TableView>
 ));
 
-stories.add('rows with terse cells syntax', () => (
+stories.add('mixed syntax', () => (
     <TableView items={getTestItems('rows and cells - terse')}>
         <TableHead>
             {['Name', 'Age']}
