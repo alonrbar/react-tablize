@@ -18,3 +18,9 @@ interface IIdentifiable {
 }
 
 type DocDir = 'ltr' | 'rtl';
+
+interface Heights {
+    height: string | number;
+    minHeight: string | number;
+    maxHeight: string | number;
+}

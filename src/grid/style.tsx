@@ -4,7 +4,7 @@ import { styled } from '../styled';
 // constants
 //
 
-const scrollbarWidth = '17px';
+export const scrollbarWidth = 17;
 const tableBorder = '1px solid #ddd';
 
 //
@@ -12,8 +12,9 @@ const tableBorder = '1px solid #ddd';
 //
 
 export const StyledGridView = styled.div`
+    label: grid-view;
+
     width: 100%;
-    overflow: hidden;
 `;
 
 //
@@ -21,19 +22,25 @@ export const StyledGridView = styled.div`
 //
 
 export const StyledGridHead = styled.div`
-    overflow: hidden;
+    label: grid-head;
+
+    display: flex;
 
     font-weight: bold;
     vertical-align: middle;
 
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${scrollbarWidth};
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${scrollbarWidth}px;
     border-bottom: ${tableBorder};
 `;
 
 export const StyledGridHeadCell = styled.div`
+    label: grid-head-cell;
+
     display: flex;
+
     overflow: hidden;
     text-overflow: ellipsis;
+
     align-items: flex-end;
     vertical-align: bottom;
 `;
@@ -42,28 +49,20 @@ export const StyledGridHeadCell = styled.div`
 // body
 //
 
-export const StyledTableBody = styled.div`
-    display: flex;
-    flex-flow: column;
-
-    vertical-align: middle;
+export const StyledGridBody = styled.div`
+    label: grid-body;
 `;
 
-export const StyledTableBodyRow = styled.div`
-    flex: 1;
+export const StyledGridBodyCell = styled.div`
+    label: grid-body-cell;
+
     display: flex;
-    justify-content: stretch;
 
-    border-top: ${tableBorder};
+    height: 100%;
 
-    &:first-of-type {
-        border-top: none;
-    }
-`;
-
-export const StyledTableBodyCell = styled.div`
-    flex: 1;
-    padding: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    align-items: center;
+    vertical-align: middle;
 `;

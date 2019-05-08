@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
 import { GridView } from 'src/grid';
-import styled from '@emotion/styled';
 
 const stories = storiesOf('GridView syntax', module);
 
@@ -9,37 +8,29 @@ stories.add('empty grid', () => (
     <GridView
         columnCount={0}
         columnWidth={0}
+        rowCount={0}
+        rowHeight={0}
     />
-));
-
-const Some = styled(GridView.Cell)`
-    color: red;
-    background-color: blue;
-`;
-
-const SomeOther = styled(Some)`
-    font-style: italic;
-`;
-
-stories.add('test emotion', () => (
-    <SomeOther>Hello</SomeOther>
 ));
 
 stories.add('full syntax', () => (
     <GridView
-        columnCount={10}
+        columnCount={1000}
         columnWidth={100}
+        rowCount={10}
+        rowHeight={40}
+        freezeColumns={1}
     >
+
         <GridView.Head>
             {(colIndex) => (
-                <Some>
+                <GridView.Cell>
                     {colIndex}
-                </Some>
+                </GridView.Cell>
             )}
         </GridView.Head>
-        <GridView.Body
-            firstColumn={null}
-        >
+
+        <GridView.Body>
             {(rowIndex, colIndex) => (
                 <GridView.Cell>
                     {rowIndex}, {colIndex}

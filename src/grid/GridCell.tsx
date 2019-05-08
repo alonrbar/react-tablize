@@ -9,7 +9,6 @@ export interface GridCellExtractResult {
 }
 
 export interface GridCellProps extends React.DivProps {
-    className?: string;
 }
 
 export class GridCell extends React.PureComponent<GridCellProps> {
@@ -19,22 +18,11 @@ export class GridCell extends React.PureComponent<GridCellProps> {
     };
 
     public static extract(cell: any): GridCellExtractResult {
-
         if (cell && cell.props && cell.props[GridCellSymbol]) {
-
-            let content: React.ReactNode;
             const { children: cellElemChildren, ...cellElemProps } = cell.props;
-
-            // workaround for emotion's styled components
-            if (cell.type && typeof cell.type.render === 'function') {
-                content = cell.type.render.bind(cell);
-            } else {
-                content = cellElemChildren;
-            }
-
             return {
                 props: cellElemProps,
-                content
+                content: cellElemChildren
             };
         } else {
             return {
