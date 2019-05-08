@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { randomInt } from 'utils/utils';
+import { randomInt } from '../utils/utils';
 
 const GridCellSymbol = '__ReactTablize__GridCell__' + randomInt(0);
 
