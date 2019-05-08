@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+// --------------------- //
+//      TableView        //
+// --------------------- //
+
 //
 // table head
 //
@@ -113,9 +117,97 @@ export declare class TableView<T> extends React.PureComponent<TableViewProps<T>,
     static Column: typeof TableColumn;
 }
 
+// -------------------- //
+//      GridView        //
+// -------------------- //
+
 //
-// misc
+// grid head
 //
+
+export type HeadCellRender = (columnIndex: number) => React.ReactNode;
+
+export interface GridHeadProps extends React.DivProps {    
+    children?: HeadCellRender;
+}
+
+export class GridHead extends React.PureComponent<GridHeadProps> { }
+
+//
+// grid body
+//
+
+export type BodyCellRender = (rowIndex: number, columnIndex: number) => React.ReactNode;
+
+export interface GridBodyProps extends React.DivProps {
+    children?: BodyCellRender;
+}
+
+export class GridBody extends React.PureComponent<GridBodyProps> { }
+
+//
+// grid footer
+//
+
+// TODO...
+
+//
+// grid cell
+//
+
+export interface GridCellExtractResult {
+    props: GridCellProps;
+    content: React.ReactNode;
+}
+
+export interface GridCellProps extends React.DivProps {
+}
+
+export class GridCell extends React.PureComponent<GridCellProps> {
+    public static extract(cell: any): GridCellExtractResult;
+}
+
+//
+// grid view
+//
+
+type FullSyntaxChildren = [React.SubComp<GridHead>, React.SubComp<GridBody>];
+type GridChildren = FullSyntaxChildren | BodyCellRender;
+
+export interface GridViewProps extends React.DivProps {
+
+    columnCount: number;
+    columnWidth: number;
+    freezeColumns?: number;
+    rowCount: number;
+    rowHeight: number;
+
+    dir?: DocDir;
+
+    children?: GridChildren;
+}
+
+export class GridView extends React.PureComponent<GridViewProps, GridViewState> {
+
+    public static readonly defaultHeight = '35vh';
+    public static readonly defaultHeadHeight = '40px';
+
+    //
+    // nested types
+    //
+
+    public static Head = GridHead;
+
+    public static Body = GridBody;
+
+    // TODO: public static Footer = GridFooter;
+
+    public static Cell = GridCell;
+}
+
+// ----------------- //
+//       misc        //
+// ----------------- //
 
 type SubComp<T> = T extends React.Component<infer P> ? React.ReactElement<P, any> : never;
 

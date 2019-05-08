@@ -28,12 +28,7 @@ export interface GridViewProps extends React.DivProps {
     children?: GridChildren;
 }
 
-interface GridViewState {
-    scrollTop: number;
-    scrollLeft: number;
-}
-
-export class GridView extends React.PureComponent<GridViewProps, GridViewState> {
+export class GridView extends React.PureComponent<GridViewProps> {
 
     public static readonly defaultHeight = '35vh';
     public static readonly defaultHeadHeight = '40px';
@@ -46,7 +41,7 @@ export class GridView extends React.PureComponent<GridViewProps, GridViewState> 
 
     public static Body = GridBody;
 
-    public static Footer = GridFooter;
+    // TODO: public static Footer = GridFooter;
 
     public static Cell = GridCell;
 
@@ -56,11 +51,6 @@ export class GridView extends React.PureComponent<GridViewProps, GridViewState> 
 
     private headList = React.createRef<FixedSizeList>();
     private freezedColumnsList = React.createRef<FixedSizeList>();
-
-    constructor(props: GridViewProps) {
-        super(props);
-        this.state = ({} as any);
-    }
 
     public render() {
         const { columnCount, columnWidth, children, ...divProps } = this.props;

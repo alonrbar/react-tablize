@@ -2,11 +2,17 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.3.0 - 2019-05-08](https://github.com/alonrbar/react-tablize/tree/v0.3.0)
+
+### Added
+
+- GridView.
+
 ### Fixed
 
 - Div props typing
 
-## [0.2.0 - 2019-17-04](https://github.com/alonrbar/react-tablize/tree/v0.2.0)
+## [0.2.0 - 2019-04-17](https://github.com/alonrbar/react-tablize/tree/v0.2.0)
 
 ### Added
 
@@ -16,7 +22,7 @@
 
 - Numeric css size support
 
-## [0.1.0 - 2019-16-04](https://github.com/alonrbar/react-tablize/tree/v0.1.0)
+## [0.1.0 - 2019-04-16](https://github.com/alonrbar/react-tablize/tree/v0.1.0)
 
 First version
 
