@@ -24,7 +24,7 @@ stories.add('full syntax', () => (
 
         <GridView.Head>
             {(colIndex) => (
-                <GridView.Cell>
+                <GridView.Cell style={{ color: 'red' }}>
                     {colIndex}
                 </GridView.Cell>
             )}
@@ -32,7 +32,7 @@ stories.add('full syntax', () => (
 
         <GridView.Body>
             {(rowIndex, colIndex) => (
-                <GridView.Cell>
+                <GridView.Cell style={{ color: 'blue' }}>
                     {rowIndex}, {colIndex}
                 </GridView.Cell>
             )}
