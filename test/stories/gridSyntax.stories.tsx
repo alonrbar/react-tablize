@@ -18,9 +18,9 @@ stories.add('simple grid', () => (
     >
 
         <GridView.Head>
-            {(colIndex) => (
+            {({ columnIndex }) => (
                 <GridView.Cell style={{ color: 'red' }}>
-                    {colIndex}
+                    {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Head>
@@ -29,9 +29,9 @@ stories.add('simple grid', () => (
             rowCount={10}
             rowHeight={40}
         >
-            {(rowIndex, colIndex) => (
+            {({ rowIndex, columnIndex }) => (
                 <GridView.Cell style={{ color: 'blue' }}>
-                    {rowIndex}, {colIndex}
+                    {rowIndex}, {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Body>
@@ -46,9 +46,9 @@ stories.add('simple grid - 1 frozen column', () => (
     >
 
         <GridView.Head>
-            {(colIndex) => (
+            {({ columnIndex }) => (
                 <GridView.Cell style={{ color: 'red' }}>
-                    {colIndex}
+                    {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Head>
@@ -57,9 +57,9 @@ stories.add('simple grid - 1 frozen column', () => (
             rowCount={10}
             rowHeight={40}
         >
-            {(rowIndex, colIndex) => (
+            {({ rowIndex, columnIndex }) => (
                 <GridView.Cell style={{ color: 'blue' }}>
-                    {rowIndex}, {colIndex}
+                    {rowIndex}, {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Body>
@@ -74,9 +74,9 @@ stories.add('simple grid - rtl', () => (
     >
 
         <GridView.Head>
-            {(colIndex) => (
+            {({ columnIndex }) => (
                 <GridView.Cell style={{ color: 'red' }}>
-                    {colIndex}
+                    {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Head>
@@ -85,9 +85,9 @@ stories.add('simple grid - rtl', () => (
             rowCount={10}
             rowHeight={40}
         >
-            {(rowIndex, colIndex) => (
+            {({ rowIndex, columnIndex }) => (
                 <GridView.Cell style={{ color: 'blue' }}>
-                    {rowIndex}, {colIndex}
+                    {rowIndex}, {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Body>
@@ -97,14 +97,14 @@ stories.add('simple grid - rtl', () => (
 stories.add('variable size grid', () => (
     <GridView
         columnCount={1000}
-        columnWidth={colIndex => colIndex ? 100 : 50}
+        columnWidth={columnIndex => columnIndex ? 100 : 50}
         freezeColumns={1}
     >
 
         <GridView.Head>
-            {(colIndex) => (
+            {({ columnIndex }) => (
                 <GridView.Cell style={{ color: 'red' }}>
-                    {colIndex}
+                    {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Head>
@@ -113,9 +113,9 @@ stories.add('variable size grid', () => (
             rowCount={10}
             rowHeight={rowIndex => rowIndex ? 40 : 80}
         >
-            {(rowIndex, colIndex) => (
+            {({ rowIndex, columnIndex }) => (
                 <GridView.Cell style={{ color: 'blue' }}>
-                    {rowIndex}, {colIndex}
+                    {rowIndex}, {columnIndex}
                 </GridView.Cell>
             )}
         </GridView.Body>

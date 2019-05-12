@@ -125,7 +125,11 @@ export declare class TableView<T> extends React.PureComponent<TableViewProps<T>,
 // grid head
 //
 
-export type HeadCellRender = (columnIndex: number) => React.ReactNode;
+export interface HeadCellRenderArgs {
+    columnIndex: number;
+}
+
+export type HeadCellRender = (args: HeadCellRenderArgs) => React.ReactNode;
 
 export interface GridHeadProps extends React.DivProps {    
     children?: HeadCellRender;
@@ -137,9 +141,16 @@ export class GridHead extends React.PureComponent<GridHeadProps> { }
 // grid body
 //
 
-export type BodyCellRender = (rowIndex: number, columnIndex: number) => React.ReactNode;
+export interface BodyCellRenderArgs {
+    rowIndex: number; 
+    columnIndex: number;
+}
+
+export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;
 
 export interface GridBodyProps extends React.DivProps {
+    rowCount: number;
+    rowHeight: number | SizeCallback;
     children?: BodyCellRender;
 }
 
@@ -177,10 +188,8 @@ type GridChildren = FullSyntaxChildren | BodyCellRender;
 export interface GridViewProps extends React.DivProps {
 
     columnCount: number;
-    columnWidth: number;
-    freezeColumns?: number;
-    rowCount: number;
-    rowHeight: number;
+    columnWidth: number | SizeCallback;
+    freezeColumns?: number;    
 
     dir?: DocDir;
 
@@ -225,10 +234,6 @@ interface INestedMap<T> {
 
 type OneOrMore<T> = T | T[];
 
-type Id = any;
-
-interface IIdentifiable {
-    id: Id;
-}
-
 type DocDir = 'ltr' | 'rtl';
+
+type SizeCallback = (index: number) => number;

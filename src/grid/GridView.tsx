@@ -127,7 +127,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
     private renderHeadCell(cellRender: HeadCellRender, columnIndex: number, style?: React.CSSProperties) {
 
         // create the cell
-        const cell: any = cellRender(columnIndex);
+        const cell: any = cellRender({ columnIndex });
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);
@@ -215,7 +215,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
     private renderBodyCell(cellRender: BodyCellRender, rowIndex: number, columnIndex: number, style?: React.CSSProperties) {
 
         // create the cell
-        const cell: any = cellRender(rowIndex, columnIndex);
+        const cell: any = cellRender({ rowIndex, columnIndex });
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);

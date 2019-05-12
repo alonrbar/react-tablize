@@ -1,6 +1,11 @@
 import * as React from 'react';
 
-export type BodyCellRender = (rowIndex: number, columnIndex: number) => React.ReactNode;
+export interface BodyCellRenderArgs {
+    rowIndex: number; 
+    columnIndex: number;
+}
+
+export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;
 
 export interface GridBodyProps extends React.DivProps {
     rowCount: number;

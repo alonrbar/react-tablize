@@ -11,12 +11,6 @@ interface INestedMap<T> {
 
 type OneOrMore<T> = T | T[];
 
-type Id = any;
-
-interface IIdentifiable {
-    id: Id;
-}
-
 type DocDir = 'ltr' | 'rtl';
 
 interface Heights {
