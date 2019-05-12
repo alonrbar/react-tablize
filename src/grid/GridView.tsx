@@ -14,8 +14,8 @@ import { GridFooter } from './GridFooter';
 import { GridHead, HeadCellRender } from './GridHead';
 import { scrollbarWidth, StyledGridBody, StyledGridBodyCell, StyledGridHead, StyledGridHeadCell, StyledGridView } from './style';
 
-type FullSyntaxChildren = [React.SubComp<GridHead>, React.SubComp<GridBody>];
-type GridChildren = FullSyntaxChildren | BodyCellRender;
+type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
+type GridChildren = GridChildren_FullSyntax | BodyCellRender;
 
 export interface GridViewProps extends React.DivProps {
 

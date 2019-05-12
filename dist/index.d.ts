@@ -88,16 +88,16 @@ export declare class ColumnBody<T> extends React.PureComponent<ColumnBodyProps<T
 // table view
 //
 
-declare type RowsSyntaxChildren<T> = [SubComp<TableHead<T>>, SubComp<TableBody<T>>];
+declare type TableChildren_RowsSyntax<T> = [SubComp<TableHead<T>>, SubComp<TableBody<T>>];
 
-declare type ColumnsSyntaxChildren<T> = OneOrMore<SubComp<TableColumn<T>>>;
+declare type TableChildren_ColumnsSyntax<T> = OneOrMore<SubComp<TableColumn<T>>>;
 
 export declare type ItemIdCallback<T> = (item: T, index: number) => Id;
 
 export declare class TableViewProps<T> {
     items: T[];
     itemId?: ItemIdCallback<T>;
-    children?: RowsSyntaxChildren<T> | ColumnsSyntaxChildren<T>;
+    children?: TableChildren_RowsSyntax<T> | TableChildren_ColumnsSyntax<T>;
     dir?: DocDir;
     className?: string;
     style?: React.CSSProperties;
@@ -182,8 +182,8 @@ export class GridCell extends React.PureComponent<GridCellProps> {
 // grid view
 //
 
-type FullSyntaxChildren = [React.SubComp<GridHead>, React.SubComp<GridBody>];
-type GridChildren = FullSyntaxChildren | BodyCellRender;
+type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
+type GridChildren = GridChildren_FullSyntax | BodyCellRender;
 
 export interface GridViewProps extends React.DivProps {
 
@@ -196,7 +196,7 @@ export interface GridViewProps extends React.DivProps {
     children?: GridChildren;
 }
 
-export class GridView extends React.PureComponent<GridViewProps, GridViewState> {
+export class GridView extends React.PureComponent<GridViewProps> {
 
     public static readonly defaultHeight = '35vh';
     public static readonly defaultHeadHeight = '40px';

@@ -22,11 +22,11 @@ interface Heights {
     maxHeight: any;
 }
 
-type RowsSyntaxChildren<T> = [React.SubComp<TableHead<T>>, React.SubComp<TableBody<T>>];
+type TableChildren_RowsSyntax<T> = [React.SubComp<TableHead<T>>, React.SubComp<TableBody<T>>];
 
-type ColumnsSyntaxChildren<T> = OneOrMore<React.SubComp<TableColumn<T>>>;
+type TableChildren_ColumnsSyntax<T> = OneOrMore<React.SubComp<TableColumn<T>>>;
 
-export type ItemIdCallback<T> = (item: T, index: number) => Id;
+export type ItemIdCallback<T> = (item: T, index: number) => any;
 
 export class TableViewProps<T> {
 
@@ -36,7 +36,7 @@ export class TableViewProps<T> {
 
     public items: T[];
     public itemId?: ItemIdCallback<T>;
-    public children?: RowsSyntaxChildren<T> | ColumnsSyntaxChildren<T>;
+    public children?: TableChildren_RowsSyntax<T> | TableChildren_ColumnsSyntax<T>;
 
     //
     // appearance
