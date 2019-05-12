@@ -1,7 +1,9 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
+// @ts-ignore
+import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeGrid, VariableSizeList, GridOnScrollProps } from 'react-window';
+import { VariableSizeGrid, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
 import { ErrorBoundary } from '../utils/ErrorBoundary';
 import { ReactUtils } from '../utils/reactUtils';
@@ -58,14 +60,20 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return (
             <ErrorBoundary>
                 <ThemeProvider theme={this.getTheme()}>
-                    <StyledGridView
-                        {...divProps}
-                        style={Object.assign({}, this.props.style, utils.getHeights(divProps.style, GridView.defaultHeight))}
-                    >
-                        {this.renderHead()}
-                        {this.renderBody()}
-                        {this.renderFooter()}
-                    </StyledGridView>
+                    <ScrollSync>
+                        <StyledGridView
+                            {...divProps}
+                            style={Object.assign(
+                                { direction: this.props.dir },
+                                this.props.style,
+                                utils.getHeights(divProps.style, GridView.defaultHeight))
+                            }
+                        >
+                            {this.renderHead()}
+                            {this.renderBody()}
+                            {this.renderFooter()}
+                        </StyledGridView>
+                    </ScrollSync>
                 </ThemeProvider>
             </ErrorBoundary>
         );
@@ -88,21 +96,25 @@ export class GridView extends React.PureComponent<GridViewProps> {
                     <AutoSizer>
                         {({ width, height }) => (
                             <div style={{ width, height, display: 'flex' }}>
+
                                 {/* frozen first columns */}
                                 {utils.range(freezeColumns).map(index => this.renderHeadCell(cellRender, index))}
 
                                 {/* main columns */}
-                                <VariableSizeList
-                                    ref={this.headList}
-                                    style={{ overflow: 'hidden' }}
-                                    layout="horizontal"
-                                    height={height}
-                                    width={width - this.getFrozenColumnsWidth()}
-                                    itemCount={this.props.columnCount - freezeColumns}
-                                    itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                                >
-                                    {({ index, style }) => this.renderHeadCell(cellRender, index + freezeColumns, style)}
-                                </VariableSizeList>
+                                <ScrollSyncPane>
+                                    <VariableSizeList
+                                        ref={this.headList}
+                                        direction={this.props.dir}
+                                        style={{ overflow: 'hidden' }}
+                                        layout="horizontal"
+                                        height={height}
+                                        width={width - this.getFrozenColumnsWidth()}
+                                        itemCount={this.props.columnCount - freezeColumns}
+                                        itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                                    >
+                                        {({ index, style }) => this.renderHeadCell(cellRender, index + freezeColumns, style)}
+                                    </VariableSizeList>
+                                </ScrollSyncPane>
 
                             </div>
                         )}
@@ -149,10 +161,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return (
             <StyledGridBody
                 {...divProps}
-                style={Object.assign({}, divProps.style, {
-                    direction: this.props.dir,
-                    ...heights
-                })}
+                style={Object.assign({}, divProps.style, heights)}
             >
                 <ErrorBoundary>
                     <AutoSizer>
@@ -160,37 +169,41 @@ export class GridView extends React.PureComponent<GridViewProps> {
                             <div style={{ width, height, display: 'flex' }}>
 
                                 {/* frozen first columns */}
-                                <VariableSizeList
-                                    ref={this.freezedColumnsList}
-                                    style={{ overflow: 'hidden' }}
-                                    height={height - scrollbarWidth}
-                                    width={frozenColumnsWidth}
-                                    itemCount={rowCount}
-                                    itemSize={this.getRowHeight(rowHeight)}
-                                >
-                                    {({ index: rowIndex, style }) =>
-                                        <div style={style}>
-                                            {utils.range(freezeColumns)
-                                                .map(columnIndex =>
-                                                    this.renderBodyCell(cellRender, rowIndex, columnIndex)
-                                                )}
-                                        </div>
-                                    }
-                                </VariableSizeList>
+                                <ScrollSyncPane>
+                                    <VariableSizeList
+                                        ref={this.freezedColumnsList}
+                                        style={{ overflow: 'hidden' }}
+                                        height={height - scrollbarWidth}
+                                        width={frozenColumnsWidth}
+                                        itemCount={rowCount}
+                                        itemSize={this.getRowHeight(rowHeight)}
+                                    >
+                                        {({ index: rowIndex, style }) =>
+                                            <div style={style}>
+                                                {utils.range(freezeColumns)
+                                                    .map(columnIndex =>
+                                                        this.renderBodyCell(cellRender, rowIndex, columnIndex)
+                                                    )}
+                                            </div>
+                                        }
+                                    </VariableSizeList>
+                                </ScrollSyncPane>
 
-                                <VariableSizeGrid
-                                    height={height}
-                                    width={width - frozenColumnsWidth}
-                                    columnCount={this.props.columnCount - freezeColumns}
-                                    columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                                    rowCount={rowCount}
-                                    rowHeight={this.getRowHeight(rowHeight)}
-                                    onScroll={this.handleScroll}
-                                >
-                                    {({ rowIndex, columnIndex, style }) =>
-                                        this.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style)
-                                    }
-                                </VariableSizeGrid>
+                                <ScrollSyncPane>
+                                    <VariableSizeGrid
+                                        direction={this.props.dir}
+                                        height={height}
+                                        width={width - frozenColumnsWidth}
+                                        columnCount={this.props.columnCount - freezeColumns}
+                                        columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                                        rowCount={rowCount}
+                                        rowHeight={this.getRowHeight(rowHeight)}
+                                    >
+                                        {({ rowIndex, columnIndex, style }) =>
+                                            this.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style)
+                                        }
+                                    </VariableSizeGrid>
+                                </ScrollSyncPane>
                             </div>
                         )}
                     </AutoSizer>
@@ -229,19 +242,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return (
             <span>Footer</span>
         );
-    }
-
-    //
-    // event handlers
-    //
-
-    private handleScroll = (e: GridOnScrollProps) => {
-        if (this.freezedColumnsList.current) {
-            this.freezedColumnsList.current.scrollTo(e.scrollTop);
-        }
-        if (this.headList.current) {
-            this.headList.current.scrollTo(e.scrollLeft);
-        }
     }
 
     //
