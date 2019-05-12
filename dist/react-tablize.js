@@ -104,6 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with external "react-scroll-sync" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-virtualized-auto-sizer" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-window" (<- Module is not an ECMAScript module) */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -116,6 +117,9 @@ var external_emotion_theming_ = __webpack_require__("emotion-theming");
 
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__("react");
+
+// EXTERNAL MODULE: external "react-scroll-sync"
+var external_react_scroll_sync_ = __webpack_require__("react-scroll-sync");
 
 // EXTERNAL MODULE: external "react-virtualized-auto-sizer"
 var external_react_virtualized_auto_sizer_ = __webpack_require__("react-virtualized-auto-sizer");
@@ -586,8 +590,6 @@ var StyledGridBodyCell = styledWithTheme.div(_templateObject5());
 // CONCATENATED MODULE: ./src/grid/GridView.tsx
 function GridView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridView_typeof = function _typeof(obj) { return typeof obj; }; } else { GridView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridView_typeof(obj); }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { GridView_defineProperty(target, key, source[key]); }); } return target; }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function GridView_objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = GridView_objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -612,6 +614,8 @@ function GridView_setPrototypeOf(o, p) { GridView_setPrototypeOf = Object.setPro
 
 function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+
+ // @ts-ignore
 
 
 
@@ -646,14 +650,16 @@ function (_React$PureComponent) {
 
     GridView_defineProperty(GridView_assertThisInitialized(_this), "freezedColumnsList", external_react_["createRef"]());
 
-    GridView_defineProperty(GridView_assertThisInitialized(_this), "handleScroll", function (e) {
-      if (_this.freezedColumnsList.current) {
-        _this.freezedColumnsList.current.scrollTo(e.scrollTop);
-      }
+    GridView_defineProperty(GridView_assertThisInitialized(_this), "getColumnWidth", function (colIndex) {
+      if (typeof _this.props.columnWidth === 'function') return _this.props.columnWidth(colIndex);
+      return _this.props.columnWidth;
+    });
 
-      if (_this.headList.current) {
-        _this.headList.current.scrollTo(e.scrollLeft);
-      }
+    GridView_defineProperty(GridView_assertThisInitialized(_this), "getRowHeight", function (rowHeightProp) {
+      return function (rowIndex) {
+        if (typeof rowHeightProp === 'function') return rowHeightProp(rowIndex);
+        return rowHeightProp;
+      };
     });
 
     return _this;
@@ -670,9 +676,11 @@ function (_React$PureComponent) {
 
       return external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["createElement"](external_emotion_theming_["ThemeProvider"], {
         theme: this.getTheme()
-      }, external_react_["createElement"](StyledGridView, _extends({}, divProps, {
-        style: Object.assign({}, this.props.style, utils_getHeights(divProps.style, GridView.defaultHeight))
-      }), this.renderHead(), this.renderBody(), this.renderFooter())));
+      }, external_react_["createElement"](external_react_scroll_sync_["ScrollSync"], null, external_react_["createElement"](StyledGridView, _extends({}, divProps, {
+        style: Object.assign({
+          direction: this.props.dir
+        }, this.props.style, utils_getHeights(divProps.style, GridView.defaultHeight))
+      }), this.renderHead(), this.renderBody(), this.renderFooter()))));
     }
   }, {
     key: "renderHead",
@@ -700,39 +708,45 @@ function (_React$PureComponent) {
           }
         }, range(freezeColumns).map(function (index) {
           return _this2.renderHeadCell(cellRender, index);
-        }), external_react_["createElement"](external_react_window_["FixedSizeList"], {
+        }), external_react_["createElement"](external_react_scroll_sync_["ScrollSyncPane"], null, external_react_["createElement"](external_react_window_["VariableSizeList"], {
           ref: _this2.headList,
+          direction: _this2.props.dir,
           style: {
             overflow: 'hidden'
           },
           layout: "horizontal",
           height: height,
-          width: width - freezeColumns * _this2.props.columnWidth,
+          width: width - _this2.getFrozenColumnsWidth(),
           itemCount: _this2.props.columnCount - freezeColumns,
-          itemSize: _this2.props.columnWidth
+          itemSize: function itemSize(colIndex) {
+            return _this2.getColumnWidth(colIndex + freezeColumns);
+          }
         }, function (_ref2) {
           var index = _ref2.index,
               style = _ref2.style;
           return _this2.renderHeadCell(cellRender, index + freezeColumns, style);
-        }));
+        })));
       })));
     }
   }, {
     key: "renderHeadCell",
     value: function renderHeadCell(cellRender, columnIndex, style) {
       // create the cell
-      var cell = cellRender(columnIndex); // get cell props & content
+      var cell = cellRender({
+        columnIndex: columnIndex
+      }); // get cell props & content
 
       var _GridCell$extract = GridCell.extract(cell),
           cellProps = _GridCell$extract.props,
-          cellContent = _GridCell$extract.content; // render
+          cellContent = _GridCell$extract.content;
 
+      var columnWidth = this.getColumnWidth(columnIndex); // render
 
       return external_react_["createElement"](StyledGridHeadCell, _extends({
         key: columnIndex
       }, cellProps, {
         style: Object.assign({
-          width: this.props.columnWidth
+          width: columnWidth
         }, cellProps.style, style)
       }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, cellContent));
     }
@@ -746,14 +760,15 @@ function (_React$PureComponent) {
 
       var _body$props = body.props,
           cellRender = _body$props.children,
-          divProps = GridView_objectWithoutProperties(_body$props, ["children"]);
+          rowCount = _body$props.rowCount,
+          rowHeight = _body$props.rowHeight,
+          divProps = GridView_objectWithoutProperties(_body$props, ["children", "rowCount", "rowHeight"]);
 
       var heights = this.getBodyHeights();
       var freezeColumns = this.props.freezeColumns || 0;
+      var frozenColumnsWidth = this.getFrozenColumnsWidth();
       return external_react_["createElement"](StyledGridBody, _extends({}, divProps, {
-        style: Object.assign({}, divProps.style, _objectSpread({
-          direction: this.props.dir
-        }, heights))
+        style: Object.assign({}, divProps.style, heights)
       }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref3) {
         var height = _ref3.height,
             width = _ref3.width;
@@ -763,15 +778,15 @@ function (_React$PureComponent) {
             height: height,
             display: 'flex'
           }
-        }, external_react_["createElement"](external_react_window_["FixedSizeList"], {
+        }, external_react_["createElement"](external_react_scroll_sync_["ScrollSyncPane"], null, external_react_["createElement"](external_react_window_["VariableSizeList"], {
           ref: _this3.freezedColumnsList,
           style: {
             overflow: 'hidden'
           },
           height: height - scrollbarWidth,
-          width: freezeColumns * _this3.props.columnWidth,
-          itemCount: _this3.props.rowCount,
-          itemSize: _this3.props.rowHeight
+          width: frozenColumnsWidth,
+          itemCount: rowCount,
+          itemSize: _this3.getRowHeight(rowHeight)
         }, function (_ref4) {
           var rowIndex = _ref4.index,
               style = _ref4.style;
@@ -780,27 +795,32 @@ function (_React$PureComponent) {
           }, range(freezeColumns).map(function (columnIndex) {
             return _this3.renderBodyCell(cellRender, rowIndex, columnIndex);
           }));
-        }), external_react_["createElement"](external_react_window_["FixedSizeGrid"], {
+        })), external_react_["createElement"](external_react_scroll_sync_["ScrollSyncPane"], null, external_react_["createElement"](external_react_window_["VariableSizeGrid"], {
+          direction: _this3.props.dir,
           height: height,
-          width: width - freezeColumns * _this3.props.columnWidth,
+          width: width - frozenColumnsWidth,
           columnCount: _this3.props.columnCount - freezeColumns,
-          columnWidth: _this3.props.columnWidth,
-          rowCount: _this3.props.rowCount,
-          rowHeight: _this3.props.rowHeight,
-          onScroll: _this3.handleScroll
+          columnWidth: function columnWidth(colIndex) {
+            return _this3.getColumnWidth(colIndex + freezeColumns);
+          },
+          rowCount: rowCount,
+          rowHeight: _this3.getRowHeight(rowHeight)
         }, function (_ref5) {
           var rowIndex = _ref5.rowIndex,
               columnIndex = _ref5.columnIndex,
               style = _ref5.style;
           return _this3.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style);
-        }));
+        })));
       })));
     }
   }, {
     key: "renderBodyCell",
     value: function renderBodyCell(cellRender, rowIndex, columnIndex, style) {
       // create the cell
-      var cell = cellRender(rowIndex, columnIndex); // get cell props & content
+      var cell = cellRender({
+        rowIndex: rowIndex,
+        columnIndex: columnIndex
+      }); // get cell props & content
 
       var _GridCell$extract2 = GridCell.extract(cell),
           cellProps = _GridCell$extract2.props,
@@ -820,14 +840,11 @@ function (_React$PureComponent) {
       if (!footer) return null;
       return external_react_["createElement"]("span", null, "Footer");
     } //
-    // event handlers
+    // helpers
     //
 
   }, {
     key: "getTheme",
-    //
-    // helpers
-    //
     value: function getTheme() {
       return {
         dir: this.props.dir
@@ -861,6 +878,15 @@ function (_React$PureComponent) {
       }
 
       return headHeight;
+    }
+  }, {
+    key: "getFrozenColumnsWidth",
+    value: function getFrozenColumnsWidth() {
+      if (!this.props.freezeColumns) return 0;
+      var width = range(this.props.freezeColumns).map(this.getColumnWidth).reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      return width;
     }
   }]);
 
@@ -1700,6 +1726,18 @@ module.exports = require("lodash.flattendeep");
 /***/ (function(module, exports) {
 
 module.exports = require("react");
+
+/***/ }),
+
+/***/ "react-scroll-sync":
+/*!************************************!*\
+  !*** external "react-scroll-sync" ***!
+  \************************************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports) {
+
+module.exports = require("react-scroll-sync");
 
 /***/ }),
 

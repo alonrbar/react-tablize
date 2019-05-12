@@ -2,9 +2,16 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.4.0 - 2019-05-12](https://github.com/alonrbar/react-tablize/tree/v0.4.0)
+
 ### Added
 
 - Variable sized grid.
+- Grid RTL support.
+
+### Changed
+
+- BREAKING: Grid render callbacks uses argument objects.
 
 ## [0.3.0 - 2019-05-08](https://github.com/alonrbar/react-tablize/tree/v0.3.0)
 
