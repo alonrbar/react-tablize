@@ -24,3 +24,5 @@ interface Heights {
     minHeight: string | number;
     maxHeight: string | number;
 }
+
+type SizeCallback = (index: number) => number;

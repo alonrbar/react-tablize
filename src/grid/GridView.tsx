@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeGrid, FixedSizeList, GridOnScrollProps } from 'react-window';
+import { VariableSizeGrid, VariableSizeList, GridOnScrollProps } from 'react-window';
 import { Theme } from '../styled';
 import { ErrorBoundary } from '../utils/ErrorBoundary';
 import { ReactUtils } from '../utils/reactUtils';
@@ -18,10 +18,11 @@ type GridChildren = FullSyntaxChildren | BodyCellRender;
 export interface GridViewProps extends React.DivProps {
 
     columnCount: number;
-    columnWidth: number;
+    columnWidth: number | SizeCallback;
+    /**
+     * Number of columns to freeze (always the first columns).
+     */
     freezeColumns?: number;
-    rowCount: number;
-    rowHeight: number;
 
     dir?: DocDir;
 
@@ -49,8 +50,8 @@ export class GridView extends React.PureComponent<GridViewProps> {
     // component code
     //
 
-    private headList = React.createRef<FixedSizeList>();
-    private freezedColumnsList = React.createRef<FixedSizeList>();
+    private headList = React.createRef<VariableSizeList>();
+    private freezedColumnsList = React.createRef<VariableSizeList>();
 
     public render() {
         const { columnCount, columnWidth, children, ...divProps } = this.props;
@@ -87,22 +88,21 @@ export class GridView extends React.PureComponent<GridViewProps> {
                     <AutoSizer>
                         {({ width, height }) => (
                             <div style={{ width, height, display: 'flex' }}>
-
                                 {/* frozen first columns */}
                                 {utils.range(freezeColumns).map(index => this.renderHeadCell(cellRender, index))}
 
                                 {/* main columns */}
-                                <FixedSizeList
+                                <VariableSizeList
                                     ref={this.headList}
                                     style={{ overflow: 'hidden' }}
                                     layout="horizontal"
                                     height={height}
-                                    width={width - freezeColumns * this.props.columnWidth}
+                                    width={width - this.getFrozenColumnsWidth()}
                                     itemCount={this.props.columnCount - freezeColumns}
-                                    itemSize={this.props.columnWidth}
+                                    itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
                                 >
                                     {({ index, style }) => this.renderHeadCell(cellRender, index + freezeColumns, style)}
-                                </FixedSizeList>
+                                </VariableSizeList>
 
                             </div>
                         )}
@@ -119,13 +119,14 @@ export class GridView extends React.PureComponent<GridViewProps> {
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);
+        const columnWidth = this.getColumnWidth(columnIndex);
 
         // render
         return (
             <StyledGridHeadCell
                 key={columnIndex}
                 {...cellProps}
-                style={Object.assign({ width: this.props.columnWidth }, cellProps.style, style)}
+                style={Object.assign({ width: columnWidth }, cellProps.style, style)}
             >
                 <ErrorBoundary>
                     {cellContent}
@@ -139,10 +140,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const body = ReactUtils.singleChildOfType(this, GridBody);
         if (!body)
             return null;
-        const { children: cellRender, ...divProps } = body.props;
+        const { children: cellRender, rowCount, rowHeight, ...divProps } = body.props;
 
         const heights = this.getBodyHeights();
         const freezeColumns = this.props.freezeColumns || 0;
+        const frozenColumnsWidth = this.getFrozenColumnsWidth();
 
         return (
             <StyledGridBody
@@ -158,13 +160,13 @@ export class GridView extends React.PureComponent<GridViewProps> {
                             <div style={{ width, height, display: 'flex' }}>
 
                                 {/* frozen first columns */}
-                                <FixedSizeList
+                                <VariableSizeList
                                     ref={this.freezedColumnsList}
                                     style={{ overflow: 'hidden' }}
                                     height={height - scrollbarWidth}
-                                    width={freezeColumns * this.props.columnWidth}
-                                    itemCount={this.props.rowCount}
-                                    itemSize={this.props.rowHeight}
+                                    width={frozenColumnsWidth}
+                                    itemCount={rowCount}
+                                    itemSize={this.getRowHeight(rowHeight)}
                                 >
                                     {({ index: rowIndex, style }) =>
                                         <div style={style}>
@@ -174,21 +176,21 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                                 )}
                                         </div>
                                     }
-                                </FixedSizeList>
+                                </VariableSizeList>
 
-                                <FixedSizeGrid
+                                <VariableSizeGrid
                                     height={height}
-                                    width={width - freezeColumns * this.props.columnWidth}
+                                    width={width - frozenColumnsWidth}
                                     columnCount={this.props.columnCount - freezeColumns}
-                                    columnWidth={this.props.columnWidth}
-                                    rowCount={this.props.rowCount}
-                                    rowHeight={this.props.rowHeight}
+                                    columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                                    rowCount={rowCount}
+                                    rowHeight={this.getRowHeight(rowHeight)}
                                     onScroll={this.handleScroll}
                                 >
                                     {({ rowIndex, columnIndex, style }) =>
                                         this.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style)
                                     }
-                                </FixedSizeGrid>
+                                </VariableSizeGrid>
                             </div>
                         )}
                     </AutoSizer>
@@ -282,5 +284,26 @@ export class GridView extends React.PureComponent<GridViewProps> {
             headHeight = utils.getHeights(head.props.style, GridView.defaultHeadHeight).height;
         }
         return headHeight;
+    }
+
+    private getFrozenColumnsWidth(): number {
+        if (!this.props.freezeColumns)
+            return 0;
+        const width = utils.range(this.props.freezeColumns)
+            .map(this.getColumnWidth)
+            .reduce((a, b) => a + b, 0);
+        return width;
+    }
+
+    private getColumnWidth = (colIndex: number): number => {
+        if (typeof this.props.columnWidth === 'function')
+            return this.props.columnWidth(colIndex);
+        return this.props.columnWidth;
+    }
+
+    private getRowHeight = (rowHeightProp: number | SizeCallback) => (rowIndex: number): number => {
+        if (typeof rowHeightProp === 'function')
+            return rowHeightProp(rowIndex);
+        return rowHeightProp;
     }
 }
