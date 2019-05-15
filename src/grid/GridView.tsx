@@ -258,15 +258,15 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const headHeight = this.getHeadHeight();
         const bodyHeights = utils.getHeights(this.props.style, undefined);
 
-        const bodyHeight = bodyHeights.height || `calc(${totalHeights.height} - ${headHeight})`;
+        const bodyHeight = `calc(${bodyHeights.height || totalHeights.height} - ${headHeight})`;
 
         let bodyMinHeight: string | number;
         if (bodyHeights.minHeight || totalHeights.minHeight)
-            bodyMinHeight = bodyHeights.minHeight || `calc(${totalHeights.minHeight} - ${headHeight})`;
+            bodyMinHeight = `calc(${bodyHeights.minHeight || totalHeights.minHeight} - ${headHeight})`;
 
         let bodyMaxHeight: string | number;
         if (bodyHeights.maxHeight || totalHeights.maxHeight)
-            bodyMaxHeight = bodyHeights.maxHeight || `calc(${totalHeights.maxHeight} - ${headHeight})`;
+            bodyMaxHeight = `calc(${bodyHeights.maxHeight || totalHeights.maxHeight} - ${headHeight})`;
 
         return {
             height: bodyHeight,
