@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.5.0 - 2019-05-15](https://github.com/alonrbar/react-tablize/tree/v0.5.0)
+
 ### Added
 
 - Grid overscan items props.
@@ -11,7 +13,7 @@
 
 - Fix support for multiple frozen columns.
 - Fix body height calculation.
-- Improve RTL scrolling (still not perfect).
+- Improve RTL scrolling.
 
 ## [0.4.0 - 2019-05-12](https://github.com/alonrbar/react-tablize/tree/v0.4.0)
 

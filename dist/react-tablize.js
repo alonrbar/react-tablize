@@ -100,7 +100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!***********************************!*\
   !*** ./src/index.ts + 21 modules ***!
   \***********************************/
-/*! exports provided: ColumnBodyProps, ColumnBody, ColumnHeadProps, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView, GridView */
+/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHeadProps, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "normalize-scroll-left" (<- Module is not an ECMAScript module) */
