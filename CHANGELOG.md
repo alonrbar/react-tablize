@@ -2,6 +2,11 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- Grid overscan items props.
+- Grid 'isScrolling' property.
+
 ### Fixed
 
 - Fix support for multiple frozen columns.

@@ -17,6 +17,21 @@ import { scrollbarWidth, StyledGridBody, StyledGridBodyCell, StyledGridHead, Sty
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren = GridChildren_FullSyntax | BodyCellRender;
 
+interface RenderHeadCellArgs {
+    cellRender: HeadCellRender;
+    columnIndex: number;
+    isScrolling: boolean;
+    style?: React.CSSProperties;
+}
+
+interface RenderBodyCellArgs {
+    cellRender: BodyCellRender;
+    rowIndex: number;
+    columnIndex: number;
+    isScrolling: boolean;
+    style?: React.CSSProperties;
+}
+
 export interface GridViewProps extends React.DivProps {
 
     columnCount: number;
@@ -27,6 +42,33 @@ export interface GridViewProps extends React.DivProps {
     freezeColumns?: number;
 
     dir?: DocDir;
+
+    /**
+     * Number of extra rows to render above/below the visible items.
+     * Tweaking this can help reduce scroll flickering on certain
+     * browsers/devices.  
+     * 
+     * Default: 1
+     */
+    overscanRowsCount?: number;
+    /**
+     * Number of extra columns to render before/after the visible items.
+     * Tweaking this can help reduce scroll flickering on certain
+     * browsers/devices.  
+     * 
+     * Default: 1
+     */
+    overscanColumnsCount?: number;
+    /**
+     * Adds an additional isScrolling parameter to the children render function.
+     * This parameter can be used to show a placeholder row or column while the
+     * list is being scrolled.
+     *
+     * Note that using this parameter will result in an additional render call
+     * after scrolling has stopped (when isScrolling changes from true to
+     * false).
+     */
+    useIsScrolling?: boolean;
 
     children?: GridChildren;
 }
@@ -51,6 +93,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
     //
     // component code
     //
+
+    public static defaultProps = {
+        overscanRowsCount: 1,
+        overscanColumnsCount: 1
+    };
 
     private headList = React.createRef<VariableSizeList>();
     private mainBodyGrid = React.createRef<VariableSizeGrid>();
@@ -97,7 +144,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
                             <div style={{ width, height, display: 'flex' }}>
 
                                 {/* frozen first columns */}
-                                {utils.range(freezeColumns).map(index => this.renderHeadCell(cellRender, index))}
+                                {utils.range(freezeColumns).map(columnIndex => this.renderHeadCell({
+                                    cellRender, 
+                                    columnIndex,
+                                    isScrolling: false
+                                }))}
 
                                 {/* main columns */}
                                 <VariableSizeList
@@ -109,8 +160,17 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     width={width - this.getFrozenColumnsWidth()}
                                     itemCount={this.props.columnCount - freezeColumns}
                                     itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                                    overscanCount={this.props.overscanColumnsCount}
+                                    useIsScrolling={this.props.useIsScrolling}
                                 >
-                                    {({ index, style }) => this.renderHeadCell(cellRender, index + freezeColumns, style)}
+                                    {({ index, style, isScrolling }) =>
+                                        this.renderHeadCell({
+                                            cellRender,
+                                            columnIndex: index + freezeColumns,
+                                            isScrolling,
+                                            style
+                                        })
+                                    }
                                 </VariableSizeList>
 
                             </div>
@@ -121,10 +181,17 @@ export class GridView extends React.PureComponent<GridViewProps> {
         );
     }
 
-    private renderHeadCell(cellRender: HeadCellRender, columnIndex: number, style?: React.CSSProperties) {
+    private renderHeadCell(args: RenderHeadCellArgs) {
+
+        const {
+            columnIndex,
+            cellRender,
+            isScrolling,
+            style
+        } = args;
 
         // create the cell
-        const cell: any = cellRender({ columnIndex });
+        const cell: any = cellRender({ columnIndex, isScrolling });
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);
@@ -176,9 +243,17 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     columnWidth={this.getColumnWidth}
                                     rowCount={rowCount}
                                     rowHeight={this.getRowHeight(rowHeight)}
+                                    overscanRowsCount={this.props.overscanRowsCount}
+                                    useIsScrolling={this.props.useIsScrolling}
                                 >
-                                    {({ rowIndex, columnIndex, style }) =>
-                                        this.renderBodyCell(cellRender, rowIndex, columnIndex, style)
+                                    {({ rowIndex, columnIndex, style, isScrolling }) =>
+                                        this.renderBodyCell({
+                                            cellRender,
+                                            rowIndex,
+                                            columnIndex,
+                                            isScrolling,
+                                            style
+                                        })
                                     }
                                 </VariableSizeGrid>
 
@@ -192,9 +267,18 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     rowCount={rowCount}
                                     rowHeight={this.getRowHeight(rowHeight)}
                                     onScroll={this.syncScroll}
+                                    overscanRowsCount={this.props.overscanRowsCount}
+                                    overscanColumnsCount={this.props.overscanColumnsCount}
+                                    useIsScrolling={this.props.useIsScrolling}
                                 >
-                                    {({ rowIndex, columnIndex, style }) =>
-                                        this.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style)
+                                    {({ rowIndex, columnIndex, style, isScrolling }) =>
+                                        this.renderBodyCell({
+                                            cellRender,
+                                            rowIndex,
+                                            columnIndex: columnIndex + freezeColumns,
+                                            isScrolling,
+                                            style
+                                        })
                                     }
                                 </VariableSizeGrid>
                             </div>
@@ -205,10 +289,18 @@ export class GridView extends React.PureComponent<GridViewProps> {
         );
     }
 
-    private renderBodyCell(cellRender: BodyCellRender, rowIndex: number, columnIndex: number, style?: React.CSSProperties) {
+    private renderBodyCell(args: RenderBodyCellArgs) {
+
+        const {
+            rowIndex,
+            columnIndex,
+            cellRender,
+            isScrolling,
+            style
+        } = args;
 
         // create the cell
-        const cell: any = cellRender({ rowIndex, columnIndex });
+        const cell: any = cellRender({ rowIndex, columnIndex, isScrolling });
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);

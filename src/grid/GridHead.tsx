@@ -2,6 +2,7 @@ import * as React from 'react';
 
 export interface HeadCellRenderArgs {
     columnIndex: number;
+    isScrolling?: boolean;
 }
 
 export type HeadCellRender = (args: HeadCellRenderArgs) => React.ReactNode;

@@ -127,6 +127,7 @@ export declare class TableView<T> extends React.PureComponent<TableViewProps<T>,
 
 export interface HeadCellRenderArgs {
     columnIndex: number;
+    isScrolling?: boolean;
 }
 
 export type HeadCellRender = (args: HeadCellRenderArgs) => React.ReactNode;
@@ -144,6 +145,7 @@ export class GridHead extends React.PureComponent<GridHeadProps> { }
 export interface BodyCellRenderArgs {
     rowIndex: number; 
     columnIndex: number;
+    isScrolling?: boolean;
 }
 
 export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;
@@ -192,6 +194,33 @@ export interface GridViewProps extends React.DivProps {
     freezeColumns?: number;    
 
     dir?: DocDir;
+
+    /**
+     * Number of extra rows to render above/below the visible items.
+     * Tweaking this can help reduce scroll flickering on certain
+     * browsers/devices.  
+     * 
+     * Default: 20
+     */
+    overscanRowsCount?: number;
+    /**
+     * Number of extra columns to render before/after the visible items.
+     * Tweaking this can help reduce scroll flickering on certain
+     * browsers/devices.  
+     * 
+     * Default: 20
+     */
+    overscanColumnsCount?: number;
+    /**
+     * Adds an additional isScrolling parameter to the children render function.
+     * This parameter can be used to show a placeholder row or column while the
+     * list is being scrolled.
+     *
+     * Note that using this parameter will result in an additional render call
+     * after scrolling has stopped (when isScrolling changes from true to
+     * false).
+     */
+    useIsScrolling?: boolean;
 
     children?: GridChildren;
 }

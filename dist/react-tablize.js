@@ -100,7 +100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!***********************************!*\
   !*** ./src/index.ts + 21 modules ***!
   \***********************************/
-/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHeadProps, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
+/*! exports provided: ColumnBodyProps, ColumnBody, ColumnHeadProps, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView, GridView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "normalize-scroll-left" (<- Module is not an ECMAScript module) */
@@ -746,8 +746,12 @@ function (_React$PureComponent) {
             height: height,
             display: 'flex'
           }
-        }, range(freezeColumns).map(function (index) {
-          return _this2.renderHeadCell(cellRender, index);
+        }, range(freezeColumns).map(function (columnIndex) {
+          return _this2.renderHeadCell({
+            cellRender: cellRender,
+            columnIndex: columnIndex,
+            isScrolling: false
+          });
         }), external_react_["createElement"](external_react_window_["VariableSizeList"], {
           ref: _this2.headList,
           direction: _this2.props.dir,
@@ -760,20 +764,33 @@ function (_React$PureComponent) {
           itemCount: _this2.props.columnCount - freezeColumns,
           itemSize: function itemSize(colIndex) {
             return _this2.getColumnWidth(colIndex + freezeColumns);
-          }
+          },
+          overscanCount: _this2.props.overscanColumnsCount,
+          useIsScrolling: _this2.props.useIsScrolling
         }, function (_ref2) {
           var index = _ref2.index,
-              style = _ref2.style;
-          return _this2.renderHeadCell(cellRender, index + freezeColumns, style);
+              style = _ref2.style,
+              isScrolling = _ref2.isScrolling;
+          return _this2.renderHeadCell({
+            cellRender: cellRender,
+            columnIndex: index + freezeColumns,
+            isScrolling: isScrolling,
+            style: style
+          });
         }));
       })));
     }
   }, {
     key: "renderHeadCell",
-    value: function renderHeadCell(cellRender, columnIndex, style) {
-      // create the cell
+    value: function renderHeadCell(args) {
+      var columnIndex = args.columnIndex,
+          cellRender = args.cellRender,
+          isScrolling = args.isScrolling,
+          style = args.style; // create the cell
+
       var cell = cellRender({
-        columnIndex: columnIndex
+        columnIndex: columnIndex,
+        isScrolling: isScrolling
       }); // get cell props & content
 
       var _GridCell$extract = GridCell.extract(cell),
@@ -829,12 +846,21 @@ function (_React$PureComponent) {
           columnCount: freezeColumns,
           columnWidth: _this3.getColumnWidth,
           rowCount: rowCount,
-          rowHeight: _this3.getRowHeight(rowHeight)
+          rowHeight: _this3.getRowHeight(rowHeight),
+          overscanRowsCount: _this3.props.overscanRowsCount,
+          useIsScrolling: _this3.props.useIsScrolling
         }, function (_ref4) {
           var rowIndex = _ref4.rowIndex,
               columnIndex = _ref4.columnIndex,
-              style = _ref4.style;
-          return _this3.renderBodyCell(cellRender, rowIndex, columnIndex, style);
+              style = _ref4.style,
+              isScrolling = _ref4.isScrolling;
+          return _this3.renderBodyCell({
+            cellRender: cellRender,
+            rowIndex: rowIndex,
+            columnIndex: columnIndex,
+            isScrolling: isScrolling,
+            style: style
+          });
         }), external_react_["createElement"](external_react_window_["VariableSizeGrid"], {
           ref: _this3.mainBodyGrid,
           direction: _this3.props.dir,
@@ -846,22 +872,38 @@ function (_React$PureComponent) {
           },
           rowCount: rowCount,
           rowHeight: _this3.getRowHeight(rowHeight),
-          onScroll: _this3.syncScroll
+          onScroll: _this3.syncScroll,
+          overscanRowsCount: _this3.props.overscanRowsCount,
+          overscanColumnsCount: _this3.props.overscanColumnsCount,
+          useIsScrolling: _this3.props.useIsScrolling
         }, function (_ref5) {
           var rowIndex = _ref5.rowIndex,
               columnIndex = _ref5.columnIndex,
-              style = _ref5.style;
-          return _this3.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style);
+              style = _ref5.style,
+              isScrolling = _ref5.isScrolling;
+          return _this3.renderBodyCell({
+            cellRender: cellRender,
+            rowIndex: rowIndex,
+            columnIndex: columnIndex + freezeColumns,
+            isScrolling: isScrolling,
+            style: style
+          });
         }));
       })));
     }
   }, {
     key: "renderBodyCell",
-    value: function renderBodyCell(cellRender, rowIndex, columnIndex, style) {
-      // create the cell
+    value: function renderBodyCell(args) {
+      var rowIndex = args.rowIndex,
+          columnIndex = args.columnIndex,
+          cellRender = args.cellRender,
+          isScrolling = args.isScrolling,
+          style = args.style; // create the cell
+
       var cell = cellRender({
         rowIndex: rowIndex,
-        columnIndex: columnIndex
+        columnIndex: columnIndex,
+        isScrolling: isScrolling
       }); // get cell props & content
 
       var _GridCell$extract2 = GridCell.extract(cell),
@@ -947,6 +989,11 @@ GridView_defineProperty(GridView_GridView, "Head", GridHead);
 GridView_defineProperty(GridView_GridView, "Body", GridBody);
 
 GridView_defineProperty(GridView_GridView, "Cell", GridCell);
+
+GridView_defineProperty(GridView_GridView, "defaultProps", {
+  overscanRowsCount: 1,
+  overscanColumnsCount: 1
+});
 // CONCATENATED MODULE: ./src/grid/index.ts
 
 // CONCATENATED MODULE: ./src/table/ColumnBody.tsx
