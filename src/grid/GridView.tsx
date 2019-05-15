@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'emotion-theming';
+import { detectScrollType } from 'normalize-scroll-left';
 import * as React from 'react';
-// @ts-ignore
-import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
+import * as ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeGrid, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
@@ -53,6 +53,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
     //
 
     private headList = React.createRef<VariableSizeList>();
+    private mainBodyGrid = React.createRef<VariableSizeGrid>();
     private freezedColumnsGrid = React.createRef<VariableSizeGrid>();
 
     public render() {
@@ -60,20 +61,18 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return (
             <ErrorBoundary>
                 <ThemeProvider theme={this.getTheme()}>
-                    <ScrollSync>
-                        <StyledGridView
-                            {...divProps}
-                            style={Object.assign(
-                                { direction: this.props.dir },
-                                this.props.style,
-                                utils.getHeights(divProps.style, GridView.defaultHeight))
-                            }
-                        >
-                            {this.renderHead()}
-                            {this.renderBody()}
-                            {this.renderFooter()}
-                        </StyledGridView>
-                    </ScrollSync>
+                    <StyledGridView
+                        {...divProps}
+                        style={Object.assign(
+                            { direction: this.props.dir },
+                            this.props.style,
+                            utils.getHeights(divProps.style, GridView.defaultHeight))
+                        }
+                    >
+                        {this.renderHead()}
+                        {this.renderBody()}
+                        {this.renderFooter()}
+                    </StyledGridView>
                 </ThemeProvider>
             </ErrorBoundary>
         );
@@ -101,20 +100,18 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                 {utils.range(freezeColumns).map(index => this.renderHeadCell(cellRender, index))}
 
                                 {/* main columns */}
-                                <ScrollSyncPane>
-                                    <VariableSizeList
-                                        ref={this.headList}
-                                        direction={this.props.dir}
-                                        style={{ overflow: 'hidden' }}
-                                        layout="horizontal"
-                                        height={height}
-                                        width={width - this.getFrozenColumnsWidth()}
-                                        itemCount={this.props.columnCount - freezeColumns}
-                                        itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                                    >
-                                        {({ index, style }) => this.renderHeadCell(cellRender, index + freezeColumns, style)}
-                                    </VariableSizeList>
-                                </ScrollSyncPane>
+                                <VariableSizeList
+                                    ref={this.headList}
+                                    direction={this.props.dir}
+                                    style={{ overflow: 'hidden' }}
+                                    layout="horizontal"
+                                    height={height}
+                                    width={width - this.getFrozenColumnsWidth()}
+                                    itemCount={this.props.columnCount - freezeColumns}
+                                    itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                                >
+                                    {({ index, style }) => this.renderHeadCell(cellRender, index + freezeColumns, style)}
+                                </VariableSizeList>
 
                             </div>
                         )}
@@ -169,39 +166,37 @@ export class GridView extends React.PureComponent<GridViewProps> {
                             <div style={{ width, height, display: 'flex' }}>
 
                                 {/* frozen first columns */}
-                                <ScrollSyncPane>
-                                    <VariableSizeGrid
-                                        ref={this.freezedColumnsGrid}
-                                        direction={this.props.dir}
-                                        style={{ overflow: 'hidden' }}
-                                        height={height - scrollbarWidth}
-                                        width={frozenColumnsWidth}
-                                        columnCount={freezeColumns}
-                                        columnWidth={this.getColumnWidth}
-                                        rowCount={rowCount}
-                                        rowHeight={this.getRowHeight(rowHeight)}
-                                    >
-                                        {({ rowIndex, columnIndex, style }) =>
-                                            this.renderBodyCell(cellRender, rowIndex, columnIndex, style)
-                                        }
-                                    </VariableSizeGrid>
-                                </ScrollSyncPane>
+                                <VariableSizeGrid
+                                    ref={this.freezedColumnsGrid}
+                                    direction={this.props.dir}
+                                    style={{ overflow: 'hidden' }}
+                                    height={height - scrollbarWidth}
+                                    width={frozenColumnsWidth}
+                                    columnCount={freezeColumns}
+                                    columnWidth={this.getColumnWidth}
+                                    rowCount={rowCount}
+                                    rowHeight={this.getRowHeight(rowHeight)}
+                                >
+                                    {({ rowIndex, columnIndex, style }) =>
+                                        this.renderBodyCell(cellRender, rowIndex, columnIndex, style)
+                                    }
+                                </VariableSizeGrid>
 
-                                <ScrollSyncPane>
-                                    <VariableSizeGrid
-                                        direction={this.props.dir}
-                                        height={height}
-                                        width={width - frozenColumnsWidth}
-                                        columnCount={this.props.columnCount - freezeColumns}
-                                        columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                                        rowCount={rowCount}
-                                        rowHeight={this.getRowHeight(rowHeight)}
-                                    >
-                                        {({ rowIndex, columnIndex, style }) =>
-                                            this.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style)
-                                        }
-                                    </VariableSizeGrid>
-                                </ScrollSyncPane>
+                                <VariableSizeGrid
+                                    ref={this.mainBodyGrid}
+                                    direction={this.props.dir}
+                                    height={height}
+                                    width={width - frozenColumnsWidth}
+                                    columnCount={this.props.columnCount - freezeColumns}
+                                    columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                                    rowCount={rowCount}
+                                    rowHeight={this.getRowHeight(rowHeight)}
+                                    onScroll={this.syncScroll}
+                                >
+                                    {({ rowIndex, columnIndex, style }) =>
+                                        this.renderBodyCell(cellRender, rowIndex, columnIndex + freezeColumns, style)
+                                    }
+                                </VariableSizeGrid>
                             </div>
                         )}
                     </AutoSizer>
@@ -240,6 +235,47 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return (
             <span>Footer</span>
         );
+    }
+
+    //
+    // event handlers
+    //
+
+    private syncScroll = () => {
+        const body = ReactDOM.findDOMNode(this.mainBodyGrid.current) as HTMLElement;
+        if (!body)
+            return;
+
+        // synchronize head
+        const head = ReactDOM.findDOMNode(this.headList.current) as HTMLElement;
+        if (head) {
+
+            if (this.props.dir === 'rtl' && body.scrollLeft <= 0 && detectScrollType() === 'default') {
+
+                // HACK - fixes this issue:  
+                // When scrolling to the end of the grid in rtl mode the
+                // scrollLeft value of the body is 0 (and sometimes less) which
+                // causes the grid to disappear.
+                head.scrollLeft = body.scrollLeft = 1;
+
+                // This part of the hack is also required for some reason when
+                // scrolling using the scroll handle instead of the scroll
+                // arrows.
+                setTimeout(() => body.scrollLeft = 1);
+
+            } else {
+
+                // normal case
+                const proportion = (head.scrollWidth / body.scrollWidth);
+                head.scrollLeft = proportion * body.scrollLeft;
+            }
+        }
+
+        // synchronize frozen body columns
+        const freezedColumns = ReactDOM.findDOMNode(this.freezedColumnsGrid.current) as HTMLElement;
+        if (freezedColumns) {
+            freezedColumns.scrollTop = body.scrollTop;
+        }
     }
 
     //
