@@ -2,6 +2,12 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Fixed
+
+- Fix support for multiple frozen columns.
+- Fix body height calculation.
+- Improve RTL scrolling (still not perfect).
+
 ## [0.4.0 - 2019-05-12](https://github.com/alonrbar/react-tablize/tree/v0.4.0)
 
 ### Added
