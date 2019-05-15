@@ -53,7 +53,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
     //
 
     private headList = React.createRef<VariableSizeList>();
-    private freezedColumnsList = React.createRef<VariableSizeList>();
+    private freezedColumnsGrid = React.createRef<VariableSizeGrid>();
 
     public render() {
         const { columnCount, columnWidth, children, ...divProps } = this.props;
@@ -170,23 +170,21 @@ export class GridView extends React.PureComponent<GridViewProps> {
 
                                 {/* frozen first columns */}
                                 <ScrollSyncPane>
-                                    <VariableSizeList
-                                        ref={this.freezedColumnsList}
+                                    <VariableSizeGrid
+                                        ref={this.freezedColumnsGrid}
+                                        direction={this.props.dir}
                                         style={{ overflow: 'hidden' }}
                                         height={height - scrollbarWidth}
                                         width={frozenColumnsWidth}
-                                        itemCount={rowCount}
-                                        itemSize={this.getRowHeight(rowHeight)}
+                                        columnCount={freezeColumns}
+                                        columnWidth={this.getColumnWidth}
+                                        rowCount={rowCount}
+                                        rowHeight={this.getRowHeight(rowHeight)}
                                     >
-                                        {({ index: rowIndex, style }) =>
-                                            <div style={style}>
-                                                {utils.range(freezeColumns)
-                                                    .map(columnIndex =>
-                                                        this.renderBodyCell(cellRender, rowIndex, columnIndex)
-                                                    )}
-                                            </div>
+                                        {({ rowIndex, columnIndex, style }) =>
+                                            this.renderBodyCell(cellRender, rowIndex, columnIndex, style)
                                         }
-                                    </VariableSizeList>
+                                    </VariableSizeGrid>
                                 </ScrollSyncPane>
 
                                 <ScrollSyncPane>

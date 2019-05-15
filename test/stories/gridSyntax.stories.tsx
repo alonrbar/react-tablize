@@ -66,6 +66,34 @@ stories.add('simple grid - 1 frozen column', () => (
     </GridView>
 ));
 
+stories.add('simple grid - 2 frozen columns', () => (
+    <GridView
+        columnCount={1000}
+        columnWidth={100}
+        freezeColumns={2}
+    >
+
+        <GridView.Head>
+            {({ columnIndex }) => (
+                <GridView.Cell style={{ color: 'red' }}>
+                    {columnIndex}
+                </GridView.Cell>
+            )}
+        </GridView.Head>
+
+        <GridView.Body
+            rowCount={10}
+            rowHeight={40}
+        >
+            {({ rowIndex, columnIndex }) => (
+                <GridView.Cell style={{ color: 'blue' }}>
+                    {rowIndex}, {columnIndex}
+                </GridView.Cell>
+            )}
+        </GridView.Body>
+    </GridView>
+));
+
 stories.add('simple grid - rtl', () => (
     <GridView
         dir="rtl"
