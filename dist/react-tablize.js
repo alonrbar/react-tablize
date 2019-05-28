@@ -100,7 +100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!***********************************!*\
   !*** ./src/index.ts + 21 modules ***!
   \***********************************/
-/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHeadProps, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
+/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "normalize-scroll-left" (<- Module is not an ECMAScript module) */
@@ -1035,6 +1035,8 @@ function (_React$PureComponent) {
 // CONCATENATED MODULE: ./src/table/ColumnHead.tsx
 function ColumnHead_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ColumnHead_typeof = function _typeof(obj) { return typeof obj; }; } else { ColumnHead_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ColumnHead_typeof(obj); }
 
+function ColumnHead_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function ColumnHead_possibleConstructorReturn(self, call) { if (call && (ColumnHead_typeof(call) === "object" || typeof call === "function")) { return call; } return ColumnHead_assertThisInitialized(self); }
 
 function ColumnHead_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
@@ -1045,18 +1047,7 @@ function ColumnHead_inherits(subClass, superClass) { if (typeof superClass !== "
 
 function ColumnHead_setPrototypeOf(o, p) { ColumnHead_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ColumnHead_setPrototypeOf(o, p); }
 
-function ColumnHead_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function ColumnHead_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-var ColumnHeadProps = function ColumnHeadProps() {
-  ColumnHead_classCallCheck(this, ColumnHeadProps);
-
-  ColumnHead_defineProperty(this, "height", '40px');
-
-  ColumnHead_defineProperty(this, "children", void 0);
-};
 var ColumnHead =
 /*#__PURE__*/
 function (_React$PureComponent) {
@@ -1383,9 +1374,9 @@ var flattenDeep = __webpack_require__(/*! lodash.flattendeep */ "lodash.flattend
 var TableViewProps = function TableViewProps() {
   TableView_classCallCheck(this, TableViewProps);
 
-  TableView_defineProperty(this, "items", void 0);
+  TableView_defineProperty(this, "rowCount", void 0);
 
-  TableView_defineProperty(this, "itemId", void 0);
+  TableView_defineProperty(this, "rowKey", void 0);
 
   TableView_defineProperty(this, "children", void 0);
 
@@ -1401,39 +1392,28 @@ var TableViewProps = function TableViewProps() {
 
   TableView_defineProperty(this, "overscanCount", 20);
 };
-
-var TableViewState = function TableViewState() {
-  TableView_classCallCheck(this, TableViewState);
-
-  TableView_defineProperty(this, "selectedItems", {});
-};
-
 var TableView_TableView =
 /*#__PURE__*/
 function (_React$PureComponent) {
   TableView_inherits(TableView, _React$PureComponent);
 
-  //
-  // nested types
-  //
-  //
-  // component code
-  //
-  function TableView(props) {
-    var _this;
-
+  function TableView() {
     TableView_classCallCheck(this, TableView);
 
-    _this = TableView_possibleConstructorReturn(this, TableView_getPrototypeOf(TableView).call(this, props));
-    _this.state = new TableViewState();
-    return _this;
-  } //
-  // render methods
-  //
-
+    return TableView_possibleConstructorReturn(this, TableView_getPrototypeOf(TableView).apply(this, arguments));
+  }
 
   TableView_createClass(TableView, [{
     key: "render",
+    //
+    // nested types
+    //
+    //
+    // component code
+    //
+    //
+    // render methods
+    //
     value: function render() {
       // head & body
       var head = reactUtils_ReactUtils.singleChildOfType(this, TableHead);
@@ -1457,7 +1437,7 @@ function (_React$PureComponent) {
   }, {
     key: "renderTableHead",
     value: function renderTableHead(head) {
-      var _this2 = this;
+      var _this = this;
 
       if (!head) return null;
       return external_react_["createElement"](StyledTableHead, {
@@ -1467,11 +1447,11 @@ function (_React$PureComponent) {
       }, external_react_["createElement"](StyledTableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["Children"].map(head.props.children, function (cell, index) {
         var headCell = cell;
 
-        var cellProps = _this2.getHeadCellProps(headCell);
+        var cellProps = _this.getHeadCellProps(headCell);
 
         if (cellProps.visible === false) return null;
 
-        var cellContent = _this2.getHeadCellContent(headCell);
+        var cellContent = _this.getHeadCellContent(headCell);
 
         return external_react_["createElement"](StyledTableHeadCell, TableView_extends({
           key: index
@@ -1498,10 +1478,10 @@ function (_React$PureComponent) {
   }, {
     key: "renderTableRows",
     value: function renderTableRows(body) {
-      var _this3 = this;
+      var _this2 = this;
 
       // placeholder
-      if (this.props.items.length === 0 || !this.hasBody(body)) {
+      if (this.props.rowCount === 0 || !this.hasBody(body)) {
         return this.renderItemsPlaceHolder();
       } // table rows
 
@@ -1513,38 +1493,37 @@ function (_React$PureComponent) {
           style: {
             outline: 'none'
           },
-          direction: _this3.props.dir,
+          direction: _this2.props.dir,
           layout: "vertical",
           height: height,
           width: width,
-          itemCount: _this3.props.items.length,
-          itemSize: _this3.props.rowHeight
+          itemCount: _this2.props.rowCount,
+          itemSize: _this2.props.rowHeight
         }, function (_ref2) {
           var index = _ref2.index,
               style = _ref2.style;
           var rowRender = body.props.children;
           if (!rowRender) return null;
-          var item = _this3.props.items[index];
-          var row = rowRender(item, index);
+          var row = rowRender(index);
 
-          var _this3$getRowProps = _this3.getRowProps(row),
-              rowStyle = _this3$getRowProps.style,
-              rowProps = TableView_objectWithoutProperties(_this3$getRowProps, ["style"]);
+          var _this2$getRowProps = _this2.getRowProps(row),
+              rowStyle = _this2$getRowProps.style,
+              rowProps = TableView_objectWithoutProperties(_this2$getRowProps, ["style"]);
 
-          var rowKey = _this3.getRowKey(rowProps, item, index);
+          var rowKey = _this2.getRowKey(rowProps, index);
 
-          var rowContent = _this3.getRowContent(row);
+          var rowContent = _this2.getRowContent(row);
 
           return external_react_["createElement"](StyledTableBodyRow, TableView_extends({
             style: Object.assign({}, style, rowStyle || {}),
             key: rowKey
           }, rowProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, asArray(rowContent).map(function (cell, columnIndex) {
-            var cellProps = _this3.getCellProps(cell);
+            var cellProps = _this2.getCellProps(cell);
 
             if (cellProps.visible === false) return null;
             return external_react_["createElement"](StyledTableBodyCell, TableView_extends({
               key: columnIndex
-            }, cellProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, _this3.getCellContent(cell)));
+            }, cellProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, _this2.getCellContent(cell)));
           })));
         });
       });
@@ -1585,37 +1564,33 @@ function (_React$PureComponent) {
         maxHeight: maxHeight
       };
     } //
-    // item methods
-    //
-
-  }, {
-    key: "getItemId",
-    value: function getItemId(item, index) {
-      if (typeof this.props.itemId === 'function') {
-        return this.props.itemId(item, index);
-      } else {
-        return item.id;
-      }
-    } //
     // components structure handling
     //  
 
   }, {
     key: "createHeadFromColumns",
     value: function createHeadFromColumns(columns) {
+      if (columns.every(function (col) {
+        return !reactUtils_ReactUtils.singleChildOfType(col, ColumnHead);
+      })) return null;
       var head = external_react_["createElement"](TableHead, null, columns.map(function (col) {
-        return reactUtils_ReactUtils.singleChildOfType(col, ColumnHead).props.children;
+        var colHead = reactUtils_ReactUtils.singleChildOfType(col, ColumnHead);
+        if (!colHead) return null;
+        return external_react_["createElement"](TableCell, colHead.props);
       }));
       return head;
     }
   }, {
     key: "createBodyFromColumns",
     value: function createBodyFromColumns(columns) {
-      var body = external_react_["createElement"](TableBody, null, function (item, itemIndex) {
+      var body = external_react_["createElement"](TableBody, null, function (rowIndex) {
         return columns.map(function (col, columnIndex) {
           var cellRender = reactUtils_ReactUtils.singleChildOfType(col, ColumnBody).props.children;
           if (!cellRender) return null;
-          return cellRender(item, itemIndex, columnIndex);
+          return cellRender({
+            rowIndex: rowIndex,
+            columnIndex: columnIndex
+          });
         });
       });
       return body;
@@ -1686,10 +1661,9 @@ function (_React$PureComponent) {
     }
   }, {
     key: "getRowKey",
-    value: function getRowKey(rowProps, item, index) {
+    value: function getRowKey(rowProps, index) {
       if (!isNullOrUndefined(rowProps.key)) return rowProps.key;
-      var itemId = this.getItemId(item, index);
-      if (!isNullOrUndefined(itemId)) return itemId;
+      if (typeof this.props.rowKey === 'function') return this.props.rowKey(index);
       return index;
     }
   }, {
@@ -1743,7 +1717,6 @@ TableView_defineProperty(TableView_TableView, "defaultProps", new TableViewProps
 /* concated harmony reexport GridView */__webpack_require__.d(__webpack_exports__, "GridView", function() { return GridView_GridView; });
 /* concated harmony reexport ColumnBodyProps */__webpack_require__.d(__webpack_exports__, "ColumnBodyProps", function() { return ColumnBodyProps; });
 /* concated harmony reexport ColumnBody */__webpack_require__.d(__webpack_exports__, "ColumnBody", function() { return ColumnBody; });
-/* concated harmony reexport ColumnHeadProps */__webpack_require__.d(__webpack_exports__, "ColumnHeadProps", function() { return ColumnHeadProps; });
 /* concated harmony reexport ColumnHead */__webpack_require__.d(__webpack_exports__, "ColumnHead", function() { return ColumnHead; });
 /* concated harmony reexport TableBodyProps */__webpack_require__.d(__webpack_exports__, "TableBodyProps", function() { return TableBodyProps; });
 /* concated harmony reexport TableBody */__webpack_require__.d(__webpack_exports__, "TableBody", function() { return TableBody; });
