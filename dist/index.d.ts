@@ -74,9 +74,7 @@ export class TableColumn extends React.PureComponent<TableColumnProps> { }
 // table column head
 //
 
-export class ColumnHeadProps {
-    height?: string;
-    children: TableCell | CellContent;
+export interface ColumnHeadProps extends TableCellProps {
 }
 
 export class ColumnHead extends React.PureComponent<ColumnHeadProps> { }

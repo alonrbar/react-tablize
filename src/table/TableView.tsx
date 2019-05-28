@@ -298,9 +298,19 @@ export class TableView extends React.PureComponent<TableViewProps> {
     //  
 
     private createHeadFromColumns(columns: TableColumn[]): TableHead {
+
+        if (columns.every(col => !ReactUtils.singleChildOfType(col, ColumnHead)))
+            return null;
+
         const head: any = (
             <TableHead>
-                {columns.map(col => ReactUtils.singleChildOfType(col, ColumnHead).props.children)}
+                {columns.map(col => {
+                    const colHead = ReactUtils.singleChildOfType(col, ColumnHead);
+                    if (!colHead)
+                        return null;
+
+                    return <TableCell {...(colHead.props as any)} />;
+                })}
             </TableHead>
         );
         return head;

@@ -4,6 +4,7 @@
 
 ### Added
 
+- ColumnHead supports `className`, `style` and more.
 - GridView examples in readme.
 
 ### Changed

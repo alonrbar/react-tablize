@@ -1,13 +1,7 @@
 import * as React from 'react';
-import { TableCell, CellContent } from './TableCell';
+import { TableCellProps } from './TableCell';
 
-export class ColumnHeadProps {
-
-    /**
-     * Default: 40px
-     */
-    public height?= '40px';
-    public children: TableCell | CellContent;
+export interface ColumnHeadProps extends TableCellProps {
 }
 
 export class ColumnHead extends React.PureComponent<ColumnHeadProps> { }
