@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.6.0 - 2019-05-28](https://github.com/alonrbar/react-tablize/tree/v0.6.0)
+
 ### Added
 
 - ColumnHead supports `className`, `style` and more.
