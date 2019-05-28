@@ -22,21 +22,21 @@ interface Heights {
     maxHeight: any;
 }
 
-type TableChildren_RowsSyntax<T> = [React.SubComp<TableHead<T>>, React.SubComp<TableBody<T>>];
+type TableChildren_RowsSyntax = [React.SubComp<TableHead>, React.SubComp<TableBody>];
 
-type TableChildren_ColumnsSyntax<T> = OneOrMore<React.SubComp<TableColumn<T>>>;
+type TableChildren_ColumnsSyntax = OneOrMore<React.SubComp<TableColumn>>;
 
-export type ItemIdCallback<T> = (item: T, index: number) => any;
+export type RowKeyCallback = (index: number) => React.Key;
 
-export class TableViewProps<T> {
+export class TableViewProps {
 
     //
     // main props
     //
 
-    public items: T[];
-    public itemId?: ItemIdCallback<T>;
-    public children?: TableChildren_RowsSyntax<T> | TableChildren_ColumnsSyntax<T>;
+    public rowCount: number;
+    public rowKey?: RowKeyCallback;
+    public children?: TableChildren_RowsSyntax | TableChildren_ColumnsSyntax;
 
     //
     // appearance
@@ -67,11 +67,7 @@ export class TableViewProps<T> {
 
 }
 
-class TableViewState<T> {
-    public selectedItems: IMap<T> = {};
-}
-
-export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableViewState<T>> {
+export class TableView extends React.PureComponent<TableViewProps> {
 
     public static readonly defaultHeight = '35vh';
 
@@ -94,11 +90,6 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     //
 
     public static defaultProps = new TableViewProps();
-
-    constructor(props: TableViewProps<T>) {
-        super(props);
-        this.state = new TableViewState<T>();
-    }
 
     //
     // render methods
@@ -136,7 +127,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         );
     }
 
-    private renderTableHead(head: TableHead<T>) {
+    private renderTableHead(head: TableHead) {
 
         if (!head)
             return null;
@@ -150,7 +141,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                         {/* main columns */}
                         {React.Children.map(head.props.children, (cell, index) => {
 
-                            const headCell: TableCell<T> = cell as any;
+                            const headCell: TableCell = cell as any;
                             const cellProps = this.getHeadCellProps(headCell);
                             if (cellProps.visible === false)
                                 return null;
@@ -174,7 +165,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         );
     }
 
-    private renderTableBody(head: TableHead<T>, body: TableBody<T>) {
+    private renderTableBody(head: TableHead, body: TableBody) {
 
         const headProps = this.getHeadProps(head);
         const heightValues = this.getHeights();
@@ -198,10 +189,10 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         );
     }
 
-    private renderTableRows(body: TableBody<T>) {
+    private renderTableRows(body: TableBody) {
 
         // placeholder
-        if (this.props.items.length === 0 || !this.hasBody(body)) {
+        if (this.props.rowCount === 0 || !this.hasBody(body)) {
             return this.renderItemsPlaceHolder();
         }
 
@@ -215,7 +206,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                         layout="vertical"
                         height={height}
                         width={width}
-                        itemCount={this.props.items.length}
+                        itemCount={this.props.rowCount}
                         itemSize={this.props.rowHeight}
                     >
                         {({ index, style }) => {
@@ -224,11 +215,9 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
                             if (!rowRender)
                                 return null;
 
-                            const item = this.props.items[index];
-
-                            const row = rowRender(item, index);
+                            const row = rowRender(index);
                             const { style: rowStyle, ...rowProps } = this.getRowProps(row);
-                            const rowKey = this.getRowKey(rowProps, item, index);
+                            const rowKey = this.getRowKey(rowProps, index);
                             const rowContent = this.getRowContent(row);
 
                             return (
@@ -305,22 +294,10 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
     }
 
     //
-    // item methods
-    //
-
-    private getItemId(item: T, index: number): Id {
-        if (typeof this.props.itemId === 'function') {
-            return this.props.itemId(item, index);
-        } else {
-            return (item as any).id;
-        }
-    }
-
-    //
     // components structure handling
     //  
 
-    private createHeadFromColumns(columns: TableColumn<T>[]): TableHead<T> {
+    private createHeadFromColumns(columns: TableColumn[]): TableHead {
         const head: any = (
             <TableHead>
                 {columns.map(col => ReactUtils.singleChildOfType(col, ColumnHead).props.children)}
@@ -329,21 +306,21 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return head;
     }
 
-    private createBodyFromColumns(columns: TableColumn<T>[]): TableBody<T> {
+    private createBodyFromColumns(columns: TableColumn[]): TableBody {
         const body: any = (
             <TableBody>
-                {(item: T, itemIndex: number) => columns.map((col, columnIndex) => {
+                {(rowIndex: number) => columns.map((col, columnIndex) => {
                     const cellRender = ReactUtils.singleChildOfType(col, ColumnBody).props.children;
                     if (!cellRender)
                         return null;
-                    return cellRender(item, itemIndex, columnIndex);
+                    return cellRender({ rowIndex, columnIndex });
                 })}
             </TableBody>
         );
         return body;
     }
 
-    private getHeadProps(head: TableHead<T>): TableHeadProps<T> {
+    private getHeadProps(head: TableHead): TableHeadProps {
         if (ReactUtils.elementInstanceOf(head, TableRow)) {
             return head.props;
         } else {
@@ -351,7 +328,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         }
     }
 
-    private getHeadCellProps(cell: TableCell<T>): TableCellProps<T> {
+    private getHeadCellProps(cell: TableCell): TableCellProps {
 
         // cell element
         if (ReactUtils.elementInstanceOf(cell, TableCell))
@@ -361,7 +338,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return {};
     }
 
-    private getHeadCellContent(cell: TableCell<T>): CellContent {
+    private getHeadCellContent(cell: TableCell): CellContent {
 
         if (ReactUtils.elementInstanceOf(cell, TableCell)) {
             return cell.props.children;
@@ -370,7 +347,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return cell;
     }
 
-    private hasBody(body: TableBody<T>): boolean {
+    private hasBody(body: TableBody): boolean {
 
         if (!body)
             return false;
@@ -388,7 +365,7 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return childrenCount > 0;
     }
 
-    private getRowProps(row: any): TableRowProps<T> {
+    private getRowProps(row: any): TableRowProps {
 
         if (ReactUtils.elementInstanceOf(row, TableRow))
             return row.props || {};
@@ -397,9 +374,9 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return {};
     }
 
-    private getRowContent(row: any): RowContent<T> {
+    private getRowContent(row: any): RowContent {
 
-        let content: RowContent<T> = row;
+        let content: RowContent = row;
 
         // fragment element
         if (ReactUtils.isReactFragment(content)) {
@@ -418,19 +395,18 @@ export class TableView<T> extends React.PureComponent<TableViewProps<T>, TableVi
         return content;
     }
 
-    private getRowKey(rowProps: TableRowProps<T>, item: T, index: number): React.Key {
+    private getRowKey(rowProps: TableRowProps, index: number): React.Key {
 
         if (!utils.isNullOrUndefined(rowProps.key))
             return rowProps.key;
 
-        const itemId = this.getItemId(item, index);
-        if (!utils.isNullOrUndefined(itemId))
-            return itemId;
+        if (typeof this.props.rowKey === 'function')
+            return this.props.rowKey(index);
 
         return index;
     }
 
-    private getCellProps(cell: any): TableCellProps<T> {
+    private getCellProps(cell: any): TableCellProps {
 
         // cell element
         if (ReactUtils.elementInstanceOf(cell, TableCell))

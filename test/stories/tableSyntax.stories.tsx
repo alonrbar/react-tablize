@@ -30,83 +30,95 @@ function getTestItems(postfix: string): Person[] {
 }
 
 stories.add('empty table', () => (
-    <TableView items={[]} />
+    <TableView rowCount={0} />
 ));
 
-stories.add('terse syntax', () => (
-    <TableView items={getTestItems('terse')}>
-        <TableHead>
-            {['Name', 'Age']}
-        </TableHead>
-        <TableBody>
-            {(person: Person) => ([
-                person.name,
-                person.age
-            ])}
-        </TableBody>
-    </TableView>
-));
+stories.add('terse syntax', () => {
+    const items = getTestItems('terse');
+    return (
+        <TableView rowCount={items.length}>
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    items[index].name,
+                    items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
 
-stories.add('rows and cells syntax', () => (
-    <TableView items={getTestItems('rows and cells')}>
-        <TableHead>
-            <TableCell>
-                Name
-            </TableCell>
-            <TableCell>
-                Age
-            </TableCell>
-        </TableHead>
-        <TableBody>
-            {(person: Person) => (
-                <TableRow>
-                    <TableCell>
-                        {person.name}
-                    </TableCell>
-                    <TableCell>
-                        {person.age}
-                    </TableCell>
-                </TableRow>
-            )}
-        </TableBody>
-    </TableView>
-));
+stories.add('rows and cells syntax', () => {
+    const items = getTestItems('rows and cells');
+    return (
+        <TableView rowCount={items.length}>
+            <TableHead>
+                <TableCell>
+                    Name
+                </TableCell>
+                <TableCell>
+                    Age
+                </TableCell>
+            </TableHead>
+            <TableBody>
+                {index => (
+                    <TableRow>
+                        <TableCell>
+                            {items[index].name}
+                        </TableCell>
+                        <TableCell>
+                            {items[index].age}
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </TableView>
+    );
+});
 
-stories.add('mixed syntax', () => (
-    <TableView items={getTestItems('rows and cells - terse')}>
-        <TableHead>
-            {['Name', 'Age']}
-        </TableHead>
-        <TableBody>
-            {(person: Person) => (
-                <TableRow>
-                    {[
-                        person.name,
-                        person.age
-                    ]}
-                </TableRow>
-            )}
-        </TableBody>
-    </TableView>
-));
+stories.add('mixed syntax', () => {
+    const items = getTestItems('rows and cells - terse');
+    return (
+        <TableView rowCount={items.length}>
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => (
+                    <TableRow>
+                        {[
+                            items[index].name,
+                            items[index].age
+                        ]}
+                    </TableRow>
+                )}
+            </TableBody>
+        </TableView>
+    );
+});
 
-stories.add('columns syntax', () => (
-    <TableView items={getTestItems('columns')}>
+stories.add('columns syntax', () => {
+    const items = getTestItems('columns');
+    return (
+        <TableView rowCount={items.length}>
 
-        <TableColumn>
-            <ColumnHead>Name</ColumnHead>
-            <ColumnBody>
-                {(person: Person) => person.name}
-            </ColumnBody>
-        </TableColumn>
+            <TableColumn>
+                <ColumnHead>Name</ColumnHead>
+                <ColumnBody>
+                    {({ rowIndex }) => items[rowIndex].name}
+                </ColumnBody>
+            </TableColumn>
 
-        <TableColumn>
-            <ColumnHead>Age</ColumnHead>
-            <ColumnBody>
-                {(person: Person) => person.age}
-            </ColumnBody>
-        </TableColumn>
+            <TableColumn>
+                <ColumnHead>Age</ColumnHead>
+                <ColumnBody>
+                    {({ rowIndex }) => items[rowIndex].age}
+                </ColumnBody>
+            </TableColumn>
 
-    </TableView>
-));
+        </TableView>
+    );
+});
 

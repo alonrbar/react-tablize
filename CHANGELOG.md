@@ -2,12 +2,20 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- GridView examples in readme.
+
+### Changed
+
+- **BREAKING**: TableView does not receive an `items` property.
+
 ## [0.5.0 - 2019-05-15](https://github.com/alonrbar/react-tablize/tree/v0.5.0)
 
 ### Added
 
 - Grid overscan items props.
-- Grid 'isScrolling' property.
+- Grid `isScrolling` property.
 
 ### Fixed
 
@@ -24,7 +32,7 @@
 
 ### Changed
 
-- BREAKING: Grid render callbacks uses argument objects.
+- **BREAKING**: Grid render callbacks uses argument objects.
 
 ## [0.3.0 - 2019-05-08](https://github.com/alonrbar/react-tablize/tree/v0.3.0)
 

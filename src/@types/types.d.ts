@@ -5,10 +5,6 @@ interface IMap<T> {
     [key: string]: T;
 }
 
-interface INestedMap<T> {
-    [key: string]: IMap<T>;
-}
-
 type OneOrMore<T> = T | T[];
 
 type DocDir = 'ltr' | 'rtl';

@@ -1,25 +1,31 @@
 # react-tablize
 
-React virtual table component.
+Virtual table and grid components for React.
 
 [![npm version](https://img.shields.io/npm/v/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
 [![npm license](https://img.shields.io/npm/l/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
 [![dependencies](https://david-dm.org/alonrbar/react-tablize.svg)](https://github.com/alonrbar/react-tablize)
 [![dependencies](https://david-dm.org/alonrbar/react-tablize/dev-status.svg)](https://github.com/alonrbar/react-tablize)
 
-## Examples
+- [TableView](#tableview)
+- [GridView](#gridview)
+
+## TableView
 
 ### Terse syntax
 
 ```jsx
-<TableView items={people}>
+
+const people: Person[];
+
+<TableView rowCount={people.length}>
     <TableHead>
         {['Name', 'Age']}
     </TableHead>
     <TableBody>
-        {(person: Person) => ([
-            person.name,
-            person.age
+        {index => ([
+            people[index].name,
+            people[index].age
         ])}
     </TableBody>
 </TableView>
@@ -28,7 +34,10 @@ React virtual table component.
 ### Rows and cells syntax
 
 ```jsx
-<TableView items={people}>
+
+const people: Person[];
+
+<TableView rowCount={people.length}>
     <TableHead>
         <TableCell>
             Name
@@ -38,13 +47,13 @@ React virtual table component.
         </TableCell>
     </TableHead>
     <TableBody>
-        {(person: Person) => (
+        {index => (
             <TableRow>
                 <TableCell>
-                    {person.name}
+                    {people[index].name}
                 </TableCell>
                 <TableCell>
-                    {person.age}
+                    {people[index].age}
                 </TableCell>
             </TableRow>
         )}
@@ -55,48 +64,135 @@ React virtual table component.
 ### Mixed syntax
 
 ```jsx
-    <TableView items={people}>
-        <TableHead>
-            {[
-                <TableCell key="name">
-                    Name
-                </TableCell>,
-                'Age'
-            ]}
-        </TableHead>
-        <TableBody>
-            {(person: Person) => (
-                <TableRow>
-                    {[
-                        <TableCell key="name">
-                            {person.name}
-                        </TableCell>,
-                        person.age
-                    ]}
-                </TableRow>
-            )}
-        </TableBody>
-    </TableView>
+
+const people: Person[];
+
+<TableView rowCount={people.length}>
+    <TableHead>
+        {[
+            <TableCell key="name">
+                Name
+            </TableCell>,
+            'Age'
+        ]}
+    </TableHead>
+    <TableBody>
+        {index => (
+            <TableRow>
+                {[
+                    <TableCell key="name">
+                        {people[index].name}
+                    </TableCell>,
+                    people[index].age
+                ]}
+            </TableRow>
+        )}
+    </TableBody>
+</TableView>
 ```
 
 ### Columns syntax
 
 ```jsx
-<TableView items={people}>
+
+const people: Person[];
+
+<TableView rowCount={people.length}>
 
     <TableColumn>
         <ColumnHead>Name</ColumnHead>
         <ColumnBody>
-            {(person: Person) => person.name}
+            {({ rowIndex }) => people[rowIndex].name}
         </ColumnBody>
     </TableColumn>
 
     <TableColumn>
         <ColumnHead>Age</ColumnHead>
         <ColumnBody>
-            {(person: Person) => person.age}
+            {({ rowIndex }) => people[rowIndex].age}
         </ColumnBody>
     </TableColumn>
 
 </TableView>
+```
+
+## GridView
+
+### Simple Grid
+
+```jsx
+<GridView
+    columnCount={1000}
+    columnWidth={100}
+>
+    <GridView.Body
+        rowCount={10}
+        rowHeight={40}
+    >
+        {({ rowIndex, columnIndex }) => (
+            <GridView.Cell>
+                {rowIndex}, {columnIndex}
+            </GridView.Cell>
+        )}
+    </GridView.Body>
+</GridView>
+```
+
+### Frozen Head and Columns
+
+```jsx
+<GridView
+    columnCount={1000}
+    columnWidth={100}
+    freezeColumns={1}
+>
+
+    <GridView.Head>
+        {({ columnIndex }) => (
+            <GridView.Cell>
+                {columnIndex}
+            </GridView.Cell>
+        )}
+    </GridView.Head>
+
+    <GridView.Body
+        rowCount={10}
+        rowHeight={40}
+    >
+        {({ rowIndex, columnIndex }) => (
+            <GridView.Cell>
+                {rowIndex}, {columnIndex}
+            </GridView.Cell>
+        )}
+    </GridView.Body>
+</GridView>
+```
+
+### Variable Width and Height
+
+```jsx
+<GridView
+    columnCount={1000}
+    columnWidth={columnIndex => columnIndex === 0 ? 50 : 100}
+>
+
+    <GridView.Head>
+        {({ columnIndex }) => (
+            <GridView.Cell>
+                {columnIndex}
+            </GridView.Cell>
+        )}
+    </GridView.Head>
+
+    <GridView.Body
+        rowCount={10}
+        rowHeight={rowIndex => rowIndex === 0 ? 80 : 40}
+    >
+        {({ rowIndex, columnIndex }) => (
+            <GridView.Cell>
+                {rowIndex}, {columnIndex}
+            </GridView.Cell>
+        )}
+    </GridView.Body>
+</GridView>
 ```

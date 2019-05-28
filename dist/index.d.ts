@@ -8,96 +8,103 @@ import * as React from 'react';
 // table head
 //
 
-export declare class TableHeadProps<T> {
+export class TableHeadProps {
     height?: string;
-    children: RowContent<T>;
+    children: RowContent;
 }
 
-export declare class TableHead<T> extends React.PureComponent<TableHeadProps<T>> { }
+export class TableHead extends React.PureComponent<TableHeadProps> { }
 
 //
 // table body
 //
 
-export declare class TableBodyProps<T> {
-    children?: RowRender<T>;
+export class TableBodyProps {
+    children?: RowRender;
 }
 
-export declare class TableBody<T> extends React.PureComponent<TableBodyProps<T>> { }
+export class TableBody extends React.PureComponent<TableBodyProps> { }
 
 //
 // table row
 //
 
-export declare type RowContent<T> = OneOrMore<SubComp<TableCell<T>> | CellContent>;
+export type RowContent = OneOrMore<SubComp<TableCell> | CellContent>;
 
-export interface TableRowProps<T> extends DivProps {
-    children?: RowContent<T>;
+export interface TableRowProps extends DivProps {
+    children?: RowContent;
 }
 
-export declare class TableRow<T> extends React.PureComponent<TableRowProps<T>> { }
+export class TableRow extends React.PureComponent<TableRowProps> { }
 
-export declare type RowRender<T> = (item: T, itemIndex: number) => SubComp<TableRow<T>> | RowContent<T>;
+export type RowRender = (index: number) => SubComp<TableRow> | RowContent;
 
 //
 // table cell
 //
 
-export declare type CellContent = React.ReactNode;
+export type CellContent = React.ReactNode;
 
-export interface TableCellProps<T> extends DivProps {
+export interface TableCellProps extends DivProps {
     children?: CellContent;
     visible?: boolean;
 }
 
-export declare class TableCell<T> extends React.PureComponent<TableCellProps<T>> { }
+export class TableCell extends React.PureComponent<TableCellProps> { }
 
-export declare type CellRender<T> = (item: T, itemIndex: number, columnIndex: number) => TableCell<T> | CellContent;
+export interface CellRenderArgs {
+    rowIndex: number;
+    columnIndex: number;
+}
+
+export type CellRender = (args: CellRenderArgs) => TableCell | CellContent;
+
+export type CellRender = (rowIndex: number, columnIndex: number) => TableCell | CellContent;
 
 //
 // table column
 //
 
-export declare class TableColumnProps<T> {
-    children?: [SubComp<ColumnHead<T>>, SubComp<ColumnBody<T>>];
+export class TableColumnProps {
+    children?: [SubComp<ColumnHead>, SubComp<ColumnBody>];
 }
-export declare class TableColumn<T> extends React.PureComponent<TableColumnProps<T>> { }
+export class TableColumn extends React.PureComponent<TableColumnProps> { }
 
 //
 // table column head
 //
 
-export declare class ColumnHeadProps<T> {
+export class ColumnHeadProps {
     height?: string;
-    children: TableCell<T> | CellContent;
+    children: TableCell | CellContent;
 }
 
-export declare class ColumnHead<T> extends React.PureComponent<ColumnHeadProps<T>> { }
+export class ColumnHead extends React.PureComponent<ColumnHeadProps> { }
 
 //
 // table column body
 //
 
-export declare class ColumnBodyProps<T> {
-    children?: CellRender<T>;
+export class ColumnBodyProps {
+    children?: CellRender;
 }
 
-export declare class ColumnBody<T> extends React.PureComponent<ColumnBodyProps<T>> { }
+export class ColumnBody extends React.PureComponent<ColumnBodyProps> { }
 
 //
 // table view
 //
 
-declare type TableChildren_RowsSyntax<T> = [SubComp<TableHead<T>>, SubComp<TableBody<T>>];
+type TableChildren_RowsSyntax = [SubComp<TableHead>, SubComp<TableBody>];
 
-declare type TableChildren_ColumnsSyntax<T> = OneOrMore<SubComp<TableColumn<T>>>;
+type TableChildren_ColumnsSyntax = OneOrMore<SubComp<TableColumn>>;
 
-export declare type ItemIdCallback<T> = (item: T, index: number) => Id;
+export type RowKeyCallback = (index: number) => React.Key;
 
-export declare class TableViewProps<T> {
-    items: T[];
-    itemId?: ItemIdCallback<T>;
-    children?: TableChildren_RowsSyntax<T> | TableChildren_ColumnsSyntax<T>;
+export class TableViewProps {
+    rowCount: number;
+    rowKey?: RowKeyCallback;
+    children?: TableChildren_RowsSyntax | TableChildren_ColumnsSyntax;
     dir?: DocDir;
     className?: string;
     style?: React.CSSProperties;
@@ -106,7 +113,7 @@ export declare class TableViewProps<T> {
     overscanCount?: number;
 }
 
-export declare class TableView<T> extends React.PureComponent<TableViewProps<T>, TableViewState<T>> {
+export class TableView extends React.PureComponent<TableViewProps, TableViewState> {
     
     static readonly defaultHeight = "35vh";
     
@@ -255,10 +262,6 @@ type Constructor<T> = new (...args: any[]) => T;
 
 interface IMap<T> {
     [key: string]: T;
-}
-
-interface INestedMap<T> {
-    [key: string]: IMap<T>;
 }
 
 type OneOrMore<T> = T | T[];

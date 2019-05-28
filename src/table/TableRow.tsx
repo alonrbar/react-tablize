@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { TableCell, CellContent } from './TableCell';
 
-export type RowContent<T> = OneOrMore<React.SubComp<TableCell<T>> | CellContent>;
+export type RowContent = OneOrMore<React.SubComp<TableCell> | CellContent>;
 
-export interface TableRowProps<T> extends React.DivProps {
-    children?: RowContent<T>;
+export interface TableRowProps extends React.DivProps {
+    children?: RowContent;
 }
 
-export class TableRow<T> extends React.PureComponent<TableRowProps<T>> { }
+export class TableRow extends React.PureComponent<TableRowProps> { }
 
-export type RowRender<T> = (item: T, itemIndex: number) => React.SubComp<TableRow<T>> | RowContent<T>;
+export type RowRender = (index: number) => React.SubComp<TableRow> | RowContent;
