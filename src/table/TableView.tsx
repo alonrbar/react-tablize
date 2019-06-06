@@ -309,6 +309,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                     if (!colHead)
                         return null;
 
+                    // eslint-disable-next-line react/jsx-key
                     return <TableCell {...(colHead.props as any)} />;
                 })}
             </TableHead>
