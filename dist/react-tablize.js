@@ -103,9 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
-/*! ModuleConcatenation bailout: Cannot concat with external "normalize-scroll-left" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
-/*! ModuleConcatenation bailout: Cannot concat with external "react-dom" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-virtualized-auto-sizer" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-window" (<- Module is not an ECMAScript module) */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -116,14 +114,8 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: external "emotion-theming"
 var external_emotion_theming_ = __webpack_require__("emotion-theming");
 
-// EXTERNAL MODULE: external "normalize-scroll-left"
-var external_normalize_scroll_left_ = __webpack_require__("normalize-scroll-left");
-
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__("react");
-
-// EXTERNAL MODULE: external "react-dom"
-var external_react_dom_ = __webpack_require__("react-dom");
 
 // EXTERNAL MODULE: external "react-virtualized-auto-sizer"
 var external_react_virtualized_auto_sizer_ = __webpack_require__("react-virtualized-auto-sizer");
@@ -184,7 +176,7 @@ function (_React$Component) {
       this.setState({
         hasError: true
       });
-      console.error(error);
+      console.error(error); // eslint-disable-line no-console
     }
   }, {
     key: "render",
@@ -630,8 +622,6 @@ function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 
 
-
-
 var GridView_GridView =
 /*#__PURE__*/
 function (_React$PureComponent) {
@@ -656,37 +646,19 @@ function (_React$PureComponent) {
 
     GridView_defineProperty(GridView_assertThisInitialized(_this), "freezedColumnsGrid", external_react_["createRef"]());
 
-    GridView_defineProperty(GridView_assertThisInitialized(_this), "syncScroll", function () {
-      var body = external_react_dom_["findDOMNode"](_this.mainBodyGrid.current);
-      if (!body) return; // synchronize head
+    GridView_defineProperty(GridView_assertThisInitialized(_this), "syncScroll", function (e) {
+      var scrollTop = e.scrollTop,
+          scrollLeft = e.scrollLeft; // synchronize head
 
-      var head = external_react_dom_["findDOMNode"](_this.headList.current);
-
-      if (head) {
-        if (_this.props.dir === 'rtl' && body.scrollLeft <= 0 && Object(external_normalize_scroll_left_["detectScrollType"])() === 'default') {
-          // HACK - fixes this issue:  
-          // When scrolling to the end of the grid in rtl mode the
-          // scrollLeft value of the body is 0 (and sometimes less) which
-          // causes the grid to disappear.
-          head.scrollLeft = body.scrollLeft = 1; // This part of the hack is also required for some reason when
-          // scrolling using the scroll handle instead of the scroll
-          // arrows.
-
-          setTimeout(function () {
-            return body.scrollLeft = 1;
-          });
-        } else {
-          // normal case
-          var proportion = head.scrollWidth / body.scrollWidth;
-          head.scrollLeft = proportion * body.scrollLeft;
-        }
+      if (_this.headList.current) {
+        _this.headList.current.scrollTo(scrollLeft);
       } // synchronize frozen body columns
 
 
-      var freezedColumns = external_react_dom_["findDOMNode"](_this.freezedColumnsGrid.current);
-
-      if (freezedColumns) {
-        freezedColumns.scrollTop = body.scrollTop;
+      if (_this.freezedColumnsGrid.current) {
+        _this.freezedColumnsGrid.current.scrollTo({
+          scrollTop: scrollTop
+        });
       }
     });
 
@@ -708,6 +680,7 @@ function (_React$PureComponent) {
   GridView_createClass(GridView, [{
     key: "render",
     value: function render() {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       var _this$props = this.props,
           columnCount = _this$props.columnCount,
           columnWidth = _this$props.columnWidth,
@@ -943,15 +916,20 @@ function (_React$PureComponent) {
       var totalHeights = utils_getHeights(this.props.style, GridView.defaultHeight);
       var headHeight = this.getHeadHeight();
       var bodyHeights = utils_getHeights(this.props.style, undefined);
-      var bodyHeight = "calc(".concat(bodyHeights.height || totalHeights.height, " - ").concat(headHeight, ")");
-      var bodyMinHeight;
-      if (bodyHeights.minHeight || totalHeights.minHeight) bodyMinHeight = "calc(".concat(bodyHeights.minHeight || totalHeights.minHeight, " - ").concat(headHeight, ")");
-      var bodyMaxHeight;
-      if (bodyHeights.maxHeight || totalHeights.maxHeight) bodyMaxHeight = "calc(".concat(bodyHeights.maxHeight || totalHeights.maxHeight, " - ").concat(headHeight, ")");
+      var height = bodyHeights.height || totalHeights.height;
+      var minHeight = bodyHeights.minHeight || totalHeights.minHeight;
+      var maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
+
+      if (headHeight) {
+        height = "calc(".concat(height, " - ").concat(headHeight, ")");
+        if (minHeight) minHeight = "calc(".concat(minHeight, " - ").concat(headHeight, ")");
+        if (maxHeight) maxHeight = "calc(".concat(maxHeight, " - ").concat(headHeight, ")");
+      }
+
       return {
-        height: bodyHeight,
-        minHeight: bodyMinHeight,
-        maxHeight: bodyMaxHeight
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
       };
     }
   }, {
@@ -1575,7 +1553,8 @@ function (_React$PureComponent) {
       })) return null;
       var head = external_react_["createElement"](TableHead, null, columns.map(function (col) {
         var colHead = reactUtils_ReactUtils.singleChildOfType(col, ColumnHead);
-        if (!colHead) return null;
+        if (!colHead) return null; // eslint-disable-next-line react/jsx-key
+
         return external_react_["createElement"](TableCell, colHead.props);
       }));
       return head;
@@ -1782,18 +1761,6 @@ module.exports = require("lodash.flattendeep");
 
 /***/ }),
 
-/***/ "normalize-scroll-left":
-/*!****************************************!*\
-  !*** external "normalize-scroll-left" ***!
-  \****************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-/***/ (function(module, exports) {
-
-module.exports = require("normalize-scroll-left");
-
-/***/ }),
-
 /***/ "react":
 /*!************************!*\
   !*** external "react" ***!
@@ -1803,18 +1770,6 @@ module.exports = require("normalize-scroll-left");
 /***/ (function(module, exports) {
 
 module.exports = require("react");
-
-/***/ }),
-
-/***/ "react-dom":
-/*!****************************!*\
-  !*** external "react-dom" ***!
-  \****************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom");
 
 /***/ }),
 
