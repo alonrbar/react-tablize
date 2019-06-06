@@ -21,6 +21,11 @@
         },
         "ecmaVersion": 2018
     },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
         "indent": ["error", 4],
         "linebreak-style": ["error", "windows"],
