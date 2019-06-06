@@ -22,18 +22,16 @@
     "storybook": "start-storybook",
     "dev": "webpack --config webpack.dev.js --watch",
     "typecheck": "cd src && tsc --watch && cd..",
-    "lint": "eslint \"./{src,test}/**/!(*.d).ts\"",
+    "lint": "eslint \"./{src,test}/**/!(*.d).{js,jsx,ts,tsx}\"",
     "release": "yarn lint && webpack --config webpack.dev.js && webpack --config webpack.release.js"
   },
   "dependencies": {
     "@emotion/styled": "^10.0.10",
     "lodash.flattendeep": "^4.4.0",
-    "normalize-scroll-left": "^0.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scroll-sync": "0.7.0",
     "react-virtualized-auto-sizer": "^1.0.2",
-    "react-window": "^1.8.1"
+    "react-window": "^1.8.2"
   },
   "devDependencies": {
     "@babel/core": "7.4.4",

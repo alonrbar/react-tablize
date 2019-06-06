@@ -1,9 +1,7 @@
 import { ThemeProvider } from 'emotion-theming';
-import { detectScrollType } from 'normalize-scroll-left';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeGrid, VariableSizeList } from 'react-window';
+import { GridOnScrollProps, VariableSizeGrid, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
 import { ErrorBoundary } from '../utils/ErrorBoundary';
 import { ReactUtils } from '../utils/reactUtils';
@@ -105,6 +103,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
     private freezedColumnsGrid = React.createRef<VariableSizeGrid>();
 
     public render() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { columnCount, columnWidth, children, ...divProps } = this.props;
         return (
             <ErrorBoundary>
@@ -334,40 +333,17 @@ export class GridView extends React.PureComponent<GridViewProps> {
     // event handlers
     //
 
-    private syncScroll = () => {
-        const body = ReactDOM.findDOMNode(this.mainBodyGrid.current) as HTMLElement;
-        if (!body)
-            return;
-
+    private syncScroll = (e: GridOnScrollProps) => {
+        const { scrollTop, scrollLeft } = e;
+        
         // synchronize head
-        const head = ReactDOM.findDOMNode(this.headList.current) as HTMLElement;
-        if (head) {
-
-            if (this.props.dir === 'rtl' && body.scrollLeft <= 0 && detectScrollType() === 'default') {
-
-                // HACK - fixes this issue:  
-                // When scrolling to the end of the grid in rtl mode the
-                // scrollLeft value of the body is 0 (and sometimes less) which
-                // causes the grid to disappear.
-                head.scrollLeft = body.scrollLeft = 1;
-
-                // This part of the hack is also required for some reason when
-                // scrolling using the scroll handle instead of the scroll
-                // arrows.
-                setTimeout(() => body.scrollLeft = 1);
-
-            } else {
-
-                // normal case
-                const proportion = (head.scrollWidth / body.scrollWidth);
-                head.scrollLeft = proportion * body.scrollLeft;
-            }
+        if (this.headList.current) {
+            this.headList.current.scrollTo(scrollLeft);
         }
-
+        
         // synchronize frozen body columns
-        const freezedColumns = ReactDOM.findDOMNode(this.freezedColumnsGrid.current) as HTMLElement;
-        if (freezedColumns) {
-            freezedColumns.scrollTop = body.scrollTop;
+        if (this.freezedColumnsGrid.current) {
+            this.freezedColumnsGrid.current.scrollTo({ scrollTop } as any);
         }
     }
 

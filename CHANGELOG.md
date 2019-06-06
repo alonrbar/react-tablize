@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Changed
+
+- Upgrade to react-window@1.8.2 and remove hacks from GridView.syncScroll.
+
 ### Fixed
 
 - Fix support for grid with no head.
