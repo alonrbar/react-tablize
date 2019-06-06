@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Fixed
+
+- Fix support for grid with no head.
+
 ## [0.6.0 - 2019-05-28](https://github.com/alonrbar/react-tablize/tree/v0.6.0)
 
 ### Added

@@ -15,7 +15,8 @@ import { GridHead, HeadCellRender } from './GridHead';
 import { scrollbarWidth, StyledGridBody, StyledGridBodyCell, StyledGridHead, StyledGridHeadCell, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
-type GridChildren = GridChildren_FullSyntax | BodyCellRender;
+type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
+type GridChildren = GridChildren_FullSyntax | GridChildren_PartialSyntax | BodyCellRender;
 
 interface RenderHeadCellArgs {
     cellRender: HeadCellRender;
@@ -145,7 +146,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
 
                                 {/* frozen first columns */}
                                 {utils.range(freezeColumns).map(columnIndex => this.renderHeadCell({
-                                    cellRender, 
+                                    cellRender,
                                     columnIndex,
                                     isScrolling: false
                                 }))}
@@ -386,20 +387,22 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const headHeight = this.getHeadHeight();
         const bodyHeights = utils.getHeights(this.props.style, undefined);
 
-        const bodyHeight = `calc(${bodyHeights.height || totalHeights.height} - ${headHeight})`;
+        let height = bodyHeights.height || totalHeights.height;
+        let minHeight = bodyHeights.minHeight || totalHeights.minHeight;
+        let maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
 
-        let bodyMinHeight: string | number;
-        if (bodyHeights.minHeight || totalHeights.minHeight)
-            bodyMinHeight = `calc(${bodyHeights.minHeight || totalHeights.minHeight} - ${headHeight})`;
-
-        let bodyMaxHeight: string | number;
-        if (bodyHeights.maxHeight || totalHeights.maxHeight)
-            bodyMaxHeight = `calc(${bodyHeights.maxHeight || totalHeights.maxHeight} - ${headHeight})`;
+        if (headHeight) {
+            height = `calc(${height} - ${headHeight})`;
+            if (minHeight)
+                minHeight = `calc(${minHeight} - ${headHeight})`;
+            if (maxHeight)
+                maxHeight = `calc(${maxHeight} - ${headHeight})`;
+        }
 
         return {
-            height: bodyHeight,
-            minHeight: bodyMinHeight,
-            maxHeight: bodyMaxHeight
+            height,
+            minHeight,
+            maxHeight
         };
     }
 

@@ -38,6 +38,24 @@ stories.add('simple grid', () => (
     </GridView>
 ));
 
+stories.add('simple grid - no head', () => (
+    <GridView
+        columnCount={1000}
+        columnWidth={100}
+    >
+        <GridView.Body
+            rowCount={10}
+            rowHeight={40}
+        >
+            {({ rowIndex, columnIndex }) => (
+                <GridView.Cell style={{ color: 'blue' }}>
+                    {rowIndex}, {columnIndex}
+                </GridView.Cell>
+            )}
+        </GridView.Body>
+    </GridView>
+));
+
 stories.add('simple grid - 1 frozen column', () => (
     <GridView
         columnCount={1000}
