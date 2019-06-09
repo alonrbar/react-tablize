@@ -2,11 +2,17 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.6.2 - 2019-06-06](https://github.com/alonrbar/react-tablize/tree/v0.6.2)
+
+### Changed
+
+- Use `react` and `react-dom` as peer dependencies.
+
 ## [0.6.1 - 2019-06-06](https://github.com/alonrbar/react-tablize/tree/v0.6.1)
 
 ### Changed
 
-- Upgrade to react-window@1.8.2 and remove hacks from GridView.syncScroll.
+- Upgrade to `react-window@1.8.2` and remove hacks from GridView.syncScroll.
 
 ### Fixed
 
