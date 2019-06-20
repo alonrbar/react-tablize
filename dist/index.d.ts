@@ -106,7 +106,7 @@ export class TableViewProps {
     dir?: DocDir;
     className?: string;
     style?: React.CSSProperties;
-    rowHeight?: number;
+    rowHeight?: number | SizeCallback;
     emptyMessage?: string;
     overscanCount?: number;
 }

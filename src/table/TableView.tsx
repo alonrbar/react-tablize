@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList } from 'react-window';
+import { VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
 import { ErrorBoundary } from '../utils/ErrorBoundary';
 import { ReactUtils } from '../utils/reactUtils';
@@ -49,7 +49,7 @@ export class TableViewProps {
      * Row height in pixels.  
      * Default: 50
      */
-    public rowHeight?= 50;
+    public rowHeight?: number | SizeCallback = 50;
     public emptyMessage?= "No Items to Display";
 
     //
@@ -200,14 +200,14 @@ export class TableView extends React.PureComponent<TableViewProps> {
         return (
             <AutoSizer>
                 {({ width, height }) => (
-                    <FixedSizeList
+                    <VariableSizeList
                         style={{ outline: 'none' }}
                         direction={this.props.dir}
                         layout="vertical"
                         height={height}
                         width={width}
                         itemCount={this.props.rowCount}
-                        itemSize={this.props.rowHeight}
+                        itemSize={this.getRowHeight}
                     >
                         {({ index, style }) => {
 
@@ -251,7 +251,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                                 </StyledTableBodyRow>
                             );
                         }}
-                    </FixedSizeList>
+                    </VariableSizeList>
                 )}
             </AutoSizer>
         );
@@ -265,32 +265,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 </div>
             </div>
         );
-    }
-
-    private getTheme(): Theme {
-        return {
-            dir: this.props.dir
-        };
-    }
-
-    private getHeights(): Heights {
-        let height = (this.props.style || {}).height;
-        let minHeight = (this.props.style || {}).minHeight;
-        let maxHeight = (this.props.style || {}).maxHeight;
-
-        if (height === undefined && minHeight === undefined) {
-            height = TableView.defaultHeight;
-        }
-
-        height = utils.cssSizeString(height);
-        minHeight = utils.cssSizeString(minHeight);
-        maxHeight = utils.cssSizeString(maxHeight);
-
-        return {
-            height,
-            minHeight,
-            maxHeight
-        };
     }
 
     //
@@ -438,5 +412,41 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
         // actual content
         return content || null;
+    }
+
+    //
+    // helpers
+    //
+
+    private getTheme(): Theme {
+        return {
+            dir: this.props.dir
+        };
+    }
+
+    private getHeights(): Heights {
+        let height = (this.props.style || {}).height;
+        let minHeight = (this.props.style || {}).minHeight;
+        let maxHeight = (this.props.style || {}).maxHeight;
+
+        if (height === undefined && minHeight === undefined) {
+            height = TableView.defaultHeight;
+        }
+
+        height = utils.cssSizeString(height);
+        minHeight = utils.cssSizeString(minHeight);
+        maxHeight = utils.cssSizeString(maxHeight);
+
+        return {
+            height,
+            minHeight,
+            maxHeight
+        };
+    }
+
+    private getRowHeight = (rowIndex: number): number => {
+        if (typeof this.props.rowHeight === 'function')
+            return this.props.rowHeight(rowIndex);
+        return this.props.rowHeight;
     }
 }

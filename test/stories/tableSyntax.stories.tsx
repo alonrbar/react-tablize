@@ -14,13 +14,23 @@ function getTestItems(postfix: string): Person[] {
     const people: Person[] = [
         {
             id: 1,
-            name: 'Alon',
+            name: 'First Dude',
             age: 34
         },
         {
             id: 2,
-            name: 'Gilad',
+            name: 'Second Dude',
             age: 31
+        },
+        {
+            id: 3,
+            name: 'Third Dude',
+            age: 62
+        },
+        {
+            id: 4,
+            name: 'Fourth Dude',
+            age: 62
         }
     ];
     return people.map(p => ({
@@ -122,3 +132,19 @@ stories.add('columns syntax', () => {
     );
 });
 
+stories.add('variable sized rows', () => {
+    const items = getTestItems('terse');
+    return (
+        <TableView rowCount={items.length} rowHeight={index => (index + 1) * 40}>
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    items[index].name,
+                    items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
