@@ -8,7 +8,17 @@ import { ReactUtils } from '../utils/reactUtils';
 import * as utils from '../utils/utils';
 import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
-import { StyledTableBody, StyledTableBodyCell, StyledTableBodyRow, StyledTableHead, StyledTableHeadCell, StyledTableHeadRow, StyledTableView } from './style';
+import {
+    StyledLineNumberColumnBody,
+    StyledLineNumberColumnHead,
+    StyledTableBody,
+    StyledTableBodyCell,
+    StyledTableBodyRow,
+    StyledTableHead,
+    StyledTableHeadCell,
+    StyledTableHeadRow,
+    StyledTableView
+    } from './style';
 import { TableBody } from './TableBody';
 import { CellContent, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -51,6 +61,7 @@ export class TableViewProps {
      */
     public rowHeight?: number | SizeCallback = 50;
     public emptyMessage?= "No Items to Display";
+    public lineNumbers?: boolean;
 
     //
     // virtualization
@@ -137,6 +148,11 @@ export class TableView extends React.PureComponent<TableViewProps> {
             <StyledTableHead style={{ height: head.props.height }}>
                 <StyledTableHeadRow>
                     <ErrorBoundary>
+
+                        {/* line number column */}
+                        {this.props.lineNumbers && (
+                            <StyledLineNumberColumnHead />
+                        )}
 
                         {/* main columns */}
                         {React.Children.map(head.props.children, (cell, index) => {
@@ -227,6 +243,13 @@ export class TableView extends React.PureComponent<TableViewProps> {
                                     {...rowProps}
                                 >
                                     <ErrorBoundary>
+
+                                        {/* line number column */}
+                                        {this.props.lineNumbers && (
+                                            <StyledLineNumberColumnBody>
+                                                {index + 1}
+                                            </StyledLineNumberColumnBody>
+                                        )}
 
                                         {/* main columns */}
                                         {utils.asArray(rowContent).map((cell, columnIndex) => {

@@ -108,6 +108,7 @@ export class TableViewProps {
     style?: React.CSSProperties;
     rowHeight?: number | SizeCallback;
     emptyMessage?: string;
+    lineNumbers?: boolean;
     overscanCount?: number;
 }
 

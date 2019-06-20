@@ -5,6 +5,7 @@
 ### Added
 
 - Variable sized table row.
+- Table line numbers.
 
 ## [0.6.2 - 2019-06-06](https://github.com/alonrbar/react-tablize/tree/v0.6.2)
 

@@ -131,20 +131,3 @@ stories.add('columns syntax', () => {
         </TableView>
     );
 });
-
-stories.add('variable sized rows', () => {
-    const items = getTestItems('terse');
-    return (
-        <TableView rowCount={items.length} rowHeight={index => (index + 1) * 40}>
-            <TableHead>
-                {['Name', 'Age']}
-            </TableHead>
-            <TableBody>
-                {index => ([
-                    items[index].name,
-                    items[index].age
-                ])}
-            </TableBody>
-        </TableView>
-    );
-});
