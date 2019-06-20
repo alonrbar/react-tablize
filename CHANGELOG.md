@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.7.0 - 2019-06-20](https://github.com/alonrbar/react-tablize/tree/v0.7.0)
+
 ### Added
 
 - Variable sized table row.

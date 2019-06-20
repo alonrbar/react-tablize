@@ -1208,8 +1208,28 @@ function (_React$PureComponent) {
   return TableRow;
 }(external_react_["PureComponent"]);
 // CONCATENATED MODULE: ./src/table/style.tsx
-function _templateObject7() {
+function _templateObject9() {
+  var data = style_taggedTemplateLiteral(["\n    min-width: 40px;\n    max-width: 50px;\n"]);
+
+  _templateObject9 = function _templateObject9() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject8() {
   var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    padding: 8px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n"]);
+
+  _templateObject8 = function _templateObject8() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject7() {
+  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    border-top: ", ";\n\n    &:first-of-type {\n        border-top: none;\n    }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -1219,7 +1239,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    border-top: ", ";\n\n    &:first-of-type {\n        border-top: none;\n    }\n"]);
+  var data = style_taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column;\n\n    vertical-align: middle;\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -1229,7 +1249,7 @@ function _templateObject6() {
 }
 
 function style_templateObject5() {
-  var data = style_taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column;\n\n    vertical-align: middle;\n"]);
+  var data = style_taggedTemplateLiteral(["\n    min-width: 40px;\n    max-width: 50px;\n"]);
 
   style_templateObject5 = function _templateObject5() {
     return data;
@@ -1297,13 +1317,15 @@ var StyledTableHead = styledWithTheme.div(style_templateObject2());
 var StyledTableHeadRow = styledWithTheme.div(style_templateObject3(), function (props) {
   return props.theme.dir === 'rtl' ? 'padding-left' : 'padding-dir';
 }, style_scrollbarWidth, style_tableBorder);
-var StyledTableHeadCell = styledWithTheme.div(style_templateObject4()); //
+var StyledTableHeadCell = styledWithTheme.div(style_templateObject4());
+var StyledLineNumberColumnHead = styledWithTheme(StyledTableHeadCell)(style_templateObject5()); //
 // body
 //
 
-var StyledTableBody = styledWithTheme.div(style_templateObject5());
-var StyledTableBodyRow = styledWithTheme.div(_templateObject6(), style_tableBorder);
-var StyledTableBodyCell = styledWithTheme.div(_templateObject7());
+var StyledTableBody = styledWithTheme.div(_templateObject6());
+var StyledTableBodyRow = styledWithTheme.div(_templateObject7(), style_tableBorder);
+var StyledTableBodyCell = styledWithTheme.div(_templateObject8());
+var StyledLineNumberColumnBody = styledWithTheme(StyledTableBodyCell)(_templateObject9());
 // CONCATENATED MODULE: ./src/table/TableView.tsx
 function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
 
@@ -1319,9 +1341,9 @@ function TableView_createClass(Constructor, protoProps, staticProps) { if (proto
 
 function TableView_possibleConstructorReturn(self, call) { if (call && (TableView_typeof(call) === "object" || typeof call === "function")) { return call; } return TableView_assertThisInitialized(self); }
 
-function TableView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function TableView_getPrototypeOf(o) { TableView_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableView_getPrototypeOf(o); }
+
+function TableView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function TableView_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableView_setPrototypeOf(subClass, superClass); }
 
@@ -1368,6 +1390,8 @@ var TableViewProps = function TableViewProps() {
 
   TableView_defineProperty(this, "emptyMessage", "No Items to Display");
 
+  TableView_defineProperty(this, "lineNumbers", void 0);
+
   TableView_defineProperty(this, "overscanCount", 20);
 };
 var TableView_TableView =
@@ -1376,19 +1400,28 @@ function (_React$PureComponent) {
   TableView_inherits(TableView, _React$PureComponent);
 
   function TableView() {
+    var _getPrototypeOf2;
+
+    var _this;
+
     TableView_classCallCheck(this, TableView);
 
-    return TableView_possibleConstructorReturn(this, TableView_getPrototypeOf(TableView).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = TableView_possibleConstructorReturn(this, (_getPrototypeOf2 = TableView_getPrototypeOf(TableView)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "getRowHeight", function (rowIndex) {
+      if (typeof _this.props.rowHeight === 'function') return _this.props.rowHeight(rowIndex);
+      return _this.props.rowHeight;
+    });
+
+    return _this;
   }
 
   TableView_createClass(TableView, [{
     key: "render",
-    //
-    // nested types
-    //
-    //
-    // component code
-    //
     //
     // render methods
     //
@@ -1415,21 +1448,21 @@ function (_React$PureComponent) {
   }, {
     key: "renderTableHead",
     value: function renderTableHead(head) {
-      var _this = this;
+      var _this2 = this;
 
       if (!head) return null;
       return external_react_["createElement"](StyledTableHead, {
         style: {
           height: head.props.height
         }
-      }, external_react_["createElement"](StyledTableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["Children"].map(head.props.children, function (cell, index) {
+      }, external_react_["createElement"](StyledTableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.props.lineNumbers && external_react_["createElement"](StyledLineNumberColumnHead, null), external_react_["Children"].map(head.props.children, function (cell, index) {
         var headCell = cell;
 
-        var cellProps = _this.getHeadCellProps(headCell);
+        var cellProps = _this2.getHeadCellProps(headCell);
 
         if (cellProps.visible === false) return null;
 
-        var cellContent = _this.getHeadCellContent(headCell);
+        var cellContent = _this2.getHeadCellContent(headCell);
 
         return external_react_["createElement"](StyledTableHeadCell, TableView_extends({
           key: index
@@ -1456,7 +1489,7 @@ function (_React$PureComponent) {
   }, {
     key: "renderTableRows",
     value: function renderTableRows(body) {
-      var _this2 = this;
+      var _this3 = this;
 
       // placeholder
       if (this.props.rowCount === 0 || !this.hasBody(body)) {
@@ -1467,16 +1500,16 @@ function (_React$PureComponent) {
       return external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
         var width = _ref.width,
             height = _ref.height;
-        return external_react_["createElement"](external_react_window_["FixedSizeList"], {
+        return external_react_["createElement"](external_react_window_["VariableSizeList"], {
           style: {
             outline: 'none'
           },
-          direction: _this2.props.dir,
+          direction: _this3.props.dir,
           layout: "vertical",
           height: height,
           width: width,
-          itemCount: _this2.props.rowCount,
-          itemSize: _this2.props.rowHeight
+          itemCount: _this3.props.rowCount,
+          itemSize: _this3.getRowHeight
         }, function (_ref2) {
           var index = _ref2.index,
               style = _ref2.style;
@@ -1484,24 +1517,24 @@ function (_React$PureComponent) {
           if (!rowRender) return null;
           var row = rowRender(index);
 
-          var _this2$getRowProps = _this2.getRowProps(row),
-              rowStyle = _this2$getRowProps.style,
-              rowProps = TableView_objectWithoutProperties(_this2$getRowProps, ["style"]);
+          var _this3$getRowProps = _this3.getRowProps(row),
+              rowStyle = _this3$getRowProps.style,
+              rowProps = TableView_objectWithoutProperties(_this3$getRowProps, ["style"]);
 
-          var rowKey = _this2.getRowKey(rowProps, index);
+          var rowKey = _this3.getRowKey(rowProps, index);
 
-          var rowContent = _this2.getRowContent(row);
+          var rowContent = _this3.getRowContent(row);
 
           return external_react_["createElement"](StyledTableBodyRow, TableView_extends({
             style: Object.assign({}, style, rowStyle || {}),
             key: rowKey
-          }, rowProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, asArray(rowContent).map(function (cell, columnIndex) {
-            var cellProps = _this2.getCellProps(cell);
+          }, rowProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, _this3.props.lineNumbers && external_react_["createElement"](StyledLineNumberColumnBody, null, index + 1), asArray(rowContent).map(function (cell, columnIndex) {
+            var cellProps = _this3.getCellProps(cell);
 
             if (cellProps.visible === false) return null;
             return external_react_["createElement"](StyledTableBodyCell, TableView_extends({
               key: columnIndex
-            }, cellProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, _this2.getCellContent(cell)));
+            }, cellProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, _this3.getCellContent(cell)));
           })));
         });
       });
@@ -1514,33 +1547,6 @@ function (_React$PureComponent) {
           textAlign: 'center'
         }
       }, this.props.emptyMessage));
-    }
-  }, {
-    key: "getTheme",
-    value: function getTheme() {
-      return {
-        dir: this.props.dir
-      };
-    }
-  }, {
-    key: "getHeights",
-    value: function getHeights() {
-      var height = (this.props.style || {}).height;
-      var minHeight = (this.props.style || {}).minHeight;
-      var maxHeight = (this.props.style || {}).maxHeight;
-
-      if (height === undefined && minHeight === undefined) {
-        height = TableView.defaultHeight;
-      }
-
-      height = cssSizeString(height);
-      minHeight = cssSizeString(minHeight);
-      maxHeight = cssSizeString(maxHeight);
-      return {
-        height: height,
-        minHeight: minHeight,
-        maxHeight: maxHeight
-      };
     } //
     // components structure handling
     //  
@@ -1664,6 +1670,36 @@ function (_React$PureComponent) {
 
 
       return content || null;
+    } //
+    // helpers
+    //
+
+  }, {
+    key: "getTheme",
+    value: function getTheme() {
+      return {
+        dir: this.props.dir
+      };
+    }
+  }, {
+    key: "getHeights",
+    value: function getHeights() {
+      var height = (this.props.style || {}).height;
+      var minHeight = (this.props.style || {}).minHeight;
+      var maxHeight = (this.props.style || {}).maxHeight;
+
+      if (height === undefined && minHeight === undefined) {
+        height = TableView.defaultHeight;
+      }
+
+      height = cssSizeString(height);
+      minHeight = cssSizeString(minHeight);
+      maxHeight = cssSizeString(maxHeight);
+      return {
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+      };
     }
   }]);
 

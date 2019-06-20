@@ -18,7 +18,7 @@ import {
     StyledTableHeadCell,
     StyledTableHeadRow,
     StyledTableView
-    } from './style';
+} from './style';
 import { TableBody } from './TableBody';
 import { CellContent, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
