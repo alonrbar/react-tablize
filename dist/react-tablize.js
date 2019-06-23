@@ -98,12 +98,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ "./src/index.ts":
 /*!***********************************!*\
-  !*** ./src/index.ts + 21 modules ***!
+  !*** ./src/index.ts + 22 modules ***!
   \***********************************/
 /*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with external "react-custom-scrollbars" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-virtualized-auto-sizer" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-window" (<- Module is not an ECMAScript module) */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1207,6 +1208,61 @@ function (_React$PureComponent) {
 
   return TableRow;
 }(external_react_["PureComponent"]);
+// EXTERNAL MODULE: external "react-custom-scrollbars"
+var external_react_custom_scrollbars_ = __webpack_require__("react-custom-scrollbars");
+var external_react_custom_scrollbars_default = /*#__PURE__*/__webpack_require__.n(external_react_custom_scrollbars_);
+
+// CONCATENATED MODULE: ./src/table/CustomScrollbars.tsx
+function CustomScrollbars_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { CustomScrollbars_typeof = function _typeof(obj) { return typeof obj; }; } else { CustomScrollbars_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return CustomScrollbars_typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { CustomScrollbars_defineProperty(target, key, source[key]); }); } return target; }
+
+function CustomScrollbars_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function CustomScrollbars_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function CustomScrollbars_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function CustomScrollbars_createClass(Constructor, protoProps, staticProps) { if (protoProps) CustomScrollbars_defineProperties(Constructor.prototype, protoProps); if (staticProps) CustomScrollbars_defineProperties(Constructor, staticProps); return Constructor; }
+
+function CustomScrollbars_possibleConstructorReturn(self, call) { if (call && (CustomScrollbars_typeof(call) === "object" || typeof call === "function")) { return call; } return CustomScrollbars_assertThisInitialized(self); }
+
+function CustomScrollbars_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function CustomScrollbars_getPrototypeOf(o) { CustomScrollbars_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return CustomScrollbars_getPrototypeOf(o); }
+
+function CustomScrollbars_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) CustomScrollbars_setPrototypeOf(subClass, superClass); }
+
+function CustomScrollbars_setPrototypeOf(o, p) { CustomScrollbars_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return CustomScrollbars_setPrototypeOf(o, p); }
+
+
+
+var CustomScrollbars_CustomScrollbars =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  CustomScrollbars_inherits(CustomScrollbars, _React$PureComponent);
+
+  function CustomScrollbars() {
+    CustomScrollbars_classCallCheck(this, CustomScrollbars);
+
+    return CustomScrollbars_possibleConstructorReturn(this, CustomScrollbars_getPrototypeOf(CustomScrollbars).apply(this, arguments));
+  }
+
+  CustomScrollbars_createClass(CustomScrollbars, [{
+    key: "render",
+    value: function render() {
+      return external_react_["createElement"](external_react_custom_scrollbars_default.a, {
+        style: _objectSpread({}, this.props.style, {
+          overflow: 'hidden',
+          direction: 'ltr'
+        }),
+        onScroll: this.props.onScroll
+      }, this.props.children);
+    }
+  }]);
+
+  return CustomScrollbars;
+}(external_react_["PureComponent"]);
 // CONCATENATED MODULE: ./src/table/style.tsx
 function _templateObject9() {
   var data = style_taggedTemplateLiteral(["\n    min-width: 40px;\n    max-width: 50px;\n"]);
@@ -1229,7 +1285,7 @@ function _templateObject8() {
 }
 
 function _templateObject7() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    border-top: ", ";\n\n    &:first-of-type {\n        border-top: none;\n    }\n"]);
+  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ";\n\n    &:first-of-type {\n        border-top: none;\n    }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -1269,7 +1325,7 @@ function style_templateObject4() {
 }
 
 function style_templateObject3() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ": ", ";\n\n    border-bottom: ", ";\n"]);
+  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ": ", ";\n    ", ";\n"]);
 
   style_templateObject3 = function _templateObject3() {
     return data;
@@ -1289,7 +1345,7 @@ function style_templateObject2() {
 }
 
 function style_templateObject() {
-  var data = style_taggedTemplateLiteral(["\n    background-color: #fff;\n    width: 100%;\n    overflow-y: hidden;\n"]);
+  var data = style_taggedTemplateLiteral(["\n    width: 100%;\n    overflow-y: hidden;\n"]);
 
   style_templateObject = function _templateObject() {
     return data;
@@ -1316,14 +1372,18 @@ var StyledTableView = styledWithTheme.div(style_templateObject()); //
 var StyledTableHead = styledWithTheme.div(style_templateObject2());
 var StyledTableHeadRow = styledWithTheme.div(style_templateObject3(), function (props) {
   return props.theme.dir === 'rtl' ? 'padding-left' : 'padding-dir';
-}, style_scrollbarWidth, style_tableBorder);
+}, style_scrollbarWidth, function (props) {
+  return props.theme.hairlines ? "border-bottom: ".concat(style_tableBorder) : '';
+});
 var StyledTableHeadCell = styledWithTheme.div(style_templateObject4());
 var StyledLineNumberColumnHead = styledWithTheme(StyledTableHeadCell)(style_templateObject5()); //
 // body
 //
 
 var StyledTableBody = styledWithTheme.div(_templateObject6());
-var StyledTableBodyRow = styledWithTheme.div(_templateObject7(), style_tableBorder);
+var StyledTableBodyRow = styledWithTheme.div(_templateObject7(), function (props) {
+  return props.theme.hairlines ? "border-top: ".concat(style_tableBorder) : '';
+});
 var StyledTableBodyCell = styledWithTheme.div(_templateObject8());
 var StyledLineNumberColumnBody = styledWithTheme(StyledTableBodyCell)(_templateObject9());
 // CONCATENATED MODULE: ./src/table/TableView.tsx
@@ -1369,6 +1429,7 @@ function TableView_defineProperty(obj, key, value) { if (key in obj) { Object.de
 
 
 
+
 var flattenDeep = __webpack_require__(/*! lodash.flattendeep */ "lodash.flattendeep");
 
 var TableViewProps = function TableViewProps() {
@@ -1391,6 +1452,10 @@ var TableViewProps = function TableViewProps() {
   TableView_defineProperty(this, "emptyMessage", "No Items to Display");
 
   TableView_defineProperty(this, "lineNumbers", void 0);
+
+  TableView_defineProperty(this, "customScrollbars", void 0);
+
+  TableView_defineProperty(this, "hairlines", void 0);
 
   TableView_defineProperty(this, "overscanCount", 20);
 };
@@ -1519,6 +1584,7 @@ function (_React$PureComponent) {
           style: {
             outline: 'none'
           },
+          outerElementType: _this3.getOuterElementType(),
           direction: _this3.props.dir,
           layout: "vertical",
           height: height,
@@ -1693,7 +1759,8 @@ function (_React$PureComponent) {
     key: "getTheme",
     value: function getTheme() {
       return {
-        dir: this.props.dir
+        dir: this.props.dir,
+        hairlines: this.props.hairlines !== false
       };
     }
   }, {
@@ -1715,6 +1782,11 @@ function (_React$PureComponent) {
         minHeight: minHeight,
         maxHeight: maxHeight
       };
+    }
+  }, {
+    key: "getOuterElementType",
+    value: function getOuterElementType() {
+      return this.props.customScrollbars ? CustomScrollbars_CustomScrollbars : undefined;
     }
   }]);
 
@@ -1821,6 +1893,18 @@ module.exports = require("lodash.flattendeep");
 /***/ (function(module, exports) {
 
 module.exports = require("react");
+
+/***/ }),
+
+/***/ "react-custom-scrollbars":
+/*!******************************************!*\
+  !*** external "react-custom-scrollbars" ***!
+  \******************************************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports) {
+
+module.exports = require("react-custom-scrollbars");
 
 /***/ }),
 
