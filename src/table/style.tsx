@@ -12,7 +12,6 @@ const tableBorder = '1px solid #ddd';
 //
 
 export const StyledTableView = styled.div`
-    background-color: #fff;
     width: 100%;
     overflow-y: hidden;
 `;
@@ -37,8 +36,7 @@ export const StyledTableHeadRow = styled.div`
     justify-content: stretch;
 
     ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-dir')}: ${scrollbarWidth};
-
-    border-bottom: ${tableBorder};
+    ${props => props.theme.hairlines ? `border-bottom: ${tableBorder}` : ''};
 `;
 
 export const StyledTableHeadCell = styled.div`
@@ -72,7 +70,7 @@ export const StyledTableBodyRow = styled.div`
     display: flex;
     justify-content: stretch;
 
-    border-top: ${tableBorder};
+    ${props => props.theme.hairlines ? `border-top: ${tableBorder}` : ''};
 
     &:first-of-type {
         border-top: none;

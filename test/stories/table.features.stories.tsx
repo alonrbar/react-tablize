@@ -78,3 +78,43 @@ stories.add('line numbers', () => {
         </TableView>
     );
 });
+
+stories.add('custom scrollbars', () => {
+    const items = getTestItems('custom scrollbars');
+    return (
+        <TableView
+            rowCount={items.length}
+            customScrollbars={true}
+        >
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    items[index].name,
+                    items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
+
+stories.add('no hairlines', () => {
+    const items = getTestItems('no hairlines');
+    return (
+        <TableView
+            rowCount={items.length}
+            hairlines={false}
+        >
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    items[index].name,
+                    items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});

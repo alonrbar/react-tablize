@@ -109,6 +109,8 @@ export class TableViewProps {
     rowHeight?: number | SizeCallback;
     emptyMessage?: string;
     lineNumbers?: boolean;
+    customScrollbars?: boolean;
+    hairlines?: boolean;
     overscanCount?: number;
 }
 

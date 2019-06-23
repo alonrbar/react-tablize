@@ -2,6 +2,12 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- New appearance props `TableView.customScrollbars` and `TableView.hairlines`
+  (well, this is not the direction I want to take this package... will probably
+  remove in the future...)
+
 ## [0.8.0 - 2019-06-23](https://github.com/alonrbar/react-tablize/tree/v0.8.0)
 
 ### Added

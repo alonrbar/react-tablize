@@ -8,6 +8,7 @@ import { ReactUtils } from '../utils/reactUtils';
 import * as utils from '../utils/utils';
 import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
+import { CustomScrollbars } from './CustomScrollbars';
 import {
     StyledLineNumberColumnBody,
     StyledLineNumberColumnHead,
@@ -62,6 +63,8 @@ export class TableViewProps {
     public rowHeight?: number | SizeCallback = 50;
     public emptyMessage?= "No Items to Display";
     public lineNumbers?: boolean;
+    public customScrollbars?: boolean;
+    public hairlines?: boolean;
 
     //
     // virtualization
@@ -232,6 +235,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                     <VariableSizeList
                         ref={this.tableElement}
                         style={{ outline: 'none' }}
+                        outerElementType={this.getOuterElementType()}
                         direction={this.props.dir}
                         layout="vertical"
                         height={height}
@@ -457,7 +461,8 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
     private getTheme(): Theme {
         return {
-            dir: this.props.dir
+            dir: this.props.dir,
+            hairlines: (this.props.hairlines !== false)
         };
     }
 
@@ -485,5 +490,9 @@ export class TableView extends React.PureComponent<TableViewProps> {
         if (typeof this.props.rowHeight === 'function')
             return this.props.rowHeight(rowIndex);
         return this.props.rowHeight;
+    }
+
+    private getOuterElementType() {
+        return this.props.customScrollbars ? CustomScrollbars : undefined;
     }
 }
