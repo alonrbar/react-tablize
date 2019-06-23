@@ -1412,6 +1412,8 @@ function (_React$PureComponent) {
 
     _this = TableView_possibleConstructorReturn(this, (_getPrototypeOf2 = TableView_getPrototypeOf(TableView)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "tableElement", external_react_["createRef"]());
+
     TableView_defineProperty(TableView_assertThisInitialized(_this), "getRowHeight", function (rowIndex) {
       if (typeof _this.props.rowHeight === 'function') return _this.props.rowHeight(rowIndex);
       return _this.props.rowHeight;
@@ -1421,10 +1423,22 @@ function (_React$PureComponent) {
   }
 
   TableView_createClass(TableView, [{
-    key: "render",
+    key: "refresh",
     //
+    // public methods
+    //
+    value: function refresh() {
+      if (this.tableElement.current) {
+        this.tableElement.current.resetAfterIndex(0, false);
+      }
+
+      this.forceUpdate();
+    } //
     // render methods
     //
+
+  }, {
+    key: "render",
     value: function render() {
       // head & body
       var head = reactUtils_ReactUtils.singleChildOfType(this, TableHead);
@@ -1501,6 +1515,7 @@ function (_React$PureComponent) {
         var width = _ref.width,
             height = _ref.height;
         return external_react_["createElement"](external_react_window_["VariableSizeList"], {
+          ref: _this3.tableElement,
           style: {
             outline: 'none'
           },
