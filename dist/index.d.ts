@@ -121,6 +121,8 @@ export class TableView extends React.PureComponent<TableViewProps, TableViewStat
     static Row: typeof TableRow;
     static Cell: typeof TableCell;
     static Column: typeof TableColumn;
+
+    refresh(): void;
 }
 
 // -------------------- //

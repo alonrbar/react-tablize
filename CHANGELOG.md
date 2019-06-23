@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- `TableView.refresh` method for working with dynamic height lists (see [here](https://github.com/bvaughn/react-window/issues/199#issuecomment-479957451)).
+
 ## [0.7.0 - 2019-06-20](https://github.com/alonrbar/react-tablize/tree/v0.7.0)
 
 ### Added

@@ -102,6 +102,19 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
     public static defaultProps = new TableViewProps();
 
+    private tableElement = React.createRef<VariableSizeList>();
+
+    //
+    // public methods
+    //
+
+    public refresh() {
+        if (this.tableElement.current) {
+            this.tableElement.current.resetAfterIndex(0, false);
+        }
+        this.forceUpdate();
+    }
+
     //
     // render methods
     //
@@ -217,6 +230,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
             <AutoSizer>
                 {({ width, height }) => (
                     <VariableSizeList
+                        ref={this.tableElement}
                         style={{ outline: 'none' }}
                         direction={this.props.dir}
                         layout="vertical"
