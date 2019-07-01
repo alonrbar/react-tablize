@@ -100,6 +100,7 @@ type TableChildren_ColumnsSyntax = OneOrMore<SubComp<TableColumn>>;
 export type RowKeyCallback = (index: number) => React.Key;
 
 export class TableViewProps {
+    isVirtual?: boolean;
     rowCount: number;
     rowKey?: RowKeyCallback;
     children?: TableChildren_RowsSyntax | TableChildren_ColumnsSyntax;

@@ -4,10 +4,9 @@
 
 ### Added
 
-- `TableView.isVirtual` property.
-- New appearance props `TableView.customScrollbars` and `TableView.hairlines`
-  (well, this is not the direction I want to take this package... will probably
-  remove in the future...)
+- New `TableView.isVirtual` property.
+- New appearance props: `TableView.customScrollbars` and `TableView.hairlines`.
+  Note: Use appearance props with caution as they may be removed in the future...
 
 ## [0.8.0 - 2019-06-23](https://github.com/alonrbar/react-tablize/tree/v0.8.0)
 
