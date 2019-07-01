@@ -30,7 +30,7 @@ export const StyledTableHead = styled.div`
     vertical-align: middle;
 `;
 
-export const StyledTableHeadRow = styled.div`
+export const TableHeadRow = styled.div`
     flex: 1;
     display: flex;
     justify-content: stretch;
@@ -39,7 +39,7 @@ export const StyledTableHeadRow = styled.div`
     ${props => props.theme.hairlines ? `border-bottom: ${tableBorder}` : ''};
 `;
 
-export const StyledTableHeadCell = styled.div`
+export const TableHeadCell = styled.div`
     flex: 1;
     display: flex;
     padding: 8px;
@@ -49,7 +49,7 @@ export const StyledTableHeadCell = styled.div`
     vertical-align: bottom;
 `;
 
-export const StyledLineNumberColumnHead = styled(StyledTableHeadCell)`
+export const LineNumberHeadCell = styled(TableHeadCell)`
     min-width: 40px;
     max-width: 50px;
 `;
@@ -65,7 +65,7 @@ export const StyledTableBody = styled.div`
     vertical-align: middle;
 `;
 
-export const StyledTableBodyRow = styled.div`
+export const TableBodyRow = styled.div`
     flex: 1;
     display: flex;
     justify-content: stretch;
@@ -77,14 +77,14 @@ export const StyledTableBodyRow = styled.div`
     }
 `;
 
-export const StyledTableBodyCell = styled.div`
+export const TableBodyCell = styled.div`
     flex: 1;
     padding: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
 `;
 
-export const StyledLineNumberColumnBody = styled(StyledTableBodyCell)`
+export const LineNumberBodyCell = styled(TableBodyCell)`
     min-width: 40px;
     max-width: 50px;
 `;
