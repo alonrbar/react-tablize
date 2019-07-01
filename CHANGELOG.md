@@ -4,6 +4,7 @@
 
 ### Added
 
+- `TableView.isVirtual` property.
 - New appearance props `TableView.customScrollbars` and `TableView.hairlines`
   (well, this is not the direction I want to take this package... will probably
   remove in the future...)

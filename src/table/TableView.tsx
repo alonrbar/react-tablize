@@ -24,7 +24,7 @@ import { TableBody } from './TableBody';
 import { CellContent, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
 import { TableHead, TableHeadProps } from './TableHead';
-import { RowContent, TableRow, TableRowProps } from './TableRow';
+import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
 const flattenDeep = require('lodash.flattendeep');
 
 interface Heights {
@@ -45,6 +45,7 @@ export class TableViewProps {
     // main props
     //
 
+    public isVirtual?: boolean;
     public rowCount: number;
     public rowKey?: RowKeyCallback;
     public children?: TableChildren_RowsSyntax | TableChildren_ColumnsSyntax;
@@ -229,72 +230,100 @@ export class TableView extends React.PureComponent<TableViewProps> {
         }
 
         // table rows
+        const rowRender = body.props.children;
         return (
             <AutoSizer>
                 {({ width, height }) => (
-                    <VariableSizeList
-                        ref={this.tableElement}
-                        style={{ outline: 'none' }}
-                        outerElementType={this.getOuterElementType()}
-                        direction={this.props.dir}
-                        layout="vertical"
-                        height={height}
-                        width={width}
-                        itemCount={this.props.rowCount}
-                        itemSize={this.getRowHeight}
-                    >
-                        {({ index, style }) => {
-
-                            const rowRender = body.props.children;
-                            if (!rowRender)
-                                return null;
-
-                            const row = rowRender(index);
-                            const { style: rowStyle, ...rowProps } = this.getRowProps(row);
-                            const rowKey = this.getRowKey(rowProps, index);
-                            const rowContent = this.getRowContent(row);
-
-                            return (
-                                <StyledTableBodyRow
-                                    style={Object.assign({}, style, rowStyle || {})}
-                                    key={rowKey}
-                                    {...rowProps}
-                                >
-                                    <ErrorBoundary>
-
-                                        {/* line number column */}
-                                        {this.props.lineNumbers && (
-                                            <StyledLineNumberColumnBody>
-                                                {index + 1}
-                                            </StyledLineNumberColumnBody>
-                                        )}
-
-                                        {/* main columns */}
-                                        {utils.asArray(rowContent).map((cell, columnIndex) => {
-
-                                            const cellProps = this.getCellProps(cell);
-                                            if (cellProps.visible === false)
-                                                return null;
-
-                                            return (
-                                                <StyledTableBodyCell
-                                                    key={columnIndex}
-                                                    {...cellProps}
-                                                >
-                                                    <ErrorBoundary>
-                                                        {this.getCellContent(cell)}
-                                                    </ErrorBoundary>
-                                                </StyledTableBodyCell>
-                                            );
-                                        })}
-
-                                    </ErrorBoundary>
-                                </StyledTableBodyRow>
-                            );
-                        }}
-                    </VariableSizeList>
+                    this.props.isVirtual !== false ?
+                        this.renderTableRows_virtual(width, height, rowRender) :
+                        this.renderTableRows_nonVirtual(width, height, rowRender)
                 )}
             </AutoSizer>
+        );
+    }
+
+    private renderTableRows_virtual(width: number, height: number, rowRender: RowRender) {
+        return (
+            <VariableSizeList
+                ref={this.tableElement}
+                style={{ outline: 'none' }}
+                outerElementType={this.getOuterElementType()}
+                direction={this.props.dir}
+                layout="vertical"
+                height={height}
+                width={width}
+                itemCount={this.props.rowCount}
+                itemSize={this.getRowHeight}
+            >
+                {({ index, style }) => this.renderBodyRow(index, rowRender, style)}
+            </VariableSizeList>
+        );
+    }
+
+    private renderTableRows_nonVirtual(width: number, height: number, rowRender: RowRender) {
+        return React.createElement(this.getOuterElementType() || 'div',
+            {
+                style: {
+                    height,
+                    width,
+                    direction: this.props.dir,
+                    outline: 'none',
+                    overflow: 'auto',
+                }
+            },
+            (rowRender && (
+                Array(this.props.rowCount).fill(0).map((_, index) => (
+                    this.renderBodyRow(index, rowRender, { height: this.getRowHeight(index) })
+                ))
+            ))
+        );
+    }
+
+    private renderBodyRow(index: number, rowRender: RowRender, style?: React.CSSProperties) {
+        if (!rowRender)
+            return null;
+
+        const row = rowRender(index);
+        const { style: rowStyle, ...rowProps } = this.getRowProps(row);
+        const rowKey = this.getRowKey(rowProps, index);
+        const rowContent = this.getRowContent(row);
+
+        return (
+            <StyledTableBodyRow
+                style={Object.assign({}, style, rowStyle)}
+                key={rowKey}
+                {...rowProps}
+            >
+                <ErrorBoundary>
+
+                    {/* line number column */}
+                    {this.props.lineNumbers && (
+                        <StyledLineNumberColumnBody>
+                            {index + 1}
+                        </StyledLineNumberColumnBody>
+                    )}
+
+                    {/* main columns */}
+                    {utils.asArray(rowContent).map((cell, columnIndex) => {
+
+                        const cellProps = this.getCellProps(cell);
+                        if (cellProps.visible === false)
+                            return null;
+
+                        return (
+                            <StyledTableBodyCell
+                                key={columnIndex}
+                                {...cellProps}
+                            >
+                                <ErrorBoundary>
+                                    {this.getCellContent(cell)}
+                                </ErrorBoundary>
+                            </StyledTableBodyCell>
+                        );
+                    })}
+
+                </ErrorBoundary>
+            </StyledTableBodyRow>
         );
     }
 

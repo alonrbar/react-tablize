@@ -2,9 +2,9 @@ import * as React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 
 export interface CustomScrollbarsProps {
-    onScroll: any;
     style: React.CSSProperties;
-    children: React.ReactChildren;
+    onScroll?: any;
+    children?: React.ReactChildren;
 }
 
 export class CustomScrollbars extends React.PureComponent<CustomScrollbarsProps> {
