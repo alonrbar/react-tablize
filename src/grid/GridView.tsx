@@ -3,9 +3,7 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { GridOnScrollProps, VariableSizeGrid, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
-import { ErrorBoundary } from '../utils/ErrorBoundary';
-import { ReactUtils } from '../utils/reactUtils';
-import * as utils from '../utils/utils';
+import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridFooter } from './GridFooter';
@@ -113,7 +111,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                         style={Object.assign(
                             { direction: this.props.dir },
                             this.props.style,
-                            utils.getHeights(divProps.style, GridView.defaultHeight))
+                            SizeUtils.geElementHeights(this, GridView.defaultHeight))
                         }
                     >
                         {this.renderHead()}
@@ -136,7 +134,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return (
             <StyledGridHead
                 {...divProps}
-                style={Object.assign({}, head.props.style, utils.getHeights(divProps.style, GridView.defaultHeadHeight))}
+                style={Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, GridView.defaultHeadHeight))}
             >
                 <ErrorBoundary>
                     <AutoSizer>
@@ -144,7 +142,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                             <div style={{ width, height, display: 'flex' }}>
 
                                 {/* frozen first columns */}
-                                {utils.range(freezeColumns).map(columnIndex => this.renderHeadCell({
+                                {range(freezeColumns).map(columnIndex => this.renderHeadCell({
                                     cellRender,
                                     columnIndex,
                                     isScrolling: false
@@ -218,7 +216,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
             return null;
         const { children: cellRender, rowCount, rowHeight, ...divProps } = body.props;
 
-        const heights = this.getBodyHeights();
+        const head = ReactUtils.singleChildOfType(this, GridHead);
+        const heights = SizeUtils.getBodyHeights(this, head, {
+            total: GridView.defaultHeight,
+            head: GridView.defaultHeadHeight
+        });
         const freezeColumns = this.props.freezeColumns || 0;
         const frozenColumnsWidth = this.getFrozenColumnsWidth();
 
@@ -355,46 +357,12 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return {
             dir: this.props.dir
         };
-    }
-
-    private getBodyHeights(): Heights {
-
-        const totalHeights = utils.getHeights(this.props.style, GridView.defaultHeight);
-        const headHeight = this.getHeadHeight();
-        const bodyHeights = utils.getHeights(this.props.style, undefined);
-
-        let height = bodyHeights.height || totalHeights.height;
-        let minHeight = bodyHeights.minHeight || totalHeights.minHeight;
-        let maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
-
-        if (headHeight) {
-            height = `calc(${height} - ${headHeight})`;
-            if (minHeight)
-                minHeight = `calc(${minHeight} - ${headHeight})`;
-            if (maxHeight)
-                maxHeight = `calc(${maxHeight} - ${headHeight})`;
-        }
-
-        return {
-            height,
-            minHeight,
-            maxHeight
-        };
-    }
-
-    private getHeadHeight(): string | number {
-        const head = ReactUtils.singleChildOfType(this, GridHead);
-        let headHeight: string | number = 0;
-        if (head) {
-            headHeight = utils.getHeights(head.props.style, GridView.defaultHeadHeight).height;
-        }
-        return headHeight;
-    }
+    }    
 
     private getFrozenColumnsWidth(): number {
         if (!this.props.freezeColumns)
             return 0;
-        const width = utils.range(this.props.freezeColumns)
+        const width = range(this.props.freezeColumns)
             .map(this.getColumnWidth)
             .reduce((a, b) => a + b, 0);
         return width;

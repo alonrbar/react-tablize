@@ -60,6 +60,20 @@ stories.add('terse syntax', () => {
     );
 });
 
+stories.add('no head', () => {
+    const items = getTestItems('terse');
+    return (
+        <TableView rowCount={items.length}>
+            <TableBody>
+                {index => ([
+                    items[index].name,
+                    items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
+
 stories.add('rows and cells syntax', () => {
     const items = getTestItems('rows and cells');
     return (

@@ -3,9 +3,7 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
-import { ErrorBoundary } from '../utils/ErrorBoundary';
-import { ReactUtils } from '../utils/reactUtils';
-import * as utils from '../utils/utils';
+import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
 import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
 import { CustomScrollbars } from './CustomScrollbars';
@@ -86,6 +84,7 @@ export class TableViewProps {
 export class TableView extends React.PureComponent<TableViewProps> {
 
     public static readonly defaultHeight = '35vh';
+    public static readonly defaultHeadHeight = '40px';
 
     //
     // nested types
@@ -146,7 +145,10 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 <ThemeProvider theme={this.getTheme()}>
                     <StyledTableView
                         className={this.props.className}
-                        style={Object.assign({}, this.props.style, this.getHeights())}
+                        style={Object.assign({},
+                            this.props.style,
+                            SizeUtils.geElementHeights(this, TableView.defaultHeight)
+                        )}
                     >
                         {this.renderTableHead(head)}
                         {this.renderTableBody(head, body)}
@@ -161,9 +163,14 @@ export class TableView extends React.PureComponent<TableViewProps> {
         if (!head)
             return null;
 
+        const { children, ...divProps } = head.props;
+
         return (
 
-            <StyledTableHead style={{ height: head.props.height }}>
+            <StyledTableHead
+                {...divProps}
+                style={Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, TableView.defaultHeadHeight))}
+            >
                 <TableHeadRow>
                     <ErrorBoundary>
 
@@ -173,7 +180,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                         )}
 
                         {/* main columns */}
-                        {React.Children.map(head.props.children, (cell, index) => {
+                        {React.Children.map(children, (cell, index) => {
 
                             const headCell: TableCell = cell as any;
                             const cellProps = this.getHeadCellProps(headCell);
@@ -201,19 +208,16 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
     private renderTableBody(head: TableHead, body: TableBody) {
 
-        const headProps = this.getHeadProps(head);
-        const heightValues = this.getHeights();
-        const bodyHeight = `calc(${heightValues.height} - ${headProps.height})`;
-        const bodyMinHeight = `calc(${heightValues.minHeight} - ${headProps.height})`;
-        const bodyMaxHeight = `calc(${heightValues.maxHeight} - ${headProps.height})`;
+        const heights = SizeUtils.getBodyHeights(this, head, {
+            total: TableView.defaultHeight,
+            head: TableView.defaultHeadHeight
+        });
 
         return (
             <StyledTableBody
                 style={{
                     direction: this.props.dir,
-                    height: bodyHeight,
-                    minHeight: bodyMinHeight,
-                    maxHeight: bodyMaxHeight
+                    ...heights
                 }}
             >
                 <ErrorBoundary>
@@ -305,7 +309,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                     )}
 
                     {/* main columns */}
-                    {utils.asArray(rowContent).map((cell, columnIndex) => {
+                    {asArray(rowContent).map((cell, columnIndex) => {
 
                         const cellProps = this.getCellProps(cell);
                         if (cellProps.visible === false)
@@ -380,7 +384,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
         if (ReactUtils.elementInstanceOf(head, TableRow)) {
             return head.props;
         } else {
-            return new TableHeadProps();
+            return {};
         }
     }
 
@@ -408,7 +412,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
         if (!body)
             return false;
 
-        if (utils.isNullOrUndefined(body.props.children))
+        if (isNullOrUndefined(body.props.children))
             return false;
 
         if (typeof body.props.children === 'function')
@@ -453,7 +457,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
     private getRowKey(rowProps: TableRowProps, index: number): React.Key {
 
-        if (!utils.isNullOrUndefined(rowProps.key))
+        if (!isNullOrUndefined(rowProps.key))
             return rowProps.key;
 
         if (typeof this.props.rowKey === 'function')
@@ -493,26 +497,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
         return {
             dir: this.props.dir,
             hairlines: (this.props.hairlines !== false)
-        };
-    }
-
-    private getHeights(): Heights {
-        let height = (this.props.style || {}).height;
-        let minHeight = (this.props.style || {}).minHeight;
-        let maxHeight = (this.props.style || {}).maxHeight;
-
-        if (height === undefined && minHeight === undefined) {
-            height = TableView.defaultHeight;
-        }
-
-        height = utils.cssSizeString(height);
-        minHeight = utils.cssSizeString(minHeight);
-        maxHeight = utils.cssSizeString(maxHeight);
-
-        return {
-            height,
-            minHeight,
-            maxHeight
         };
     }
 

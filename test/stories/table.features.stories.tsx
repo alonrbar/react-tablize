@@ -118,3 +118,30 @@ stories.add('no hairlines', () => {
         </TableView>
     );
 });
+
+
+stories.add('head style', () => {
+    const items = getTestItems('head style');
+    return (
+        <TableView
+            rowCount={items.length}
+            hairlines={false}
+        >
+            <TableHead
+                style={{
+                    color: 'red',
+                    backgroundColor: 'PapayaWhip',
+                    height: 70
+                }}
+            >
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    items[index].name,
+                    items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
