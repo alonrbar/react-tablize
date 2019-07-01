@@ -1,6 +1,6 @@
 # react-tablize
 
-Table and grid components for React.
+Virtual table and grid components for React.
 
 [![npm version](https://img.shields.io/npm/v/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
 [![npm license](https://img.shields.io/npm/l/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
