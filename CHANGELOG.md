@@ -2,6 +2,16 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.10.0 - 2019-07-01](https://github.com/alonrbar/react-tablize/tree/v0.10.0)
+
+### Added
+
+- Allow standard div props on TableHead.
+
+### Fixed
+
+- Fix support for table with no head.
+
 ## [0.9.0 - 2019-07-01](https://github.com/alonrbar/react-tablize/tree/v0.9.0)
 
 ### Added
@@ -44,7 +54,7 @@
 
 ### Added
 
-- ColumnHead supports `className`, `style` and more.
+- Allow standard div props on ColumnHead.
 - GridView examples in readme.
 
 ### Changed

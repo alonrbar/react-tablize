@@ -98,9 +98,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ "./src/index.ts":
 /*!***********************************!*\
-  !*** ./src/index.ts + 22 modules ***!
+  !*** ./src/index.ts + 24 modules ***!
   \***********************************/
-/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHeadProps, TableHead, TableRow, TableViewProps, TableView */
+/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
@@ -297,6 +297,82 @@ function () {
 
   return ReactUtils;
 }();
+// CONCATENATED MODULE: ./src/utils/sizeUtils.ts
+function sizeUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function sizeUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function sizeUtils_createClass(Constructor, protoProps, staticProps) { if (protoProps) sizeUtils_defineProperties(Constructor.prototype, protoProps); if (staticProps) sizeUtils_defineProperties(Constructor, staticProps); return Constructor; }
+
+var SizeUtils =
+/*#__PURE__*/
+function () {
+  function SizeUtils() {
+    sizeUtils_classCallCheck(this, SizeUtils);
+  }
+
+  sizeUtils_createClass(SizeUtils, null, [{
+    key: "geElementHeights",
+    value: function geElementHeights(component, defaultHeight) {
+      var style = component && component.props.style || {};
+      var height = style.height;
+      var minHeight = style.minHeight;
+      var maxHeight = style.maxHeight;
+
+      if (height === undefined && minHeight === undefined) {
+        height = defaultHeight;
+      }
+
+      height = this.cssSizeString(height);
+      minHeight = this.cssSizeString(minHeight);
+      maxHeight = this.cssSizeString(maxHeight);
+      return {
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+      };
+    }
+  }, {
+    key: "getBodyHeights",
+    value: function getBodyHeights(table, head, defaultHeights) {
+      var totalHeights = this.geElementHeights(table, defaultHeights.total);
+      var headHeight = this.getHeadHeight(head, defaultHeights.head);
+      var bodyHeights = this.geElementHeights(table, undefined);
+      var height = bodyHeights.height || totalHeights.height;
+      var minHeight = bodyHeights.minHeight || totalHeights.minHeight;
+      var maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
+
+      if (headHeight) {
+        height = "calc(".concat(height, " - ").concat(headHeight, ")");
+        if (minHeight) minHeight = "calc(".concat(minHeight, " - ").concat(headHeight, ")");
+        if (maxHeight) maxHeight = "calc(".concat(maxHeight, " - ").concat(headHeight, ")");
+      }
+
+      return {
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+      };
+    }
+  }, {
+    key: "getHeadHeight",
+    value: function getHeadHeight(head, defaultHeight) {
+      if (head) {
+        return this.geElementHeights(head, defaultHeight).height;
+      }
+
+      return 0;
+    }
+  }, {
+    key: "cssSizeString",
+    value: function cssSizeString(size) {
+      if (Number.isFinite(size)) return size + 'px';
+      return size;
+    }
+  }]);
+
+  return SizeUtils;
+}();
 // CONCATENATED MODULE: ./src/utils/utils.ts
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -313,29 +389,6 @@ function asArray(val) {
   if (Array.isArray(val)) return val;
   return [val];
 }
-function cssSizeString(size) {
-  if (Number.isFinite(size)) return size + 'px';
-  return size;
-}
-function utils_getHeights(style, defaultHeight) {
-  style = style || {};
-  var height = style.height;
-  var minHeight = style.minHeight;
-  var maxHeight = style.maxHeight;
-
-  if (height === undefined && minHeight === undefined) {
-    height = defaultHeight;
-  }
-
-  height = cssSizeString(height);
-  minHeight = cssSizeString(minHeight);
-  maxHeight = cssSizeString(maxHeight);
-  return {
-    height: height,
-    minHeight: minHeight,
-    maxHeight: maxHeight
-  };
-}
 function randomInt() {
   var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Number.MIN_SAFE_INTEGER;
   var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Number.MAX_SAFE_INTEGER;
@@ -345,6 +398,11 @@ function range(count) {
   // https://stackoverflow.com/questions/3895478/does-javascript-have-a-method-like-range-to-generate-a-range-within-the-supp
   return _toConsumableArray(Array(count || 0).keys());
 }
+// CONCATENATED MODULE: ./src/utils/index.ts
+
+
+
+
 // CONCATENATED MODULE: ./src/grid/GridBody.tsx
 function GridBody_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridBody_typeof = function _typeof(obj) { return typeof obj; }; } else { GridBody_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridBody_typeof(obj); }
 
@@ -621,8 +679,6 @@ function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 
 
-
-
 var GridView_GridView =
 /*#__PURE__*/
 function (_React$PureComponent) {
@@ -693,7 +749,7 @@ function (_React$PureComponent) {
       }, external_react_["createElement"](StyledGridView, _extends({}, divProps, {
         style: Object.assign({
           direction: this.props.dir
-        }, this.props.style, utils_getHeights(divProps.style, GridView.defaultHeight))
+        }, this.props.style, SizeUtils.geElementHeights(this, GridView.defaultHeight))
       }), this.renderHead(), this.renderBody(), this.renderFooter())));
     }
   }, {
@@ -710,7 +766,7 @@ function (_React$PureComponent) {
 
       var freezeColumns = this.props.freezeColumns || 0;
       return external_react_["createElement"](StyledGridHead, _extends({}, divProps, {
-        style: Object.assign({}, head.props.style, utils_getHeights(divProps.style, GridView.defaultHeadHeight))
+        style: Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, GridView.defaultHeadHeight))
       }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
         var width = _ref.width,
             height = _ref.height;
@@ -795,7 +851,11 @@ function (_React$PureComponent) {
           rowHeight = _body$props.rowHeight,
           divProps = GridView_objectWithoutProperties(_body$props, ["children", "rowCount", "rowHeight"]);
 
-      var heights = this.getBodyHeights();
+      var head = reactUtils_ReactUtils.singleChildOfType(this, GridHead);
+      var heights = SizeUtils.getBodyHeights(this, head, {
+        total: GridView.defaultHeight,
+        head: GridView.defaultHeadHeight
+      });
       var freezeColumns = this.props.freezeColumns || 0;
       var frozenColumnsWidth = this.getFrozenColumnsWidth();
       return external_react_["createElement"](StyledGridBody, _extends({}, divProps, {
@@ -910,40 +970,6 @@ function (_React$PureComponent) {
       return {
         dir: this.props.dir
       };
-    }
-  }, {
-    key: "getBodyHeights",
-    value: function getBodyHeights() {
-      var totalHeights = utils_getHeights(this.props.style, GridView.defaultHeight);
-      var headHeight = this.getHeadHeight();
-      var bodyHeights = utils_getHeights(this.props.style, undefined);
-      var height = bodyHeights.height || totalHeights.height;
-      var minHeight = bodyHeights.minHeight || totalHeights.minHeight;
-      var maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
-
-      if (headHeight) {
-        height = "calc(".concat(height, " - ").concat(headHeight, ")");
-        if (minHeight) minHeight = "calc(".concat(minHeight, " - ").concat(headHeight, ")");
-        if (maxHeight) maxHeight = "calc(".concat(maxHeight, " - ").concat(headHeight, ")");
-      }
-
-      return {
-        height: height,
-        minHeight: minHeight,
-        maxHeight: maxHeight
-      };
-    }
-  }, {
-    key: "getHeadHeight",
-    value: function getHeadHeight() {
-      var head = reactUtils_ReactUtils.singleChildOfType(this, GridHead);
-      var headHeight = 0;
-
-      if (head) {
-        headHeight = utils_getHeights(head.props.style, GridView.defaultHeadHeight).height;
-      }
-
-      return headHeight;
     }
   }, {
     key: "getFrozenColumnsWidth",
@@ -1144,6 +1170,8 @@ function (_React$PureComponent) {
 // CONCATENATED MODULE: ./src/table/TableHead.tsx
 function TableHead_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableHead_typeof = function _typeof(obj) { return typeof obj; }; } else { TableHead_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableHead_typeof(obj); }
 
+function TableHead_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function TableHead_possibleConstructorReturn(self, call) { if (call && (TableHead_typeof(call) === "object" || typeof call === "function")) { return call; } return TableHead_assertThisInitialized(self); }
 
 function TableHead_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
@@ -1154,18 +1182,7 @@ function TableHead_inherits(subClass, superClass) { if (typeof superClass !== "f
 
 function TableHead_setPrototypeOf(o, p) { TableHead_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableHead_setPrototypeOf(o, p); }
 
-function TableHead_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function TableHead_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-var TableHeadProps = function TableHeadProps() {
-  TableHead_classCallCheck(this, TableHeadProps);
-
-  TableHead_defineProperty(this, "height", '40px');
-
-  TableHead_defineProperty(this, "children", void 0);
-};
 var TableHead =
 /*#__PURE__*/
 function (_React$PureComponent) {
@@ -1389,11 +1406,13 @@ var LineNumberBodyCell = styledWithTheme(TableBodyCell)(_templateObject9());
 // CONCATENATED MODULE: ./src/table/TableView.tsx
 function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
 
+function TableView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } return target; }
+
+function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
+
 function TableView_objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = TableView_objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function TableView_objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
 
 function TableView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -1412,8 +1431,6 @@ function TableView_setPrototypeOf(o, p) { TableView_setPrototypeOf = Object.setP
 function TableView_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function TableView_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
 
 
 
@@ -1523,7 +1540,7 @@ function (_React$PureComponent) {
         theme: this.getTheme()
       }, external_react_["createElement"](StyledTableView, {
         className: this.props.className,
-        style: Object.assign({}, this.props.style, this.getHeights())
+        style: Object.assign({}, this.props.style, SizeUtils.geElementHeights(this, TableView.defaultHeight))
       }, this.renderTableHead(head), this.renderTableBody(head, body))));
     }
   }, {
@@ -1532,11 +1549,14 @@ function (_React$PureComponent) {
       var _this2 = this;
 
       if (!head) return null;
-      return external_react_["createElement"](StyledTableHead, {
-        style: {
-          height: head.props.height
-        }
-      }, external_react_["createElement"](TableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.props.lineNumbers && external_react_["createElement"](LineNumberHeadCell, null), external_react_["Children"].map(head.props.children, function (cell, index) {
+
+      var _head$props = head.props,
+          children = _head$props.children,
+          divProps = TableView_objectWithoutProperties(_head$props, ["children"]);
+
+      return external_react_["createElement"](StyledTableHead, TableView_extends({}, divProps, {
+        style: Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, TableView.defaultHeadHeight))
+      }), external_react_["createElement"](TableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.props.lineNumbers && external_react_["createElement"](LineNumberHeadCell, null), external_react_["Children"].map(children, function (cell, index) {
         var headCell = cell;
 
         var cellProps = _this2.getHeadCellProps(headCell);
@@ -1553,18 +1573,14 @@ function (_React$PureComponent) {
   }, {
     key: "renderTableBody",
     value: function renderTableBody(head, body) {
-      var headProps = this.getHeadProps(head);
-      var heightValues = this.getHeights();
-      var bodyHeight = "calc(".concat(heightValues.height, " - ").concat(headProps.height, ")");
-      var bodyMinHeight = "calc(".concat(heightValues.minHeight, " - ").concat(headProps.height, ")");
-      var bodyMaxHeight = "calc(".concat(heightValues.maxHeight, " - ").concat(headProps.height, ")");
+      var heights = SizeUtils.getBodyHeights(this, head, {
+        total: TableView.defaultHeight,
+        head: TableView.defaultHeadHeight
+      });
       return external_react_["createElement"](StyledTableBody, {
-        style: {
-          direction: this.props.dir,
-          height: bodyHeight,
-          minHeight: bodyMinHeight,
-          maxHeight: bodyMaxHeight
-        }
+        style: TableView_objectSpread({
+          direction: this.props.dir
+        }, heights)
       }, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.renderTableRows(body)));
     }
   }, {
@@ -1700,7 +1716,7 @@ function (_React$PureComponent) {
       if (reactUtils_ReactUtils.elementInstanceOf(head, TableRow)) {
         return head.props;
       } else {
-        return new TableHeadProps();
+        return {};
       }
     }
   }, {
@@ -1797,26 +1813,6 @@ function (_React$PureComponent) {
       };
     }
   }, {
-    key: "getHeights",
-    value: function getHeights() {
-      var height = (this.props.style || {}).height;
-      var minHeight = (this.props.style || {}).minHeight;
-      var maxHeight = (this.props.style || {}).maxHeight;
-
-      if (height === undefined && minHeight === undefined) {
-        height = TableView.defaultHeight;
-      }
-
-      height = cssSizeString(height);
-      minHeight = cssSizeString(minHeight);
-      maxHeight = cssSizeString(maxHeight);
-      return {
-        height: height,
-        minHeight: minHeight,
-        maxHeight: maxHeight
-      };
-    }
-  }, {
     key: "getOuterElementType",
     value: function getOuterElementType() {
       return this.props.customScrollbars ? CustomScrollbars_CustomScrollbars : undefined;
@@ -1827,6 +1823,8 @@ function (_React$PureComponent) {
 }(external_react_["PureComponent"]);
 
 TableView_defineProperty(TableView_TableView, "defaultHeight", '35vh');
+
+TableView_defineProperty(TableView_TableView, "defaultHeadHeight", '40px');
 
 TableView_defineProperty(TableView_TableView, "Head", TableHead);
 
@@ -1858,7 +1856,6 @@ TableView_defineProperty(TableView_TableView, "defaultProps", new TableViewProps
 /* concated harmony reexport TableCell */__webpack_require__.d(__webpack_exports__, "TableCell", function() { return TableCell; });
 /* concated harmony reexport TableColumnProps */__webpack_require__.d(__webpack_exports__, "TableColumnProps", function() { return TableColumnProps; });
 /* concated harmony reexport TableColumn */__webpack_require__.d(__webpack_exports__, "TableColumn", function() { return TableColumn; });
-/* concated harmony reexport TableHeadProps */__webpack_require__.d(__webpack_exports__, "TableHeadProps", function() { return TableHeadProps; });
 /* concated harmony reexport TableHead */__webpack_require__.d(__webpack_exports__, "TableHead", function() { return TableHead; });
 /* concated harmony reexport TableRow */__webpack_require__.d(__webpack_exports__, "TableRow", function() { return TableRow; });
 /* concated harmony reexport TableViewProps */__webpack_require__.d(__webpack_exports__, "TableViewProps", function() { return TableViewProps; });
