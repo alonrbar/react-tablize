@@ -21,15 +21,9 @@ import {
 import { TableBody } from './TableBody';
 import { CellContent, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
-import { TableHead, TableHeadProps } from './TableHead';
+import { TableHead } from './TableHead';
 import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
 const flattenDeep = require('lodash.flattendeep');
-
-interface Heights {
-    height: any;
-    minHeight: any;
-    maxHeight: any;
-}
 
 type TableChildren_RowsSyntax = [React.SubComp<TableHead>, React.SubComp<TableBody>];
 
@@ -378,14 +372,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
             </TableBody>
         );
         return body;
-    }
-
-    private getHeadProps(head: TableHead): TableHeadProps {
-        if (ReactUtils.elementInstanceOf(head, TableRow)) {
-            return head.props;
-        } else {
-            return {};
-        }
     }
 
     private getHeadCellProps(cell: TableCell): TableCellProps {
