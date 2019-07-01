@@ -35,7 +35,7 @@ export const StyledTableHeadRow = styled.div`
     display: flex;
     justify-content: stretch;
 
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-dir')}: ${scrollbarWidth};
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${scrollbarWidth};
     ${props => props.theme.hairlines ? `border-bottom: ${tableBorder}` : ''};
 `;
 
