@@ -93,7 +93,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
     // component code
     //
 
-    public static defaultProps = {
+    public static defaultProps: Partial<GridViewProps> = {
         overscanRowsCount: 1,
         overscanColumnsCount: 1
     };

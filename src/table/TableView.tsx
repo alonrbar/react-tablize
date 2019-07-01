@@ -59,6 +59,7 @@ export class TableViewProps {
     public style?: React.CSSProperties;
     /**
      * Row height in pixels.  
+     * 
      * Default: 50
      */
     public rowHeight?: number | SizeCallback = 50;

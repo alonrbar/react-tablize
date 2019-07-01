@@ -107,11 +107,19 @@ export class TableViewProps {
     dir?: DocDir;
     className?: string;
     style?: React.CSSProperties;
+    /**
+     * Row height in pixels.  
+     * 
+     * Default: 50
+     */
     rowHeight?: number | SizeCallback;
     emptyMessage?: string;
     lineNumbers?: boolean;
     customScrollbars?: boolean;
     hairlines?: boolean;
+    /**
+     * Default: 20
+     */
     overscanCount?: number;
 }
 
@@ -202,6 +210,9 @@ export interface GridViewProps extends React.DivProps {
 
     columnCount: number;
     columnWidth: number | SizeCallback;
+    /**
+     * Number of columns to freeze (always the first columns).
+     */
     freezeColumns?: number;    
 
     dir?: DocDir;
@@ -211,7 +222,7 @@ export interface GridViewProps extends React.DivProps {
      * Tweaking this can help reduce scroll flickering on certain
      * browsers/devices.  
      * 
-     * Default: 20
+     * Default: 1
      */
     overscanRowsCount?: number;
     /**
@@ -219,7 +230,7 @@ export interface GridViewProps extends React.DivProps {
      * Tweaking this can help reduce scroll flickering on certain
      * browsers/devices.  
      * 
-     * Default: 20
+     * Default: 1
      */
     overscanColumnsCount?: number;
     /**
