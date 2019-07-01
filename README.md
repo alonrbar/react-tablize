@@ -13,6 +13,7 @@ Virtual table and grid components for React.
 - [GridView](#gridview)
   - [Examples](#grid-examples)
   - [Props](#grid-props)
+- [Changelog](#changelog)
 
 ## TableView
 
@@ -230,3 +231,7 @@ const people: Person[];
 | overscanRowsCount | number | 1 | no ||
 | overscanColumnsCount | number | 1 | no ||
 | useIsScrolling | boolean | false | no | Adds an additional isScrolling parameter to the children render function. This parameter can be used to show a placeholder row or column while the list is being scrolled. Note that using this parameter may impact performance. |
+
+## Changelog
+
+The changelog can be found [here](https://github.com/alonrbar/react-tablize/blob/master/CHANGELOG.md).
