@@ -2,10 +2,13 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.9.0 - 2019-07-01](https://github.com/alonrbar/react-tablize/tree/v0.9.0)
+
 ### Added
 
+- Props description in the README file.
 - New `TableView.isVirtual` property.
-- New appearance props: `TableView.customScrollbars` and `TableView.hairlines`.
+- New appearance props (not documented): `TableView.customScrollbars` and `TableView.hairlines`.
   Note: Use appearance props with caution as they may be removed in the future...
 
 ## [0.8.0 - 2019-06-23](https://github.com/alonrbar/react-tablize/tree/v0.8.0)
