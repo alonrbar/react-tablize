@@ -26,7 +26,7 @@ export class ReactUtils {
 
         return elem.type === type ||
             elem.type.prototype instanceof type ||
-            type.isPrototypeOf(elem.type);
+            Object.prototype.isPrototypeOf.call(type, elem.type);
     }
 
     public static isReactFragment(elem: any): boolean {
