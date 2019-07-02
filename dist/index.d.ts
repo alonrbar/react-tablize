@@ -117,6 +117,7 @@ export class TableViewProps {
     lineNumbers?: boolean;
     customScrollbars?: boolean;
     hairlines?: boolean;
+    keyScroll?: boolean;
     /**
      * Default: 20
      */

@@ -135,6 +135,7 @@ const people: Person[];
 | style | React.CSSProperties || no ||
 | rowHeight | `number` \| `(rowIndex: number) => number` | 50 | no | Row height in pixels. |
 | emptyMessage | string | "No Items to Display" | no | What to display when there are no items. |
+| keyScroll | boolean | true | false | Enables table scrolling using the `PageUp`, `PageDown`, `Home` and `End` keys. |
 | overscanCount | number | 20 | no ||
 
 ## GridView

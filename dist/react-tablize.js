@@ -98,13 +98,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ "./src/index.ts":
 /*!***********************************!*\
-  !*** ./src/index.ts + 24 modules ***!
+  !*** ./src/index.ts + 25 modules ***!
   \***********************************/
 /*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-custom-scrollbars" (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with external "react-dom" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-virtualized-auto-sizer" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-window" (<- Module is not an ECMAScript module) */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -192,6 +193,15 @@ function (_React$Component) {
 
   return ErrorBoundary;
 }(external_react_["Component"]);
+// CONCATENATED MODULE: ./src/utils/keys.ts
+var Keys;
+
+(function (Keys) {
+  Keys["PageUp"] = "PageUp";
+  Keys["PageDown"] = "PageDown";
+  Keys["End"] = "End";
+  Keys["Home"] = "Home";
+})(Keys || (Keys = {}));
 // CONCATENATED MODULE: ./src/utils/reactUtils.ts
 function reactUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -399,6 +409,7 @@ function range(count) {
   return _toConsumableArray(Array(count || 0).keys());
 }
 // CONCATENATED MODULE: ./src/utils/index.ts
+
 
 
 
@@ -1225,11 +1236,16 @@ function (_React$PureComponent) {
 
   return TableRow;
 }(external_react_["PureComponent"]);
+// EXTERNAL MODULE: external "react-dom"
+var external_react_dom_ = __webpack_require__("react-dom");
+
 // EXTERNAL MODULE: external "react-custom-scrollbars"
 var external_react_custom_scrollbars_ = __webpack_require__("react-custom-scrollbars");
 var external_react_custom_scrollbars_default = /*#__PURE__*/__webpack_require__.n(external_react_custom_scrollbars_);
 
 // CONCATENATED MODULE: ./src/table/CustomScrollbars.tsx
+function CustomScrollbars_extends() { CustomScrollbars_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return CustomScrollbars_extends.apply(this, arguments); }
+
 function CustomScrollbars_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { CustomScrollbars_typeof = function _typeof(obj) { return typeof obj; }; } else { CustomScrollbars_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return CustomScrollbars_typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { CustomScrollbars_defineProperty(target, key, source[key]); }); } return target; }
@@ -1254,21 +1270,32 @@ function CustomScrollbars_setPrototypeOf(o, p) { CustomScrollbars_setPrototypeOf
 
 
 
-var CustomScrollbars_CustomScrollbars =
+
+var CustomScrollbars_CustomScrollbarsInner =
 /*#__PURE__*/
 function (_React$PureComponent) {
-  CustomScrollbars_inherits(CustomScrollbars, _React$PureComponent);
+  CustomScrollbars_inherits(CustomScrollbarsInner, _React$PureComponent);
 
-  function CustomScrollbars() {
-    CustomScrollbars_classCallCheck(this, CustomScrollbars);
+  function CustomScrollbarsInner() {
+    CustomScrollbars_classCallCheck(this, CustomScrollbarsInner);
 
-    return CustomScrollbars_possibleConstructorReturn(this, CustomScrollbars_getPrototypeOf(CustomScrollbars).apply(this, arguments));
+    return CustomScrollbars_possibleConstructorReturn(this, CustomScrollbars_getPrototypeOf(CustomScrollbarsInner).apply(this, arguments));
   }
 
-  CustomScrollbars_createClass(CustomScrollbars, [{
+  CustomScrollbars_createClass(CustomScrollbarsInner, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
+      // https://github.com/bvaughn/react-window/issues/110#issuecomment-469061213
+      var refSetter = function refSetter(elem) {
+        if (!_this.props.forwardedRef) return;
+
+        _this.props.forwardedRef((elem || {}).view);
+      };
+
       return external_react_["createElement"](external_react_custom_scrollbars_default.a, {
+        ref: refSetter,
         style: _objectSpread({}, this.props.style, {
           overflow: 'hidden',
           direction: 'ltr'
@@ -1278,8 +1305,15 @@ function (_React$PureComponent) {
     }
   }]);
 
-  return CustomScrollbars;
+  return CustomScrollbarsInner;
 }(external_react_["PureComponent"]);
+
+var CustomScrollbars = external_react_["forwardRef"](function (props, ref) {
+  return external_react_["createElement"](CustomScrollbars_CustomScrollbarsInner, CustomScrollbars_extends({}, props, {
+    forwardedRef: ref
+  }));
+});
+CustomScrollbars.displayName = 'CustomScrollbars';
 // CONCATENATED MODULE: ./src/table/style.tsx
 function _templateObject9() {
   var data = style_taggedTemplateLiteral(["\n    min-width: 40px;\n    max-width: 50px;\n"]);
@@ -1404,15 +1438,17 @@ var TableBodyRow = styledWithTheme.div(_templateObject7(), function (props) {
 var TableBodyCell = styledWithTheme.div(_templateObject8());
 var LineNumberBodyCell = styledWithTheme(TableBodyCell)(_templateObject9());
 // CONCATENATED MODULE: ./src/table/TableView.tsx
+var _scrollKeys;
+
 function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
 
 function TableView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } return target; }
 
-function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
-
 function TableView_objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = TableView_objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function TableView_objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
 
 function TableView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -1447,8 +1483,10 @@ function TableView_defineProperty(obj, key, value) { if (key in obj) { Object.de
 
 
 
+
 var flattenDeep = __webpack_require__(/*! lodash.flattendeep */ "lodash.flattendeep");
 
+var scrollKeys = (_scrollKeys = {}, TableView_defineProperty(_scrollKeys, Keys.PageUp, true), TableView_defineProperty(_scrollKeys, Keys.PageDown, true), TableView_defineProperty(_scrollKeys, Keys.End, true), TableView_defineProperty(_scrollKeys, Keys.Home, true), _scrollKeys);
 var TableViewProps = function TableViewProps() {
   TableView_classCallCheck(this, TableViewProps);
 
@@ -1476,6 +1514,8 @@ var TableViewProps = function TableViewProps() {
 
   TableView_defineProperty(this, "hairlines", void 0);
 
+  TableView_defineProperty(this, "keyScroll", void 0);
+
   TableView_defineProperty(this, "overscanCount", 20);
 };
 var TableView_TableView =
@@ -1497,6 +1537,43 @@ function (_React$PureComponent) {
     _this = TableView_possibleConstructorReturn(this, (_getPrototypeOf2 = TableView_getPrototypeOf(TableView)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     TableView_defineProperty(TableView_assertThisInitialized(_this), "tableElement", external_react_["createRef"]());
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "tableInnerRef", external_react_["createRef"]());
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "tableOuterRef", external_react_["createRef"]());
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "registerKeyHandlers", function () {
+      window.addEventListener('keydown', _this.scrollByKey);
+    });
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "removeKeyHandlers", function () {
+      window.removeEventListener('keydown', _this.scrollByKey);
+    });
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "scrollByKey", function (_ref) {
+      var _offsetByKey;
+
+      var key = _ref.key;
+      // https://dev.to/dance2die/scrolling-with-page-up-down-keys-in-react-window-31ei
+      if (!scrollKeys[key]) return;
+      if (!_this.tableElement.current || !_this.tableInnerRef.current || !_this.tableOuterRef.current) return;
+      var scrollElement = _this.props.customScrollbars ? _this.tableOuterRef.current : _this.tableElement.current;
+      var table = external_react_dom_["findDOMNode"](scrollElement);
+      var currentOffset = table.scrollTop;
+      var bodyHeight = table.clientHeight;
+      var pageSize = bodyHeight * 0.85;
+      var minOffset = 0.1;
+      var maxOffset = _this.tableInnerRef.current.clientHeight;
+      var offsetByKey = (_offsetByKey = {}, TableView_defineProperty(_offsetByKey, Keys.PageUp, Math.max(minOffset, currentOffset - pageSize)), TableView_defineProperty(_offsetByKey, Keys.PageDown, Math.min(currentOffset + pageSize, maxOffset)), TableView_defineProperty(_offsetByKey, Keys.End, maxOffset), TableView_defineProperty(_offsetByKey, Keys.Home, minOffset), _offsetByKey);
+
+      _this.setScrollOffset(offsetByKey[key]);
+    });
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "setScrollOffset", function (offset) {
+      if (!_this.tableElement.current) return;
+
+      _this.tableElement.current.scrollTo(offset);
+    });
 
     TableView_defineProperty(TableView_assertThisInitialized(_this), "getRowHeight", function (rowIndex) {
       if (typeof _this.props.rowHeight === 'function') return _this.props.rowHeight(rowIndex);
@@ -1538,10 +1615,10 @@ function (_React$PureComponent) {
 
       return external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["createElement"](external_emotion_theming_["ThemeProvider"], {
         theme: this.getTheme()
-      }, external_react_["createElement"](StyledTableView, {
+      }, external_react_["createElement"](StyledTableView, TableView_extends({
         className: this.props.className,
         style: Object.assign({}, this.props.style, SizeUtils.geElementHeights(this, TableView.defaultHeight))
-      }, this.renderTableHead(head), this.renderTableBody(head, body))));
+      }, this.getKeyScrollProps()), this.renderTableHead(head), this.renderTableBody(head, body))));
     }
   }, {
     key: "renderTableHead",
@@ -1573,14 +1650,14 @@ function (_React$PureComponent) {
   }, {
     key: "renderTableBody",
     value: function renderTableBody(head, body) {
-      var heights = SizeUtils.getBodyHeights(this, head, {
+      var bodyHeights = SizeUtils.getBodyHeights(this, head, {
         total: TableView.defaultHeight,
         head: TableView.defaultHeadHeight
       });
       return external_react_["createElement"](StyledTableBody, {
         style: TableView_objectSpread({
           direction: this.props.dir
-        }, heights)
+        }, bodyHeights)
       }, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.renderTableRows(body)));
     }
   }, {
@@ -1595,9 +1672,9 @@ function (_React$PureComponent) {
 
 
       var rowRender = body.props.children;
-      return external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
-        var width = _ref.width,
-            height = _ref.height;
+      return external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref2) {
+        var width = _ref2.width,
+            height = _ref2.height;
         return _this3.props.isVirtual !== false ? _this3.renderTableRows_virtual(width, height, rowRender) : _this3.renderTableRows_nonVirtual(width, height, rowRender);
       });
     }
@@ -1608,6 +1685,8 @@ function (_React$PureComponent) {
 
       return external_react_["createElement"](external_react_window_["VariableSizeList"], {
         ref: this.tableElement,
+        innerRef: this.tableInnerRef,
+        outerRef: this.tableOuterRef,
         style: {
           outline: 'none'
         },
@@ -1618,9 +1697,9 @@ function (_React$PureComponent) {
         width: width,
         itemCount: this.props.rowCount,
         itemSize: this.getRowHeight
-      }, function (_ref2) {
-        var index = _ref2.index,
-            style = _ref2.style;
+      }, function (_ref3) {
+        var index = _ref3.index,
+            style = _ref3.style;
         return _this4.renderBodyRow(index, rowRender, style);
       });
     }
@@ -1678,11 +1757,28 @@ function (_React$PureComponent) {
         }
       }, this.props.emptyMessage));
     } //
-    // components structure handling
-    //  
+    // scroll with keys
+    //
 
   }, {
+    key: "getKeyScrollProps",
+    value: function getKeyScrollProps() {
+      var _this7 = this;
+
+      if (this.props.keyScroll === false) return {};
+      return {
+        onMouseEnter: this.registerKeyHandlers,
+        onMouseLeave: this.removeKeyHandlers,
+        onKeyDown: function onKeyDown(e) {
+          return _this7.scrollByKey(e);
+        }
+      };
+    }
+  }, {
     key: "createHeadFromColumns",
+    //
+    // components structure handling
+    //  
     value: function createHeadFromColumns(columns) {
       if (columns.every(function (col) {
         return !reactUtils_ReactUtils.singleChildOfType(col, ColumnHead);
@@ -1709,15 +1805,6 @@ function (_React$PureComponent) {
         });
       });
       return body;
-    }
-  }, {
-    key: "getHeadProps",
-    value: function getHeadProps(head) {
-      if (reactUtils_ReactUtils.elementInstanceOf(head, TableRow)) {
-        return head.props;
-      } else {
-        return {};
-      }
     }
   }, {
     key: "getHeadCellProps",
@@ -1815,7 +1902,7 @@ function (_React$PureComponent) {
   }, {
     key: "getOuterElementType",
     value: function getOuterElementType() {
-      return this.props.customScrollbars ? CustomScrollbars_CustomScrollbars : undefined;
+      return this.props.customScrollbars ? CustomScrollbars : undefined;
     }
   }]);
 
@@ -1935,6 +2022,18 @@ module.exports = require("react");
 /***/ (function(module, exports) {
 
 module.exports = require("react-custom-scrollbars");
+
+/***/ }),
+
+/***/ "react-dom":
+/*!****************************!*\
+  !*** external "react-dom" ***!
+  \****************************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports) {
+
+module.exports = require("react-dom");
 
 /***/ }),
 
