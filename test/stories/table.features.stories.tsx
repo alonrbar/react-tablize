@@ -119,7 +119,6 @@ stories.add('no hairlines', () => {
     );
 });
 
-
 stories.add('head style', () => {
     const items = getTestItems('head style');
     return (
@@ -140,6 +139,27 @@ stories.add('head style', () => {
                 {index => ([
                     items[index].name,
                     items[index].age
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
+
+stories.add('scroll by keys', () => {
+    return (
+        <TableView
+            rowCount={1000}
+            isVirtual={true}
+            customScrollbars={true}
+        >
+            <TableHead
+            >
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    index + 1,
+                    index + 1
                 ])}
             </TableBody>
         </TableView>

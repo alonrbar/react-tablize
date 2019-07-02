@@ -1,9 +1,10 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
-import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
+import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils, Keys } from '../utils';
 import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
 import { CustomScrollbars } from './CustomScrollbars';
@@ -24,6 +25,17 @@ import { TableColumn } from './TableColumn';
 import { TableHead } from './TableHead';
 import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
 const flattenDeep = require('lodash.flattendeep');
+
+interface KeyEvent {
+    key: string;
+}
+
+const scrollKeys: IMap<boolean> = {
+    [Keys.PageUp]: true,
+    [Keys.PageDown]: true,
+    [Keys.End]: true,
+    [Keys.Home]: true,
+};
 
 type TableChildren_RowsSyntax = [React.SubComp<TableHead>, React.SubComp<TableBody>];
 
@@ -59,6 +71,12 @@ export class TableViewProps {
     public lineNumbers?: boolean;
     public customScrollbars?: boolean;
     public hairlines?: boolean;
+
+    //
+    // behavior
+    //
+
+    public keyScroll?: boolean;
 
     //
     // virtualization
@@ -101,6 +119,8 @@ export class TableView extends React.PureComponent<TableViewProps> {
     public static defaultProps = new TableViewProps();
 
     private tableElement = React.createRef<VariableSizeList>();
+    private tableInnerRef = React.createRef<HTMLElement>();
+    private tableOuterRef = React.createRef<HTMLElement>();
 
     //
     // public methods
@@ -143,6 +163,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                             this.props.style,
                             SizeUtils.geElementHeights(this, TableView.defaultHeight)
                         )}
+                        {...this.getKeyScrollProps()}
                     >
                         {this.renderTableHead(head)}
                         {this.renderTableBody(head, body)}
@@ -202,7 +223,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
     private renderTableBody(head: TableHead, body: TableBody) {
 
-        const heights = SizeUtils.getBodyHeights(this, head, {
+        const bodyHeights = SizeUtils.getBodyHeights(this, head, {
             total: TableView.defaultHeight,
             head: TableView.defaultHeadHeight
         });
@@ -211,7 +232,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
             <StyledTableBody
                 style={{
                     direction: this.props.dir,
-                    ...heights
+                    ...bodyHeights
                 }}
             >
                 <ErrorBoundary>
@@ -245,6 +266,8 @@ export class TableView extends React.PureComponent<TableViewProps> {
         return (
             <VariableSizeList
                 ref={this.tableElement}
+                innerRef={this.tableInnerRef}
+                outerRef={this.tableOuterRef}
                 style={{ outline: 'none' }}
                 outerElementType={this.getOuterElementType()}
                 direction={this.props.dir}
@@ -269,7 +292,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                     outline: 'none',
                     overflow: 'auto',
                 }
-            },
+            } as any,
             (rowRender && (
                 Array(this.props.rowCount).fill(0).map((_, index) => (
                     this.renderBodyRow(index, rowRender, { height: this.getRowHeight(index) })
@@ -334,6 +357,63 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 </div>
             </div>
         );
+    }
+
+    //
+    // scroll with keys
+    //
+
+    private getKeyScrollProps() {
+        if (this.props.keyScroll === false)
+            return {};
+        return {
+            onMouseEnter: this.registerKeyHandlers,
+            onMouseLeave: this.removeKeyHandlers,
+            onKeyDown: (e: KeyEvent) => this.scrollByKey(e)
+        };
+    }
+
+    private registerKeyHandlers = () => {
+        window.addEventListener('keydown', this.scrollByKey);
+    }
+
+    private removeKeyHandlers = () => {
+        window.removeEventListener('keydown', this.scrollByKey);
+    }
+
+    private scrollByKey = ({ key }: KeyEvent) => {
+
+        // https://dev.to/dance2die/scrolling-with-page-up-down-keys-in-react-window-31ei
+
+        if (!scrollKeys[key])
+            return;
+
+        if (!this.tableElement.current || !this.tableInnerRef.current || !this.tableOuterRef.current)
+            return;
+
+        const scrollElement = (this.props.customScrollbars ? this.tableOuterRef.current : this.tableElement.current);
+        const table = (ReactDOM.findDOMNode(scrollElement) as HTMLElement);
+        const currentOffset = table.scrollTop;
+        const bodyHeight = table.clientHeight;
+        const pageSize = bodyHeight * 0.85;
+        const minOffset = 0.1;
+        const maxOffset = this.tableInnerRef.current.clientHeight;
+
+        const offsetByKey: IMap<number> = {
+            [Keys.PageUp]: Math.max(minOffset, currentOffset - pageSize),
+            [Keys.PageDown]: Math.min(currentOffset + pageSize, maxOffset),
+            [Keys.End]: maxOffset,
+            [Keys.Home]: minOffset,
+        };
+
+        this.setScrollOffset(offsetByKey[key]);
+    }
+
+    private setScrollOffset = (offset: number) => {
+        if (!this.tableElement.current)
+            return;
+
+        this.tableElement.current.scrollTo(offset);
     }
 
     //

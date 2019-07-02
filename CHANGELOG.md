@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- Scroll virtual table with the keyboard.
+
 ## [0.10.0 - 2019-07-01](https://github.com/alonrbar/react-tablize/tree/v0.10.0)
 
 ### Added
