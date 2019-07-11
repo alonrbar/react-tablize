@@ -1517,6 +1517,8 @@ var TableViewProps = function TableViewProps() {
   TableView_defineProperty(this, "keyScroll", void 0);
 
   TableView_defineProperty(this, "overscanCount", 20);
+
+  TableView_defineProperty(this, "useIsScrolling", void 0);
 };
 var TableView_TableView =
 /*#__PURE__*/
@@ -1696,11 +1698,14 @@ function (_React$PureComponent) {
         height: height,
         width: width,
         itemCount: this.props.rowCount,
-        itemSize: this.getRowHeight
+        itemSize: this.getRowHeight,
+        overscanCount: this.props.overscanCount,
+        useIsScrolling: this.props.useIsScrolling
       }, function (_ref3) {
         var index = _ref3.index,
-            style = _ref3.style;
-        return _this4.renderBodyRow(index, rowRender, style);
+            style = _ref3.style,
+            isScrolling = _ref3.isScrolling;
+        return _this4.renderBodyRow(index, rowRender, style, isScrolling);
       });
     }
   }, {
@@ -1724,11 +1729,11 @@ function (_React$PureComponent) {
     }
   }, {
     key: "renderBodyRow",
-    value: function renderBodyRow(index, rowRender, style) {
+    value: function renderBodyRow(index, rowRender, style, isScrolling) {
       var _this6 = this;
 
       if (!rowRender) return null;
-      var row = rowRender(index);
+      var row = rowRender(index, isScrolling);
 
       var _this$getRowProps = this.getRowProps(row),
           rowStyle = _this$getRowProps.style,

@@ -2,6 +2,16 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.12.0 - 2019-07-11](https://github.com/alonrbar/react-tablize/tree/v0.12.0)
+
+### Added
+
+- Expose `TableView.useIsScrolling`.
+
+### Fixed
+
+- `TableView.overscanCount` was not effecting.
+
 ## [0.11.0 - 2019-07-02](https://github.com/alonrbar/react-tablize/tree/v0.11.0)
 
 ### Added
