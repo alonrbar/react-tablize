@@ -135,8 +135,9 @@ const people: Person[];
 | style | React.CSSProperties || no ||
 | rowHeight | `number` \| `(rowIndex: number) => number` | 50 | no | Row height in pixels. |
 | emptyMessage | string | "No Items to Display" | no | What to display when there are no items. |
-| keyScroll | boolean | true | false | Enables table scrolling using the `PageUp`, `PageDown`, `Home` and `End` keys. |
+| keyScroll | boolean | true | no | Enables table scrolling using the `PageUp`, `PageDown`, `Home` and `End` keys. |
 | overscanCount | number | 20 | no ||
+| useIsScrolling | boolean | false | no | Adds an additional isScrolling parameter to the children render function. This parameter can be used to show a placeholder row or column while the list is being scrolled. Note that using this parameter may impact performance. |
 
 ## GridView
 

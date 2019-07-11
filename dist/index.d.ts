@@ -122,6 +122,16 @@ export class TableViewProps {
      * Default: 20
      */
     overscanCount?: number;
+    /**
+     * Adds an additional isScrolling parameter to the children render function.
+     * This parameter can be used to show a placeholder row or column while the
+     * list is being scrolled.
+     *
+     * Note that using this parameter will result in an additional render call
+     * after scrolling has stopped (when isScrolling changes from true to
+     * false).
+     */
+    public useIsScrolling?: boolean;
 }
 
 export class TableView extends React.PureComponent<TableViewProps, TableViewState> {

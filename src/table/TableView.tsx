@@ -90,6 +90,16 @@ export class TableViewProps {
      * Default: 20
      */
     public overscanCount?= 20;
+    /**
+     * Adds an additional isScrolling parameter to the children render function.
+     * This parameter can be used to show a placeholder row or column while the
+     * list is being scrolled.
+     *
+     * Note that using this parameter will result in an additional render call
+     * after scrolling has stopped (when isScrolling changes from true to
+     * false).
+     */
+    public useIsScrolling?: boolean;
 
 }
 
@@ -276,8 +286,9 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 width={width}
                 itemCount={this.props.rowCount}
                 itemSize={this.getRowHeight}
+                useIsScrolling={this.props.useIsScrolling}
             >
-                {({ index, style }) => this.renderBodyRow(index, rowRender, style)}
+                {({ index, style, isScrolling }) => this.renderBodyRow(index, rowRender, style, isScrolling)}
             </VariableSizeList>
         );
     }
@@ -301,11 +312,11 @@ export class TableView extends React.PureComponent<TableViewProps> {
         );
     }
 
-    private renderBodyRow(index: number, rowRender: RowRender, style?: React.CSSProperties) {
+    private renderBodyRow(index: number, rowRender: RowRender, style: React.CSSProperties, isScrolling?: boolean) {
         if (!rowRender)
             return null;
 
-        const row = rowRender(index);
+        const row = rowRender(index, isScrolling);
         const { style: rowStyle, ...rowProps } = this.getRowProps(row);
         const rowKey = this.getRowKey(rowProps, index);
         const rowContent = this.getRowContent(row);

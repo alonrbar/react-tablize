@@ -9,4 +9,4 @@ export interface TableRowProps extends React.DivProps {
 
 export class TableRow extends React.PureComponent<TableRowProps> { }
 
-export type RowRender = (index: number) => React.SubComp<TableRow> | RowContent;
+export type RowRender = (index: number, isScrolling: boolean) => React.SubComp<TableRow> | RowContent;
