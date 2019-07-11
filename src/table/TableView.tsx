@@ -286,6 +286,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 width={width}
                 itemCount={this.props.rowCount}
                 itemSize={this.getRowHeight}
+                overscanCount={this.props.overscanCount}
                 useIsScrolling={this.props.useIsScrolling}
             >
                 {({ index, style, isScrolling }) => this.renderBodyRow(index, rowRender, style, isScrolling)}
