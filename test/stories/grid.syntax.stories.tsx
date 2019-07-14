@@ -143,7 +143,7 @@ stories.add('simple grid - rtl', () => (
 stories.add('variable size grid', () => (
     <GridView
         columnCount={1000}
-        columnWidth={columnIndex => columnIndex ? 100 : 50}
+        columnWidth={columnIndex => columnIndex > 3 ? 100 : 50}
         freezeColumns={1}
     >
 
@@ -157,7 +157,7 @@ stories.add('variable size grid', () => (
 
         <GridView.Body
             rowCount={10}
-            rowHeight={rowIndex => rowIndex ? 40 : 80}
+            rowHeight={rowIndex => rowIndex > 2 ? 40 : 80}
         >
             {({ rowIndex, columnIndex }) => (
                 <GridView.Cell style={{ color: 'blue' }}>
