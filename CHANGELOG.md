@@ -4,6 +4,7 @@
 
 ### Added
 
+- Scroll grid's body when scrolling frozen columns.
 - Output css labels.
 
 ### Changed
