@@ -102,6 +102,7 @@ return /******/ (function(modules) { // webpackBootstrap
   \***********************************/
 /*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHead, TableRow, TableViewProps, TableView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled-base" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react-custom-scrollbars" (<- Module is not an ECMAScript module) */
@@ -570,89 +571,52 @@ function (_React$PureComponent) {
 
   return GridHead;
 }(external_react_["PureComponent"]);
-// EXTERNAL MODULE: external "@emotion/styled"
-var styled_ = __webpack_require__("@emotion/styled");
-var styled_default = /*#__PURE__*/__webpack_require__.n(styled_);
-
-// CONCATENATED MODULE: ./src/styled.ts
-
-var styledWithTheme = styled_default.a;
+// EXTERNAL MODULE: external "@emotion/styled-base"
+var styled_base_ = __webpack_require__("@emotion/styled-base");
+var styled_base_default = /*#__PURE__*/__webpack_require__.n(styled_base_);
 
 // CONCATENATED MODULE: ./src/grid/style.tsx
-function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n    label: grid-body-cell;\n\n    display: flex;\n\n    height: 100%;\n\n    overflow: hidden;\n    text-overflow: ellipsis;\n\n    align-items: center;\n    vertical-align: middle;\n"]);
 
-  _templateObject5 = function _templateObject5() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n    label: grid-body;\n"]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n    label: grid-head-cell;\n\n    display: flex;\n\n    overflow: hidden;\n    text-overflow: ellipsis;\n\n    align-items: flex-end;\n    vertical-align: bottom;\n"]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n    label: grid-head;\n\n    display: flex;\n\n    font-weight: bold;\n    vertical-align: middle;\n\n    ", ": ", "px;\n    border-bottom: ", ";\n"]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    label: grid-view;\n\n    width: 100%;\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
- //
+//
 // constants
 //
-
 var scrollbarWidth = 17;
 var tableBorder = '1px solid #ddd'; //
 // grid
 //
 
-var StyledGridView = styledWithTheme.div(_templateObject()); //
+var StyledGridView = styled_base_default()("div", {
+  target: "e12w1khq0",
+  label: "StyledGridView"
+})( false ? undefined : {
+  name: "8atqhb",
+  styles: "width:100%;",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcQWxvblxcRG9jdW1lbnRzXFxkZXZlbFxccmVhY3QtdGFibGl6ZVxcc3JjXFxncmlkXFxzdHlsZS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBYXdDIiwiZmlsZSI6IkM6XFxVc2Vyc1xcQWxvblxcRG9jdW1lbnRzXFxkZXZlbFxccmVhY3QtdGFibGl6ZVxcc3JjXFxncmlkXFxzdHlsZS50c3giLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgc3R5bGVkIGZyb20gJ0BlbW90aW9uL3N0eWxlZCc7XHJcblxyXG4vL1xyXG4vLyBjb25zdGFudHNcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBzY3JvbGxiYXJXaWR0aCA9IDE3O1xyXG5jb25zdCB0YWJsZUJvcmRlciA9ICcxcHggc29saWQgI2RkZCc7XHJcblxyXG4vL1xyXG4vLyBncmlkXHJcbi8vXHJcblxyXG5leHBvcnQgY29uc3QgU3R5bGVkR3JpZFZpZXcgPSBzdHlsZWQuZGl2YFxyXG4gICAgd2lkdGg6IDEwMCU7XHJcbmA7XHJcblxyXG5leHBvcnQgY29uc3QgU3R5bGVkR3JpZENlbGwgPSBzdHlsZWQuZGl2YFxyXG4gICAgZGlzcGxheTogZmxleDtcclxuXHJcbiAgICBoZWlnaHQ6IDEwMCU7XHJcblxyXG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcclxuICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xyXG5cclxuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xyXG5gO1xyXG5cclxuLy9cclxuLy8gaGVhZFxyXG4vL1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRIZWFkID0gc3R5bGVkLmRpdmBcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcblxyXG4gICAgZm9udC13ZWlnaHQ6IGJvbGQ7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xyXG5cclxuICAgICR7cHJvcHMgPT4gKHByb3BzLnRoZW1lLmRpciA9PT0gJ3J0bCcgPyAncGFkZGluZy1sZWZ0JyA6ICdwYWRkaW5nLXJpZ2h0Jyl9OiAke3Njcm9sbGJhcldpZHRofXB4O1xyXG4gICAgYm9yZGVyLWJvdHRvbTogJHt0YWJsZUJvcmRlcn07XHJcblxyXG4gICAgJiAke1N0eWxlZEdyaWRDZWxsfSB7XHJcbiAgICAgICAgYWxpZ24taXRlbXM6IGZsZXgtZW5kO1xyXG4gICAgfVxyXG5gO1xyXG5cclxuLy9cclxuLy8gYm9keVxyXG4vL1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRCb2R5ID0gc3R5bGVkLmRpdmBcclxuYDsiXX0= */"
+});
+var StyledGridCell = styled_base_default()("div", {
+  target: "e12w1khq1",
+  label: "StyledGridCell"
+})( false ? undefined : {
+  name: "6ejg3q",
+  styles: "display:flex;height:100%;overflow:hidden;text-overflow:ellipsis;align-items:center;vertical-align:middle;",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcQWxvblxcRG9jdW1lbnRzXFxkZXZlbFxccmVhY3QtdGFibGl6ZVxcc3JjXFxncmlkXFxzdHlsZS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBaUJ3QyIsImZpbGUiOiJDOlxcVXNlcnNcXEFsb25cXERvY3VtZW50c1xcZGV2ZWxcXHJlYWN0LXRhYmxpemVcXHNyY1xcZ3JpZFxcc3R5bGUudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHN0eWxlZCBmcm9tICdAZW1vdGlvbi9zdHlsZWQnO1xyXG5cclxuLy9cclxuLy8gY29uc3RhbnRzXHJcbi8vXHJcblxyXG5leHBvcnQgY29uc3Qgc2Nyb2xsYmFyV2lkdGggPSAxNztcclxuY29uc3QgdGFibGVCb3JkZXIgPSAnMXB4IHNvbGlkICNkZGQnO1xyXG5cclxuLy9cclxuLy8gZ3JpZFxyXG4vL1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRWaWV3ID0gc3R5bGVkLmRpdmBcclxuICAgIHdpZHRoOiAxMDAlO1xyXG5gO1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRDZWxsID0gc3R5bGVkLmRpdmBcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcblxyXG4gICAgaGVpZ2h0OiAxMDAlO1xyXG5cclxuICAgIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcclxuXHJcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxuYDtcclxuXHJcbi8vXHJcbi8vIGhlYWRcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBTdHlsZWRHcmlkSGVhZCA9IHN0eWxlZC5kaXZgXHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG5cclxuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxuXHJcbiAgICAke3Byb3BzID0+IChwcm9wcy50aGVtZS5kaXIgPT09ICdydGwnID8gJ3BhZGRpbmctbGVmdCcgOiAncGFkZGluZy1yaWdodCcpfTogJHtzY3JvbGxiYXJXaWR0aH1weDtcclxuICAgIGJvcmRlci1ib3R0b206ICR7dGFibGVCb3JkZXJ9O1xyXG5cclxuICAgICYgJHtTdHlsZWRHcmlkQ2VsbH0ge1xyXG4gICAgICAgIGFsaWduLWl0ZW1zOiBmbGV4LWVuZDtcclxuICAgIH1cclxuYDtcclxuXHJcbi8vXHJcbi8vIGJvZHlcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBTdHlsZWRHcmlkQm9keSA9IHN0eWxlZC5kaXZgXHJcbmA7Il19 */"
+}); //
 // head
 //
 
-var StyledGridHead = styledWithTheme.div(_templateObject2(), function (props) {
+var StyledGridHead = styled_base_default()("div", {
+  target: "e12w1khq2",
+  label: "StyledGridHead"
+})("display:flex;font-weight:bold;vertical-align:middle;", function (props) {
   return props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right';
-}, scrollbarWidth, tableBorder);
-var StyledGridHeadCell = styledWithTheme.div(_templateObject3()); //
+}, ":", scrollbarWidth, "px;border-bottom:", tableBorder, ";& ", StyledGridCell, "{align-items:flex-end;}" + ( false ? undefined : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcQWxvblxcRG9jdW1lbnRzXFxkZXZlbFxccmVhY3QtdGFibGl6ZVxcc3JjXFxncmlkXFxzdHlsZS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBaUN3QyIsImZpbGUiOiJDOlxcVXNlcnNcXEFsb25cXERvY3VtZW50c1xcZGV2ZWxcXHJlYWN0LXRhYmxpemVcXHNyY1xcZ3JpZFxcc3R5bGUudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHN0eWxlZCBmcm9tICdAZW1vdGlvbi9zdHlsZWQnO1xyXG5cclxuLy9cclxuLy8gY29uc3RhbnRzXHJcbi8vXHJcblxyXG5leHBvcnQgY29uc3Qgc2Nyb2xsYmFyV2lkdGggPSAxNztcclxuY29uc3QgdGFibGVCb3JkZXIgPSAnMXB4IHNvbGlkICNkZGQnO1xyXG5cclxuLy9cclxuLy8gZ3JpZFxyXG4vL1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRWaWV3ID0gc3R5bGVkLmRpdmBcclxuICAgIHdpZHRoOiAxMDAlO1xyXG5gO1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRDZWxsID0gc3R5bGVkLmRpdmBcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcblxyXG4gICAgaGVpZ2h0OiAxMDAlO1xyXG5cclxuICAgIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcclxuXHJcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxuYDtcclxuXHJcbi8vXHJcbi8vIGhlYWRcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBTdHlsZWRHcmlkSGVhZCA9IHN0eWxlZC5kaXZgXHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG5cclxuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxuXHJcbiAgICAke3Byb3BzID0+IChwcm9wcy50aGVtZS5kaXIgPT09ICdydGwnID8gJ3BhZGRpbmctbGVmdCcgOiAncGFkZGluZy1yaWdodCcpfTogJHtzY3JvbGxiYXJXaWR0aH1weDtcclxuICAgIGJvcmRlci1ib3R0b206ICR7dGFibGVCb3JkZXJ9O1xyXG5cclxuICAgICYgJHtTdHlsZWRHcmlkQ2VsbH0ge1xyXG4gICAgICAgIGFsaWduLWl0ZW1zOiBmbGV4LWVuZDtcclxuICAgIH1cclxuYDtcclxuXHJcbi8vXHJcbi8vIGJvZHlcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBTdHlsZWRHcmlkQm9keSA9IHN0eWxlZC5kaXZgXHJcbmA7Il19 */")); //
 // body
 //
 
-var StyledGridBody = styledWithTheme.div(_templateObject4());
-var StyledGridBodyCell = styledWithTheme.div(_templateObject5());
+var StyledGridBody = styled_base_default()("div", {
+  target: "e12w1khq3",
+  label: "StyledGridBody"
+})( false ? undefined : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcQWxvblxcRG9jdW1lbnRzXFxkZXZlbFxccmVhY3QtdGFibGl6ZVxcc3JjXFxncmlkXFxzdHlsZS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBbUR3QyIsImZpbGUiOiJDOlxcVXNlcnNcXEFsb25cXERvY3VtZW50c1xcZGV2ZWxcXHJlYWN0LXRhYmxpemVcXHNyY1xcZ3JpZFxcc3R5bGUudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHN0eWxlZCBmcm9tICdAZW1vdGlvbi9zdHlsZWQnO1xyXG5cclxuLy9cclxuLy8gY29uc3RhbnRzXHJcbi8vXHJcblxyXG5leHBvcnQgY29uc3Qgc2Nyb2xsYmFyV2lkdGggPSAxNztcclxuY29uc3QgdGFibGVCb3JkZXIgPSAnMXB4IHNvbGlkICNkZGQnO1xyXG5cclxuLy9cclxuLy8gZ3JpZFxyXG4vL1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRWaWV3ID0gc3R5bGVkLmRpdmBcclxuICAgIHdpZHRoOiAxMDAlO1xyXG5gO1xyXG5cclxuZXhwb3J0IGNvbnN0IFN0eWxlZEdyaWRDZWxsID0gc3R5bGVkLmRpdmBcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcblxyXG4gICAgaGVpZ2h0OiAxMDAlO1xyXG5cclxuICAgIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcclxuXHJcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxuYDtcclxuXHJcbi8vXHJcbi8vIGhlYWRcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBTdHlsZWRHcmlkSGVhZCA9IHN0eWxlZC5kaXZgXHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG5cclxuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xyXG4gICAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxuXHJcbiAgICAke3Byb3BzID0+IChwcm9wcy50aGVtZS5kaXIgPT09ICdydGwnID8gJ3BhZGRpbmctbGVmdCcgOiAncGFkZGluZy1yaWdodCcpfTogJHtzY3JvbGxiYXJXaWR0aH1weDtcclxuICAgIGJvcmRlci1ib3R0b206ICR7dGFibGVCb3JkZXJ9O1xyXG5cclxuICAgICYgJHtTdHlsZWRHcmlkQ2VsbH0ge1xyXG4gICAgICAgIGFsaWduLWl0ZW1zOiBmbGV4LWVuZDtcclxuICAgIH1cclxuYDtcclxuXHJcbi8vXHJcbi8vIGJvZHlcclxuLy9cclxuXHJcbmV4cG9ydCBjb25zdCBTdHlsZWRHcmlkQm9keSA9IHN0eWxlZC5kaXZgXHJcbmA7Il19 */");
 // CONCATENATED MODULE: ./src/grid/GridView.tsx
 function GridView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridView_typeof = function _typeof(obj) { return typeof obj; }; } else { GridView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridView_typeof(obj); }
 
@@ -788,8 +752,9 @@ function (_React$PureComponent) {
             display: 'flex'
           }
         }, range(freezeColumns).map(function (columnIndex) {
-          return _this2.renderHeadCell({
+          return _this2.renderCell({
             cellRender: cellRender,
+            rowIndex: 0,
             columnIndex: columnIndex,
             isScrolling: false
           });
@@ -812,41 +777,15 @@ function (_React$PureComponent) {
           var index = _ref2.index,
               style = _ref2.style,
               isScrolling = _ref2.isScrolling;
-          return _this2.renderHeadCell({
+          return _this2.renderCell({
             cellRender: cellRender,
+            rowIndex: 0,
             columnIndex: index + freezeColumns,
             isScrolling: isScrolling,
             style: style
           });
         }));
       })));
-    }
-  }, {
-    key: "renderHeadCell",
-    value: function renderHeadCell(args) {
-      var columnIndex = args.columnIndex,
-          cellRender = args.cellRender,
-          isScrolling = args.isScrolling,
-          style = args.style; // create the cell
-
-      var cell = cellRender({
-        columnIndex: columnIndex,
-        isScrolling: isScrolling
-      }); // get cell props & content
-
-      var _GridCell$extract = GridCell.extract(cell),
-          cellProps = _GridCell$extract.props,
-          cellContent = _GridCell$extract.content;
-
-      var columnWidth = this.getColumnWidth(columnIndex); // render
-
-      return external_react_["createElement"](StyledGridHeadCell, _extends({
-        key: columnIndex
-      }, cellProps, {
-        style: Object.assign({
-          width: columnWidth
-        }, cellProps.style, style)
-      }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, cellContent));
     }
   }, {
     key: "renderBody",
@@ -899,7 +838,7 @@ function (_React$PureComponent) {
               columnIndex = _ref4.columnIndex,
               style = _ref4.style,
               isScrolling = _ref4.isScrolling;
-          return _this3.renderBodyCell({
+          return _this3.renderCell({
             cellRender: cellRender,
             rowIndex: rowIndex,
             columnIndex: columnIndex,
@@ -926,7 +865,7 @@ function (_React$PureComponent) {
               columnIndex = _ref5.columnIndex,
               style = _ref5.style,
               isScrolling = _ref5.isScrolling;
-          return _this3.renderBodyCell({
+          return _this3.renderCell({
             cellRender: cellRender,
             rowIndex: rowIndex,
             columnIndex: columnIndex + freezeColumns,
@@ -937,8 +876,8 @@ function (_React$PureComponent) {
       })));
     }
   }, {
-    key: "renderBodyCell",
-    value: function renderBodyCell(args) {
+    key: "renderCell",
+    value: function renderCell(args) {
       var rowIndex = args.rowIndex,
           columnIndex = args.columnIndex,
           cellRender = args.cellRender,
@@ -951,15 +890,18 @@ function (_React$PureComponent) {
         isScrolling: isScrolling
       }); // get cell props & content
 
-      var _GridCell$extract2 = GridCell.extract(cell),
-          cellProps = _GridCell$extract2.props,
-          cellContent = _GridCell$extract2.content; // render
+      var _GridCell$extract = GridCell.extract(cell),
+          cellProps = _GridCell$extract.props,
+          cellContent = _GridCell$extract.content;
 
+      var columnWidth = this.getColumnWidth(columnIndex); // render
 
-      return external_react_["createElement"](StyledGridBodyCell, _extends({
+      return external_react_["createElement"](StyledGridCell, _extends({
         key: "[ ".concat(rowIndex, ", ").concat(columnIndex, " ]")
       }, cellProps, {
-        style: Object.assign({}, cellProps.style, style)
+        style: Object.assign({
+          width: columnWidth
+        }, cellProps.style, style)
       }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, cellContent));
     }
   }, {
@@ -1248,7 +1190,7 @@ function CustomScrollbars_extends() { CustomScrollbars_extends = Object.assign |
 
 function CustomScrollbars_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { CustomScrollbars_typeof = function _typeof(obj) { return typeof obj; }; } else { CustomScrollbars_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return CustomScrollbars_typeof(obj); }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { CustomScrollbars_defineProperty(target, key, source[key]); }); } return target; }
+function _objectSpread2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { CustomScrollbars_defineProperty(target, key, source[key]); }); } return target; }
 
 function CustomScrollbars_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1296,7 +1238,7 @@ function (_React$PureComponent) {
 
       return external_react_["createElement"](external_react_custom_scrollbars_default.a, {
         ref: refSetter,
-        style: _objectSpread({}, this.props.style, {
+        style: _objectSpread2({}, this.props.style, {
           overflow: 'hidden',
           direction: 'ltr'
         }),
@@ -1314,29 +1256,17 @@ var CustomScrollbars = external_react_["forwardRef"](function (props, ref) {
   }));
 });
 CustomScrollbars.displayName = 'CustomScrollbars';
+// EXTERNAL MODULE: external "@emotion/styled"
+var styled_ = __webpack_require__("@emotion/styled");
+var styled_default = /*#__PURE__*/__webpack_require__.n(styled_);
+
+// CONCATENATED MODULE: ./src/styled.ts
+
+var styledWithTheme = styled_default.a;
+
 // CONCATENATED MODULE: ./src/table/style.tsx
-function _templateObject9() {
-  var data = style_taggedTemplateLiteral(["\n    min-width: 40px;\n    max-width: 50px;\n"]);
-
-  _templateObject9 = function _templateObject9() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject8() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    padding: 8px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n"]);
-
-  _templateObject8 = function _templateObject8() {
-    return data;
-  };
-
-  return data;
-}
-
 function _templateObject7() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ";\n\n    &:first-of-type {\n        border-top: none;\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    flex: 1;\n    padding: 8px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -1346,7 +1276,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = style_taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column;\n\n    vertical-align: middle;\n"]);
+  var data = _taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ";\n\n    &:first-of-type {\n        border-top: none;\n    }\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -1355,57 +1285,57 @@ function _templateObject6() {
   return data;
 }
 
-function style_templateObject5() {
-  var data = style_taggedTemplateLiteral(["\n    min-width: 40px;\n    max-width: 50px;\n"]);
+function _templateObject5() {
+  var data = _taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column;\n\n    vertical-align: middle;\n"]);
 
-  style_templateObject5 = function _templateObject5() {
+  _templateObject5 = function _templateObject5() {
     return data;
   };
 
   return data;
 }
 
-function style_templateObject4() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    padding: 8px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    align-items: flex-end;\n    vertical-align: bottom;\n"]);
+function _templateObject4() {
+  var data = _taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    padding: 8px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    align-items: flex-end;\n    vertical-align: bottom;\n"]);
 
-  style_templateObject4 = function _templateObject4() {
+  _templateObject4 = function _templateObject4() {
     return data;
   };
 
   return data;
 }
 
-function style_templateObject3() {
-  var data = style_taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ": ", ";\n    ", ";\n"]);
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["\n    flex: 1;\n    display: flex;\n    justify-content: stretch;\n\n    ", ": ", ";\n    ", ";\n"]);
 
-  style_templateObject3 = function _templateObject3() {
+  _templateObject3 = function _templateObject3() {
     return data;
   };
 
   return data;
 }
 
-function style_templateObject2() {
-  var data = style_taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column;\n\n    overflow-y: hidden;\n\n    font-weight: bold;\n    vertical-align: middle;\n"]);
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["\n    display: flex;\n    flex-flow: column;\n\n    overflow-y: hidden;\n\n    font-weight: bold;\n    vertical-align: middle;\n"]);
 
-  style_templateObject2 = function _templateObject2() {
+  _templateObject2 = function _templateObject2() {
     return data;
   };
 
   return data;
 }
 
-function style_templateObject() {
-  var data = style_taggedTemplateLiteral(["\n    width: 100%;\n    overflow-y: hidden;\n"]);
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    overflow-y: hidden;\n"]);
 
-  style_templateObject = function _templateObject() {
+  _templateObject = function _templateObject() {
     return data;
   };
 
   return data;
 }
 
-function style_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
  //
 // constants
@@ -1416,33 +1346,31 @@ var style_tableBorder = '1px solid #ddd'; //
 // table
 //
 
-var StyledTableView = styledWithTheme.div(style_templateObject()); //
+var StyledTableView = styledWithTheme.div(_templateObject()); //
 // head
 //
 
-var StyledTableHead = styledWithTheme.div(style_templateObject2());
-var TableHeadRow = styledWithTheme.div(style_templateObject3(), function (props) {
+var StyledTableHead = styledWithTheme.div(_templateObject2());
+var TableHeadRow = styledWithTheme.div(_templateObject3(), function (props) {
   return props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right';
 }, style_scrollbarWidth, function (props) {
   return props.theme.hairlines ? "border-bottom: ".concat(style_tableBorder) : '';
 });
-var TableHeadCell = styledWithTheme.div(style_templateObject4());
-var LineNumberHeadCell = styledWithTheme(TableHeadCell)(style_templateObject5()); //
+var TableHeadCell = styledWithTheme.div(_templateObject4()); //
 // body
 //
 
-var StyledTableBody = styledWithTheme.div(_templateObject6());
-var TableBodyRow = styledWithTheme.div(_templateObject7(), function (props) {
+var StyledTableBody = styledWithTheme.div(_templateObject5());
+var TableBodyRow = styledWithTheme.div(_templateObject6(), function (props) {
   return props.theme.hairlines ? "border-top: ".concat(style_tableBorder) : '';
 });
-var TableBodyCell = styledWithTheme.div(_templateObject8());
-var LineNumberBodyCell = styledWithTheme(TableBodyCell)(_templateObject9());
+var TableBodyCell = styledWithTheme.div(_templateObject7());
 // CONCATENATED MODULE: ./src/table/TableView.tsx
 var _scrollKeys;
 
 function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
 
-function TableView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } return target; }
+function TableView_objectSpread2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } return target; }
 
 function TableView_objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = TableView_objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
@@ -1507,8 +1435,6 @@ var TableViewProps = function TableViewProps() {
   TableView_defineProperty(this, "rowHeight", 50);
 
   TableView_defineProperty(this, "emptyMessage", "No Items to Display");
-
-  TableView_defineProperty(this, "lineNumbers", void 0);
 
   TableView_defineProperty(this, "customScrollbars", void 0);
 
@@ -1635,7 +1561,7 @@ function (_React$PureComponent) {
 
       return external_react_["createElement"](StyledTableHead, TableView_extends({}, divProps, {
         style: Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, TableView.defaultHeadHeight))
-      }), external_react_["createElement"](TableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.props.lineNumbers && external_react_["createElement"](LineNumberHeadCell, null), external_react_["Children"].map(children, function (cell, index) {
+      }), external_react_["createElement"](TableHeadRow, null, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["Children"].map(children, function (cell, index) {
         var headCell = cell;
 
         var cellProps = _this2.getHeadCellProps(headCell);
@@ -1657,7 +1583,7 @@ function (_React$PureComponent) {
         head: TableView.defaultHeadHeight
       });
       return external_react_["createElement"](StyledTableBody, {
-        style: TableView_objectSpread({
+        style: TableView_objectSpread2({
           direction: this.props.dir
         }, bodyHeights)
       }, external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.renderTableRows(body)));
@@ -1744,7 +1670,7 @@ function (_React$PureComponent) {
       return external_react_["createElement"](TableBodyRow, TableView_extends({
         style: Object.assign({}, style, rowStyle),
         key: rowKey
-      }, rowProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, this.props.lineNumbers && external_react_["createElement"](LineNumberBodyCell, null, index + 1), asArray(rowContent).map(function (cell, columnIndex) {
+      }, rowProps), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, asArray(rowContent).map(function (cell, columnIndex) {
         var cellProps = _this6.getCellProps(cell);
 
         if (cellProps.visible === false) return null;
@@ -1979,6 +1905,18 @@ module.exports = __webpack_require__(/*! C:\Users\Alon\Documents\devel\react-tab
 /***/ (function(module, exports) {
 
 module.exports = require("@emotion/styled");
+
+/***/ }),
+
+/***/ "@emotion/styled-base":
+/*!***************************************!*\
+  !*** external "@emotion/styled-base" ***!
+  \***************************************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports) {
+
+module.exports = require("@emotion/styled-base");
 
 /***/ }),
 
