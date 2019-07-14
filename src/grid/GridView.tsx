@@ -8,7 +8,7 @@ import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridFooter } from './GridFooter';
 import { GridHead, HeadCellRender } from './GridHead';
-import { scrollbarWidth, StyledGridBody, StyledGridBodyCell, StyledGridHead, StyledGridHeadCell, StyledGridView } from './style';
+import { scrollbarWidth, StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
@@ -142,8 +142,9 @@ export class GridView extends React.PureComponent<GridViewProps> {
                             <div style={{ width, height, display: 'flex' }}>
 
                                 {/* frozen first columns */}
-                                {range(freezeColumns).map(columnIndex => this.renderHeadCell({
+                                {range(freezeColumns).map(columnIndex => this.renderCell({
                                     cellRender,
+                                    rowIndex: 0,
                                     columnIndex,
                                     isScrolling: false
                                 }))}
@@ -162,8 +163,9 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     useIsScrolling={this.props.useIsScrolling}
                                 >
                                     {({ index, style, isScrolling }) =>
-                                        this.renderHeadCell({
+                                        this.renderCell({
                                             cellRender,
+                                            rowIndex: 0,
                                             columnIndex: index + freezeColumns,
                                             isScrolling,
                                             style
@@ -177,37 +179,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                 </ErrorBoundary>
             </StyledGridHead>
         );
-    }
-
-    private renderHeadCell(args: RenderHeadCellArgs) {
-
-        const {
-            columnIndex,
-            cellRender,
-            isScrolling,
-            style
-        } = args;
-
-        // create the cell
-        const cell: any = cellRender({ columnIndex, isScrolling });
-
-        // get cell props & content
-        const { props: cellProps, content: cellContent } = GridCell.extract(cell);
-        const columnWidth = this.getColumnWidth(columnIndex);
-
-        // render
-        return (
-            <StyledGridHeadCell
-                key={columnIndex}
-                {...cellProps}
-                style={Object.assign({ width: columnWidth }, cellProps.style, style)}
-            >
-                <ErrorBoundary>
-                    {cellContent}
-                </ErrorBoundary>
-            </StyledGridHeadCell>
-        );
-    }
+    }    
 
     private renderBody() {
 
@@ -249,7 +221,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     useIsScrolling={this.props.useIsScrolling}
                                 >
                                     {({ rowIndex, columnIndex, style, isScrolling }) =>
-                                        this.renderBodyCell({
+                                        this.renderCell({
                                             cellRender,
                                             rowIndex,
                                             columnIndex,
@@ -274,7 +246,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     useIsScrolling={this.props.useIsScrolling}
                                 >
                                     {({ rowIndex, columnIndex, style, isScrolling }) =>
-                                        this.renderBodyCell({
+                                        this.renderCell({
                                             cellRender,
                                             rowIndex,
                                             columnIndex: columnIndex + freezeColumns,
@@ -291,7 +263,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         );
     }
 
-    private renderBodyCell(args: RenderBodyCellArgs) {
+    private renderCell(args: RenderBodyCellArgs) {
 
         const {
             rowIndex,
@@ -306,18 +278,19 @@ export class GridView extends React.PureComponent<GridViewProps> {
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);
+        const columnWidth = this.getColumnWidth(columnIndex);
 
         // render
         return (
-            <StyledGridBodyCell
+            <StyledGridCell
                 key={`[ ${rowIndex}, ${columnIndex} ]`}
                 {...cellProps}
-                style={Object.assign({}, cellProps.style, style)}
+                style={Object.assign({ width: columnWidth }, cellProps.style, style)}
             >
                 <ErrorBoundary>
                     {cellContent}
                 </ErrorBoundary>
-            </StyledGridBodyCell>
+            </StyledGridCell>
         );
     }
 

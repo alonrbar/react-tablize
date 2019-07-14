@@ -1,4 +1,4 @@
-import { styled } from '../styled';
+import styled from '@emotion/styled';
 
 //
 // constants
@@ -12,50 +12,10 @@ const tableBorder = '1px solid #ddd';
 //
 
 export const StyledGridView = styled.div`
-    label: grid-view;
-
     width: 100%;
 `;
 
-//
-// head
-//
-
-export const StyledGridHead = styled.div`
-    label: grid-head;
-
-    display: flex;
-
-    font-weight: bold;
-    vertical-align: middle;
-
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${scrollbarWidth}px;
-    border-bottom: ${tableBorder};
-`;
-
-export const StyledGridHeadCell = styled.div`
-    label: grid-head-cell;
-
-    display: flex;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    align-items: flex-end;
-    vertical-align: bottom;
-`;
-
-//
-// body
-//
-
-export const StyledGridBody = styled.div`
-    label: grid-body;
-`;
-
-export const StyledGridBodyCell = styled.div`
-    label: grid-body-cell;
-
+export const StyledGridCell = styled.div`
     display: flex;
 
     height: 100%;
@@ -65,4 +25,29 @@ export const StyledGridBodyCell = styled.div`
 
     align-items: center;
     vertical-align: middle;
+`;
+
+//
+// head
+//
+
+export const StyledGridHead = styled.div`
+    display: flex;
+
+    font-weight: bold;
+    vertical-align: middle;
+
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${scrollbarWidth}px;
+    border-bottom: ${tableBorder};
+
+    & ${StyledGridCell} {
+        align-items: flex-end;
+    }
+`;
+
+//
+// body
+//
+
+export const StyledGridBody = styled.div`
 `;
