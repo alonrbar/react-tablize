@@ -2,15 +2,12 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+## [0.13.0 - 2019-07-14](https://github.com/alonrbar/react-tablize/tree/v0.13.0)
+
 ### Added
 
 - Scroll grid's body when scrolling frozen columns.
 - Output css labels.
-
-### Changed
-
-- Internal code changes.
-- Update dependencies.
 
 ### Removed
 
