@@ -2,6 +2,19 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- Output css labels.
+
+### Changed
+
+- Internal code changes.
+- Update dependencies.
+
+### Removed
+
+- `TableView.lineNumbers`.
+
 ## [0.12.0 - 2019-07-11](https://github.com/alonrbar/react-tablize/tree/v0.12.0)
 
 ### Added
