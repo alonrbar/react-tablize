@@ -4,21 +4,11 @@ import * as ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
-import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils, Keys } from '../utils';
+import { asArray, ErrorBoundary, isNullOrUndefined, Keys, ReactUtils, SizeUtils } from '../utils';
 import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
 import { CustomScrollbars } from './CustomScrollbars';
-import {
-    LineNumberBodyCell,
-    LineNumberHeadCell,
-    StyledTableBody,
-    StyledTableHead,
-    StyledTableView,
-    TableBodyCell,
-    TableBodyRow,
-    TableHeadCell,
-    TableHeadRow
-} from './style';
+import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableBodyRow, TableHeadCell, TableHeadRow } from './style';
 import { TableBody } from './TableBody';
 import { CellContent, TableCell, TableCellProps } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -68,7 +58,6 @@ export class TableViewProps {
      */
     public rowHeight?: number | SizeCallback = 50;
     public emptyMessage?= "No Items to Display";
-    public lineNumbers?: boolean;
     public customScrollbars?: boolean;
     public hairlines?: boolean;
 
@@ -198,13 +187,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
             >
                 <TableHeadRow>
                     <ErrorBoundary>
-
-                        {/* line number column */}
-                        {this.props.lineNumbers && (
-                            <LineNumberHeadCell />
-                        )}
-
-                        {/* main columns */}
                         {React.Children.map(children, (cell, index) => {
 
                             const headCell: TableCell = cell as any;
@@ -224,7 +206,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
                                 </TableHeadCell>
                             );
                         })}
-
                     </ErrorBoundary>
                 </TableHeadRow>
             </StyledTableHead>
@@ -329,15 +310,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 {...rowProps}
             >
                 <ErrorBoundary>
-
-                    {/* line number column */}
-                    {this.props.lineNumbers && (
-                        <LineNumberBodyCell>
-                            {index + 1}
-                        </LineNumberBodyCell>
-                    )}
-
-                    {/* main columns */}
                     {asArray(rowContent).map((cell, columnIndex) => {
 
                         const cellProps = this.getCellProps(cell);
@@ -355,7 +327,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
                             </TableBodyCell>
                         );
                     })}
-
                 </ErrorBoundary>
             </TableBodyRow>
         );

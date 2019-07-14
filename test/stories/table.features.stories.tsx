@@ -59,26 +59,6 @@ stories.add('variable sized rows', () => {
     );
 });
 
-stories.add('line numbers', () => {
-    const items = getTestItems('line numbers');
-    return (
-        <TableView
-            rowCount={items.length}
-            lineNumbers={true}
-        >
-            <TableHead>
-                {['Name', 'Age']}
-            </TableHead>
-            <TableBody>
-                {index => ([
-                    items[index].name,
-                    items[index].age
-                ])}
-            </TableBody>
-        </TableView>
-    );
-});
-
 stories.add('custom scrollbars', () => {
     const items = getTestItems('custom scrollbars');
     return (

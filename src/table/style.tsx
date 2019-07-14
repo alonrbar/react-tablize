@@ -49,11 +49,6 @@ export const TableHeadCell = styled.div`
     vertical-align: bottom;
 `;
 
-export const LineNumberHeadCell = styled(TableHeadCell)`
-    min-width: 40px;
-    max-width: 50px;
-`;
-
 //
 // body
 //
@@ -82,9 +77,4 @@ export const TableBodyCell = styled.div`
     padding: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
-`;
-
-export const LineNumberBodyCell = styled(TableBodyCell)`
-    min-width: 40px;
-    max-width: 50px;
 `;
