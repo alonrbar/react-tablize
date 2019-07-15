@@ -13,7 +13,7 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
             <StyledNonVirtualGrid
                 style={{
                     height: this.props.height,
-                    width: this.props.height,
+                    width: this.props.width,
                 }}
                 onScroll={e => this.handleOnScroll({
                     scrollLeft: (e.target as HTMLElement).scrollLeft,
@@ -36,7 +36,8 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
                                 isScrolling: false,
                                 style: {
                                     height: this.props.rowHeight(rowIndex),
-                                    width: this.props.columnWidth(columnIndex)
+                                    width: this.props.columnWidth(columnIndex),
+                                    minWidth: this.props.columnWidth(columnIndex)
                                 },
                             })
                         ))}

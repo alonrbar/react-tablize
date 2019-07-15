@@ -7,6 +7,7 @@ import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridHead } from './GridHead';
+import { NonVirtualGrid } from './NonVirtualGrid';
 import { FrozenColumns, FrozenColumnsWrapper, StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
@@ -278,48 +279,30 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const freezeColumns = this.props.freezeColumns || 0;
         const frozenColumnsWidth = this.getFrozenColumnsWidth();
         const { children: cellRender, rowCount, rowHeight } = body.props;
-        const getRowHeight = this.getRowHeight(rowHeight);
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height,
-                    width: width - frozenColumnsWidth,
-                    overflow: 'scroll'
-                }}
-                onScroll={e => this.handleMainGridScroll({
-                    scrollLeft: (e.target as HTMLElement).scrollLeft,
-                    scrollTop: (e.target as HTMLElement).scrollTop,
-                })}
+            <NonVirtualGrid
+                direction={this.props.dir}
+                height={height}
+                width={width - frozenColumnsWidth}
+                columnCount={this.props.columnCount - freezeColumns}
+                columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                rowCount={rowCount}
+                rowHeight={this.getRowHeight(rowHeight)}
+                onScroll={this.handleMainGridScroll}
+                overscanRowsCount={this.props.overscanRowsCount}
+                overscanColumnsCount={this.props.overscanColumnsCount}
+                useIsScrolling={this.props.useIsScrolling}
             >
-                {range(rowCount).map(rowIndex => (
-                    <div
-                        key={rowIndex}
-                        style={{
-                            display: 'flex',
-                            height: getRowHeight(rowIndex)
-                        }}
-                    >
-                        {range(this.props.columnCount - freezeColumns).map(columnIndex => (
-                            <div
-                                key={columnIndex}
-                            >
-                                {this.renderCell({
-                                    cellRender,
-                                    rowIndex,
-                                    columnIndex: columnIndex + freezeColumns,
-                                    isScrolling: false,
-                                    style: {
-                                        height: getRowHeight(rowIndex),
-                                        width: this.getColumnWidth(columnIndex + freezeColumns)
-                                    }
-                                })}
-                            </div>
-                        ))}
-                    </div>
-                ))}
-            </div>
+                {({ rowIndex, columnIndex, style, isScrolling }) =>
+                    this.renderCell({
+                        cellRender,
+                        rowIndex,
+                        columnIndex: columnIndex + freezeColumns,
+                        isScrolling,
+                        style
+                    })
+                }
+            </NonVirtualGrid>
         );
     }
 
