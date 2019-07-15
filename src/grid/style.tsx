@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { VariableSizeGrid } from 'react-window';
 import { SizeUtils } from '../utils';
 
 //
@@ -56,10 +55,4 @@ export const StyledGridBody = styled.div`
 // https://stackoverflow.com/questions/16670931/hide-scroll-bar-but-while-still-being-able-to-scroll
 export const FrozenColumnsWrapper = styled.div`
     overflow: hidden;
-`;
-
-export const FrozenColumns = styled(VariableSizeGrid)`
-    overflow-y: scroll;
-    box-sizing: content-box;
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${SizeUtils.scrollbarWidth}px;
 `;

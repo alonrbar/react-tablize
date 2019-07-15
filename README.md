@@ -127,7 +127,7 @@ const people: Person[];
 
 | Name | Type | Default | Required | Description |
 |-|-|-|-|-|
-| isVirtual | boolean | true | no | Whether to use a virtual table (using [react-window](https://github.com/bvaughn/react-window)) or to use simple divs. Useful for performance comparison and optimization. |
+| isVirtual | boolean | true | no | Whether to use a virtual table (using [react-window](https://github.com/bvaughn/react-window)) or simple divs. Useful for performance comparison and optimization. |
 | rowCount | number || yes | The number of rows in the table. |
 | rowKey | `(rowIndex: number) => React.Key` | | no | React key for each row. |
 | dir | `'rtl'` \| `'ltr'` | `'ltr'` | no ||
@@ -226,6 +226,7 @@ const people: Person[];
 
 | Name | Type | Default | Required | Description |
 |-|-|-|-|-|
+| isVirtual | boolean | true | no | Whether to use a set of virtual tables (using [react-window](https://github.com/bvaughn/react-window)) or simple divs. Useful for performance comparison and optimization. |
 | columnCount | number || yes ||
 | columnWidth | `number` \| `(columnIndex: number) => number` || yes | Column width in pixels. |
 | freezeColumns | number | 0 | no | Number of columns to freeze (always the first columns). |

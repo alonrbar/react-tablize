@@ -218,6 +218,7 @@ type GridChildren = GridChildren_FullSyntax | BodyCellRender;
 
 export interface GridViewProps extends React.DivProps {
 
+    isVirtual?: boolean;
     columnCount: number;
     columnWidth: number | SizeCallback;
     /**
