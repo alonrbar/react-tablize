@@ -250,6 +250,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
             >
                 <GridComponent
                     ref={this.freezedColumnsGrid}
+                    hideVerticalScrollbar={true}
                     {...gridProps}
                 />
             </FrozenColumnsWrapper>
