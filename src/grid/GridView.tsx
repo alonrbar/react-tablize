@@ -1,25 +1,17 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { GridOnScrollProps, VariableSizeGrid, VariableSizeList } from 'react-window';
+import { VariableSizeGrid, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
-import { GridFooter } from './GridFooter';
-import { GridHead, HeadCellRender } from './GridHead';
+import { GridHead } from './GridHead';
 import { FrozenColumns, FrozenColumnsWrapper, StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
 type GridChildren = GridChildren_FullSyntax | GridChildren_PartialSyntax | BodyCellRender;
-
-interface RenderHeadCellArgs {
-    cellRender: HeadCellRender;
-    columnIndex: number;
-    isScrolling: boolean;
-    style?: React.CSSProperties;
-}
 
 interface RenderBodyCellArgs {
     cellRender: BodyCellRender;
@@ -31,6 +23,7 @@ interface RenderBodyCellArgs {
 
 export interface GridViewProps extends React.DivProps {
 
+    isVirtual?: boolean;
     columnCount: number;
     columnWidth: number | SizeCallback;
     /**
@@ -101,7 +94,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
     private freezedColumnsGrid = React.createRef<VariableSizeGrid>();
 
     public render() {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { columnCount, columnWidth, children, ...divProps } = this.props;
         return (
             <ErrorBoundary>
@@ -116,7 +108,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
                     >
                         {this.renderHead()}
                         {this.renderBody()}
-                        {this.renderFooter()}
                     </StyledGridView>
                 </ThemeProvider>
             </ErrorBoundary>
@@ -193,8 +184,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
             total: GridView.defaultHeight,
             head: GridView.defaultHeadHeight
         });
-        const freezeColumns = this.props.freezeColumns || 0;
-        const frozenColumnsWidth = this.getFrozenColumnsWidth();
 
         return (
             <StyledGridBody
@@ -205,69 +194,132 @@ export class GridView extends React.PureComponent<GridViewProps> {
                     <AutoSizer>
                         {({ height, width }) => (
                             <div style={{ width, height, display: 'flex' }}>
-
-                                {/* frozen first columns */}
-                                <FrozenColumnsWrapper
-                                    style={{
-                                        height: height - SizeUtils.scrollbarWidth,
-                                        width: frozenColumnsWidth
-                                    }}
-                                >
-                                    <FrozenColumns
-                                        ref={this.freezedColumnsGrid}
-                                        direction={this.props.dir}
-                                        height={height - SizeUtils.scrollbarWidth}
-                                        width={frozenColumnsWidth}
-                                        columnCount={freezeColumns}
-                                        columnWidth={this.getColumnWidth}
-                                        rowCount={rowCount}
-                                        rowHeight={this.getRowHeight(rowHeight)}
-                                        overscanRowsCount={this.props.overscanRowsCount}
-                                        useIsScrolling={this.props.useIsScrolling}
-                                        onScroll={this.handleFrozenColumnsScroll}
-                                    >
-                                        {({ rowIndex, columnIndex, style, isScrolling }) =>
-                                            this.renderCell({
-                                                cellRender,
-                                                rowIndex,
-                                                columnIndex,
-                                                isScrolling,
-                                                style
-                                            })
-                                        }
-                                    </FrozenColumns>
-                                </FrozenColumnsWrapper>
-
-                                {/* main body grid */}
-                                <VariableSizeGrid
-                                    ref={this.mainBodyGrid}
-                                    direction={this.props.dir}
-                                    height={height}
-                                    width={width - frozenColumnsWidth}
-                                    columnCount={this.props.columnCount - freezeColumns}
-                                    columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                                    rowCount={rowCount}
-                                    rowHeight={this.getRowHeight(rowHeight)}
-                                    onScroll={this.handleMainGridScroll}
-                                    overscanRowsCount={this.props.overscanRowsCount}
-                                    overscanColumnsCount={this.props.overscanColumnsCount}
-                                    useIsScrolling={this.props.useIsScrolling}
-                                >
-                                    {({ rowIndex, columnIndex, style, isScrolling }) =>
-                                        this.renderCell({
-                                            cellRender,
-                                            rowIndex,
-                                            columnIndex: columnIndex + freezeColumns,
-                                            isScrolling,
-                                            style
-                                        })
-                                    }
-                                </VariableSizeGrid>
+                                {this.renderFrozenColumns(height, width, body)}
+                                {this.renderMainGrid(height, width, body)}
                             </div>
                         )}
                     </AutoSizer>
                 </ErrorBoundary>
             </StyledGridBody>
+        );
+    }
+
+    private renderFrozenColumns(height: number, width: number, body: GridBody) {
+        const freezeColumns = this.props.freezeColumns || 0;
+        const frozenColumnsWidth = this.getFrozenColumnsWidth();
+        const { children: cellRender, rowCount, rowHeight } = body.props;
+        return (
+            <FrozenColumnsWrapper
+                style={{
+                    height: height - SizeUtils.scrollbarWidth,
+                    width: frozenColumnsWidth
+                }}
+            >
+                <FrozenColumns
+                    ref={this.freezedColumnsGrid}
+                    direction={this.props.dir}
+                    height={height - SizeUtils.scrollbarWidth}
+                    width={frozenColumnsWidth}
+                    columnCount={freezeColumns}
+                    columnWidth={this.getColumnWidth}
+                    rowCount={rowCount}
+                    rowHeight={this.getRowHeight(rowHeight)}
+                    overscanRowsCount={this.props.overscanRowsCount}
+                    useIsScrolling={this.props.useIsScrolling}
+                    onScroll={this.handleFrozenColumnsScroll}
+                >
+                    {({ rowIndex, columnIndex, style, isScrolling }) =>
+                        this.renderCell({
+                            cellRender,
+                            rowIndex,
+                            columnIndex,
+                            isScrolling,
+                            style
+                        })
+                    }
+                </FrozenColumns>
+            </FrozenColumnsWrapper>
+        );
+    }
+
+    private renderMainGrid(height: number, width: number, body: GridBody) {
+        const freezeColumns = this.props.freezeColumns || 0;
+        const frozenColumnsWidth = this.getFrozenColumnsWidth();
+        const { children: cellRender, rowCount, rowHeight } = body.props;
+        return (
+            <VariableSizeGrid
+                ref={this.mainBodyGrid}
+                direction={this.props.dir}
+                height={height}
+                width={width - frozenColumnsWidth}
+                columnCount={this.props.columnCount - freezeColumns}
+                columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
+                rowCount={rowCount}
+                rowHeight={this.getRowHeight(rowHeight)}
+                onScroll={this.handleMainGridScroll}
+                overscanRowsCount={this.props.overscanRowsCount}
+                overscanColumnsCount={this.props.overscanColumnsCount}
+                useIsScrolling={this.props.useIsScrolling}
+            >
+                {({ rowIndex, columnIndex, style, isScrolling }) =>
+                    this.renderCell({
+                        cellRender,
+                        rowIndex,
+                        columnIndex: columnIndex + freezeColumns,
+                        isScrolling,
+                        style
+                    })
+                }
+            </VariableSizeGrid>
+        );
+    }
+
+    private renderNonVirtualGrid(height: number, width: number, body: GridBody) {
+        const freezeColumns = this.props.freezeColumns || 0;
+        const frozenColumnsWidth = this.getFrozenColumnsWidth();
+        const { children: cellRender, rowCount, rowHeight } = body.props;
+        const getRowHeight = this.getRowHeight(rowHeight);
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height,
+                    width: width - frozenColumnsWidth,
+                    overflow: 'scroll'
+                }}
+                onScroll={e => this.handleMainGridScroll({
+                    scrollLeft: (e.target as HTMLElement).scrollLeft,
+                    scrollTop: (e.target as HTMLElement).scrollTop,
+                })}
+            >
+                {range(rowCount).map(rowIndex => (
+                    <div
+                        key={rowIndex}
+                        style={{
+                            display: 'flex',
+                            height: getRowHeight(rowIndex)
+                        }}
+                    >
+                        {range(this.props.columnCount - freezeColumns).map(columnIndex => (
+                            <div
+                                key={columnIndex}
+                            >
+                                {this.renderCell({
+                                    cellRender,
+                                    rowIndex,
+                                    columnIndex: columnIndex + freezeColumns,
+                                    isScrolling: false,
+                                    style: {
+                                        height: getRowHeight(rowIndex),
+                                        width: this.getColumnWidth(columnIndex + freezeColumns)
+                                    }
+                                })}
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
         );
     }
 
@@ -302,21 +354,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
         );
     }
 
-    private renderFooter() {
-        const footer = ReactUtils.singleChildOfType(this, GridFooter);
-        if (!footer)
-            return null;
-
-        return (
-            <span>Footer</span>
-        );
-    }
-
     //
     // event handlers
     //
 
-    private handleMainGridScroll = (e: GridOnScrollProps) => {
+    private handleMainGridScroll = (e: ScrollEvent) => {
         const { scrollTop, scrollLeft } = e;
 
         // synchronize head
@@ -330,7 +372,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         }
     }
 
-    private handleFrozenColumnsScroll = (e: GridOnScrollProps) => {
+    private handleFrozenColumnsScroll = (e: ScrollEvent) => {
         const { scrollTop } = e;
 
         // synchronize main grid

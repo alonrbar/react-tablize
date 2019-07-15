@@ -98,9 +98,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ "./src/index.ts":
 /*!***********************************!*\
-  !*** ./src/index.ts + 25 modules ***!
+  !*** ./src/index.ts + 24 modules ***!
   \***********************************/
-/*! exports provided: GridView, ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHead, TableRow, TableViewProps, TableView */
+/*! exports provided: ColumnBodyProps, ColumnBody, ColumnHead, TableBodyProps, TableBody, TableCell, TableColumnProps, TableColumn, TableHead, TableRow, TableViewProps, TableView, GridView */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "@emotion/styled-base" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "emotion-theming" (<- Module is not an ECMAScript module) */
@@ -535,35 +535,6 @@ function (_React$PureComponent) {
 }(external_react_["PureComponent"]);
 
 GridCell_defineProperty(GridCell, "defaultProps", GridCell_defineProperty({}, GridCellSymbol, true));
-// CONCATENATED MODULE: ./src/grid/GridFooter.tsx
-function GridFooter_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridFooter_typeof = function _typeof(obj) { return typeof obj; }; } else { GridFooter_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridFooter_typeof(obj); }
-
-function GridFooter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function GridFooter_possibleConstructorReturn(self, call) { if (call && (GridFooter_typeof(call) === "object" || typeof call === "function")) { return call; } return GridFooter_assertThisInitialized(self); }
-
-function GridFooter_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function GridFooter_getPrototypeOf(o) { GridFooter_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return GridFooter_getPrototypeOf(o); }
-
-function GridFooter_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) GridFooter_setPrototypeOf(subClass, superClass); }
-
-function GridFooter_setPrototypeOf(o, p) { GridFooter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GridFooter_setPrototypeOf(o, p); }
-
-
-var GridFooter =
-/*#__PURE__*/
-function (_React$PureComponent) {
-  GridFooter_inherits(GridFooter, _React$PureComponent);
-
-  function GridFooter() {
-    GridFooter_classCallCheck(this, GridFooter);
-
-    return GridFooter_possibleConstructorReturn(this, GridFooter_getPrototypeOf(GridFooter).apply(this, arguments));
-  }
-
-  return GridFooter;
-}(external_react_["PureComponent"]);
 // CONCATENATED MODULE: ./src/grid/GridHead.tsx
 function GridHead_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridHead_typeof = function _typeof(obj) { return typeof obj; }; } else { GridHead_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridHead_typeof(obj); }
 
@@ -693,7 +664,6 @@ function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 
 
-
 var GridView_GridView =
 /*#__PURE__*/
 function (_React$PureComponent) {
@@ -762,7 +732,6 @@ function (_React$PureComponent) {
   GridView_createClass(GridView, [{
     key: "render",
     value: function render() {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       var _this$props = this.props,
           columnCount = _this$props.columnCount,
           columnWidth = _this$props.columnWidth,
@@ -775,7 +744,7 @@ function (_React$PureComponent) {
         style: Object.assign({
           direction: this.props.dir
         }, this.props.style, SizeUtils.geElementHeights(this, GridView.defaultHeight))
-      }), this.renderHead(), this.renderBody(), this.renderFooter())));
+      }), this.renderHead(), this.renderBody())));
     }
   }, {
     key: "renderHead",
@@ -856,8 +825,6 @@ function (_React$PureComponent) {
         total: GridView.defaultHeight,
         head: GridView.defaultHeadHeight
       });
-      var freezeColumns = this.props.freezeColumns || 0;
-      var frozenColumnsWidth = this.getFrozenColumnsWidth();
       return external_react_["createElement"](StyledGridBody, _extends({}, divProps, {
         style: Object.assign({}, divProps.style, heights)
       }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref3) {
@@ -869,64 +836,139 @@ function (_React$PureComponent) {
             height: height,
             display: 'flex'
           }
-        }, external_react_["createElement"](FrozenColumnsWrapper, {
-          style: {
-            height: height - SizeUtils.scrollbarWidth,
-            width: frozenColumnsWidth
-          }
-        }, external_react_["createElement"](FrozenColumns, {
-          ref: _this3.freezedColumnsGrid,
-          direction: _this3.props.dir,
+        }, _this3.renderFrozenColumns(height, width, body), _this3.renderMainGrid(height, width, body));
+      })));
+    }
+  }, {
+    key: "renderFrozenColumns",
+    value: function renderFrozenColumns(height, width, body) {
+      var _this4 = this;
+
+      var freezeColumns = this.props.freezeColumns || 0;
+      var frozenColumnsWidth = this.getFrozenColumnsWidth();
+      var _body$props2 = body.props,
+          cellRender = _body$props2.children,
+          rowCount = _body$props2.rowCount,
+          rowHeight = _body$props2.rowHeight;
+      return external_react_["createElement"](FrozenColumnsWrapper, {
+        style: {
           height: height - SizeUtils.scrollbarWidth,
-          width: frozenColumnsWidth,
-          columnCount: freezeColumns,
-          columnWidth: _this3.getColumnWidth,
-          rowCount: rowCount,
-          rowHeight: _this3.getRowHeight(rowHeight),
-          overscanRowsCount: _this3.props.overscanRowsCount,
-          useIsScrolling: _this3.props.useIsScrolling,
-          onScroll: _this3.handleFrozenColumnsScroll
-        }, function (_ref4) {
-          var rowIndex = _ref4.rowIndex,
-              columnIndex = _ref4.columnIndex,
-              style = _ref4.style,
-              isScrolling = _ref4.isScrolling;
-          return _this3.renderCell({
-            cellRender: cellRender,
-            rowIndex: rowIndex,
-            columnIndex: columnIndex,
-            isScrolling: isScrolling,
-            style: style
-          });
-        })), external_react_["createElement"](external_react_window_["VariableSizeGrid"], {
-          ref: _this3.mainBodyGrid,
-          direction: _this3.props.dir,
+          width: frozenColumnsWidth
+        }
+      }, external_react_["createElement"](FrozenColumns, {
+        ref: this.freezedColumnsGrid,
+        direction: this.props.dir,
+        height: height - SizeUtils.scrollbarWidth,
+        width: frozenColumnsWidth,
+        columnCount: freezeColumns,
+        columnWidth: this.getColumnWidth,
+        rowCount: rowCount,
+        rowHeight: this.getRowHeight(rowHeight),
+        overscanRowsCount: this.props.overscanRowsCount,
+        useIsScrolling: this.props.useIsScrolling,
+        onScroll: this.handleFrozenColumnsScroll
+      }, function (_ref4) {
+        var rowIndex = _ref4.rowIndex,
+            columnIndex = _ref4.columnIndex,
+            style = _ref4.style,
+            isScrolling = _ref4.isScrolling;
+        return _this4.renderCell({
+          cellRender: cellRender,
+          rowIndex: rowIndex,
+          columnIndex: columnIndex,
+          isScrolling: isScrolling,
+          style: style
+        });
+      }));
+    }
+  }, {
+    key: "renderMainGrid",
+    value: function renderMainGrid(height, width, body) {
+      var _this5 = this;
+
+      var freezeColumns = this.props.freezeColumns || 0;
+      var frozenColumnsWidth = this.getFrozenColumnsWidth();
+      var _body$props3 = body.props,
+          cellRender = _body$props3.children,
+          rowCount = _body$props3.rowCount,
+          rowHeight = _body$props3.rowHeight;
+      return external_react_["createElement"](external_react_window_["VariableSizeGrid"], {
+        ref: this.mainBodyGrid,
+        direction: this.props.dir,
+        height: height,
+        width: width - frozenColumnsWidth,
+        columnCount: this.props.columnCount - freezeColumns,
+        columnWidth: function columnWidth(colIndex) {
+          return _this5.getColumnWidth(colIndex + freezeColumns);
+        },
+        rowCount: rowCount,
+        rowHeight: this.getRowHeight(rowHeight),
+        onScroll: this.handleMainGridScroll,
+        overscanRowsCount: this.props.overscanRowsCount,
+        overscanColumnsCount: this.props.overscanColumnsCount,
+        useIsScrolling: this.props.useIsScrolling
+      }, function (_ref5) {
+        var rowIndex = _ref5.rowIndex,
+            columnIndex = _ref5.columnIndex,
+            style = _ref5.style,
+            isScrolling = _ref5.isScrolling;
+        return _this5.renderCell({
+          cellRender: cellRender,
+          rowIndex: rowIndex,
+          columnIndex: columnIndex + freezeColumns,
+          isScrolling: isScrolling,
+          style: style
+        });
+      });
+    }
+  }, {
+    key: "renderNonVirtualGrid",
+    value: function renderNonVirtualGrid(height, width, body) {
+      var _this6 = this;
+
+      var freezeColumns = this.props.freezeColumns || 0;
+      var frozenColumnsWidth = this.getFrozenColumnsWidth();
+      var _body$props4 = body.props,
+          cellRender = _body$props4.children,
+          rowCount = _body$props4.rowCount,
+          rowHeight = _body$props4.rowHeight;
+      var getRowHeight = this.getRowHeight(rowHeight);
+      return external_react_["createElement"]("div", {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
           height: height,
           width: width - frozenColumnsWidth,
-          columnCount: _this3.props.columnCount - freezeColumns,
-          columnWidth: function columnWidth(colIndex) {
-            return _this3.getColumnWidth(colIndex + freezeColumns);
-          },
-          rowCount: rowCount,
-          rowHeight: _this3.getRowHeight(rowHeight),
-          onScroll: _this3.handleMainGridScroll,
-          overscanRowsCount: _this3.props.overscanRowsCount,
-          overscanColumnsCount: _this3.props.overscanColumnsCount,
-          useIsScrolling: _this3.props.useIsScrolling
-        }, function (_ref5) {
-          var rowIndex = _ref5.rowIndex,
-              columnIndex = _ref5.columnIndex,
-              style = _ref5.style,
-              isScrolling = _ref5.isScrolling;
-          return _this3.renderCell({
+          overflow: 'scroll'
+        },
+        onScroll: function onScroll(e) {
+          return _this6.handleMainGridScroll({
+            scrollLeft: e.target.scrollLeft,
+            scrollTop: e.target.scrollTop
+          });
+        }
+      }, range(rowCount).map(function (rowIndex) {
+        return external_react_["createElement"]("div", {
+          key: rowIndex,
+          style: {
+            display: 'flex',
+            height: getRowHeight(rowIndex)
+          }
+        }, range(_this6.props.columnCount - freezeColumns).map(function (columnIndex) {
+          return external_react_["createElement"]("div", {
+            key: columnIndex
+          }, _this6.renderCell({
             cellRender: cellRender,
             rowIndex: rowIndex,
             columnIndex: columnIndex + freezeColumns,
-            isScrolling: isScrolling,
-            style: style
-          });
+            isScrolling: false,
+            style: {
+              height: getRowHeight(rowIndex),
+              width: _this6.getColumnWidth(columnIndex + freezeColumns)
+            }
+          }));
         }));
-      })));
+      }));
     }
   }, {
     key: "renderCell",
@@ -956,13 +998,6 @@ function (_React$PureComponent) {
           width: columnWidth
         }, cellProps.style, style)
       }), external_react_["createElement"](ErrorBoundary_ErrorBoundary, null, cellContent));
-    }
-  }, {
-    key: "renderFooter",
-    value: function renderFooter() {
-      var footer = reactUtils_ReactUtils.singleChildOfType(this, GridFooter);
-      if (!footer) return null;
-      return external_react_["createElement"]("span", null, "Footer");
     } //
     // event handlers
     //

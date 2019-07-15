@@ -10,3 +10,8 @@ type OneOrMore<T> = T | T[];
 type DocDir = 'ltr' | 'rtl';
 
 type SizeCallback = (index: number) => number;
+
+interface ScrollEvent {
+    scrollTop: number;
+    scrollLeft: number;
+}
