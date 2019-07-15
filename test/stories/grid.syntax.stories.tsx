@@ -167,3 +167,33 @@ stories.add('variable size grid', () => (
         </GridView.Body>
     </GridView>
 ));
+
+stories.add('non virtual grid', () => (
+    <GridView
+        isVirtual={false}
+        columnCount={50}
+        columnWidth={100}
+        freezeColumns={2}
+    >
+
+        <GridView.Head>
+            {({ columnIndex }) => (
+                <GridView.Cell style={{ color: 'red' }}>
+                    {columnIndex}
+                </GridView.Cell>
+            )}
+        </GridView.Head>
+
+        <GridView.Body
+            rowCount={50}
+            rowHeight={40}
+        >
+            {({ rowIndex, columnIndex }) => (
+                <GridView.Cell style={{ color: 'blue' }}>
+                    {rowIndex}, {columnIndex}
+                </GridView.Cell>
+            )}
+        </GridView.Body>
+    </GridView>
+));
+

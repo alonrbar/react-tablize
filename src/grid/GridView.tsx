@@ -1,14 +1,14 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeGrid, VariableSizeList } from 'react-window';
+import { VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridHead } from './GridHead';
 import { NonVirtualGrid } from './NonVirtualGrid';
-import { FrozenColumns, FrozenColumnsWrapper, StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
+import { FrozenColumnsWrapper, StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
@@ -209,6 +209,38 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const freezeColumns = this.props.freezeColumns || 0;
         const frozenColumnsWidth = this.getFrozenColumnsWidth();
         const { children: cellRender, rowCount, rowHeight } = body.props;
+
+        const gridProps: VariableSizeGridProps = {
+            direction: this.props.dir,
+            style: {
+                overflowY: 'scroll',
+                boxSizing: 'content-box',
+                [(this.props.dir === 'rtl' ? 'paddingLeft' : 'paddingRight')]: SizeUtils.scrollbarWidth
+            },
+            height: height - SizeUtils.scrollbarWidth,
+            width: frozenColumnsWidth,
+            columnCount: freezeColumns,
+            columnWidth: this.getColumnWidth,
+            rowCount,
+            rowHeight: this.getRowHeight(rowHeight),
+            onScroll: this.handleFrozenColumnsScroll,
+            overscanRowsCount: this.props.overscanRowsCount,
+            overscanColumnsCount: this.props.overscanColumnsCount,
+            useIsScrolling: this.props.useIsScrolling,
+            children: ({ rowIndex, columnIndex, style, isScrolling }) =>
+                this.renderCell({
+                    cellRender,
+                    rowIndex,
+                    columnIndex,
+                    isScrolling,
+                    style
+                })
+        };
+
+        const GridComponent = this.props.isVirtual !== false ?
+            VariableSizeGrid :
+            NonVirtualGrid;
+
         return (
             <FrozenColumnsWrapper
                 style={{
@@ -216,29 +248,10 @@ export class GridView extends React.PureComponent<GridViewProps> {
                     width: frozenColumnsWidth
                 }}
             >
-                <FrozenColumns
+                <GridComponent
                     ref={this.freezedColumnsGrid}
-                    direction={this.props.dir}
-                    height={height - SizeUtils.scrollbarWidth}
-                    width={frozenColumnsWidth}
-                    columnCount={freezeColumns}
-                    columnWidth={this.getColumnWidth}
-                    rowCount={rowCount}
-                    rowHeight={this.getRowHeight(rowHeight)}
-                    overscanRowsCount={this.props.overscanRowsCount}
-                    useIsScrolling={this.props.useIsScrolling}
-                    onScroll={this.handleFrozenColumnsScroll}
-                >
-                    {({ rowIndex, columnIndex, style, isScrolling }) =>
-                        this.renderCell({
-                            cellRender,
-                            rowIndex,
-                            columnIndex,
-                            isScrolling,
-                            style
-                        })
-                    }
-                </FrozenColumns>
+                    {...gridProps}
+                />
             </FrozenColumnsWrapper>
         );
     }
@@ -247,62 +260,38 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const freezeColumns = this.props.freezeColumns || 0;
         const frozenColumnsWidth = this.getFrozenColumnsWidth();
         const { children: cellRender, rowCount, rowHeight } = body.props;
-        return (
-            <VariableSizeGrid
-                ref={this.mainBodyGrid}
-                direction={this.props.dir}
-                height={height}
-                width={width - frozenColumnsWidth}
-                columnCount={this.props.columnCount - freezeColumns}
-                columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                rowCount={rowCount}
-                rowHeight={this.getRowHeight(rowHeight)}
-                onScroll={this.handleMainGridScroll}
-                overscanRowsCount={this.props.overscanRowsCount}
-                overscanColumnsCount={this.props.overscanColumnsCount}
-                useIsScrolling={this.props.useIsScrolling}
-            >
-                {({ rowIndex, columnIndex, style, isScrolling }) =>
-                    this.renderCell({
-                        cellRender,
-                        rowIndex,
-                        columnIndex: columnIndex + freezeColumns,
-                        isScrolling,
-                        style
-                    })
-                }
-            </VariableSizeGrid>
-        );
-    }
 
-    private renderNonVirtualGrid(height: number, width: number, body: GridBody) {
-        const freezeColumns = this.props.freezeColumns || 0;
-        const frozenColumnsWidth = this.getFrozenColumnsWidth();
-        const { children: cellRender, rowCount, rowHeight } = body.props;
+        const gridProps: VariableSizeGridProps = {
+            direction: this.props.dir,
+            height,
+            width: width - frozenColumnsWidth,
+            columnCount: this.props.columnCount - freezeColumns,
+            columnWidth: colIndex => this.getColumnWidth(colIndex + freezeColumns),
+            rowCount,
+            rowHeight: this.getRowHeight(rowHeight),
+            onScroll: this.handleMainGridScroll,
+            overscanRowsCount: this.props.overscanRowsCount,
+            overscanColumnsCount: this.props.overscanColumnsCount,
+            useIsScrolling: this.props.useIsScrolling,
+            children: ({ rowIndex, columnIndex, style, isScrolling }) =>
+                this.renderCell({
+                    cellRender,
+                    rowIndex,
+                    columnIndex: columnIndex + freezeColumns,
+                    isScrolling,
+                    style
+                })
+        };
+
+        const GridComponent = this.props.isVirtual !== false ?
+            VariableSizeGrid :
+            NonVirtualGrid;
+
         return (
-            <NonVirtualGrid
-                direction={this.props.dir}
-                height={height}
-                width={width - frozenColumnsWidth}
-                columnCount={this.props.columnCount - freezeColumns}
-                columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                rowCount={rowCount}
-                rowHeight={this.getRowHeight(rowHeight)}
-                onScroll={this.handleMainGridScroll}
-                overscanRowsCount={this.props.overscanRowsCount}
-                overscanColumnsCount={this.props.overscanColumnsCount}
-                useIsScrolling={this.props.useIsScrolling}
-            >
-                {({ rowIndex, columnIndex, style, isScrolling }) =>
-                    this.renderCell({
-                        cellRender,
-                        rowIndex,
-                        columnIndex: columnIndex + freezeColumns,
-                        isScrolling,
-                        style
-                    })
-                }
-            </NonVirtualGrid>
+            <GridComponent
+                ref={this.mainBodyGrid}
+                {...gridProps}
+            />
         );
     }
 

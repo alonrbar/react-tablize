@@ -8,17 +8,38 @@ export interface NonVirtualGridProps extends VariableSizeGridProps {
 
 export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
 
+    private readonly gridElement = React.createRef<HTMLDivElement>();
+
+    private disableScrollEvents = false;
+
+    public scrollTo = (e: ScrollEvent) => {
+        const currentGrid = this.gridElement.current;
+        if (currentGrid) {
+
+            if (
+                (e.scrollLeft === undefined || e.scrollLeft === currentGrid.scrollLeft) &&
+                (e.scrollTop === undefined || e.scrollTop === currentGrid.scrollTop)
+            ) {
+                return;
+            }
+
+            this.disableScrollEvents = true;
+            currentGrid.scrollTo({
+                top: e.scrollTop,
+                left: e.scrollLeft
+            });
+        }
+    }
+
     public render() {
         return (
             <StyledNonVirtualGrid
+                ref={this.gridElement}
                 style={{
                     height: this.props.height,
                     width: this.props.width,
                 }}
-                onScroll={e => this.handleOnScroll({
-                    scrollLeft: (e.target as HTMLElement).scrollLeft,
-                    scrollTop: (e.target as HTMLElement).scrollTop,
-                })}
+                onScroll={this.handleOnScroll}
             >
                 {range(this.props.rowCount).map(rowIndex => (
                     <NonVirtualGridRow
@@ -47,15 +68,23 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
         );
     }
 
-    private handleOnScroll = (e: ScrollEvent) => {
-        if (this.props.onScroll) {
-            this.props.onScroll({
-                scrollUpdateWasRequested: null,
-                horizontalScrollDirection: null,
-                verticalScrollDirection: null,
-                ...e
-            });
+    private handleOnScroll = (e: React.UIEvent<HTMLDivElement>): void => {
+        if (this.disableScrollEvents) {
+            this.disableScrollEvents = false;
+            return;
         }
+
+        if (!this.props.onScroll)
+            return;
+
+        const { scrollTop, scrollLeft } = e.currentTarget;
+        this.props.onScroll({
+            scrollTop,
+            scrollLeft,
+            horizontalScrollDirection: undefined,
+            verticalScrollDirection: undefined,
+            scrollUpdateWasRequested: false
+        });
     }
 }
 
