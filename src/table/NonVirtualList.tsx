@@ -50,7 +50,8 @@ export class NonVirtualList extends React.PureComponent<NonVirtualListProps> {
             width: this.props.width,
             boxSizing: 'content-box',
             outline: 'none',
-            overflow: 'auto'
+            overflow: 'auto',
+            [this.isHorizontal ? 'overflowY' : 'overflowX']: 'hidden'
         };
 
         if (this.isHorizontal) {
