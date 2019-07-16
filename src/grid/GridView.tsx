@@ -3,6 +3,7 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
+import { NonVirtualList } from '../table/NonVirtualList';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
@@ -123,6 +124,10 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const { children: cellRender, ...divProps } = head.props;
         const freezeColumns = this.props.freezeColumns || 0;
 
+        const ListComponent = this.props.isVirtual !== false ?
+            VariableSizeList :
+            NonVirtualList;
+
         return (
             <StyledGridHead
                 {...divProps}
@@ -142,8 +147,9 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                 }))}
 
                                 {/* main columns */}
-                                <VariableSizeList
+                                <ListComponent
                                     ref={this.headList}
+                                    hideScrollbar={true}
                                     direction={this.props.dir}
                                     style={{ overflow: 'hidden' }}
                                     layout="horizontal"
@@ -163,7 +169,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                             style
                                         })
                                     }
-                                </VariableSizeList>
+                                </ListComponent>
 
                             </div>
                         )}
