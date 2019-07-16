@@ -9,12 +9,12 @@ export interface NonVirtualGridProps extends VariableSizeGridProps {
 
 export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
 
-    private readonly gridElement = React.createRef<HTMLDivElement>();
-
     private disableScrollEvents = false;
+    
+    private readonly innerElement = React.createRef<HTMLDivElement>();
 
     public scrollTo = (e: ScrollEvent) => {
-        const currentGrid = this.gridElement.current;
+        const currentGrid = this.innerElement.current;
         if (currentGrid) {
 
             if (
@@ -34,49 +34,56 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
 
     public render() {
 
-        const gridStyle: React.CSSProperties = {
+        const outerStyle: React.CSSProperties = {
+            height: this.props.height,
+            width: this.props.width,
+        };
+
+        const innerStyle: React.CSSProperties = {
             height: this.props.height,
             width: this.props.width,
         };
 
         if (this.props.hideVerticalScrollbar) {
             const paddingDir = (this.props.direction === 'rtl' ? 'paddingLeft' : 'paddingRight');
-            gridStyle[paddingDir] = SizeUtils.scrollbarWidth;
+            innerStyle[paddingDir] = SizeUtils.scrollbarWidth;
         }
 
         const totalWidth = range(this.props.columnCount).map(this.props.columnWidth).reduce((total, cur) => total + cur, 0);
 
         return (
-            <StyledNonVirtualGrid
-                ref={this.gridElement}
-                style={gridStyle}
-                onScroll={this.handleOnScroll}
-            >
-                {range(this.props.rowCount).map(rowIndex => (
-                    <NonVirtualGridRow
-                        key={rowIndex}
-                        style={{
-                            height: this.props.rowHeight(rowIndex),
-                            width: totalWidth
-                        }}
-                    >
-                        {range(this.props.columnCount).map(columnIndex => (
-                            React.createElement(this.props.children, {
-                                key: columnIndex,
-                                columnIndex,
-                                rowIndex,
-                                data: null,
-                                isScrolling: false,
-                                style: {
-                                    height: this.props.rowHeight(rowIndex),
-                                    width: this.props.columnWidth(columnIndex),
-                                    minWidth: this.props.columnWidth(columnIndex)
-                                },
-                            })
-                        ))}
-                    </NonVirtualGridRow>
-                ))}
-            </StyledNonVirtualGrid>
+            <OuterNonVirtualGrid style={outerStyle}>
+                <InnerNonVirtualGrid
+                    ref={this.innerElement}
+                    style={innerStyle}
+                    onScroll={this.handleOnScroll}
+                >
+                    {range(this.props.rowCount).map(rowIndex => (
+                        <NonVirtualGridRow
+                            key={rowIndex}
+                            style={{
+                                height: this.props.rowHeight(rowIndex),
+                                width: totalWidth
+                            }}
+                        >
+                            {range(this.props.columnCount).map(columnIndex => (
+                                React.createElement(this.props.children, {
+                                    key: columnIndex,
+                                    columnIndex,
+                                    rowIndex,
+                                    data: null,
+                                    isScrolling: false,
+                                    style: {
+                                        height: this.props.rowHeight(rowIndex),
+                                        width: this.props.columnWidth(columnIndex),
+                                        minWidth: this.props.columnWidth(columnIndex)
+                                    },
+                                })
+                            ))}
+                        </NonVirtualGridRow>
+                    ))}
+                </InnerNonVirtualGrid>
+            </OuterNonVirtualGrid>
         );
     }
 
@@ -104,7 +111,11 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
 //      styles      //
 // ---------------- //
 
-const StyledNonVirtualGrid = styled.div`
+const OuterNonVirtualGrid = styled.div`
+    overflow: hidden;    
+`;
+
+export const InnerNonVirtualGrid = styled.div`
     overflow: auto;
     box-sizing: content-box;
 `;

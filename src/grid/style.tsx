@@ -51,8 +51,3 @@ export const StyledGridHead = styled.div`
 
 export const StyledGridBody = styled.div`
 `;
-
-// https://stackoverflow.com/questions/16670931/hide-scroll-bar-but-while-still-being-able-to-scroll
-export const FrozenColumnsWrapper = styled.div`
-    overflow: hidden;
-`;

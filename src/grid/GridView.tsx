@@ -9,7 +9,8 @@ import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridHead } from './GridHead';
 import { NonVirtualGrid } from './NonVirtualGrid';
-import { FrozenColumnsWrapper, StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
+import { StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
+import { VirtualGrid } from './VirtualGrid';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
@@ -218,11 +219,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
 
         const gridProps: VariableSizeGridProps = {
             direction: this.props.dir,
-            style: {
-                overflowY: 'scroll',
-                boxSizing: 'content-box',
-                [(this.props.dir === 'rtl' ? 'paddingLeft' : 'paddingRight')]: SizeUtils.scrollbarWidth
-            },
             height: height - SizeUtils.scrollbarWidth,
             width: frozenColumnsWidth,
             columnCount: freezeColumns,
@@ -244,22 +240,15 @@ export class GridView extends React.PureComponent<GridViewProps> {
         };
 
         const GridComponent = this.props.isVirtual !== false ?
-            VariableSizeGrid :
+            VirtualGrid :
             NonVirtualGrid;
 
         return (
-            <FrozenColumnsWrapper
-                style={{
-                    height: height - SizeUtils.scrollbarWidth,
-                    width: frozenColumnsWidth
-                }}
-            >
-                <GridComponent
-                    ref={this.freezedColumnsGrid}
-                    hideVerticalScrollbar={true}
-                    {...gridProps}
-                />
-            </FrozenColumnsWrapper>
+            <GridComponent
+                ref={this.freezedColumnsGrid as React.Ref<any>}
+                hideVerticalScrollbar={true}
+                {...gridProps}
+            />
         );
     }
 
