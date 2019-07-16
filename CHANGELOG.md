@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- `GridView.isVirtual`.
+
 ## [0.13.0 - 2019-07-14](https://github.com/alonrbar/react-tablize/tree/v0.13.0)
 
 ### Added
