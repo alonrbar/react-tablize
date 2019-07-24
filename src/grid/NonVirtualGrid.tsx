@@ -63,7 +63,8 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
                             key={rowIndex}
                             style={{
                                 height: this.props.rowHeight(rowIndex),
-                                width: totalWidth
+                                width: totalWidth,
+                                minWidth: this.props.width
                             }}
                         >
                             {range(this.props.columnCount).map(columnIndex => (
