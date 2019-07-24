@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { VariableSizeGridProps } from 'react-window';
-import { range, SizeUtils } from '../utils';
+import { range, SizeUtils } from '../../utils';
 
 export interface NonVirtualGridProps extends VariableSizeGridProps {
     hideVerticalScrollbar?: boolean;
@@ -10,25 +10,22 @@ export interface NonVirtualGridProps extends VariableSizeGridProps {
 export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
 
     private disableScrollEvents = false;
-    
+
     private readonly innerElement = React.createRef<HTMLDivElement>();
 
     public scrollTo = (e: ScrollEvent) => {
         const currentGrid = this.innerElement.current;
         if (currentGrid) {
 
-            if (
-                (e.scrollLeft === undefined || e.scrollLeft === currentGrid.scrollLeft) &&
-                (e.scrollTop === undefined || e.scrollTop === currentGrid.scrollTop)
-            ) {
-                return;
+            if (e.scrollLeft !== undefined && e.scrollLeft !== currentGrid.scrollLeft) {
+                this.disableScrollEvents = true;
+                currentGrid.scrollLeft = e.scrollLeft;
             }
 
-            this.disableScrollEvents = true;
-            currentGrid.scrollTo({
-                top: e.scrollTop,
-                left: e.scrollLeft
-            });
+            if (e.scrollTop !== undefined && e.scrollTop !== currentGrid.scrollTop) {
+                this.disableScrollEvents = true;
+                currentGrid.scrollTop = e.scrollTop;
+            }
         }
     }
 

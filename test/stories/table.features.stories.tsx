@@ -145,3 +145,23 @@ stories.add('scroll by keys', () => {
         </TableView>
     );
 });
+
+stories.add('non virtual', () => {
+    return (
+        <TableView
+            rowCount={1000}
+            isVirtual={false}
+        >
+            <TableHead
+            >
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    index + 1,
+                    index + 1
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});

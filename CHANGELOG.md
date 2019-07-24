@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Fixed
+
+- Better support older browsers when `isVirtual` is `false`.
+
 ## [0.14.0 - 2019-07-16](https://github.com/alonrbar/react-tablize/tree/v0.14.0)
 
 ### Added
@@ -12,8 +16,11 @@
 
 ### Added
 
-- Scroll grid's body when scrolling frozen columns.
 - Output css labels.
+
+### Fixed
+
+- Scroll grid's body when scrolling frozen columns.
 
 ### Removed
 

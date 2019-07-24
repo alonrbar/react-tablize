@@ -1,16 +1,15 @@
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
+import { ListOnScrollProps, VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
-import { NonVirtualList } from '../table/NonVirtualList';
+import { NonVirtualList } from '../table/internal';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridHead } from './GridHead';
-import { NonVirtualGrid } from './NonVirtualGrid';
+import { NonVirtualGrid, VirtualGrid } from './internal';
 import { StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
-import { VirtualGrid } from './VirtualGrid';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
@@ -337,6 +336,15 @@ export class GridView extends React.PureComponent<GridViewProps> {
         // synchronize frozen body columns
         if (this.freezedColumnsGrid.current) {
             this.freezedColumnsGrid.current.scrollTo({ scrollTop } as any);
+        }
+    }
+
+    private handleHeadScroll = (e: ListOnScrollProps) => {
+        const { scrollOffset } = e;
+
+        // synchronize main grid
+        if (this.mainBodyGrid.current) {
+            this.mainBodyGrid.current.scrollTo({ scrollLeft: scrollOffset } as any);
         }
     }
 

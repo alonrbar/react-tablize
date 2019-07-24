@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { VariableSizeGrid, VariableSizeGridProps } from 'react-window';
-import { SizeUtils } from '../utils';
+import { SizeUtils } from '../../utils';
 
 export interface VirtualGridProps extends VariableSizeGridProps {
     hideVerticalScrollbar?: boolean;
