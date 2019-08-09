@@ -61,7 +61,7 @@ stories.add('terse syntax', () => {
 });
 
 stories.add('no head', () => {
-    const items = getTestItems('terse');
+    const items = getTestItems('no head');
     return (
         <TableView rowCount={items.length}>
             <TableBody>
@@ -103,7 +103,7 @@ stories.add('rows and cells syntax', () => {
 });
 
 stories.add('mixed syntax', () => {
-    const items = getTestItems('rows and cells - terse');
+    const items = getTestItems('mixed syntax');
     return (
         <TableView rowCount={items.length}>
             <TableHead>
