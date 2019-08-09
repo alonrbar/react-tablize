@@ -5,16 +5,13 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 import { Theme } from '../styled';
 import { asArray, ErrorBoundary, isNullOrUndefined, Keys, ReactUtils, SizeUtils } from '../utils';
-import { ColumnBody } from './ColumnBody';
-import { ColumnHead } from './ColumnHead';
 import { CustomScrollbars } from './CustomScrollbars';
 import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableBodyRow, TableHeadCell, TableHeadRow } from './style';
 import { TableBody } from './TableBody';
-import { CellContent, TableCell, TableCellProps } from './TableCell';
+import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
 import { TableHead } from './TableHead';
-import { RowContent, RowRender, TableRow, TableRowProps } from './TableRow';
-const flattenDeep = require('lodash.flattendeep');
+import { RowRender, TableRow, TableRowProps } from './TableRow';
 
 interface KeyEvent {
     key: string;
@@ -153,8 +150,8 @@ export class TableView extends React.PureComponent<TableViewProps> {
             if (head || body)
                 throw new Error('Can not specify head and/or body when specifying table columns.');
 
-            head = this.createHeadFromColumns(columns);
-            body = this.createBodyFromColumns(columns);
+            head = TableColumn.createHeadFromColumns(columns);
+            body = TableColumn.createBodyFromColumns(columns);
         }
 
         // render
@@ -163,10 +160,10 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 <ThemeProvider theme={this.getTheme()}>
                     <StyledTableView
                         className={this.props.className}
-                        style={Object.assign({},
-                            this.props.style,
-                            SizeUtils.geElementHeights(this, TableView.defaultHeight)
-                        )}
+                        style={{
+                            ...this.props.style,
+                            ...SizeUtils.geElementHeights(this, TableView.defaultHeight)
+                        }}
                         {...this.getKeyScrollProps()}
                     >
                         {this.renderTableHead(head)}
@@ -199,11 +196,11 @@ export class TableView extends React.PureComponent<TableViewProps> {
                         {React.Children.map(children, (cell, index) => {
 
                             const headCell: TableCell = cell as any;
-                            const cellProps = this.getHeadCellProps(headCell);
+                            const cellProps = TableCell.getCellProps(headCell);
                             if (cellProps.visible === false)
                                 return null;
 
-                            const cellContent = this.getHeadCellContent(headCell);
+                            const cellContent = TableCell.getCellContent(headCell);
                             return (
                                 <TableHeadCell
                                     key={index}
@@ -245,7 +242,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
     private renderTableRows(body: TableBody) {
 
         // placeholder
-        if (this.props.rowCount === 0 || !this.hasBody(body)) {
+        if (this.props.rowCount === 0 || !TableBody.hasChildren(body)) {
             return this.renderItemsPlaceHolder();
         }
 
@@ -308,20 +305,23 @@ export class TableView extends React.PureComponent<TableViewProps> {
             return null;
 
         const row = rowRender(index, isScrolling);
-        const { style: rowStyle, ...rowProps } = this.getRowProps(row);
+        const { style: rowStyle, ...rowProps } = TableRow.getRowProps(row);
+        const rowContent = TableRow.getRowContent(row);
         const rowKey = this.getRowKey(rowProps, index);
-        const rowContent = this.getRowContent(row);
 
         return (
             <TableBodyRow
-                style={Object.assign({}, style, rowStyle)}
+                style={{
+                    ...style,
+                    ...rowStyle
+                }}
                 key={rowKey}
                 {...rowProps}
             >
                 <ErrorBoundary>
                     {asArray(rowContent).map((cell, columnIndex) => {
 
-                        const cellProps = this.getCellProps(cell);
+                        const cellProps = TableCell.getCellProps(cell);
                         if (cellProps.visible === false)
                             return null;
 
@@ -331,7 +331,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                                 {...cellProps}
                             >
                                 <ErrorBoundary>
-                                    {this.getCellContent(cell)}
+                                    {TableCell.getCellContent(cell)}
                                 </ErrorBoundary>
                             </TableBodyCell>
                         );
@@ -402,108 +402,14 @@ export class TableView extends React.PureComponent<TableViewProps> {
     }
 
     //
-    // components structure handling
-    //  
+    // helpers
+    //
 
-    private createHeadFromColumns(columns: TableColumn[]): TableHead {
-
-        if (columns.every(col => !ReactUtils.singleChildOfType(col, ColumnHead)))
-            return null;
-
-        const head: any = (
-            <TableHead>
-                {columns.map(col => {
-                    const colHead = ReactUtils.singleChildOfType(col, ColumnHead);
-                    if (!colHead)
-                        return null;
-
-                    // eslint-disable-next-line react/jsx-key
-                    return <TableCell {...(colHead.props as any)} />;
-                })}
-            </TableHead>
-        );
-        return head;
-    }
-
-    private createBodyFromColumns(columns: TableColumn[]): TableBody {
-        const body: any = (
-            <TableBody>
-                {(rowIndex: number) => columns.map((col, columnIndex) => {
-                    const cellRender = ReactUtils.singleChildOfType(col, ColumnBody).props.children;
-                    if (!cellRender)
-                        return null;
-                    return cellRender({ rowIndex, columnIndex });
-                })}
-            </TableBody>
-        );
-        return body;
-    }
-
-    private getHeadCellProps(cell: TableCell): TableCellProps {
-
-        // cell element
-        if (ReactUtils.elementInstanceOf(cell, TableCell))
-            return cell.props || {};
-
-        // default props
-        return {};
-    }
-
-    private getHeadCellContent(cell: TableCell): CellContent {
-
-        if (ReactUtils.elementInstanceOf(cell, TableCell)) {
-            return cell.props.children;
-        }
-
-        return cell;
-    }
-
-    private hasBody(body: TableBody): boolean {
-
-        if (!body)
-            return false;
-
-        if (isNullOrUndefined(body.props.children))
-            return false;
-
-        if (typeof body.props.children === 'function')
-            return true;
-
-        if (Array.isArray(body.props.children))
-            return body.props.children.length > 0;
-
-        const childrenCount = React.Children.count(body.props.children);
-        return childrenCount > 0;
-    }
-
-    private getRowProps(row: any): TableRowProps {
-
-        if (ReactUtils.elementInstanceOf(row, TableRow))
-            return row.props || {};
-
-        // default props
-        return {};
-    }
-
-    private getRowContent(row: any): RowContent {
-
-        let content: RowContent = row;
-
-        // fragment element
-        if (ReactUtils.isReactFragment(content)) {
-            throw new Error('Can not use React.Fragment as row content. Consider wrapping your content with a row element.');
-        }
-
-        // row element
-        if (ReactUtils.elementInstanceOf(content, TableRow)) {
-            content = content.props.children;
-        }
-
-        // actual content
-        if (Array.isArray(content)) {
-            content = flattenDeep(content);
-        }
-        return content;
+    private getTheme(): Theme {
+        return {
+            dir: this.props.dir,
+            hairlines: (this.props.hairlines !== false)
+        };
     }
 
     private getRowKey(rowProps: TableRowProps, index: number): React.Key {
@@ -515,40 +421,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
             return this.props.rowKey(index);
 
         return index;
-    }
-
-    private getCellProps(cell: any): TableCellProps {
-
-        // cell element
-        if (ReactUtils.elementInstanceOf(cell, TableCell))
-            return cell.props || {};
-
-        // default props
-        return {};
-    }
-
-    private getCellContent(cell: any): CellContent {
-
-        let content = cell;
-
-        // cell element
-        if (ReactUtils.elementInstanceOf(content, TableCell)) {
-            content = content.props.children;
-        }
-
-        // actual content
-        return content || null;
-    }
-
-    //
-    // helpers
-    //
-
-    private getTheme(): Theme {
-        return {
-            dir: this.props.dir,
-            hairlines: (this.props.hairlines !== false)
-        };
     }
 
     private getRowHeight = (rowIndex: number): number => {

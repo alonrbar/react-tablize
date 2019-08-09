@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { randomInt } from '../utils/utils';
 
-const GridCellSymbol = '__ReactTablize__GridCell__' + randomInt(0);
+const GridCellSymbol = '__ReactTablize__GridCell__';
 
 export interface GridCellExtractResult {
     props: GridCellProps;
@@ -14,7 +13,7 @@ export interface GridCellProps extends React.DivProps {
 export class GridCell extends React.PureComponent<GridCellProps> {
 
     public static defaultProps: GridCellProps = {
-        [GridCellSymbol]: true
+        [GridCellSymbol as any]: true
     };
 
     public static extract(cell: any): GridCellExtractResult {
