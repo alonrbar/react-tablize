@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
+import { SizeUtils } from '../utils';
 
 //
 // constants
 //
 
-const scrollbarWidth = '17px';
 const tableBorder = '1px solid #ddd';
 
 //
@@ -22,7 +22,6 @@ export const StyledTableView = styled.div`
 
 export const StyledTableHead = styled.div`
     display: flex;
-    flex-flow: column;
 
     overflow-y: hidden;
 
@@ -35,7 +34,7 @@ export const TableHeadRow = styled.div`
     display: flex;
     justify-content: stretch;
 
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${scrollbarWidth};
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${SizeUtils.scrollbarWidth}px;
     ${props => props.theme.hairlines ? `border-bottom: ${tableBorder}` : ''};
 `;
 
@@ -54,14 +53,10 @@ export const TableHeadCell = styled.div`
 //
 
 export const StyledTableBody = styled.div`
-    display: flex;
-    flex-flow: column;
-
-    vertical-align: middle;
+    /* no style... */
 `;
 
 export const TableBodyRow = styled.div`
-    flex: 1;
     display: flex;
     justify-content: stretch;
 
