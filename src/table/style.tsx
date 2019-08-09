@@ -1,4 +1,4 @@
-import { styled } from '../styled';
+import styled from '@emotion/styled';
 
 //
 // constants
