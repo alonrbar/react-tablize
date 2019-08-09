@@ -352,7 +352,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
         return {
             onMouseEnter: this.registerKeyHandlers,
             onMouseLeave: this.removeKeyHandlers,
-            onKeyDown: (e: KeyEvent) => this.scrollByKey(e)
+            onKeyDown: this.scrollByKey
         };
     }
 
@@ -389,14 +389,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
             [Keys.Home]: minOffset,
         };
 
-        this.setScrollOffset(offsetByKey[key]);
-    }
-
-    private setScrollOffset = (offset: number) => {
-        if (!this.tableElement.current)
-            return;
-
-        this.tableElement.current.scrollTo(offset);
+        this.tableElement.current.scrollTo(offsetByKey[key]);
     }
 
     //
