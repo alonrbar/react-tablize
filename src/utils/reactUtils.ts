@@ -2,41 +2,6 @@ import * as React from 'react';
 
 export class ReactUtils {
 
-    //
-    // props
-    //
-
-    public static getProps<T>(elem: any): T {
-        return (elem && (elem as any).props) || {};
-    }
-
-    //
-    // react element
-    //
-
-    public static elementInstanceOf<T>(elem: any, type: Constructor<T>): elem is T {
-        if (!elem)
-            return false;
-        if (!elem.type)
-            return false;
-
-        // https://stackoverflow.com/questions/39387405/using-instanceof-to-test-for-base-class-of-a-react-component
-        // https://stackoverflow.com/questions/14486110/how-to-check-if-a-javascript-class-inherits-another-without-creating-an-obj
-        // https://stackoverflow.com/questions/2464426/whats-the-difference-between-isprototypeof-and-instanceof-in-javascript
-
-        return elem.type === type ||
-            elem.type.prototype instanceof type ||
-            Object.prototype.isPrototypeOf.call(type, elem.type);
-    }
-
-    public static isReactFragment(elem: any): boolean {
-        return React.isValidElement(elem) && elem.type === React.Fragment;
-    }
-
-    //
-    // react children
-    //
-
     public static addPropsToChildren(children: React.ReactNode, createPropsToAdd: (child: React.ReactElement<any>, index?: number) => any) {
 
         // https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
@@ -44,20 +9,7 @@ export class ReactUtils {
             const propsToAdd = createPropsToAdd(child, index);
             return React.cloneElement(child, propsToAdd);
         });
-    }
-
-    public static childrenArray(parentElement: any): React.ReactChild[] {
-        if (!parentElement)
-            return null;
-        if (!parentElement.props)
-            return null;
-
-        const children = parentElement.props.children;
-        if (Array.isArray(children))
-            return children;
-
-        return React.Children.map(children, child => child);
-    }
+    }    
 
     public static childrenOfType<T>(parentElement: any, type: Constructor<T>): T[] {
         const children = ReactUtils.childrenArray(parentElement);
@@ -86,17 +38,35 @@ export class ReactUtils {
         return matchingChildren[0] as any;
     }
 
-    // tslint:disable-next-line:ban-types
-    public static singleFunctionChild(parentElement: any): Function {
+    //
+    // private methods
+    //
+
+    private static childrenArray(parentElement: any): React.ReactChild[] {
         if (!parentElement)
             return null;
         if (!parentElement.props)
             return null;
 
         const children = parentElement.props.children;
-        if (typeof parentElement.props.children !== 'function')
-            return null;
+        if (Array.isArray(children))
+            return children;
 
-        return children;
+        return React.Children.map(children, child => child);
     }
+
+    private static elementInstanceOf<T>(elem: any, type: Constructor<T>): elem is T {
+        if (!elem)
+            return false;
+        if (!elem.type)
+            return false;
+
+        // https://stackoverflow.com/questions/39387405/using-instanceof-to-test-for-base-class-of-a-react-component
+        // https://stackoverflow.com/questions/14486110/how-to-check-if-a-javascript-class-inherits-another-without-creating-an-obj
+        // https://stackoverflow.com/questions/2464426/whats-the-difference-between-isprototypeof-and-instanceof-in-javascript
+
+        return elem.type === type ||
+            elem.type.prototype instanceof type ||
+            Object.prototype.isPrototypeOf.call(type, elem.type);
+    }    
 }
