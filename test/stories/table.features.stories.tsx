@@ -165,3 +165,22 @@ stories.add('non virtual', () => {
         </TableView>
     );
 });
+
+stories.add('rtl', () => {
+    return (
+        <TableView
+            rowCount={1000}
+            dir="rtl"
+        >
+            <TableHead>
+                {['שם', 'גיל']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    'שם ' + (index + 1),
+                    'גיל ' + (index + 1)
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});

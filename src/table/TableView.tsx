@@ -183,7 +183,11 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
             <StyledTableHead
                 {...divProps}
-                style={Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, TableView.defaultHeadHeight))}
+                style={{
+                    direction: this.props.dir,
+                    ...head.props.style,
+                    ...SizeUtils.geElementHeights(head, TableView.defaultHeadHeight)
+                }}
             >
                 <TableHeadRow>
                     <ErrorBoundary>
