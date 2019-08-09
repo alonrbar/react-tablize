@@ -21,12 +21,7 @@ export class TableRow extends React.PureComponent<TableRowProps> {
     }
 
     public static getRowProps(row: unknown): TableRowProps {
-
-        if (TableRow.isTableRow(row))
-            return row.props || {};
-
-        // default props
-        return {};
+        return (TableRow.isTableRow(row) && row.props) || {};
     }
 
     public static getRowContent(row: unknown): RowContent {

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ReactUtils } from '../utils';
+
+const TableCellSymbol = '__ReactTablize__TableCell__';
 
 export type CellContent = React.ReactNode;
 
@@ -9,24 +10,23 @@ export interface TableCellProps extends React.DivProps {
 }
 
 export class TableCell extends React.PureComponent<TableCellProps> {
-    
+
+    public static defaultProps: TableCellProps = {
+        [TableCellSymbol as any]: true
+    };
+
+    public static isTableCell(cell: any): cell is TableCell {
+        return cell && cell.props && cell.props[TableCellSymbol];
+    }
+
     public static getCellProps(cell: unknown): TableCellProps {
-
-        // cell element
-        if (ReactUtils.elementInstanceOf(cell, TableCell))
-            return cell.props || {};
-
-        // default props
-        return {};
+        return (TableCell.isTableCell(cell) && cell.props) || {};
     }
 
     public static getCellContent(cell: unknown): CellContent {
-
-        if (ReactUtils.elementInstanceOf(cell, TableCell)) {
-            return cell.props.children;
-        }
-
-        return cell;
+        return TableCell.isTableCell(cell) ?
+            cell.props.children :
+            cell;
     }
 }
 
