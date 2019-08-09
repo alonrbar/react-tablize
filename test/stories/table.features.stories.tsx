@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { TableBody, TableHead, TableView } from 'src/table';
+import { RowAutoSize, TableBody, TableHead, TableView } from 'src/table';
 
 const stories = storiesOf('TableView features', module);
 
@@ -151,6 +151,27 @@ stories.add('non virtual', () => {
         <TableView
             rowCount={1000}
             isVirtual={false}
+        >
+            <TableHead
+            >
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    index + 1,
+                    index + 1
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
+
+stories.add('non virtual - auto-sized rows', () => {
+    return (
+        <TableView
+            rowCount={1000}
+            isVirtual={false}
+            rowHeight={RowAutoSize}
         >
             <TableHead
             >

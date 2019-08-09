@@ -2,9 +2,14 @@
 
 ## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
 
+### Added
+
+- `RowAutoSize` for non-virtual `TableView`s.
+
 ### Fixed
 
 - Better support older browsers when `isVirtual` is `false`.
+- Fix `TableView` RTL support.
 
 ## [0.14.0 - 2019-07-16](https://github.com/alonrbar/react-tablize/tree/v0.14.0)
 

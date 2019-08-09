@@ -31,6 +31,11 @@ type TableChildren_RowsSyntax = [React.SubComp<TableHead>, React.SubComp<TableBo
 
 type TableChildren_ColumnsSyntax = OneOrMore<React.SubComp<TableColumn>>;
 
+/**
+ * Applicable only on non-virtual tables.
+ */
+export const RowAutoSize = (): number => undefined;
+
 export type RowKeyCallback = (index: number) => React.Key;
 
 export class TableViewProps {
