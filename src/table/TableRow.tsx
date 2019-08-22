@@ -16,8 +16,8 @@ export class TableRow extends React.PureComponent<TableRowProps> {
         [TableRowSymbol as any]: true
     };
 
-    public static isTableRow(row: any): row is TableRow {
-        return row && row.props && row.props[TableRowSymbol];
+    public static isTableRow(row: any): row is React.ReactElement<TableRowProps> {
+        return React.isValidElement(row) && (row.props as any)[TableRowSymbol];
     }
 
     public static getRowProps(row: unknown): TableRowProps {

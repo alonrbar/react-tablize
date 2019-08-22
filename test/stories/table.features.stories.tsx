@@ -1,6 +1,7 @@
+import styled from '@emotion/styled';
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { RowAutoSize, TableBody, TableHead, TableView } from 'src/table';
+import { RowAutoSize, TableBody, TableHead, TableRow, TableView } from 'src/table';
 
 const stories = storiesOf('TableView features', module);
 
@@ -120,6 +121,35 @@ stories.add('head style', () => {
                     items[index].name,
                     items[index].age
                 ])}
+            </TableBody>
+        </TableView>
+    );
+});
+
+const MyCustomTableRow = styled(TableRow)`
+    color: green;
+`;
+
+stories.add('style with emotion', () => {
+    const items = getTestItems('style with emotion');
+
+    return (
+        <TableView
+            rowCount={items.length}
+            hairlines={false}
+        >
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => (
+                    <MyCustomTableRow>
+                        {[
+                            items[index].name,
+                            items[index].age
+                        ]}
+                    </MyCustomTableRow>
+                )}
             </TableBody>
         </TableView>
     );
