@@ -31,7 +31,8 @@
     "lodash.flattendeep": "^4.4.0",
     "react-custom-scrollbars": "4.2.1",
     "react-virtualized-auto-sizer": "^1.0.2",
-    "react-window": "^1.8.5"
+    "react-window": "^1.8.5",
+    "recyclerlistview": "^2.0.12"
   },
   "peerDependencies": {
     "react": "^16.8.6",
