@@ -3,7 +3,6 @@ import * as React from 'react';
 export interface BodyCellRenderArgs {
     rowIndex: number; 
     columnIndex: number;
-    isScrolling?: boolean;
 }
 
 export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;

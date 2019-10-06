@@ -137,7 +137,6 @@ const people: Person[];
 | emptyMessage | string | "No Items to Display" | no | What to display when there are no items. |
 | keyScroll | boolean | true | no | Enables table scrolling using the `PageUp`, `PageDown`, `Home` and `End` keys. |
 | overscanCount | number | 20 | no ||
-| useIsScrolling | boolean | false | no | Adds an additional isScrolling parameter to the children render function. This parameter can be used to show a placeholder row or column while the list is being scrolled. Note that using this parameter may impact performance. |
 
 ## GridView
 
@@ -233,7 +232,6 @@ const people: Person[];
 | dir | `'rtl'` \| `'ltr'` | `'ltr'` | no ||
 | overscanRowsCount | number | 1 | no ||
 | overscanColumnsCount | number | 1 | no ||
-| useIsScrolling | boolean | false | no | Adds an additional isScrolling parameter to the children render function. This parameter can be used to show a placeholder row or column while the list is being scrolled. Note that using this parameter may impact performance. |
 
 ## Changelog
 

@@ -11,6 +11,10 @@
 - Better support older browsers when `isVirtual` is `false`.
 - Fix `TableView` RTL support.
 
+### Removed
+
+- **BREAKING**: Remove the `isScrolling` support.
+
 ## [0.14.0 - 2019-07-16](https://github.com/alonrbar/react-tablize/tree/v0.14.0)
 
 ### Added

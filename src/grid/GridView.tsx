@@ -18,7 +18,6 @@ interface RenderBodyCellArgs {
     cellRender: BodyCellRender;
     rowIndex: number;
     columnIndex: number;
-    isScrolling: boolean;
     style?: React.CSSProperties;
 }
 
@@ -50,16 +49,6 @@ export interface GridViewProps extends React.DivProps {
      * Default: 1
      */
     overscanColumnsCount?: number;
-    /**
-     * Adds an additional isScrolling parameter to the children render function.
-     * This parameter can be used to show a placeholder row or column while the
-     * list is being scrolled.
-     *
-     * Note that using this parameter will result in an additional render call
-     * after scrolling has stopped (when isScrolling changes from true to
-     * false).
-     */
-    useIsScrolling?: boolean;
 
     children?: GridChildren;
 }
@@ -142,7 +131,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     cellRender,
                                     rowIndex: 0,
                                     columnIndex,
-                                    isScrolling: false
                                 }))}
 
                                 {/* main columns */}
@@ -157,14 +145,12 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     itemCount={this.props.columnCount - freezeColumns}
                                     itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
                                     overscanCount={this.props.overscanColumnsCount}
-                                    useIsScrolling={this.props.useIsScrolling}
                                 >
-                                    {({ index, style, isScrolling }) =>
+                                    {({ index, style }) =>
                                         this.renderCell({
                                             cellRender,
                                             rowIndex: 0,
                                             columnIndex: index + freezeColumns,
-                                            isScrolling,
                                             style
                                         })
                                     }
@@ -226,13 +212,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
             onScroll: this.handleFrozenColumnsScroll,
             overscanRowsCount: this.props.overscanRowsCount,
             overscanColumnsCount: this.props.overscanColumnsCount,
-            useIsScrolling: this.props.useIsScrolling,
-            children: ({ rowIndex, columnIndex, style, isScrolling }) =>
+            children: ({ rowIndex, columnIndex, style }) =>
                 this.renderCell({
                     cellRender,
                     rowIndex,
                     columnIndex,
-                    isScrolling,
                     style
                 })
         };
@@ -266,13 +250,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
             onScroll: this.handleMainGridScroll,
             overscanRowsCount: this.props.overscanRowsCount,
             overscanColumnsCount: this.props.overscanColumnsCount,
-            useIsScrolling: this.props.useIsScrolling,
-            children: ({ rowIndex, columnIndex, style, isScrolling }) =>
+            children: ({ rowIndex, columnIndex, style }) =>
                 this.renderCell({
                     cellRender,
                     rowIndex,
                     columnIndex: columnIndex + freezeColumns,
-                    isScrolling,
                     style
                 })
         };
@@ -295,12 +277,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
             rowIndex,
             columnIndex,
             cellRender,
-            isScrolling,
             style
         } = args;
 
         // create the cell
-        const cell: any = cellRender({ rowIndex, columnIndex, isScrolling });
+        const cell: any = cellRender({ rowIndex, columnIndex });
 
         // get cell props & content
         const { props: cellProps, content: cellContent } = GridCell.extract(cell);

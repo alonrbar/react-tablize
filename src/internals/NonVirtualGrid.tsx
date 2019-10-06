@@ -72,7 +72,6 @@ export class NonVirtualGrid extends React.PureComponent<NonVirtualGridProps> {
                                     columnIndex,
                                     rowIndex,
                                     data: null,
-                                    isScrolling: false,
                                     style: {
                                         height: this.props.rowHeight(rowIndex),
                                         width: this.props.columnWidth(columnIndex),
