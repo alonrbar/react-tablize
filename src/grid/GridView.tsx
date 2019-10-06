@@ -2,8 +2,8 @@ import { Theme } from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { ListOnScrollProps, VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
-import { NonVirtualGrid, NonVirtualList, VirtualGrid } from '../internals';
+import { ListOnScrollProps, VariableSizeGrid, VariableSizeGridProps } from 'react-window';
+import { List, NonVirtualGrid, NonVirtualList, VirtualGrid, VirtualList } from '../internals';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
@@ -18,7 +18,6 @@ interface RenderBodyCellArgs {
     cellRender: BodyCellRender;
     rowIndex: number;
     columnIndex: number;
-    style?: React.CSSProperties;
 }
 
 export interface GridViewProps extends React.DivProps {
@@ -79,7 +78,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         overscanColumnsCount: 1
     };
 
-    private headList = React.createRef<VariableSizeList>();
+    private headList = React.createRef<List>();
     private mainBodyGrid = React.createRef<VariableSizeGrid>();
     private freezedColumnsGrid = React.createRef<VariableSizeGrid>();
 
@@ -113,7 +112,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const freezeColumns = this.props.freezeColumns || 0;
 
         const ListComponent = this.props.isVirtual !== false ?
-            VariableSizeList :
+            VirtualList :
             NonVirtualList;
 
         return (
@@ -137,21 +136,20 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                 <ListComponent
                                     ref={this.headList}
                                     hideScrollbar={true}
-                                    direction={this.props.dir}
+                                    dir={this.props.dir}
                                     style={{ overflow: 'hidden' }}
                                     layout="horizontal"
                                     height={height}
                                     width={width - this.getFrozenColumnsWidth()}
                                     itemCount={this.props.columnCount - freezeColumns}
-                                    itemSize={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                                    overscanCount={this.props.overscanColumnsCount}
+                                    itemSize={(colIndex: number) => this.getColumnWidth(colIndex + freezeColumns)}
+                                    overscan={this.props.overscanColumnsCount}
                                 >
-                                    {({ index, style }) =>
+                                    {index =>
                                         this.renderCell({
                                             cellRender,
                                             rowIndex: 0,
-                                            columnIndex: index + freezeColumns,
-                                            style
+                                            columnIndex: index + freezeColumns
                                         })
                                     }
                                 </ListComponent>
@@ -216,8 +214,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                 this.renderCell({
                     cellRender,
                     rowIndex,
-                    columnIndex,
-                    style
+                    columnIndex
                 })
         };
 
@@ -254,8 +251,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                 this.renderCell({
                     cellRender,
                     rowIndex,
-                    columnIndex: columnIndex + freezeColumns,
-                    style
+                    columnIndex: columnIndex + freezeColumns
                 })
         };
 
@@ -276,8 +272,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const {
             rowIndex,
             columnIndex,
-            cellRender,
-            style
+            cellRender
         } = args;
 
         // create the cell
@@ -292,7 +287,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
             <StyledGridCell
                 key={`[ ${rowIndex}, ${columnIndex} ]`}
                 {...cellProps}
-                style={Object.assign({ width: columnWidth }, cellProps.style, style)}
+                style={Object.assign({ width: columnWidth }, cellProps.style)}
             >
                 <ErrorBoundary>
                     {cellContent}

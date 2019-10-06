@@ -1,13 +1,9 @@
 import { DirectionProperty } from 'csstype';
 import * as React from 'react';
-import { VariableSizeListProps } from 'react-window';
 import { SizeUtils } from '../utils';
+import { ListProps } from './List';
 
-export interface NonVirtualListProps extends VariableSizeListProps {
-    hideScrollbar?: boolean;
-}
-
-export class NonVirtualList extends React.PureComponent<NonVirtualListProps> {
+export class NonVirtualList extends React.PureComponent<ListProps> {
 
     private get isHorizontal(): boolean {
         return this.props.layout === 'horizontal';
@@ -41,7 +37,7 @@ export class NonVirtualList extends React.PureComponent<NonVirtualListProps> {
         const outerStyle: React.CSSProperties = {
             height: this.props.height,
             width: this.props.width,
-            direction: (this.props.direction as DirectionProperty),
+            direction: (this.props.dir as DirectionProperty),
             outline: 'none',
             overflow: 'hidden'
         };
@@ -62,50 +58,53 @@ export class NonVirtualList extends React.PureComponent<NonVirtualListProps> {
             if (this.isHorizontal) {
                 innerStyle.paddingBottom = SizeUtils.scrollbarWidth;
             } else {
-                const paddingDir = (this.props.direction === 'rtl' ? 'paddingLeft' : 'paddingRight');
+                const paddingDir = (this.props.dir === 'rtl' ? 'paddingLeft' : 'paddingRight');
                 innerStyle[paddingDir] = SizeUtils.scrollbarWidth;
             }
         }
 
-        return React.createElement(this.props.outerElementType || 'div',
-            {                
+        return React.createElement('div',
+            {
                 style: outerStyle,
-                onScroll: this.handleOnScroll
+                // onScroll: this.handleOnScroll
             },
-            React.createElement(this.props.innerElementType || 'div',
+            React.createElement('div',
                 {
                     ref: this.innerElement,
                     style: innerStyle
                 },
                 Array(this.props.itemCount).fill(0).map((_, index) => (
-                    React.createElement(this.props.children, {
-                        key: index,
-                        index,
-                        style: {
-                            [this.isHorizontal ? 'minWidth' : 'minHeight']: this.props.itemSize(index),
-                            [this.isHorizontal ? 'height' : 'width']: (this.isHorizontal ? this.props.height : this.props.width)
+                    React.createElement('div',
+                        {
+                            key: index,
+                            index,
+                            style: {
+                                [this.isHorizontal ? 'minWidth' : 'minHeight']: this.props.itemSize(index),
+                                [this.isHorizontal ? 'height' : 'width']: (this.isHorizontal ? this.props.height : this.props.width)
+                            },
+                            data: null
                         },
-                        data: null
-                    })
+                        this.props.children(index)
+                    )
                 ))
             )
         );
     }
 
-    private handleOnScroll = (e: React.UIEvent<HTMLDivElement>): void => {
-        if (this.disableScrollEvents) {
-            this.disableScrollEvents = false;
-            return;
-        }
+    // private handleOnScroll = (e: React.UIEvent<HTMLDivElement>): void => {
+    //     if (this.disableScrollEvents) {
+    //         this.disableScrollEvents = false;
+    //         return;
+    //     }
 
-        if (!this.props.onScroll)
-            return;
+    //     if (!this.props.onScroll)
+    //         return;
 
-        const { scrollTop, scrollLeft } = e.currentTarget;
-        this.props.onScroll({
-            scrollOffset: (this.isHorizontal ? scrollLeft : scrollTop),
-            scrollDirection: undefined,
-            scrollUpdateWasRequested: false
-        });
-    }
+    //     const { scrollTop, scrollLeft } = e.currentTarget;
+    //     this.props.onScroll({
+    //         scrollOffset: (this.isHorizontal ? scrollLeft : scrollTop),
+    //         scrollDirection: undefined,
+    //         scrollUpdateWasRequested: false
+    //     });
+    // }
 }
