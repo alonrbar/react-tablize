@@ -1,4 +1,3 @@
-import { DirectionProperty } from 'csstype';
 import * as React from 'react';
 import { SizeUtils } from '../utils';
 import { ListProps } from './List';
@@ -37,7 +36,7 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
         const outerStyle: React.CSSProperties = {
             height: this.props.height,
             width: this.props.width,
-            direction: (this.props.dir as DirectionProperty),
+            direction: this.props.dir,
             outline: 'none',
             overflow: 'hidden'
         };

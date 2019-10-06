@@ -21,5 +21,6 @@ export interface ListProps {
 
 export interface List extends React.Component<ListProps> {
 
+    refresh(): void;
     scrollTo(offset: number): void;
 }

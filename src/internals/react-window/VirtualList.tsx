@@ -22,6 +22,13 @@ export class VirtualList extends React.PureComponent<VirtualListProps> {
     private tableInnerRef = React.createRef<HTMLElement>();
     private tableOuterRef = React.createRef<HTMLElement>();
 
+    public refresh() {
+        if (this.tableElement.current) {
+            this.tableElement.current.resetAfterIndex(0, false);
+        }
+        this.forceUpdate();
+    }
+
     public render() {
         return (
             <VariableSizeList
@@ -36,6 +43,7 @@ export class VirtualList extends React.PureComponent<VirtualListProps> {
                 itemCount={this.props.itemCount}
                 itemSize={this.props.itemSize}
                 overscanCount={this.props.overscan}
+                {...this.getKeyScrollProps()}
             >
                 {({ index, style }) => this.renderBodyRow(index, style)}
             </VariableSizeList>
