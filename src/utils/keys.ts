@@ -4,3 +4,7 @@ export enum Keys {
     End ='End',
     Home ='Home',
 }
+
+export interface KeyEvent {
+    key: string;
+}

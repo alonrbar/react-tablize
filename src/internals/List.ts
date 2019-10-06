@@ -1,4 +1,10 @@
 
+export interface ListRowProps {
+    style?: React.CSSProperties;
+}
+
+export type ListRowRender = (index: number) => React.ReactElement<ListRowProps>;
+
 export interface ListProps {
     style?: React.CSSProperties;
     dir: DocDir;
@@ -8,10 +14,11 @@ export interface ListProps {
     itemCount: number;
     itemSize: SizeCallback;
     hideScrollbar?: boolean;
+    customScrollbar?: boolean;
     overscan?: number;
-    children: (index: number) => React.ReactNode;
+    children: ListRowRender;
 }
-                               
+
 export interface List extends React.Component<ListProps> {
 
     scrollTo(offset: number): void;
