@@ -2,7 +2,7 @@ import { Theme } from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { ListOnScrollProps, VariableSizeGrid, VariableSizeGridProps } from 'react-window';
+import { VariableSizeGrid, VariableSizeGridProps } from 'react-window';
 import { List, NonVirtualGrid, NonVirtualList, VirtualGrid, VirtualList } from '../internals';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
@@ -64,8 +64,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
     public static Head = GridHead;
 
     public static Body = GridBody;
-
-    // TODO: public static Footer = GridFooter;
 
     public static Cell = GridCell;
 
@@ -144,6 +142,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     itemCount={this.props.columnCount - freezeColumns}
                                     itemSize={(colIndex: number) => this.getColumnWidth(colIndex + freezeColumns)}
                                     overscan={this.props.overscanColumnsCount}
+                                    // onScroll={this.handleHeadScroll}
                                 >
                                     {index =>
                                         this.renderCell({
@@ -314,12 +313,11 @@ export class GridView extends React.PureComponent<GridViewProps> {
         }
     }
 
-    private handleHeadScroll = (e: ListOnScrollProps) => {
-        const { scrollOffset } = e;
+    private handleHeadScroll = (offset: number) => {
 
         // synchronize main grid
         if (this.mainBodyGrid.current) {
-            this.mainBodyGrid.current.scrollTo({ scrollLeft: scrollOffset } as any);
+            this.mainBodyGrid.current.scrollTo({ scrollLeft: offset } as any);
         }
     }
 

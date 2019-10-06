@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { VariableSizeList } from 'react-window';
 import { KeyEvent, Keys } from '../../utils';
-import { ListProps } from '../List';
 import { CustomScrollbars } from '../CustomScrollbars';
+import { List, ListProps } from '../List';
 
 const scrollKeys: IMap<boolean> = {
     [Keys.PageUp]: true,
@@ -16,7 +16,7 @@ export interface VirtualListProps extends ListProps {
     keyScroll?: boolean;
 }
 
-export class VirtualList extends React.PureComponent<VirtualListProps> {
+export class VirtualList extends React.PureComponent<VirtualListProps> implements List {
 
     private tableElement = React.createRef<VariableSizeList>();
     private tableInnerRef = React.createRef<HTMLElement>();
@@ -27,6 +27,12 @@ export class VirtualList extends React.PureComponent<VirtualListProps> {
             this.tableElement.current.resetAfterIndex(0, false);
         }
         this.forceUpdate();
+    }
+
+    public scrollTo(offset: number): void {
+        if (this.tableElement.current) {
+            this.tableElement.current.scrollTo(offset);
+        }
     }
 
     public render() {

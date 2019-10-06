@@ -65,7 +65,7 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
         return React.createElement('div',
             {
                 style: outerStyle,
-                // onScroll: this.handleOnScroll
+                onScroll: this.handleOnScroll
             },
             React.createElement('div',
                 {
@@ -90,20 +90,16 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
         );
     }
 
-    // private handleOnScroll = (e: React.UIEvent<HTMLDivElement>): void => {
-    //     if (this.disableScrollEvents) {
-    //         this.disableScrollEvents = false;
-    //         return;
-    //     }
+    private handleOnScroll = (e: React.UIEvent<HTMLDivElement>): void => {
+        if (this.disableScrollEvents) {
+            this.disableScrollEvents = false;
+            return;
+        }
 
-    //     if (!this.props.onScroll)
-    //         return;
+        if (!this.props.onScroll)
+            return;
 
-    //     const { scrollTop, scrollLeft } = e.currentTarget;
-    //     this.props.onScroll({
-    //         scrollOffset: (this.isHorizontal ? scrollLeft : scrollTop),
-    //         scrollDirection: undefined,
-    //         scrollUpdateWasRequested: false
-    //     });
-    // }
+        const { scrollTop, scrollLeft } = e.currentTarget;
+        this.props.onScroll(this.isHorizontal ? scrollLeft : scrollTop);
+    }
 }

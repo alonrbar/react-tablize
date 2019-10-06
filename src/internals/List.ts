@@ -16,6 +16,7 @@ export interface ListProps {
     hideScrollbar?: boolean;
     customScrollbar?: boolean;
     overscan?: number;
+    onScroll?: (offset: number) => void;
     children: ListRowRender;
 }
 
