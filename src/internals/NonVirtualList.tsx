@@ -1,7 +1,7 @@
 import { DirectionProperty } from 'csstype';
 import * as React from 'react';
 import { VariableSizeListProps } from 'react-window';
-import { SizeUtils } from '../../utils';
+import { SizeUtils } from '../utils';
 
 export interface NonVirtualListProps extends VariableSizeListProps {
     hideScrollbar?: boolean;
@@ -29,11 +29,10 @@ export class NonVirtualList extends React.PureComponent<NonVirtualListProps> {
                 return;
 
             this.disableScrollEvents = true;
-            if (this.isHorizontal) {
-                currentInner.scrollLeft = scrollOffset;
-            } else {
-                currentInner.scrollTop = scrollOffset;
-            }
+            currentInner.scrollTo({
+                top: (this.isHorizontal ? undefined : scrollOffset),
+                left: (this.isHorizontal ? scrollOffset : undefined)
+            });
         }
     }
 

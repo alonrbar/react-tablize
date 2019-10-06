@@ -2,13 +2,12 @@ import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ListOnScrollProps, VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
+import { NonVirtualGrid, NonVirtualList, VirtualGrid } from '../internals';
 import { Theme } from '../styled';
-import { NonVirtualList } from '../table/internal';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';
 import { GridHead } from './GridHead';
-import { NonVirtualGrid, VirtualGrid } from './internal';
 import { StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
