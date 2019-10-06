@@ -1,9 +1,9 @@
+import { Theme } from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ListOnScrollProps, VariableSizeGrid, VariableSizeGridProps, VariableSizeList } from 'react-window';
 import { NonVirtualGrid, NonVirtualList, VirtualGrid } from '../internals';
-import { Theme } from '../styled';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridCell } from './GridCell';

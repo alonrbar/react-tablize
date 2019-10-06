@@ -1,9 +1,9 @@
+import { Theme } from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
-import { Theme } from '../styled';
 import { asArray, ErrorBoundary, isNullOrUndefined, Keys, ReactUtils, SizeUtils } from '../utils';
 import { CustomScrollbars } from './CustomScrollbars';
 import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableBodyRow, TableHeadCell, TableHeadRow } from './style';
