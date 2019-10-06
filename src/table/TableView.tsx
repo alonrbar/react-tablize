@@ -305,22 +305,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
             return null;
 
         const row = rowRender(index, isScrolling);
-        if (TableRow.isTableRow(row)) {
-            const { style: rowStyle, ...rowProps } = row.props;
-            return React.cloneElement(row,
-                {
-                    style: {
-                        ...style,
-                        ...rowStyle
-                    },
-                    ...rowProps
-                },
-                React.Children.map(row.props.children, child => {
-                    // TODO: handle children...
-                })
-            );
-        }
-
         const { style: rowStyle, ...rowProps } = TableRow.getRowProps(row);
         const rowContent = TableRow.getRowContent(row);
         const rowKey = this.getRowKey(rowProps, index);
