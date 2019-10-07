@@ -129,7 +129,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
 
                                 {/* main columns */}
                                 <ListComponent
-                                    ref={this.headList as any}
+                                    ref={this.headList as React.Ref<any>}
                                     hideScrollbar={true}
                                     dir={this.props.dir}
                                     style={{ overflow: 'hidden' }}

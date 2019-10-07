@@ -18,32 +18,33 @@ export interface VirtualListProps extends ListProps {
 
 export class VirtualList extends React.PureComponent<VirtualListProps> implements List {
 
-    private tableElement = React.createRef<VariableSizeList>();
+    private tableRef = React.createRef<VariableSizeList>();
     private tableInnerRef = React.createRef<HTMLElement>();
     private tableOuterRef = React.createRef<HTMLElement>();
 
     public refresh() {
-        if (this.tableElement.current) {
-            this.tableElement.current.resetAfterIndex(0, false);
+        if (this.tableRef.current) {
+            this.tableRef.current.resetAfterIndex(0, false);
         }
         this.forceUpdate();
     }
 
     public scrollTo(offset: number): void {
-        if (this.tableElement.current) {
-            this.tableElement.current.scrollTo(offset);
+        if (this.tableRef.current) {
+            this.tableRef.current.scrollTo(offset);
         }
     }
 
     public render() {
         return (
             <VariableSizeList
+                ref={this.tableRef}
                 innerRef={this.tableInnerRef}
                 outerRef={this.tableOuterRef}
-                style={{ outline: 'none' }}
+                style={Object.assign({ outline: 'none' }, this.props.style)}
                 outerElementType={this.getOuterElementType()}
                 direction={this.props.dir}
-                layout="vertical"
+                layout={this.props.layout}
                 height={this.props.height}
                 width={this.props.width}
                 itemCount={this.props.itemCount}
@@ -97,10 +98,10 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
         if (!scrollKeys[key])
             return;
 
-        if (!this.tableElement.current || !this.tableInnerRef.current || !this.tableOuterRef.current)
+        if (!this.tableRef.current || !this.tableInnerRef.current || !this.tableOuterRef.current)
             return;
 
-        const scrollElement = (this.props.customScrollbar ? this.tableOuterRef.current : this.tableElement.current);
+        const scrollElement = (this.props.customScrollbar ? this.tableOuterRef.current : this.tableRef.current);
         const table = (ReactDOM.findDOMNode(scrollElement) as HTMLElement);
         const currentOffset = table.scrollTop;
         const bodyHeight = table.clientHeight;
@@ -115,7 +116,7 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
             [Keys.Home]: minOffset,
         };
 
-        this.tableElement.current.scrollTo(offsetByKey[key]);
+        this.tableRef.current.scrollTo(offsetByKey[key]);
     }
 
     private getOuterElementType() {

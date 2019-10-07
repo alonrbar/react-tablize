@@ -6,11 +6,11 @@ import { GridProps } from '../Grid';
 
 export class VirtualGrid extends React.PureComponent<GridProps> {
 
-    private readonly innerElement = React.createRef<VariableSizeGrid>();
+    private readonly gridRef = React.createRef<VariableSizeGrid>();
 
     public scrollTo = (e: ScrollEvent) => {
-        if (this.innerElement.current) {
-            this.innerElement.current.scrollTo(e);
+        if (this.gridRef.current) {
+            this.gridRef.current.scrollTo(e);
         }
     }
 
@@ -31,7 +31,7 @@ export class VirtualGrid extends React.PureComponent<GridProps> {
         return (
             <VirtualGridWrapper style={wrapperStyle}>
                 <StyledVirtualGrid
-                    ref={this.innerElement}
+                    ref={this.gridRef}
                     style={Object.assign({}, this.props.style, innerStyle)}
                     direction={this.props.dir}
                     height={this.props.height}
