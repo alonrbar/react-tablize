@@ -38,10 +38,23 @@ export class TableRow extends React.PureComponent<TableRowProps> {
             content = flattenDeep(content);
         }
         return content;
-    }    
+    }
 
     public render() {
-        return this.props.children;
+        return (
+            <div
+                className={this.props.className}
+                style={Object.assign(
+                    {
+                        display: 'flex',
+                        justifyContent: 'stretch'
+                    },
+                    this.props.style
+                )}
+            >
+                {this.props.children}
+            </div>
+        );
     }
 
 }

@@ -56,17 +56,6 @@ export const StyledTableBody = styled.div`
     /* no style... */
 `;
 
-export const TableBodyRow = styled.div`
-    display: flex;
-    justify-content: stretch;
-
-    ${props => props.theme.hairlines ? `border-top: ${tableBorder}` : ''};
-
-    &:first-of-type {
-        border-top: none;
-    }
-`;
-
 export const TableBodyCell = styled.div`
     flex: 1;
     padding: 8px;

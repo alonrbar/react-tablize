@@ -4,7 +4,7 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { List, NonVirtualList, VirtualList } from '../core';
 import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
-import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableBodyRow, TableHeadCell, TableHeadRow } from './style';
+import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableHeadCell, TableHeadRow } from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -249,37 +249,44 @@ export class TableView extends React.PureComponent<TableViewProps> {
             return null;
 
         const row = rowRender(index);
-        const { style: rowStyle, ...rowProps } = TableRow.getRowProps(row);
-        const rowContent = TableRow.getRowContent(row);
-        const rowKey = this.getRowKey(rowProps, index);
+        let rowContent = TableRow.getRowContent(row);
+        rowContent = (
+            <ErrorBoundary>
+                {asArray(rowContent).map((cell, columnIndex) => {
 
-        return (
-            <TableBodyRow
-                style={rowStyle}
-                key={rowKey}
-                {...rowProps}
-            >
-                <ErrorBoundary>
-                    {asArray(rowContent).map((cell, columnIndex) => {
+                    const cellProps = TableCell.getCellProps(cell);
+                    if (cellProps.visible === false)
+                        return null;
 
-                        const cellProps = TableCell.getCellProps(cell);
-                        if (cellProps.visible === false)
-                            return null;
-
-                        return (
-                            <TableBodyCell
-                                key={columnIndex}
-                                {...cellProps}
-                            >
-                                <ErrorBoundary>
-                                    {TableCell.getCellContent(cell)}
-                                </ErrorBoundary>
-                            </TableBodyCell>
-                        );
-                    })}
-                </ErrorBoundary>
-            </TableBodyRow>
+                    return (
+                        <TableBodyCell
+                            key={columnIndex}
+                            {...cellProps}
+                        >
+                            <ErrorBoundary>
+                                {TableCell.getCellContent(cell)}
+                            </ErrorBoundary>
+                        </TableBodyCell>
+                    );
+                })}
+            </ErrorBoundary>
         );
+
+        // already a row - just adjust the content
+        if (TableRow.isTableRow(row)) {
+            const rowKey = this.getRowKey(row.props, index);
+            return React.cloneElement(row, { key: rowKey }, rowContent);
+        }
+
+        // not a row - need to wrap content with a row element
+        else {
+            const rowKey = this.getRowKey({}, index);
+            return (
+                <TableRow key={rowKey}>
+                    {rowContent}
+                </TableRow>
+            );
+        }
     }
 
     private renderItemsPlaceHolder() {

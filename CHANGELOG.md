@@ -1,5 +1,15 @@
 # React Tablize - Change Log
 
+## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
+
+### Added
+
+- Support custom styling with `emotion` and similar libraries.
+
+### Removed
+
+- **BREAKING**: Remove default table style.
+
 ## [0.15.0 - 2019-10-07](https://github.com/alonrbar/react-tablize/tree/v0.15.0)
 
 ### Added
