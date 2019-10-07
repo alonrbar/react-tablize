@@ -138,7 +138,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     width={width - this.getFrozenColumnsWidth()}
                                     itemCount={this.props.columnCount - freezeColumns}
                                     itemSize={(colIndex: number) => this.getColumnWidth(colIndex + freezeColumns)}
-                                    overscan={this.props.overscanColumnsCount}
                                     // onScroll={this.handleHeadScroll}
                                 >
                                     {index =>
