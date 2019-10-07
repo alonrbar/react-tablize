@@ -221,9 +221,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
         // table rows
         const rowRender = body.props.children;
-        const ListComponent = this.props.isVirtual !== false ?
-            VirtualList :
-            NonVirtualList;
+        const ListComponent = this.getListComponent();
         return (
             <AutoSizer>
                 {({ width, height }) => (
@@ -303,6 +301,12 @@ export class TableView extends React.PureComponent<TableViewProps> {
             dir: this.props.dir,
             hairlines: (this.props.hairlines !== false)
         };
+    }
+
+    private getListComponent() {
+        return this.props.isVirtual !== false ?
+            VirtualList :
+            NonVirtualList;
     }
 
     private getRowKey(rowProps: TableRowProps, index: number): React.Key {

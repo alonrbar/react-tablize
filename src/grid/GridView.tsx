@@ -108,9 +108,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const { children: cellRender, ...divProps } = head.props;
         const freezeColumns = this.props.freezeColumns || 0;
 
-        const ListComponent = this.props.isVirtual !== false ?
-            VirtualList :
-            NonVirtualList;
+        const ListComponent = this.getListComponent();
 
         return (
             <StyledGridHead
@@ -197,9 +195,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const freezeColumns = this.props.freezeColumns || 0;
         const { children: cellRender, rowCount, rowHeight } = body.props;
 
-        const GridComponent = this.props.isVirtual !== false ?
-            VirtualGrid :
-            NonVirtualGrid;
+        const GridComponent = this.getGridComponent();
 
         return (
             <GridComponent
@@ -224,9 +220,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
         const freezeColumns = this.props.freezeColumns || 0;
         const { children: cellRender, rowCount, rowHeight } = body.props;
 
-        const GridComponent = this.props.isVirtual !== false ?
-            VirtualGrid :
-            NonVirtualGrid;
+        const GridComponent = this.getGridComponent();
 
         return (
             <GridComponent
@@ -324,6 +318,18 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return {
             dir: this.props.dir
         };
+    }
+
+    private getListComponent() {
+        return this.props.isVirtual !== false ?
+            VirtualList :
+            NonVirtualList;
+    }
+
+    private getGridComponent() {
+        return this.props.isVirtual !== false ?
+            VirtualGrid :
+            NonVirtualGrid;
     }
 
     private getFrozenColumnsWidth(): number {
