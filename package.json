@@ -19,12 +19,13 @@
     "src"
   ],
   "scripts": {
-    "storybook": "start-storybook",
     "dev": "webpack --config webpack.dev.js --watch",
     "typecheck": "cd src && tsc --noEmit && cd..",
     "typecheck:watch": "cd src && tsc --noEmit --watch && cd..",
     "lint": "eslint \"./{src,test}/**/!(*.d).{js,jsx,ts,tsx}\"",
-    "release": "yarn lint && yarn typecheck && webpack --config webpack.dev.js && webpack --config webpack.release.js"
+    "test": "yarn storybook",
+    "storybook": "start-storybook",
+    "release": "yarn typecheck && yarn lint && webpack --config webpack.dev.js && webpack --config webpack.release.js"
   },
   "dependencies": {
     "@emotion/styled": "^10.0.14",
