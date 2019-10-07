@@ -126,16 +126,6 @@ export class TableViewProps {
      * Default: 20
      */
     overscanCount?: number;
-    /**
-     * Adds an additional isScrolling parameter to the children render function.
-     * This parameter can be used to show a placeholder row or column while the
-     * list is being scrolled.
-     *
-     * Note that using this parameter will result in an additional render call
-     * after scrolling has stopped (when isScrolling changes from true to
-     * false).
-     */
-    public useIsScrolling?: boolean;
 }
 
 export class TableView extends React.PureComponent<TableViewProps, TableViewState> {
@@ -161,7 +151,6 @@ export class TableView extends React.PureComponent<TableViewProps, TableViewStat
 
 export interface HeadCellRenderArgs {
     columnIndex: number;
-    isScrolling?: boolean;
 }
 
 export type HeadCellRender = (args: HeadCellRenderArgs) => React.ReactNode;
@@ -179,7 +168,6 @@ export class GridHead extends React.PureComponent<GridHeadProps> { }
 export interface BodyCellRenderArgs {
     rowIndex: number; 
     columnIndex: number;
-    isScrolling?: boolean;
 }
 
 export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;
@@ -191,12 +179,6 @@ export interface GridBodyProps extends React.DivProps {
 }
 
 export class GridBody extends React.PureComponent<GridBodyProps> { }
-
-//
-// grid footer
-//
-
-// TODO...
 
 //
 // grid cell
@@ -211,7 +193,7 @@ export interface GridCellProps extends React.DivProps {
 }
 
 export class GridCell extends React.PureComponent<GridCellProps> {
-    public static extract(cell: any): GridCellExtractResult;
+    static extract(cell: any): GridCellExtractResult;
 }
 
 //
@@ -249,36 +231,24 @@ export interface GridViewProps extends React.DivProps {
      * Default: 1
      */
     overscanColumnsCount?: number;
-    /**
-     * Adds an additional isScrolling parameter to the children render function.
-     * This parameter can be used to show a placeholder row or column while the
-     * list is being scrolled.
-     *
-     * Note that using this parameter will result in an additional render call
-     * after scrolling has stopped (when isScrolling changes from true to
-     * false).
-     */
-    useIsScrolling?: boolean;
 
     children?: GridChildren;
 }
 
 export class GridView extends React.PureComponent<GridViewProps> {
 
-    public static readonly defaultHeight = '35vh';
-    public static readonly defaultHeadHeight = '40px';
+    static readonly defaultHeight = '35vh';
+    static readonly defaultHeadHeight = '40px';
 
     //
     // nested types
     //
 
-    public static Head = GridHead;
+    static Head = GridHead;
 
-    public static Body = GridBody;
+    static Body = GridBody;
 
-    // TODO: public static Footer = GridFooter;
-
-    public static Cell = GridCell;
+    static Cell = GridCell;
 }
 
 // ----------------- //
