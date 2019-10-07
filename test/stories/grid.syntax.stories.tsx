@@ -7,7 +7,7 @@ const stories = storiesOf('GridView syntax', module);
 stories.add('empty grid', () => (
     <GridView
         columnCount={0}
-        columnWidth={0}        
+        columnWidth={0}
     />
 ));
 
@@ -19,9 +19,9 @@ stories.add('simple grid', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -30,9 +30,7 @@ stories.add('simple grid', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
-                    {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                `${rowIndex}, ${columnIndex}`
             )}
         </GridView.Body>
     </GridView>
@@ -48,9 +46,9 @@ stories.add('simple grid - no head', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>

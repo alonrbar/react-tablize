@@ -10,6 +10,7 @@
 
 - **BREAKING**: Remove default table style.
 - **BREAKING**: Remove the `TableView.hairlines` property.
+- **BREAKING**: Remove the `GridCell` component (just use a div if needed).
 
 ## [0.15.0 - 2019-10-07](https://github.com/alonrbar/react-tablize/tree/v0.15.0)
 

@@ -13,9 +13,9 @@ stories.add('simple grid - 1 frozen column', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -24,9 +24,9 @@ stories.add('simple grid - 1 frozen column', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue', backgroundColor: 'yellow', width: '100%', height: '100%' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>
@@ -41,9 +41,9 @@ stories.add('simple grid - 2 frozen columns', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -52,9 +52,9 @@ stories.add('simple grid - 2 frozen columns', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>
@@ -69,9 +69,9 @@ stories.add('simple grid - rtl', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -80,9 +80,9 @@ stories.add('simple grid - rtl', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>
@@ -97,9 +97,9 @@ stories.add('variable size grid', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -108,9 +108,9 @@ stories.add('variable size grid', () => (
             rowHeight={rowIndex => rowIndex > 2 ? 40 : 80}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>
@@ -126,9 +126,9 @@ stories.add('non virtual grid', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -137,9 +137,9 @@ stories.add('non virtual grid', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>
@@ -156,9 +156,9 @@ stories.add('non virtual grid - rtl', () => (
 
         <GridView.Head>
             {({ columnIndex }) => (
-                <GridView.Cell style={{ color: 'red' }}>
+                <div style={{ color: 'red' }}>
                     {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Head>
 
@@ -167,9 +167,9 @@ stories.add('non virtual grid - rtl', () => (
             rowHeight={40}
         >
             {({ rowIndex, columnIndex }) => (
-                <GridView.Cell style={{ color: 'blue' }}>
+                <div style={{ color: 'blue' }}>
                     {rowIndex}, {columnIndex}
-                </GridView.Cell>
+                </div>
             )}
         </GridView.Body>
     </GridView>

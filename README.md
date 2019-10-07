@@ -154,9 +154,7 @@ const people: Person[];
         rowHeight={40}
     >
         {({ rowIndex, columnIndex }) => (
-            <GridView.Cell>
-                {rowIndex}, {columnIndex}
-            </GridView.Cell>
+            `${rowIndex}, ${columnIndex}`
         )}
     </GridView.Body>
 </GridView>
@@ -172,11 +170,7 @@ const people: Person[];
 >
 
     <GridView.Head>
-        {({ columnIndex }) => (
-            <GridView.Cell>
-                {columnIndex}
-            </GridView.Cell>
-        )}
+        {({ columnIndex }) => columnIndex}
     </GridView.Head>
 
     <GridView.Body
@@ -184,9 +178,7 @@ const people: Person[];
         rowHeight={40}
     >
         {({ rowIndex, columnIndex }) => (
-            <GridView.Cell>
-                {rowIndex}, {columnIndex}
-            </GridView.Cell>
+            `${rowIndex}, ${columnIndex}`
         )}
     </GridView.Body>
 </GridView>
@@ -201,11 +193,7 @@ const people: Person[];
 >
 
     <GridView.Head>
-        {({ columnIndex }) => (
-            <GridView.Cell>
-                {columnIndex}
-            </GridView.Cell>
-        )}
+        {({ columnIndex }) => columnIndex}
     </GridView.Head>
 
     <GridView.Body
@@ -213,9 +201,7 @@ const people: Person[];
         rowHeight={rowIndex => rowIndex === 0 ? 80 : 40}
     >
         {({ rowIndex, columnIndex }) => (
-            <GridView.Cell>
-                {rowIndex}, {columnIndex}
-            </GridView.Cell>
+            `${rowIndex}, ${columnIndex}`
         )}
     </GridView.Body>
 </GridView>

@@ -5,7 +5,6 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { Grid, List, NonVirtualGrid, NonVirtualList, VirtualGrid, VirtualList } from '../core';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
-import { GridCell } from './GridCell';
 import { GridHead } from './GridHead';
 import { StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
@@ -63,8 +62,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
     public static Head = GridHead;
 
     public static Body = GridBody;
-
-    public static Cell = GridCell;
 
     //
     // component code
@@ -138,7 +135,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                                     width={width - this.getFrozenColumnsWidth()}
                                     itemCount={this.props.columnCount - freezeColumns}
                                     itemSize={(colIndex: number) => this.getColumnWidth(colIndex + freezeColumns)}
-                                    // onScroll={this.handleHeadScroll}
+                                // onScroll={this.handleHeadScroll}
                                 >
                                     {index =>
                                         this.renderCell({
@@ -245,30 +242,14 @@ export class GridView extends React.PureComponent<GridViewProps> {
         );
     }
 
-    private renderCell(args: RenderBodyCellArgs) {
-
-        const {
-            rowIndex,
-            columnIndex,
-            cellRender
-        } = args;
-
-        // create the cell
-        const cell: any = cellRender({ rowIndex, columnIndex });
-
-        // get cell props & content
-        const { props: cellProps, content: cellContent } = GridCell.extract(cell);
-        const columnWidth = this.getColumnWidth(columnIndex);
-
-        // render
+    private renderCell({ rowIndex, columnIndex, cellRender }: RenderBodyCellArgs) {
         return (
             <StyledGridCell
                 key={`[ ${rowIndex}, ${columnIndex} ]`}
-                {...cellProps}
-                style={Object.assign({ width: columnWidth }, cellProps.style)}
+                style={{ width: this.getColumnWidth(columnIndex) }}
             >
                 <ErrorBoundary>
-                    {cellContent}
+                    {cellRender({ rowIndex, columnIndex })}
                 </ErrorBoundary>
             </StyledGridCell>
         );

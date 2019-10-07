@@ -180,22 +180,6 @@ export interface GridBodyProps extends React.DivProps {
 export class GridBody extends React.PureComponent<GridBodyProps> { }
 
 //
-// grid cell
-//
-
-export interface GridCellExtractResult {
-    props: GridCellProps;
-    content: React.ReactNode;
-}
-
-export interface GridCellProps extends React.DivProps {
-}
-
-export class GridCell extends React.PureComponent<GridCellProps> {
-    static extract(cell: any): GridCellExtractResult;
-}
-
-//
 // grid view
 //
 
@@ -246,8 +230,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
     static Head = GridHead;
 
     static Body = GridBody;
-
-    static Cell = GridCell;
 }
 
 // ----------------- //
