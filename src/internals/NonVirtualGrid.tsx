@@ -48,8 +48,8 @@ export class NonVirtualGrid extends React.PureComponent<GridProps> {
         const totalWidth = range(this.props.columnCount).map(this.props.columnWidth).reduce((total, cur) => total + cur, 0);
 
         return (
-            <OuterNonVirtualGrid style={outerStyle}>
-                <InnerNonVirtualGrid
+            <NonVirtualGridWrapper style={outerStyle}>
+                <StyledNonVirtualGrid
                     ref={this.innerElement}
                     style={innerStyle}
                     onScroll={this.handleOnScroll}
@@ -82,8 +82,8 @@ export class NonVirtualGrid extends React.PureComponent<GridProps> {
                             ))}
                         </NonVirtualGridRow>
                     ))}
-                </InnerNonVirtualGrid>
-            </OuterNonVirtualGrid>
+                </StyledNonVirtualGrid>
+            </NonVirtualGridWrapper>
         );
     }
 
@@ -108,11 +108,11 @@ export class NonVirtualGrid extends React.PureComponent<GridProps> {
 //      styles      //
 // ---------------- //
 
-const OuterNonVirtualGrid = styled.div`
+const NonVirtualGridWrapper = styled.div`
     overflow: hidden;    
 `;
 
-export const InnerNonVirtualGrid = styled.div`
+export const StyledNonVirtualGrid = styled.div`
     overflow: auto;
     box-sizing: content-box;
 `;

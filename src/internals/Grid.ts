@@ -4,7 +4,11 @@ export interface GridCellRenderArgs {
     columnIndex: number;
 }
 
-export type GridCellRender = (args: GridCellRenderArgs) => React.ReactNode;
+export interface GridCellProps {
+    style?: React.CSSProperties;
+}
+
+export type GridCellRender = (args: GridCellRenderArgs) => React.ReactElement<GridCellProps>;
 
 export interface GridProps {
     style?: React.CSSProperties;
@@ -24,6 +28,5 @@ export interface GridProps {
 
 export interface Grid extends React.Component<GridProps> {
 
-    refresh(): void;
     scrollTo(e: ScrollEvent): void;
 }
