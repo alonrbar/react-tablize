@@ -4,7 +4,7 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { List, NonVirtualList, VirtualList } from '../core';
 import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
-import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableHeadCell, TableHeadRow } from './style';
+import { StyledTableBody, StyledTableCell, StyledTableHead, StyledTableView, TableHeadRow } from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -175,14 +175,14 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
                             const cellContent = TableCell.getCellContent(headCell);
                             return (
-                                <TableHeadCell
+                                <StyledTableCell
                                     key={index}
                                     {...cellProps}
                                 >
                                     <ErrorBoundary>
                                         {cellContent}
                                     </ErrorBoundary>
-                                </TableHeadCell>
+                                </StyledTableCell>
                             );
                         })}
                     </ErrorBoundary>
@@ -253,21 +253,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
         rowContent = (
             <ErrorBoundary>
                 {asArray(rowContent).map((cell, columnIndex) => {
-
-                    const cellProps = TableCell.getCellProps(cell);
-                    if (cellProps.visible === false)
-                        return null;
-
-                    return (
-                        <TableBodyCell
-                            key={columnIndex}
-                            {...cellProps}
-                        >
-                            <ErrorBoundary>
-                                {TableCell.getCellContent(cell)}
-                            </ErrorBoundary>
-                        </TableBodyCell>
-                    );
+                    return this.renderCell(cell, columnIndex);
                 })}
             </ErrorBoundary>
         );
@@ -287,6 +273,23 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 </TableRow>
             );
         }
+    }
+
+    private renderCell(cell: any, columnIndex: number) {
+        const cellProps = TableCell.getCellProps(cell);
+        if (cellProps.visible === false)
+            return null;
+
+        return (
+            <StyledTableCell
+                key={columnIndex}
+                {...cellProps}
+            >
+                <ErrorBoundary>
+                    {TableCell.getCellContent(cell)}
+                </ErrorBoundary>
+            </StyledTableCell>
+        );
     }
 
     private renderItemsPlaceHolder() {

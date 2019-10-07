@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TableCell, CellContent } from './TableCell';
+import { TableBodyRow } from './style';
+import { CellContent, TableCell } from './TableCell';
 const flattenDeep = require('lodash.flattendeep');
 
 const TableRowSymbol = '__ReactTablize__TableRow__';
@@ -42,18 +43,12 @@ export class TableRow extends React.PureComponent<TableRowProps> {
 
     public render() {
         return (
-            <div
+            <TableBodyRow
                 className={this.props.className}
-                style={Object.assign(
-                    {
-                        display: 'flex',
-                        justifyContent: 'stretch'
-                    },
-                    this.props.style
-                )}
+                style={this.props.style}
             >
                 {this.props.children}
-            </div>
+            </TableBodyRow>
         );
     }
 
