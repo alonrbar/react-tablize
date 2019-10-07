@@ -3,18 +3,24 @@ import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview
 import { range } from '../../utils';
 import { List, ListProps } from '../List';
 
-export class VirtualList extends React.PureComponent<ListProps> implements List {    
+export class VirtualList extends React.PureComponent<ListProps> implements List {
 
     private get isHorizontal(): boolean {
         return this.props.layout === 'horizontal';
     }
+
+    private readonly listRef = React.createRef<RecyclerListView<any, any>>();
 
     public refresh(): void {
         // throw new Error('Method not implemented.');
     }
 
     public scrollTo(offset: number): void {
-        // throw new Error('Method not implemented.');
+        if (this.listRef.current) {
+            const x = this.isHorizontal ? offset : undefined;
+            const y = this.isHorizontal ? undefined : offset;
+            this.listRef.current.scrollToOffset(x, y);
+        }
     }
 
     public render() {
@@ -36,17 +42,24 @@ export class VirtualList extends React.PureComponent<ListProps> implements List 
             }
         );
 
+        // TODO: custom scrollbars
         return (
             <RecyclerListView
-                style={{ width: this.props.width, height: this.props.height }}
+                ref={this.listRef}
+                style={{
+                    width: this.props.width,
+                    height: this.props.height
+                }}
+                isHorizontal={this.isHorizontal}
                 layoutProvider={layoutProvider}
                 dataProvider={dataProvider}
                 rowRenderer={this.rowRenderer}
+                renderAheadOffset={this.props.overscan}
             />
         );
     }
 
     private rowRenderer = (layoutType: any, index: number) => {
         return this.props.children(index);
-    }    
+    }
 }
