@@ -46,10 +46,10 @@ export class VirtualList extends React.PureComponent<ListProps> implements List 
         return (
             <RecyclerListView
                 ref={this.listRef}
-                style={{
+                style={Object.assign({
                     width: this.props.width,
                     height: this.props.height
-                }}
+                }, this.props.style)}
                 isHorizontal={this.isHorizontal}
                 layoutProvider={layoutProvider}
                 dataProvider={dataProvider}
