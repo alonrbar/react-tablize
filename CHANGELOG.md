@@ -1,10 +1,15 @@
 # React Tablize - Change Log
 
-## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
+## [0.15.0 - 2019-10-07](https://github.com/alonrbar/react-tablize/tree/v0.15.0)
 
 ### Added
 
 - `RowAutoSize` for non-virtual `TableView`s.
+
+### Changed
+
+- Internal code changes.
+- Human readable class names.
 
 ### Fixed
 
@@ -14,7 +19,6 @@
 ### Removed
 
 - **BREAKING**: Remove the `isScrolling` support.
-- **BREAKING**: Remove default style. (TODO...)
 
 ## [0.14.0 - 2019-07-16](https://github.com/alonrbar/react-tablize/tree/v0.14.0)
 
