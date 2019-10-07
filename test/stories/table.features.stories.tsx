@@ -80,33 +80,10 @@ stories.add('custom scrollbars', () => {
     );
 });
 
-stories.add('no hairlines', () => {
-    const items = getTestItems('no hairlines');
-    return (
-        <TableView
-            rowCount={items.length}
-            hairlines={false}
-        >
-            <TableHead>
-                {['Name', 'Age']}
-            </TableHead>
-            <TableBody>
-                {index => ([
-                    items[index].name,
-                    items[index].age
-                ])}
-            </TableBody>
-        </TableView>
-    );
-});
-
 stories.add('head style', () => {
     const items = getTestItems('head style');
     return (
-        <TableView
-            rowCount={items.length}
-            hairlines={false}
-        >
+        <TableView rowCount={items.length}>
             <TableHead
                 style={{
                     color: 'red',
@@ -138,10 +115,7 @@ stories.add('style with emotion', () => {
     `;
 
     return (
-        <TableView
-            rowCount={items.length}
-            hairlines={false}
-        >
+        <TableView rowCount={items.length}>
             <TableHead>
                 {['Name', 'Age']}
             </TableHead>

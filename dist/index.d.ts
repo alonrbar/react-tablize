@@ -120,7 +120,6 @@ export class TableViewProps {
     rowHeight?: number | SizeCallback;
     emptyMessage?: string;    
     customScrollbars?: boolean;
-    hairlines?: boolean;
     keyScroll?: boolean;
     /**
      * Default: 20

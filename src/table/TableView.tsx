@@ -48,7 +48,6 @@ export class TableViewProps {
     public rowHeight?: number | SizeCallback = 50;
     public emptyMessage?= "No Items to Display";
     public customScrollbars?: boolean;
-    public hairlines?: boolean;
 
     //
     // behavior
@@ -280,8 +279,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
     private getTheme(): Theme {
         return {
-            dir: this.props.dir,
-            hairlines: (this.props.hairlines !== false)
+            dir: this.props.dir
         };
     }
 

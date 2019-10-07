@@ -6,7 +6,6 @@ declare module '@emotion/styled' {
     // declare theme type
     interface _Theme {
         dir: DocDir;
-        hairlines?: boolean;
     }
     export type Theme = Readonly<_Theme>;
     
