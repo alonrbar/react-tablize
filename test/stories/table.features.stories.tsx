@@ -217,6 +217,27 @@ stories.add('non virtual - auto-sized rows', () => {
     );
 });
 
+stories.add('non virtual - custom scrollbars', () => {
+    return (
+        <TableView
+            rowCount={1000}
+            isVirtual={false}
+            customScrollbars={true}
+        >
+            <TableHead
+            >
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => ([
+                    index + 1,
+                    index + 1
+                ])}
+            </TableBody>
+        </TableView>
+    );
+});
+
 stories.add('rtl', () => {
     return (
         <TableView

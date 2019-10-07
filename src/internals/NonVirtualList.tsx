@@ -1,5 +1,7 @@
+import styled from '@emotion/styled';
 import * as React from 'react';
 import { SizeUtils } from '../utils';
+import { CustomScrollbars } from './CustomScrollbars';
 import { ListProps } from './List';
 
 export class NonVirtualList extends React.PureComponent<ListProps> {
@@ -10,10 +12,10 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
 
     private disableScrollEvents = false;
 
-    private readonly innerElement = React.createRef<HTMLDivElement>();
+    private readonly listElement = React.createRef<HTMLDivElement>();
 
     public scrollTo = (scrollOffset: number) => {
-        const currentInner = this.innerElement.current;
+        const currentInner = this.listElement.current;
         if (currentInner) {
 
             if (scrollOffset === undefined)
@@ -33,14 +35,14 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
 
     public render() {
 
-        const outerStyle: React.CSSProperties = {
+        const wrapperStyle: React.CSSProperties = {
             height: this.props.height,
             width: this.props.width,
             direction: this.props.dir,
             outline: 'none',
             overflow: 'hidden'
         };
-        const innerStyle: React.CSSProperties = {
+        const listStyle: React.CSSProperties = {
             height: this.props.height,
             width: this.props.width,
             boxSizing: 'content-box',
@@ -50,43 +52,48 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
         };
 
         if (this.isHorizontal) {
-            innerStyle.display = 'flex';
+            listStyle.display = 'flex';
         }
 
         if (this.props.hideScrollbar) {
             if (this.isHorizontal) {
-                innerStyle.paddingBottom = SizeUtils.scrollbarWidth;
+                listStyle.paddingBottom = SizeUtils.scrollbarWidth;
             } else {
                 const paddingDir = (this.props.dir === 'rtl' ? 'paddingLeft' : 'paddingRight');
-                innerStyle[paddingDir] = SizeUtils.scrollbarWidth;
+                listStyle[paddingDir] = SizeUtils.scrollbarWidth;
             }
         }
 
-        return React.createElement('div',
-            {
-                style: outerStyle,
-                onScroll: this.handleOnScroll
-            },
-            React.createElement('div',
-                {
-                    ref: this.innerElement,
-                    style: innerStyle
-                },
-                Array(this.props.itemCount).fill(0).map((_, index) => (
-                    React.createElement('div',
-                        {
-                            key: index,
-                            index,
-                            style: {
+        return (
+            <NonVirtualListWrapper
+                style={wrapperStyle}
+                onScroll={this.handleOnScroll}
+            >
+
+                {/* list */}
+                {React.createElement(this.getListElementType() as any,
+                    {
+                        ref: this.listElement,
+                        style: listStyle
+                    },
+
+                    // rows
+                    Array(this.props.itemCount).fill(0).map((_, index) => (
+                        <NonVirtualListRow
+                            key={index}
+                            style={{
                                 [this.isHorizontal ? 'minWidth' : 'minHeight']: this.props.itemSize(index),
                                 [this.isHorizontal ? 'height' : 'width']: (this.isHorizontal ? this.props.height : this.props.width)
-                            },
-                            data: null
-                        },
-                        this.props.children(index)
-                    )
-                ))
-            )
+                            }}
+                        >
+
+                            {/* content */}
+                            {this.props.children(index)}
+
+                        </NonVirtualListRow>
+                    ))
+                )}
+            </NonVirtualListWrapper>
         );
     }
 
@@ -102,4 +109,18 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
         const { scrollTop, scrollLeft } = e.currentTarget;
         this.props.onScroll(this.isHorizontal ? scrollLeft : scrollTop);
     }
+
+    private getListElementType() {
+        return this.props.customScrollbar ? CustomScrollbars : 'div';
+    }
 }
+
+// ---------------- //
+//      styles      //
+// ---------------- //
+
+const NonVirtualListWrapper = styled.div`
+`;
+
+const NonVirtualListRow = styled.div`
+`;

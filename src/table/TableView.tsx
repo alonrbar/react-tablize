@@ -238,6 +238,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                         itemCount={this.props.rowCount}
                         itemSize={this.getRowHeight}
                         overscan={this.props.overscanCount}
+                        customScrollbar={this.props.customScrollbars}
                     >
                         {index => this.renderBodyRow(index, rowRender)}
                     </ListComponent>
