@@ -9,12 +9,7 @@ export const StyledTableView = styled.div`
 export const StyledTableHead = styled.div`
     display: flex;
     overflow-y: hidden;
-`;
-
-export const TableHeadRow = styled.div`
-    flex: 1;
-    display: flex;
-
+    
     /* add padding to compensate for scrollbar width */
     ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${SizeUtils.scrollbarWidth}px;
 `;
@@ -23,7 +18,7 @@ export const StyledTableBody = styled.div`
     /* no style... */
 `;
 
-export const TableBodyRow = styled.div`
+export const StyledTableRow = styled.div`
     display: flex;
 `;
 

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { ErrorBoundary } from '../utils';
+import { StyledTableCell } from './style';
 
 const TableCellSymbol = '__ReactTablize__TableCell__';
 
@@ -15,8 +17,8 @@ export class TableCell extends React.PureComponent<TableCellProps> {
         [TableCellSymbol as any]: true
     };
 
-    public static isTableCell(cell: any): cell is TableCell {
-        return cell && cell.props && cell.props[TableCellSymbol];
+    public static isTableCell(cell: unknown): cell is React.ReactElement<TableCellProps> {
+        return React.isValidElement(cell) && (cell.props as any)[TableCellSymbol];
     }
 
     public static getCellProps(cell: unknown): TableCellProps {
@@ -27,6 +29,16 @@ export class TableCell extends React.PureComponent<TableCellProps> {
         return TableCell.isTableCell(cell) ?
             cell.props.children :
             cell;
+    }
+
+    public render() {
+        return (
+            <StyledTableCell {...this.props}>
+                <ErrorBoundary>
+                    {this.props.children}
+                </ErrorBoundary>
+            </StyledTableCell>
+        );
     }
 }
 

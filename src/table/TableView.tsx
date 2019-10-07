@@ -4,7 +4,7 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { List, NonVirtualList, VirtualList } from '../core';
 import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
-import { StyledTableBody, StyledTableCell, StyledTableHead, StyledTableView, TableHeadRow } from './style';
+import { StyledTableBody, StyledTableHead, StyledTableView } from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -155,7 +155,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
         const { children, ...divProps } = head.props;
 
         return (
-
             <StyledTableHead
                 {...divProps}
                 style={{
@@ -164,29 +163,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                     ...SizeUtils.geElementHeights(head, TableView.defaultHeadHeight)
                 }}
             >
-                <TableHeadRow>
-                    <ErrorBoundary>
-                        {React.Children.map(children, (cell, index) => {
-
-                            const headCell: TableCell = cell as any;
-                            const cellProps = TableCell.getCellProps(headCell);
-                            if (cellProps.visible === false)
-                                return null;
-
-                            const cellContent = TableCell.getCellContent(headCell);
-                            return (
-                                <StyledTableCell
-                                    key={index}
-                                    {...cellProps}
-                                >
-                                    <ErrorBoundary>
-                                        {cellContent}
-                                    </ErrorBoundary>
-                                </StyledTableCell>
-                            );
-                        })}
-                    </ErrorBoundary>
-                </TableHeadRow>
+                {React.Children.map(children, this.renderCell)}
             </StyledTableHead>
         );
     }
@@ -250,13 +227,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
         const row = rowRender(index);
         let rowContent = TableRow.getRowContent(row);
-        rowContent = (
-            <ErrorBoundary>
-                {asArray(rowContent).map((cell, columnIndex) => {
-                    return this.renderCell(cell, columnIndex);
-                })}
-            </ErrorBoundary>
-        );
+        rowContent = asArray(rowContent).map(this.renderCell);
 
         // already a row - just adjust the content
         if (TableRow.isTableRow(row)) {
@@ -264,7 +235,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
             return React.cloneElement(row, { key: rowKey }, rowContent);
         }
 
-        // not a row - need to wrap content with a row element
+        // not a row - wrap content with row element
         else {
             const rowKey = this.getRowKey({}, index);
             return (
@@ -275,20 +246,21 @@ export class TableView extends React.PureComponent<TableViewProps> {
         }
     }
 
-    private renderCell(cell: any, columnIndex: number) {
+    private renderCell(cell: unknown, columnIndex: number) {
         const cellProps = TableCell.getCellProps(cell);
         if (cellProps.visible === false)
             return null;
 
+        // already a cell - just add key and return
+        if (TableCell.isTableCell(cell)) {
+            return React.cloneElement(cell, { key: columnIndex });
+        }
+
+        // not a cell - wrap content with cell element
         return (
-            <StyledTableCell
-                key={columnIndex}
-                {...cellProps}
-            >
-                <ErrorBoundary>
-                    {TableCell.getCellContent(cell)}
-                </ErrorBoundary>
-            </StyledTableCell>
+            <TableCell key={columnIndex}>
+                {cell}
+            </TableCell>
         );
     }
 
