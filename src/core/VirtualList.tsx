@@ -1,3 +1,4 @@
-import { VirtualList as ReactWindowVirtualList } from './react-window';
+// import { VirtualList } from './react-window';
+import { VirtualList } from './recyclerlistview';
 
-export { ReactWindowVirtualList as VirtualList };
+export { VirtualList };
