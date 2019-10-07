@@ -12,10 +12,10 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
 
     private disableScrollEvents = false;
 
-    private readonly listElement = React.createRef<HTMLDivElement>();
+    private readonly listRef = React.createRef<HTMLDivElement>();
 
     public scrollTo = (scrollOffset: number) => {
-        const currentInner = this.listElement.current;
+        const currentInner = this.listRef.current;
         if (currentInner) {
 
             if (scrollOffset === undefined)
@@ -73,7 +73,7 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
                 {/* list */}
                 {React.createElement(this.getListElementType() as any,
                     {
-                        ref: this.listElement,
+                        ref: this.listRef,
                         style: listStyle
                     },
 
