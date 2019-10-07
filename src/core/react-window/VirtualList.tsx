@@ -58,15 +58,11 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
     }
 
     private renderBodyRow(index: number, style: React.CSSProperties) {
-        
-        const row = this.props.children(index);
-
-        return React.cloneElement(row, {
-            style: {
-                ...row.props.style,
-                ...style
-            }
-        });
+        return (
+            <div style={style}>
+                {this.props.children(index)}
+            </div>
+        );
     }
 
     //

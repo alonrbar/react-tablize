@@ -14,6 +14,7 @@
 ### Removed
 
 - **BREAKING**: Remove the `isScrolling` support.
+- **BREAKING**: Remove default style. (TODO...)
 
 ## [0.14.0 - 2019-07-16](https://github.com/alonrbar/react-tablize/tree/v0.14.0)
 
