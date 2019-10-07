@@ -2,7 +2,7 @@ import { Theme } from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { List, NonVirtualList, VirtualList } from '../internals';
+import { List, NonVirtualList, VirtualList } from '../core';
 import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
 import { StyledTableBody, StyledTableHead, StyledTableView, TableBodyCell, TableBodyRow, TableHeadCell, TableHeadRow } from './style';
 import { TableBody } from './TableBody';
