@@ -59,7 +59,7 @@ export class WindowCalculator {
             estimatedElementSize,
             calculateElementSize
         );
-        toIndex = Math.min(toIndex + elementsOverscan, totalElementsCount);
+        toIndex = Math.min(toIndex + elementsOverscan, totalElementsCount - 1);
 
         const info: ElementInfo[] = [];
         for (let i = fromIndex; i <= toIndex; i++) {
