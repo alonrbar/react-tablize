@@ -1,5 +1,6 @@
+export * from './domUtils';
 export * from './ErrorBoundary';
-export * from './keys';
+export * from './keyboard';
 export * from './reactUtils';
 export * from './sizeUtils';
 export * from './utils';

@@ -1,3 +1,4 @@
+import { DocDir, SizeCallback } from '../../types';
 
 export interface ListRowProps {
     style?: React.CSSProperties;

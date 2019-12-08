@@ -6,7 +6,8 @@ export interface HeadCellRenderArgs {
 
 export type HeadCellRender = (args: HeadCellRenderArgs) => React.ReactNode;
 
-export interface GridHeadProps extends React.DivProps {    
+export interface GridHeadProps {
+    height?: number;
     children?: HeadCellRender;
 }
 

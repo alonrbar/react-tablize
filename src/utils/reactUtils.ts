@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Constructor } from '../types';
 
 export class ReactUtils {
 

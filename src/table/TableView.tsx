@@ -3,6 +3,7 @@ import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { List, NonVirtualList, VirtualList } from '../core';
+import { DocDir, OneOrMore, SizeCallback } from '../types';
 import { asArray, ErrorBoundary, isNullOrUndefined, ReactUtils, SizeUtils } from '../utils';
 import { StyledTableBody, StyledTableHead, StyledTableView } from './style';
 import { TableBody } from './TableBody';
@@ -304,5 +305,5 @@ export class TableView extends React.PureComponent<TableViewProps> {
         if (typeof this.props.rowHeight === 'function')
             return this.props.rowHeight(rowIndex);
         return this.props.rowHeight;
-    }
+    };
 }

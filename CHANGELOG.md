@@ -11,6 +11,8 @@
 - **BREAKING**: Remove default table style.
 - **BREAKING**: Remove the `TableView.hairlines` property.
 - **BREAKING**: Remove the `GridCell` component (just use a div if needed).
+- **BREAKING**: GridView head and body do no longer accept standard div props.
+- **BREAKING**: Remove `GridView.isVirtual` prop.
 
 ## [0.15.0 - 2019-10-07](https://github.com/alonrbar/react-tablize/tree/v0.15.0)
 

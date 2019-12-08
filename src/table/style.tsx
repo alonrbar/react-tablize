@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { SizeUtils } from '../utils';
+import { DomUtils } from '../utils';
 
 export const StyledTableView = styled.div`
     width: 100%;
@@ -11,7 +11,7 @@ export const StyledTableHead = styled.div`
     overflow-y: hidden;
     
     /* add padding to compensate for scrollbar width */
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${SizeUtils.scrollbarWidth}px;
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${DomUtils.scrollbarWidth}px;
 `;
 
 export const StyledTableBody = styled.div`

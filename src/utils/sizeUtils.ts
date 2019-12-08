@@ -14,30 +14,11 @@ export type ComponentWithStyle = React.Component<{ style?: React.CSSProperties }
 
 export class SizeUtils {
 
-    public static get scrollbarWidth(): number {
-        if (this._scrollbarWidth === null) {
-            
-            // https://github.com/sonicdoe/measure-scrollbar/blob/master/index.js
-
-            const div = document.createElement('div');
-
-            div.style.width = '100px';
-            div.style.height = '100px';
-            div.style.overflow = 'scroll';
-            div.style.position = 'absolute';
-            div.style.top = '-9999px';
-
-            document.body.appendChild(div);
-
-            this._scrollbarWidth = div.offsetWidth - div.clientWidth;
-
-            document.body.removeChild(div);
-        }
-
-        return this._scrollbarWidth;
+    public static cssSizeString(size: any): string {
+        if (Number.isFinite(size))
+            return size + 'px';
+        return size;
     }
-
-    private static _scrollbarWidth: number = null;
 
     public static geElementHeights(component: ComponentWithStyle, defaultHeight: number | string): ElementHeights {
         const style = (component && component.props.style) || {};
@@ -91,11 +72,5 @@ export class SizeUtils {
             return this.geElementHeights(head, defaultHeight).height;
         }
         return 0;
-    }
-
-    public static cssSizeString(size: any): string {
-        if (Number.isFinite(size))
-            return size + 'px';
-        return size;
-    }
+    }    
 }

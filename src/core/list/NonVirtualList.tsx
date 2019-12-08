@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import * as React from 'react';
-import { SizeUtils } from '../utils';
-import { CustomScrollbars } from './CustomScrollbars';
+import { DomUtils } from '../../utils';
+import { CustomScrollbars } from '../CustomScrollbars';
 import { ListProps } from './List';
 
 export class NonVirtualList extends React.PureComponent<ListProps> {
@@ -31,7 +31,7 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
                 left: (this.isHorizontal ? scrollOffset : undefined)
             });
         }
-    }
+    };
 
     public render() {
 
@@ -57,10 +57,10 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
 
         if (this.props.hideScrollbar) {
             if (this.isHorizontal) {
-                listStyle.paddingBottom = SizeUtils.scrollbarWidth;
+                listStyle.paddingBottom = DomUtils.scrollbarWidth;
             } else {
                 const paddingDir = (this.props.dir === 'rtl' ? 'paddingLeft' : 'paddingRight');
-                listStyle[paddingDir] = SizeUtils.scrollbarWidth;
+                listStyle[paddingDir] = DomUtils.scrollbarWidth;
             }
         }
 
@@ -108,7 +108,7 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
 
         const { scrollTop, scrollLeft } = e.currentTarget;
         this.props.onScroll(this.isHorizontal ? scrollLeft : scrollTop);
-    }
+    };
 
     private getListElementType() {
         return this.props.customScrollbar ? CustomScrollbars : 'div';

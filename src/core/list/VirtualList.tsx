@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// @ts-ignore
-import { Grid } from 'react-virtual-grid';
+import { VariableSizeList } from 'react-window';
+import { IMap } from '../../types';
 import { KeyEvent, Keys } from '../../utils';
 import { CustomScrollbars } from '../CustomScrollbars';
-import { List, ListProps } from '../List';
+import { List, ListProps } from './List';
 
 const scrollKeys: IMap<boolean> = {
     [Keys.PageUp]: true,
@@ -19,7 +19,7 @@ export interface VirtualListProps extends ListProps {
 
 export class VirtualList extends React.PureComponent<VirtualListProps> implements List {
 
-    private tableRef = React.createRef<Grid>();
+    private tableRef = React.createRef<VariableSizeList>();
     private tableInnerRef = React.createRef<HTMLElement>();
     private tableOuterRef = React.createRef<HTMLElement>();
 
@@ -38,42 +38,33 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
 
     public render() {
         return (
-            <Grid
-                // ref={this.tableRef}
-
-                columnCount={1}
-                columnWidth={() => this.props.width}
-                estimatedColumnWidth={this.props.width}
-
-                rowCount={this.props.itemCount}
-                rowHeight={this.props.itemSize}
-                estimatedRowHeight={this.props.itemSize(0)}
-
-                renderCell={this.renderRow}
-
-            />
+            <VariableSizeList
+                ref={this.tableRef}
+                innerRef={this.tableInnerRef}
+                outerRef={this.tableOuterRef}
+                style={Object.assign({ outline: 'none' }, this.props.style)}
+                outerElementType={this.getOuterElementType()}
+                direction={this.props.dir}
+                layout={this.props.layout}
+                height={this.props.height}
+                width={this.props.width}
+                itemCount={this.props.itemCount}
+                itemSize={this.props.itemSize}
+                overscanCount={this.props.overscan}
+                {...this.getKeyScrollProps()}
+            >
+                {({ index, style }) => this.renderRow(index, style)}
+            </VariableSizeList>
         );
-        // style={Object.assign({ outline: 'none' }, this.props.style)}
-        // height={this.props.height}
-        // width={this.props.width}
-
-        // {...this.getKeyScrollProps()}
     }
 
-    private renderRow = (pane: string, _rowIndex: any, rowData: any, _columnIndex: any, columnData: any) => {
-
-        const row = this.props.children(_rowIndex);
-
-        /* eslint-disable */
-        const [colIndex, colLeft, colWidth] = columnData;
-        const [rowIndex, rowTop, rowHeight] = rowData;
-        /* eslint-enable */
+    private renderRow(index: number, style: React.CSSProperties) {
+        const row = this.props.children(index);
 
         return React.cloneElement(row, {
             style: {
                 ...row.props.style,
-                width: colWidth, 
-                height: rowHeight 
+                ...style
             }
         });
     }
@@ -94,11 +85,11 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
 
     private registerKeyHandlers = () => {
         window.addEventListener('keydown', this.scrollByKey);
-    }
+    };
 
     private removeKeyHandlers = () => {
         window.removeEventListener('keydown', this.scrollByKey);
-    }
+    };
 
     private scrollByKey = ({ key }: KeyEvent) => {
 
@@ -126,7 +117,7 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
         };
 
         this.tableRef.current.scrollTo(offsetByKey[key]);
-    }
+    };
 
     private getOuterElementType() {
         return this.props.customScrollbar ? CustomScrollbars : undefined;

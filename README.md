@@ -211,13 +211,12 @@ const people: Person[];
 
 | Name | Type | Default | Required | Description |
 |-|-|-|-|-|
-| isVirtual | boolean | true | no | Whether to use a set of virtual tables (using [react-window](https://github.com/bvaughn/react-window)) or simple divs. Useful for performance comparison and optimization. |
 | columnCount | number || yes ||
 | columnWidth | `number` \| `(columnIndex: number) => number` || yes | Column width in pixels. |
 | freezeColumns | number | 0 | no | Number of columns to freeze (always the first columns). |
 | dir | `'rtl'` \| `'ltr'` | `'ltr'` | no ||
-| overscanRowsCount | number | 1 | no ||
-| overscanColumnsCount | number | 1 | no ||
+| overscanRowsCount | number | 0 | no ||
+| overscanColumnsCount | number | 0 | no ||
 
 ## Changelog
 

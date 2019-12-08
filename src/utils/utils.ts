@@ -14,3 +14,27 @@ export function range(count: number): number[] {
     // https://stackoverflow.com/questions/3895478/does-javascript-have-a-method-like-range-to-generate-a-range-within-the-supp
     return [...Array(count || 0).keys()];
 }
+
+export function areShallowEqual(a: object, b: object) {
+    if (a === b) {
+        return true;
+    }
+
+    if (a === null || a === undefined || b === null || b === undefined) {
+        return false;
+    }
+
+    const keysA = Object.keys(a);
+    const keysB = Object.keys(b);
+
+    if (keysA.length !== keysB.length) {
+        return false;
+    }
+
+    for (const key of keysA) {
+        if ((a as any)[key] !== (b as any)[key])
+            return false;
+    }
+
+    return true;
+}

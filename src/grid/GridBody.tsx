@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SizeCallback } from '../types';
 
 export interface BodyCellRenderArgs {
     rowIndex: number; 
@@ -7,7 +8,7 @@ export interface BodyCellRenderArgs {
 
 export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;
 
-export interface GridBodyProps extends React.DivProps {
+export interface GridBodyProps {
     rowCount: number;
     /**
      * Body row height.  

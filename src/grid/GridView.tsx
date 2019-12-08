@@ -2,25 +2,18 @@ import { Theme } from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Grid, List, NonVirtualGrid, NonVirtualList, VirtualGrid, VirtualList } from '../core';
+import { RenderCellProps, VirtualGrid } from '../core';
+import { DocDir, SizeCallback } from '../types';
 import { ErrorBoundary, range, ReactUtils, SizeUtils } from '../utils';
 import { BodyCellRender, GridBody } from './GridBody';
 import { GridHead } from './GridHead';
-import { StyledGridBody, StyledGridCell, StyledGridHead, StyledGridView } from './style';
 
 type GridChildren_FullSyntax = [React.SubComp<GridHead>, React.SubComp<GridBody>];
 type GridChildren_PartialSyntax = React.SubComp<GridHead> | React.SubComp<GridBody>;
 type GridChildren = GridChildren_FullSyntax | GridChildren_PartialSyntax | BodyCellRender;
 
-interface RenderBodyCellArgs {
-    cellRender: BodyCellRender;
-    rowIndex: number;
-    columnIndex: number;
-}
-
 export interface GridViewProps extends React.DivProps {
 
-    isVirtual?: boolean;
     columnCount: number;
     columnWidth: number | SizeCallback;
     /**
@@ -34,16 +27,12 @@ export interface GridViewProps extends React.DivProps {
      * Number of extra rows to render above/below the visible items.
      * Tweaking this can help reduce scroll flickering on certain
      * browsers/devices.  
-     * 
-     * Default: 1
      */
     overscanRowsCount?: number;
     /**
      * Number of extra columns to render before/after the visible items.
      * Tweaking this can help reduce scroll flickering on certain
      * browsers/devices.  
-     * 
-     * Default: 1
      */
     overscanColumnsCount?: number;
 
@@ -53,7 +42,9 @@ export interface GridViewProps extends React.DivProps {
 export class GridView extends React.PureComponent<GridViewProps> {
 
     public static readonly defaultHeight = '35vh';
-    public static readonly defaultHeadHeight = '40px';
+    public static readonly defaultHeadHeight = 40;
+    public static readonly defaultColumnWidth = 100;
+    public static readonly defaultRowHeight = 50;
 
     //
     // nested types
@@ -64,231 +55,148 @@ export class GridView extends React.PureComponent<GridViewProps> {
     public static Body = GridBody;
 
     //
-    // component code
+    // render methods
     //
 
-    public static defaultProps: Partial<GridViewProps> = {
-        overscanRowsCount: 1,
-        overscanColumnsCount: 1
-    };
-
-    private headList = React.createRef<List>();
-    private mainBodyGrid = React.createRef<Grid>();
-    private freezedColumnsGrid = React.createRef<Grid>();
-
     public render() {
+
+        const head = ReactUtils.singleChildOfType(this, GridHead);
+        const body = ReactUtils.singleChildOfType(this, GridBody);
+        if (!body)
+            return null;
+
         const { columnCount, columnWidth, children, ...divProps } = this.props;
+        const headHeight = head ? (head.props.height || GridView.defaultHeadHeight) : 0;
+        const { rowCount, rowHeight } = body.props;
+
+        const estimatedColumnWidth = typeof columnWidth === 'function' ? GridView.defaultColumnWidth : columnWidth;
+        const calculateColumnWidth = typeof columnWidth === 'function' ? columnWidth : undefined;
+        const estimatedRowHeight = typeof rowHeight === 'function' ? GridView.defaultRowHeight : rowHeight;
+        const calculateRowHeight = typeof rowHeight === 'function' ? rowHeight : undefined;
+
         return (
             <ErrorBoundary>
                 <ThemeProvider theme={this.getTheme()}>
-                    <StyledGridView
+                    <div
                         {...divProps}
                         style={Object.assign(
-                            { direction: this.props.dir },
+                            {
+                                direction: this.props.dir,
+                                width: '100%'
+                            },
                             this.props.style,
                             SizeUtils.geElementHeights(this, GridView.defaultHeight))
                         }
                     >
-                        {this.renderHead()}
-                        {this.renderBody()}
-                    </StyledGridView>
+                        <AutoSizer>
+                            {({ width, height }) => (
+                                <VirtualGrid
+
+                                    style={{
+                                        direction: this.props.dir
+                                    }}
+
+                                    height={height}
+                                    width={width}
+
+                                    columnCount={columnCount}
+                                    rowCount={rowCount}
+                                    overscanColumnsCount={this.props.overscanColumnsCount}
+                                    overscanRowCount={this.props.overscanRowsCount}
+
+                                    estimatedColumnWidth={estimatedColumnWidth}
+                                    columnWidth={calculateColumnWidth}
+                                    estimatedRowHeight={estimatedRowHeight}
+                                    rowHeight={calculateRowHeight}
+
+                                    fixedHeaderHeight={headHeight}
+                                    fixedLeftWidth={this.getFrozenColumnsWidth()}
+                                >
+                                    {this.renderGridCell}
+                                </VirtualGrid>
+                            )}
+                        </AutoSizer>
+                    </div>
                 </ThemeProvider>
             </ErrorBoundary>
         );
     }
 
-    private renderHead() {
+    private renderGridCell = (cellProps: RenderCellProps) => {
+
+        if (cellProps.tilePosition.vertical === 'header')
+            return this.renderHeadCell(cellProps);
+
+        if (cellProps.tilePosition.vertical === 'body')
+            return this.renderBodyCell(cellProps);
+
+        throw new Error(`Footer not supported...`);
+    };
+
+    private renderHeadCell = (cellProps: RenderCellProps) => {
+
         const head = ReactUtils.singleChildOfType(this, GridHead);
         if (!head)
             return null;
 
-        const { children: cellRender, ...divProps } = head.props;
+        const { children: cellRender } = head.props;
         const freezeColumns = this.props.freezeColumns || 0;
 
-        const ListComponent = this.getListComponent();
+        // frozen columns
+        if (cellProps.tilePosition.horizontal === 'left') {
+            return (
+                <div style={{ display: 'flex' }}>
+                    {range(freezeColumns).map(columnIndex => (
+                        <div key={columnIndex} style={{ flex: 1 }}>
+                            <ErrorBoundary>
+                                {cellRender({ columnIndex })}
+                            </ErrorBoundary>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
 
+        // other head columns
         return (
-            <StyledGridHead
-                {...divProps}
-                style={Object.assign({}, head.props.style, SizeUtils.geElementHeights(head, GridView.defaultHeadHeight))}
-            >
-                <ErrorBoundary>
-                    <AutoSizer>
-                        {({ width, height }) => (
-                            <div style={{ width, height, display: 'flex' }}>
-
-                                {/* frozen first columns */}
-                                {range(freezeColumns).map(columnIndex => this.renderCell({
-                                    cellRender,
-                                    rowIndex: 0,
-                                    columnIndex,
-                                }))}
-
-                                {/* main columns */}
-                                <ListComponent
-                                    ref={this.headList as React.Ref<any>}
-                                    hideScrollbar={true}
-                                    dir={this.props.dir}
-                                    style={{ overflow: 'hidden' }}
-                                    layout="horizontal"
-                                    height={height}
-                                    width={width - this.getFrozenColumnsWidth()}
-                                    itemCount={this.props.columnCount - freezeColumns}
-                                    itemSize={(colIndex: number) => this.getColumnWidth(colIndex + freezeColumns)}
-                                // onScroll={this.handleHeadScroll}
-                                >
-                                    {index =>
-                                        this.renderCell({
-                                            cellRender,
-                                            rowIndex: 0,
-                                            columnIndex: index + freezeColumns
-                                        })
-                                    }
-                                </ListComponent>
-
-                            </div>
-                        )}
-                    </AutoSizer>
-                </ErrorBoundary>
-            </StyledGridHead>
+            <ErrorBoundary>
+                {cellRender({ columnIndex: cellProps.relColIndex + freezeColumns })}
+            </ErrorBoundary>
         );
-    }
+    };
 
-    private renderBody() {
+    private renderBodyCell = (cellProps: RenderCellProps) => {
 
         const body = ReactUtils.singleChildOfType(this, GridBody);
         if (!body)
             return null;
-        const { children: cellRender, rowCount, rowHeight, ...divProps } = body.props;
 
-        const head = ReactUtils.singleChildOfType(this, GridHead);
-        const heights = SizeUtils.getBodyHeights(this, head, {
-            total: GridView.defaultHeight,
-            head: GridView.defaultHeadHeight
-        });
-        const frozenColumnsWidth = this.getFrozenColumnsWidth();
-
-        return (
-            <StyledGridBody
-                {...divProps}
-                style={Object.assign({}, divProps.style, heights)}
-            >
-                <ErrorBoundary>
-                    <AutoSizer>
-                        {({ height, width }) => (
-                            <div style={{ width, height, display: 'flex' }}>
-                                {this.renderFrozenColumns(height, frozenColumnsWidth, body)}
-                                {this.renderMainGrid(height, width - frozenColumnsWidth, body)}
-                            </div>
-                        )}
-                    </AutoSizer>
-                </ErrorBoundary>
-            </StyledGridBody>
-        );
-    }
-
-    private renderFrozenColumns(height: number, width: number, body: GridBody) {
+        const { children: cellRender } = body.props;
         const freezeColumns = this.props.freezeColumns || 0;
-        const { children: cellRender, rowCount, rowHeight } = body.props;
 
-        const GridComponent = this.getGridComponent();
-
-        return (
-            <GridComponent
-                ref={this.freezedColumnsGrid as React.Ref<any>}
-                hideVerticalScrollbar={true}
-                dir={this.props.dir}
-                width={width}
-                height={height - SizeUtils.scrollbarWidth}
-                rowCount={rowCount}
-                rowHeight={this.getRowHeight(rowHeight)}
-                columnCount={freezeColumns}
-                columnWidth={this.getColumnWidth}
-                overscanRows={this.props.overscanRowsCount}
-                onScroll={this.handleFrozenColumnsScroll}
-            >
-                {({ rowIndex, columnIndex }) => this.renderCell({ cellRender, rowIndex, columnIndex })}
-            </GridComponent>
-        );
-    }
-
-    private renderMainGrid(height: number, width: number, body: GridBody) {
-        const freezeColumns = this.props.freezeColumns || 0;
-        const { children: cellRender, rowCount, rowHeight } = body.props;
-
-        const GridComponent = this.getGridComponent();
+        if (cellProps.tilePosition.horizontal === 'left') {
+            return (
+                <div style={{ display: 'flex' }}>
+                    {range(freezeColumns).map(columnIndex => (
+                        <div key={columnIndex} style={{ flex: 1 }}>
+                            <ErrorBoundary>
+                                {cellRender({ rowIndex: cellProps.relRowIndex, columnIndex })}
+                            </ErrorBoundary>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
 
         return (
-            <GridComponent
-                ref={this.freezedColumnsGrid as React.Ref<any>}
-                hideVerticalScrollbar={true}
-                dir={this.props.dir}
-                width={width}
-                height={height}
-                rowCount={rowCount}
-                rowHeight={this.getRowHeight(rowHeight)}
-                columnCount={this.props.columnCount - freezeColumns}
-                columnWidth={colIndex => this.getColumnWidth(colIndex + freezeColumns)}
-                overscanRows={this.props.overscanRowsCount}
-                overscanColumns={this.props.overscanColumnsCount}
-                onScroll={this.handleMainGridScroll}
-            >
-                {({ rowIndex, columnIndex }) => this.renderCell({
-                    cellRender,
-                    rowIndex,
-                    columnIndex: columnIndex + freezeColumns
+            <ErrorBoundary>
+                {cellRender({
+                    rowIndex: cellProps.relRowIndex,
+                    columnIndex: cellProps.relRowIndex + freezeColumns
                 })}
-            </GridComponent>
+            </ErrorBoundary>
         );
-    }
-
-    private renderCell({ rowIndex, columnIndex, cellRender }: RenderBodyCellArgs) {
-        return (
-            <StyledGridCell
-                key={`[ ${rowIndex}, ${columnIndex} ]`}
-                style={{ width: this.getColumnWidth(columnIndex) }}
-            >
-                <ErrorBoundary>
-                    {cellRender({ rowIndex, columnIndex })}
-                </ErrorBoundary>
-            </StyledGridCell>
-        );
-    }
-
-    //
-    // event handlers
-    //
-
-    private handleMainGridScroll = (e: ScrollEvent) => {
-        const { scrollTop, scrollLeft } = e;
-
-        // synchronize head
-        if (this.headList.current) {
-            this.headList.current.scrollTo(scrollLeft);
-        }
-
-        // synchronize frozen body columns
-        if (this.freezedColumnsGrid.current) {
-            this.freezedColumnsGrid.current.scrollTo({ scrollTop } as any);
-        }
-    }
-
-    private handleHeadScroll = (offset: number) => {
-
-        // synchronize main grid
-        if (this.mainBodyGrid.current) {
-            this.mainBodyGrid.current.scrollTo({ scrollLeft: offset } as any);
-        }
-    }
-
-    private handleFrozenColumnsScroll = (e: ScrollEvent) => {
-        const { scrollTop } = e;
-
-        // synchronize main grid
-        if (this.mainBodyGrid.current) {
-            this.mainBodyGrid.current.scrollTo({ scrollTop } as any);
-        }
-    }
+    };
 
     //
     // helpers
@@ -298,18 +206,6 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return {
             dir: this.props.dir
         };
-    }
-
-    private getListComponent() {
-        return this.props.isVirtual !== false ?
-            VirtualList :
-            NonVirtualList;
-    }
-
-    private getGridComponent() {
-        return this.props.isVirtual !== false ?
-            VirtualGrid :
-            NonVirtualGrid;
     }
 
     private getFrozenColumnsWidth(): number {
@@ -325,11 +221,5 @@ export class GridView extends React.PureComponent<GridViewProps> {
         if (typeof this.props.columnWidth === 'function')
             return this.props.columnWidth(colIndex);
         return this.props.columnWidth;
-    }
-
-    private getRowHeight = (rowHeightProp: number | SizeCallback) => (rowIndex: number): number => {
-        if (typeof rowHeightProp === 'function')
-            return rowHeightProp(rowIndex);
-        return rowHeightProp;
-    }
+    };
 }
