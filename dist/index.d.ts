@@ -154,7 +154,8 @@ export interface HeadCellRenderArgs {
 
 export type HeadCellRender = (args: HeadCellRenderArgs) => React.ReactNode;
 
-export interface GridHeadProps extends React.DivProps {    
+export interface GridHeadProps {  
+    height?: number;  
     children?: HeadCellRender;
 }
 
@@ -171,7 +172,7 @@ export interface BodyCellRenderArgs {
 
 export type BodyCellRender = (args: BodyCellRenderArgs) => React.ReactNode;
 
-export interface GridBodyProps extends React.DivProps {
+export interface GridBodyProps {
     rowCount: number;
     rowHeight: number | SizeCallback;
     children?: BodyCellRender;
@@ -188,7 +189,6 @@ type GridChildren = GridChildren_FullSyntax | BodyCellRender;
 
 export interface GridViewProps extends React.DivProps {
 
-    isVirtual?: boolean;
     columnCount: number;
     columnWidth: number | SizeCallback;
     /**
@@ -202,16 +202,12 @@ export interface GridViewProps extends React.DivProps {
      * Number of extra rows to render above/below the visible items.
      * Tweaking this can help reduce scroll flickering on certain
      * browsers/devices.  
-     * 
-     * Default: 1
      */
     overscanRowsCount?: number;
     /**
      * Number of extra columns to render before/after the visible items.
      * Tweaking this can help reduce scroll flickering on certain
      * browsers/devices.  
-     * 
-     * Default: 1
      */
     overscanColumnsCount?: number;
 
