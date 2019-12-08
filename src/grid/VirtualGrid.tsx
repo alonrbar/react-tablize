@@ -21,9 +21,21 @@ export interface TilePosition {
 }
 
 export interface RenderCellProps {
+    /**
+     * Absolute column index, taking into account fixed columns.
+     */
     absColIndex: number;
+    /**
+     * Absolute row index, taking into account fixed header and/or footer.
+     */
     absRowIndex: number;
+    /**
+     * Column index relative to the current tile.
+     */
     relColIndex: number;
+    /**
+     * Row index relative to the current tile.
+     */
     relRowIndex: number;
     tileKey: TileKey;
     tilePosition: TilePosition;

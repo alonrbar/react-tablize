@@ -215,7 +215,13 @@ const people: Person[];
 
 ```typescript
 interface RenderCellProps {
+    /**
+     * Absolute column index, taking into account fixed columns.
+     */
     absColIndex: number;
+    /**
+     * Absolute row index, taking into account fixed header and/or footer.
+     */
     absRowIndex: number;
     /**
      * Column index relative to the current tile.
