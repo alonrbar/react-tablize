@@ -139,8 +139,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
         );
 
         const cells: React.ReactNode[] = [];
-        for (const col of columns) {
-            for (const row of rows) {
+        for (const row of rows) {
+            for (const col of columns) {
                 cells.push(
                     <VirtualCell
                         key={`${col.index}, ${row.index}`}
