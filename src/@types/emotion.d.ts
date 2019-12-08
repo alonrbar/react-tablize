@@ -4,7 +4,7 @@ declare module '@emotion/styled' {
     export * from '@emotion/styled/types/index';
 
     // declare theme type
-    interface _Theme {
+    export interface _Theme {
         dir: DocDir;
     }
     export type Theme = Readonly<_Theme>;
