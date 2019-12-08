@@ -13,7 +13,7 @@
     "url": "https://github.com/alonrbar/react-tablize/issues"
   },
   "main": "dist/react-tablize.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist",
     "src"
