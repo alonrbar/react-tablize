@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../../types';
+import { DocDir, ScrollEvent, SizeCallback } from '../types';
 import { VirtualCell } from './VirtualCell';
 import { WindowCalculator } from './windowCalculator';
 

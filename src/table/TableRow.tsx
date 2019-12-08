@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { ErrorBoundary } from '../internal';
 import { OneOrMore } from '../types';
-import { ErrorBoundary } from '../utils';
 import { StyledTableRow } from './style';
 import { CellContent, TableCell } from './TableCell';
 const flattenDeep = require('lodash.flattendeep');

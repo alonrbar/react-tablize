@@ -1,4 +1,4 @@
-import { IMap, SizeCallback } from '../../types';
+import { IMap, SizeCallback } from '../types';
 
 // based on:
 // https://github.com/bvaughn/react-window/blob/master/src/VariableSizeGrid.js

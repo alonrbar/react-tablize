@@ -147,40 +147,50 @@ const people: Person[];
 ```jsx
 <GridView
     columnCount={1000}
-    columnWidth={100}
+    rowCount={10}
+    estimatedColumnWidth={100}
+    estimatedRowHeight={40}
 >
-    <GridView.Body
-        rowCount={10}
-        rowHeight={40}
-    >
-        {({ rowIndex, columnIndex }) => (
-            `${rowIndex}, ${columnIndex}`
-        )}
-    </GridView.Body>
+    {cellProps => (
+        `${cellProps.absRowIndex}, ${cellProps.absColIndex}`
+    )}
 </GridView>
 ```
 
-#### Frozen Head and Columns
+#### Fixed Head and Columns
 
 ```jsx
 <GridView
     columnCount={1000}
-    columnWidth={100}
-    freezeColumns={1}
+    rowCount={10}
+    estimatedColumnWidth={100}
+    estimatedRowHeight={40}
+    fixedHeaderHeight={50}
+    fixedLeftWidth={100}
 >
+    {cellProps => {
 
-    <GridView.Head>
-        {({ columnIndex }) => columnIndex}
-    </GridView.Head>
+        // fixed left column
+        if (cellProps.tilePosition.horizontal === 'left') {
+            return (
+                <div style={{ color: 'green' }}>
+                    {cellProps.absColIndex}
+                </div>
+            );
+        }
 
-    <GridView.Body
-        rowCount={10}
-        rowHeight={40}
-    >
-        {({ rowIndex, columnIndex }) => (
-            `${rowIndex}, ${columnIndex}`
-        )}
-    </GridView.Body>
+        // fixed header
+        if (cellProps.tilePosition.vertical === 'header') {
+            return (
+                <div style={{ color: 'red' }}>
+                    {cellProps.absColIndex}
+                </div>
+            );
+        }
+
+        // body
+        return `${cellProps.absRowIndex}, ${cellProps.absColIndex}`;
+    }}
 </GridView>
 ```
 
@@ -189,34 +199,67 @@ const people: Person[];
 ```jsx
 <GridView
     columnCount={1000}
+    rowCount={10}
+    estimatedColumnWidth={75}
     columnWidth={columnIndex => columnIndex === 0 ? 50 : 100}
+    estimatedRowHeight={60}
+    rowHeight={rowIndex => rowIndex === 0 ? 80 : 40}
 >
-
-    <GridView.Head>
-        {({ columnIndex }) => columnIndex}
-    </GridView.Head>
-
-    <GridView.Body
-        rowCount={10}
-        rowHeight={rowIndex => rowIndex === 0 ? 80 : 40}
-    >
-        {({ rowIndex, columnIndex }) => (
-            `${rowIndex}, ${columnIndex}`
-        )}
-    </GridView.Body>
+    {cellProps => (
+        `${cellProps.absRowIndex}, ${cellProps.absColIndex}`
+    )}
 </GridView>
 ```
 
-### Grid Props
+### Grid Cell Render Props
 
-| Name | Type | Default | Required | Description |
-|-|-|-|-|-|
-| columnCount | number || yes ||
-| columnWidth | `number` \| `(columnIndex: number) => number` || yes | Column width in pixels. |
-| freezeColumns | number | 0 | no | Number of columns to freeze (always the first columns). |
-| dir | `'rtl'` \| `'ltr'` | `'ltr'` | no ||
-| overscanRowsCount | number | 0 | no ||
-| overscanColumnsCount | number | 0 | no ||
+```typescript
+interface RenderCellProps {
+    absColIndex: number;
+    absRowIndex: number;
+    /**
+     * Column index relative to the current tile.
+     */
+    relColIndex: number;
+    /**
+     * Row index relative to the current tile.
+     */
+    relRowIndex: number;
+    tileKey: TileKey;
+    tilePosition: TilePosition;
+    height: number;
+    width: number;
+}
+
+enum TileKey {
+    HeaderLeft,
+    HeaderCenter,
+    HeaderRight,
+    BodyLeft,
+    BodyCenter,
+    BodyRight,
+    FooterLeft,
+    FooterCenter,
+    FooterRight
+}
+
+interface TilePosition {
+    vertical: 'header' | 'body' | 'footer';
+    horizontal: 'left' | 'center' | 'right';
+}
+```
+
+## Prior art and motivation
+
+Some parts of this library are inspired by, some are a modification of, and
+some are a complete ripoff of these libraries:
+
+- https://github.com/bvaughn/react-window
+- https://github.com/ranneyd/sticky-table
+- https://github.com/fulcrumapp/react-virtual-grid
+- https://github.com/Flipkart/recyclerlistview
+
+Thank you!
 
 ## Changelog
 

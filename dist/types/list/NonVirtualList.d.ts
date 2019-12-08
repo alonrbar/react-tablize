@@ -5,7 +5,11 @@ export declare class NonVirtualList extends React.PureComponent<ListProps> {
     private disableScrollEvents;
     private readonly listRef;
     scrollTo: (scrollOffset: number) => void;
-    render(): JSX.Element;
+    render(): React.DetailedReactHTMLElement<{
+        ref: React.RefObject<HTMLDivElement>;
+        style: React.CSSProperties;
+        onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
+    }, HTMLDivElement>;
     private handleOnScroll;
     private getListElementType;
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollEvent, SizeCallback } from '../../types';
+import { ScrollEvent, SizeCallback } from '../types';
 export declare enum TileKey {
     HeaderLeft = "Header_Left",
     HeaderCenter = "Header_Center",
@@ -50,7 +50,7 @@ declare class VirtualGridState {
     scrollLeft: number;
 }
 export declare class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGridState> {
-    static defaultProps: VirtualGridProps;
+    static defaultProps: unknown;
     private get direction();
     private get activeTiles();
     private tiles;

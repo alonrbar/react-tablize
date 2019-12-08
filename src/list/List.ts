@@ -1,4 +1,4 @@
-import { DocDir, SizeCallback } from '../../types';
+import { DocDir, SizeCallback } from '../types';
 
 export interface ListRowProps {
     style?: React.CSSProperties;
@@ -14,7 +14,6 @@ export interface ListProps {
     width: number;
     itemCount: number;
     itemSize: SizeCallback;
-    hideScrollbar?: boolean;
     customScrollbar?: boolean;
     overscan?: number;
     onScroll?: (offset: number) => void;

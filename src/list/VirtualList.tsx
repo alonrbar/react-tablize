@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { VariableSizeList } from 'react-window';
-import { IMap } from '../../types';
-import { KeyEvent, Keys } from '../../utils';
-import { CustomScrollbars } from '../CustomScrollbars';
+import { CustomScrollbars } from '../internal';
+import { IMap } from '../types';
+import { KeyEvent, Keys } from '../utils';
 import { List, ListProps } from './List';
 
 const scrollKeys: IMap<boolean> = {

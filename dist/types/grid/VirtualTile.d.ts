@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../../types';
+import { DocDir, ScrollEvent, SizeCallback } from '../types';
 export declare type Scrollability = 'vertical' | 'horizontal' | 'none' | 'both';
 export interface RenderTileCellProps {
     colIndex: number;

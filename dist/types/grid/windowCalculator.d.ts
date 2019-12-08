@@ -1,4 +1,4 @@
-import { SizeCallback } from '../../types';
+import { SizeCallback } from '../types';
 export declare type ElementType = 'column' | 'row';
 export interface ElementInfo {
     index: number;

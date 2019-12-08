@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ErrorBoundary } from '../utils';
+import { ErrorBoundary } from '../internal';
 import { StyledTableCell } from './style';
 
 const TableCellSymbol = '__ReactTablize__TableCell__';

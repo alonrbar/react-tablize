@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../../types';
-import { DomUtils, areShallowEqual } from '../../utils';
+import { DocDir, ScrollEvent, SizeCallback } from '../types';
+import { DomUtils, areShallowEqual } from '../utils';
 import { VirtualTile, VirtualTileProps } from './VirtualTile';
 
 export enum TileKey {
@@ -75,7 +75,7 @@ class VirtualGridState {
 
 export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGridState> {
 
-    public static defaultProps = new VirtualGridProps();
+    public static defaultProps: unknown = new VirtualGridProps();
 
     private get direction(): DocDir {
         return this.props.style?.direction === 'rtl' ? 'rtl' : 'ltr';
