@@ -22,7 +22,7 @@ export class ScrollUtils {
         const { scrollHeight, scrollWidth, clientHeight, clientWidth } = e.currentTarget;
 
         // RTL support
-        let normalizedScrollLeft: number;
+        let normalizedScrollLeft = scrollLeft;
         if (docDir === 'rtl') {
             switch (DomUtils.rtlOffsetType) {
                 case 'negative':
