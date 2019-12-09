@@ -78,21 +78,27 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
         switch (this.props.scrollability) {
 
             case 'both':
-                this.containerElement.current.scrollTop = e.scrollTop;
-                this.containerElement.current.scrollLeft = e.rawScrollLeft;
-                this.setState({ 
-                    scrollTop: e.scrollTop, 
-                    scrollLeft: e.normalizedScrollLeft 
+                window.requestAnimationFrame(() => {
+                    this.containerElement.current.scrollTop = e.scrollTop;
+                    this.containerElement.current.scrollLeft = e.rawScrollLeft;
+                });
+                this.setState({
+                    scrollTop: e.scrollTop,
+                    scrollLeft: e.normalizedScrollLeft
                 });
                 break;
 
             case 'vertical':
-                this.containerElement.current.scrollTop = e.scrollTop;
+                window.requestAnimationFrame(() => {
+                    this.containerElement.current.scrollTop = e.scrollTop;
+                });
                 this.setState({ scrollTop: e.scrollTop });
                 break;
 
             case 'horizontal':
-                this.containerElement.current.scrollLeft = e.rawScrollLeft;
+                window.requestAnimationFrame(() => {
+                    this.containerElement.current.scrollLeft = e.rawScrollLeft;
+                });
                 this.setState({ scrollLeft: e.normalizedScrollLeft });
                 break;
 
