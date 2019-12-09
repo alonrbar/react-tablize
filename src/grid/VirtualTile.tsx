@@ -212,6 +212,7 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     private renderCell(col: ElementInfo, row: ElementInfo, stableKey: React.Key): React.ReactNode {
         return (
             <VirtualCell
+                className={this.props.className + '_Cell'}
                 key={stableKey}
                 direction={this.props.direction}
                 height={row.size}

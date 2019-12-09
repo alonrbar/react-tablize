@@ -131,7 +131,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         return (
             <div
-                className={this.createClassName('Container')}
+                className={this.createClassName('Main_Container')}
                 style={{
                     direction: this.direction,
                     position: 'relative',
@@ -143,7 +143,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                 onScroll={this.handleScroll}
             >
                 <div
-                    className={this.createClassName('ScrollableArea')}
+                    className={this.createClassName('Main_ScrollableArea')}
                     style={{
                         height: scrollableHeight,
                         width: scrollableWidth

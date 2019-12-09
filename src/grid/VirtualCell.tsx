@@ -2,6 +2,10 @@ import * as React from 'react';
 import { DocDir } from '../types';
 
 export interface VirtualCellProps {
+    /**
+     * We are only using classes for easier debug inspection...
+     */
+    className: string;
     direction: DocDir;
     height: number;
     width: number;
@@ -29,6 +33,7 @@ export class VirtualCell extends React.PureComponent<VirtualCellProps> {
 
         return (
             <div
+                className={this.props.className}
                 style={{
                     height: this.props.height,
                     width: this.props.width,
