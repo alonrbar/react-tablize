@@ -3,24 +3,24 @@ export type RtlOffsetType = 'negative' | 'positive-descending' | 'positive-ascen
 export class DomUtils {
 
     public static get scrollbarWidth(): number {
-        if (this._scrollbarWidth === null) {
+        if (this._scrollbarWidth !== null)
+            return this._scrollbarWidth;
 
-            // https://github.com/sonicdoe/measure-scrollbar/blob/master/index.js
+        // https://github.com/sonicdoe/measure-scrollbar/blob/master/index.js
 
-            const div = document.createElement('div');
+        const div = document.createElement('div');
 
-            div.style.width = '100px';
-            div.style.height = '100px';
-            div.style.overflow = 'scroll';
-            div.style.position = 'absolute';
-            div.style.top = '-9999px';
+        div.style.width = '100px';
+        div.style.height = '100px';
+        div.style.overflow = 'scroll';
+        div.style.position = 'absolute';
+        div.style.top = '-9999px';
 
-            document.body.appendChild(div);
+        document.body.appendChild(div);
 
-            this._scrollbarWidth = div.offsetWidth - div.clientWidth;
+        this._scrollbarWidth = div.offsetWidth - div.clientWidth;
 
-            document.body.removeChild(div);
-        }
+        document.body.removeChild(div);
 
         return this._scrollbarWidth;
     }
@@ -71,7 +71,27 @@ export class DomUtils {
         return DomUtils._rtlOffsetType;
     }
 
+    public static get isPositionStickySupported(): boolean {
+
+        // https://github.com/dollarshaveclub/stickybits/issues/35#issuecomment-549929578
+
+        if (DomUtils._isPositionStickySupported !== null)
+            return DomUtils._isPositionStickySupported;
+
+        const prefix = ['', '-o-', '-webkit-', '-moz-', '-ms-'];
+        const testElementStyle = document.head.style;
+
+        for (let i = 0; i < prefix.length; i += 1) {
+            testElementStyle.position = `${prefix[i]}sticky`;
+        }
+        DomUtils._isPositionStickySupported = (testElementStyle.position === 'sticky');
+
+        return DomUtils._isPositionStickySupported;
+    }
+
     private static _scrollbarWidth: number = null;
 
     private static _rtlOffsetType: RtlOffsetType;
+
+    private static _isPositionStickySupported: boolean = null;
 }

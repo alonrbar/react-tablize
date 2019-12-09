@@ -156,14 +156,20 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     }
 
     private renderTile = (tileKey: TileKey): React.ReactNode => {
+
+        const isSticky = DomUtils.isPositionStickySupported;
+        const topOffset = (isSticky ? 0 : this.state.scrollTop);
+        const leftOffset = (isSticky ? 0 : this.state.scrollLeft);
+
         const { ref, props, rowIndexOffset, columnIndexOffset } = this.tiles[tileKey];
+
         return (
             <VirtualTile
                 key={tileKey}
                 ref={ref}
                 {...props}
-                top={props.top + this.state.scrollTop}
-                left={props.left + this.state.scrollLeft}
+                top={props.top + topOffset}
+                left={props.left + leftOffset}
             >
                 {renderProps => this.props.children({
                     tileKey,
@@ -309,6 +315,10 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         const centerColumnsCount = this.props.columnCount - (leftWidth && 1) - (rightWidth && 1);
 
+        const isSticky = DomUtils.isPositionStickySupported;
+        const position = isSticky ? 'sticky' : 'absolute';
+        const float = (!isSticky ? undefined : this.direction === 'ltr' ? 'left' : 'right');
+
         // create factory method
 
         return (tileKey: TileKey): TileEntry => {
@@ -318,6 +328,8 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
             const isVerticalFixed = vertical === 'header' || vertical === 'footer';
             const isHorizontalFixed = horizontal === 'left' || horizontal === 'right';
             const isCorner = isVerticalFixed && isHorizontalFixed;
+
+            const shouldFloat = (horizontal === 'left' || (horizontal === 'center' && !!rightWidth));
 
             return {
                 ref: React.createRef<VirtualTile>(),
@@ -348,6 +360,18 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                         horizontal === 'center' ? centerWidth :
                             rightWidth,
 
+                    position,
+
+                    top: vertical === 'header' ? 0 :
+                        vertical === 'body' ? headerHeight :
+                            headerHeight + bodyHeight,
+
+                    left: horizontal === 'left' ? 0 :
+                        horizontal === 'center' ? leftWidth :
+                            leftWidth + centerWidth,
+
+                    float: shouldFloat ? float : undefined,
+
                     columnCount: horizontal === 'left' ? 1 :
                         horizontal === 'center' ? centerColumnsCount :
                             1,
@@ -363,14 +387,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     estimatedRowHeight: vertical === 'header' ? headerHeight :
                         vertical === 'body' ? this.props.estimatedRowHeight :
                             footerHeight,
-
-                    top: vertical === 'header' ? 0 :
-                        vertical === 'body' ? headerHeight :
-                            headerHeight + bodyHeight,
-
-                    left: horizontal === 'left' ? 0 :
-                        horizontal === 'center' ? leftWidth :
-                            leftWidth + centerWidth,
 
                     columnWidth: horizontal === 'left' ? null :
                         horizontal === 'center' ? this.props.columnWidth :

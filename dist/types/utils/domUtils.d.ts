@@ -2,6 +2,8 @@ export declare type RtlOffsetType = 'negative' | 'positive-descending' | 'positi
 export declare class DomUtils {
     static get scrollbarWidth(): number;
     static get rtlOffsetType(): RtlOffsetType;
+    static get isPositionStickySupported(): boolean;
     private static _scrollbarWidth;
     private static _rtlOffsetType;
+    private static _isPositionStickySupported;
 }

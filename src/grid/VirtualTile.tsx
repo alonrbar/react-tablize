@@ -18,8 +18,10 @@ export interface VirtualTileProps {
     direction: DocDir;
     height: number;
     width: number;
+    position: 'absolute' | 'sticky';
     top: number;
     left: number;
+    float: 'right' | 'left';
     columnCount: number;
     rowCount: number;
     estimatedColumnWidth: number;
@@ -128,9 +130,10 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                 style={{
                     height: this.props.height,
                     width: this.props.width,
-                    position: 'absolute',
+                    position: this.props.position,
                     top: this.props.top,
                     [rightOrLeft]: this.props.left,
+                    float: this.props.float,
                     overflow: 'hidden'
                 }}
             >
