@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DocDir, IMap, ScrollEvent, SizeCallback } from '../types';
 import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
-import { WindowCalculator } from './windowCalculator';
+import { ElementInfo, WindowCalculator } from './windowCalculator';
 
 export type Scrollability = 'vertical' | 'horizontal' | 'none' | 'both';
 
@@ -195,27 +195,11 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                 const originalKey = this.getCellOriginalKey(col.index, row.index);
                 const stableKey = this.recycler.getStableKey(originalKey);
 
-                cellsByKey[stableKey] = (
-                    <VirtualCell
-                        key={stableKey}
-                        direction={this.props.direction}
-                        height={row.size}
-                        width={col.size}
-                        top={row.position}
-                        left={col.position}
-                    >
-                        {this.props.children({
-                            colIndex: col.index,
-                            rowIndex: row.index,
-                            height: row.size,
-                            width: col.size
-                        })}
-                    </VirtualCell>
-                );
+                cellsByKey[stableKey] = this.renderCell(col, row, stableKey);
             }
         }
 
-        // sort the cells by key order
+        // sort the cells by key order (important for recycling)
         // https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order
         const cells: React.ReactNode[] = [];
         for (const key of Object.keys(cellsByKey)) {
@@ -223,6 +207,26 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
         }
 
         return cells;
+    }
+
+    private renderCell(col: ElementInfo, row: ElementInfo, stableKey: React.Key): React.ReactNode {
+        return (
+            <VirtualCell
+                key={stableKey}
+                direction={this.props.direction}
+                height={row.size}
+                width={col.size}
+                top={row.position}
+                left={col.position}
+            >
+                {this.props.children({
+                    colIndex: col.index,
+                    rowIndex: row.index,
+                    height: row.size,
+                    width: col.size
+                })}
+            </VirtualCell>
+        );
     }
 
     //
