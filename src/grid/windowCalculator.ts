@@ -1,10 +1,5 @@
 import { IMap, SizeCallback } from '../types';
 
-// based on:
-// https://github.com/bvaughn/react-window/blob/master/src/VariableSizeGrid.js
-// https://github.com/fulcrumapp/react-virtual-grid/blob/master/src/grid-calculator.js
-// https://github.com/ranneyd/sticky-table/blob/master/src/useVirtual.js
-
 export type ElementType = 'column' | 'row';
 
 export interface ElementInfo {
@@ -22,6 +17,15 @@ type CalcDataMap = {
     [key in ElementType]: CalcData;
 };
 
+/**
+ * Calculates the index, size and position of all visible items within a given
+ * range.
+ *
+ * based on:
+ * - https://github.com/bvaughn/react-window/blob/master/src/VariableSizeGrid.js
+ * - https://github.com/fulcrumapp/react-virtual-grid/blob/master/src/grid-calculator.js
+ * - https://github.com/ranneyd/sticky-table/blob/master/src/useVirtual.js
+ */
 export class WindowCalculator {
 
     private readonly data: CalcDataMap = {
