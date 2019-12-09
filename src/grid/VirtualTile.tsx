@@ -58,6 +58,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     private windowCalc = new WindowCalculator();
     private recycler = new RecycleManager();
 
+    private containerElement = React.createRef<HTMLDivElement>();
+
     constructor(props: VirtualTileProps) {
         super(props);
 
@@ -74,14 +76,18 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
         switch (this.props.scrollability) {
 
             case 'both':
+                this.containerElement.current.scrollTop = scrollTop;
+                this.containerElement.current.scrollLeft = scrollLeft;
                 this.setState({ scrollTop, scrollLeft });
                 break;
 
             case 'vertical':
+                this.containerElement.current.scrollTop = scrollTop;
                 this.setState({ scrollTop });
                 break;
 
             case 'horizontal':
+                this.containerElement.current.scrollLeft = scrollLeft;
                 this.setState({ scrollLeft });
                 break;
 
@@ -117,7 +123,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
         return (
             <div
-                className={this.props.className}
+                ref={this.containerElement}
+                className={this.props.className + '_Container'}
                 style={{
                     height: this.props.height,
                     width: this.props.width,
@@ -127,7 +134,15 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                     overflow: 'hidden'
                 }}
             >
-                {this.renderCells()}
+                <div
+                    className={this.props.className + '_ScrollableArea'}
+                    style={{
+                        height: this.getScrollableHeight(),
+                        width: this.getScrollableWidth()
+                    }}
+                >
+                    {this.renderCells()}
+                </div>
             </div>
         );
     }
@@ -186,8 +201,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                         direction={this.props.direction}
                         height={row.size}
                         width={col.size}
-                        top={row.basePosition - this.state.scrollTop}
-                        left={col.basePosition - this.state.scrollLeft}
+                        top={row.position}
+                        left={col.position}
                     >
                         {this.props.children({
                             colIndex: col.index,
@@ -209,6 +224,10 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
         return cells;
     }
+
+    //
+    // render helpers
+    //
 
     private getCellOriginalKey(colIndex: number, rowIndex: number): React.Key {
         return `${colIndex}, ${rowIndex}`;

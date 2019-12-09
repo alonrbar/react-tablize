@@ -9,7 +9,7 @@ export type ElementType = 'column' | 'row';
 
 export interface ElementInfo {
     index: number;
-    basePosition: number;
+    position: number;
     size: number;
 }
 
@@ -96,7 +96,7 @@ export class WindowCalculator {
         let totalSizeOfMeasuredElements = 0;
         if (lastMeasuredIndex >= 0) {
             const lastMeasuredElemInfo = cache[lastMeasuredIndex];
-            totalSizeOfMeasuredElements = lastMeasuredElemInfo.basePosition + lastMeasuredElemInfo.size;
+            totalSizeOfMeasuredElements = lastMeasuredElemInfo.position + lastMeasuredElemInfo.size;
         }
 
         const numUnmeasuredElements = elementsCount - lastMeasuredIndex - 1;
@@ -118,7 +118,7 @@ export class WindowCalculator {
     ) {
 
         const { lastMeasuredIndex, cache } = this.data[elementType];
-        const lastMeasuredPosition = cache[lastMeasuredIndex]?.basePosition ?? -1;
+        const lastMeasuredPosition = cache[lastMeasuredIndex]?.position ?? -1;
 
         if (lastMeasuredPosition >= position) {
 
@@ -158,7 +158,7 @@ export class WindowCalculator {
     ) {
         while (low <= high) {
             const middle = low + Math.floor((high - low) / 2);
-            const currentPosition = this.getElementInfo(elementType, middle, estimatedElementSize, calculateElementSize).basePosition;
+            const currentPosition = this.getElementInfo(elementType, middle, estimatedElementSize, calculateElementSize).position;
 
             if (currentPosition === position) {
                 return middle;
@@ -188,7 +188,7 @@ export class WindowCalculator {
 
         while (
             index < maxIndex &&
-            this.getElementInfo(elementType, index, estimatedElementSize, calculateElementSize).basePosition < position
+            this.getElementInfo(elementType, index, estimatedElementSize, calculateElementSize).position < position
         ) {
             index += interval;
             interval *= 2;
@@ -221,7 +221,7 @@ export class WindowCalculator {
             // skipped already cached entries
             if (lastMeasuredIndex !== -1) {
                 const elementInfo = cache[lastMeasuredIndex];
-                position = elementInfo.basePosition + elementInfo.size;
+                position = elementInfo.position + elementInfo.size;
             }
 
             // add new cache entries
@@ -230,7 +230,7 @@ export class WindowCalculator {
 
                 cache[index] = {
                     index,
-                    basePosition: position,
+                    position,
                     size,
                 };
 
