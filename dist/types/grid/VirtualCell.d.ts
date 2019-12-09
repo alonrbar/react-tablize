@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { DocDir } from '../types';
 export interface VirtualCellProps {
-    height: number;
+    className: string;
     direction: DocDir;
+    height: number;
     width: number;
     left: number;
     top: number;
