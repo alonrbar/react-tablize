@@ -267,6 +267,18 @@ some are a complete ripoff of these libraries:
 
 Thank you!
 
+If so many virtual scrolling libraries exist, why did I create another one?  
+Well, each of these libraries implement only part of what I needed in my
+projects so I've created a library that combines the best of all:
+
+| Library | Grid component | Fixed rows and columns | RTL | Recycling |
+|-|-|-|-|-|
+| react-window | ✔ | ❌ | ✔ | ❌ |
+| sticky-table | ✔ | ✔ | ❌ | ❌ |
+| react-virtual-grid | ✔ | ✔ | ❔ | ❌ |
+| recyclerlistview | ❌ | ❔ | ❔ | ✔ |
+| react-tablize | ✔ | ✔ | ✔ | ✔ |
+
 ## Changelog
 
 The changelog can be found [here](https://github.com/alonrbar/react-tablize/blob/master/CHANGELOG.md).
