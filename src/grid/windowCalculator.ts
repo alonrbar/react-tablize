@@ -40,6 +40,7 @@ export class WindowCalculator {
         elementsOverscan: number,
         estimatedElementSize: number,
         calculateElementSize: SizeCallback,
+        minElementsCountToReturn: number,
         totalElementsCount: number
     ) {
 
@@ -60,6 +61,14 @@ export class WindowCalculator {
             calculateElementSize
         );
         toIndex = Math.min(toIndex + elementsOverscan, totalElementsCount - 1);
+        
+        while (toIndex - fromIndex + 1 < minElementsCountToReturn) {
+            if (toIndex + 1 < totalElementsCount) {
+                toIndex++;
+            } else {
+                fromIndex--;
+            }
+        }
 
         const info: ElementInfo[] = [];
         for (let i = fromIndex; i <= toIndex; i++) {

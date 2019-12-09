@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../types';
+import { DocDir, IMap, ScrollEvent, SizeCallback } from '../types';
+import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
 import { WindowCalculator } from './windowCalculator';
 
@@ -43,7 +44,19 @@ class VirtualTileState {
 
 export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTileState> {
 
+    /**
+     * Make sure to return a constant number of elements, this is important for
+     * recycling purposes.
+     */
+    private minColumnsToRender = 0;
+    /**
+     * Make sure to return a constant number of elements, this is important for
+     * recycling purposes.
+     */
+    private minRowsToRender = 0;
+
     private windowCalc = new WindowCalculator();
+    private recycler = new RecycleManager();
 
     constructor(props: VirtualTileProps) {
         super(props);
@@ -90,6 +103,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
     public clearCache(): void {
         this.windowCalc = new WindowCalculator();
+        this.minColumnsToRender = 0;
+        this.minRowsToRender = 0;
     }
 
     //
@@ -119,6 +134,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
     private renderCells() {
 
+        // get cell indexes to render
+
         const columns = this.windowCalc.elementsInRange(
             'column',
             this.state.scrollLeft,
@@ -126,6 +143,7 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             this.props.overscanColumnsCount,
             this.props.estimatedColumnWidth,
             this.props.columnWidth,
+            this.minColumnsToRender,
             this.props.columnCount
         );
         const rows = this.windowCalc.elementsInRange(
@@ -135,15 +153,36 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             this.props.overscanRowCount,
             this.props.estimatedRowHeight,
             this.props.rowHeight,
+            this.minRowsToRender,
             this.props.rowCount
         );
 
-        const cells: React.ReactNode[] = [];
+        this.minColumnsToRender = columns.length;
+        this.minRowsToRender = rows.length;
+
+        // free unused stable keys before rendering
+
+        const originalKeys: IMap<boolean> = {};
         for (const row of rows) {
             for (const col of columns) {
-                cells.push(
+                const originalKey = this.getCellOriginalKey(col.index, row.index);
+                originalKeys[originalKey] = true;
+            }
+        }
+        this.recycler.freeUnusedKeys(originalKeys);
+
+        // render cells
+
+        const cellsByKey: IMap<React.ReactNode> = {};
+        for (const row of rows) {
+            for (const col of columns) {
+
+                const originalKey = this.getCellOriginalKey(col.index, row.index);
+                const stableKey = this.recycler.getStableKey(originalKey);
+
+                cellsByKey[stableKey] = (
                     <VirtualCell
-                        key={`${col.index}, ${row.index}`}
+                        key={stableKey}
                         direction={this.props.direction}
                         height={row.size}
                         width={col.size}
@@ -161,6 +200,17 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             }
         }
 
+        // sort the cells by key order
+        // https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order
+        const cells: React.ReactNode[] = [];
+        for (const key of Object.keys(cellsByKey)) {
+            cells.push(cellsByKey[key]);
+        }
+
         return cells;
+    }
+
+    private getCellOriginalKey(colIndex: number, rowIndex: number): React.Key {
+        return `${colIndex}, ${rowIndex}`;
     }
 }
