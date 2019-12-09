@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DocDir, IMap, ScrollEvent, SizeCallback } from '../types';
+import { DocDir, IMap, SizeCallback } from '../types';
+import { NormalizedScrollEvent } from '../utils';
 import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
 import { ElementInfo, WindowCalculator } from './windowCalculator';
@@ -72,25 +73,27 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     // public methods
     //
 
-    public scroll(e: ScrollEvent): void {
-        const { scrollTop, scrollLeft } = e;
+    public scroll(e: NormalizedScrollEvent): void {
 
         switch (this.props.scrollability) {
 
             case 'both':
-                this.containerElement.current.scrollTop = scrollTop;
-                this.containerElement.current.scrollLeft = scrollLeft;
-                this.setState({ scrollTop, scrollLeft });
+                this.containerElement.current.scrollTop = e.scrollTop;
+                this.containerElement.current.scrollLeft = e.rawScrollLeft;
+                this.setState({ 
+                    scrollTop: e.scrollTop, 
+                    scrollLeft: e.normalizedScrollLeft 
+                });
                 break;
 
             case 'vertical':
-                this.containerElement.current.scrollTop = scrollTop;
-                this.setState({ scrollTop });
+                this.containerElement.current.scrollTop = e.scrollTop;
+                this.setState({ scrollTop: e.scrollTop });
                 break;
 
             case 'horizontal':
-                this.containerElement.current.scrollLeft = scrollLeft;
-                this.setState({ scrollLeft });
+                this.containerElement.current.scrollLeft = e.rawScrollLeft;
+                this.setState({ scrollLeft: e.normalizedScrollLeft });
                 break;
 
             case 'none':

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DocDir, ScrollEvent, SizeCallback } from '../types';
-import { DomUtils, areShallowEqual } from '../utils';
+import { DomUtils, areShallowEqual, ScrollUtils } from '../utils';
 import { VirtualTile, VirtualTileProps } from './VirtualTile';
 
 export enum TileKey {
@@ -190,42 +190,18 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     //
 
     private handleScroll = (e: React.UIEvent<HTMLDivElement>): void => {
-        let { scrollTop, scrollLeft } = e.currentTarget;
-        const { scrollHeight, scrollWidth, clientHeight, clientWidth } = e.currentTarget;
-
-        // RTL support
-        if (this.direction === 'rtl') {
-            switch (DomUtils.rtlOffsetType) {
-                case 'negative':
-                    scrollLeft = -scrollLeft;
-                    break;
-                case 'positive-ascending':
-                    // noop
-                    break;
-                case 'positive-descending':
-                default:
-                    scrollLeft = scrollWidth - clientWidth - scrollLeft;
-                    break;
-            }
-        }
-
-        // fix scroll offset to prevent "over scroll"
-        scrollTop = Math.min(scrollTop, scrollHeight - clientHeight);
-        scrollLeft = Math.min(scrollLeft, scrollWidth - clientWidth);
-
+        const normalized = ScrollUtils.normalizeScrollEvent(e, this.direction);
+        
         // restore tiles position
         this.setState({
-            scrollTop,
-            scrollLeft
+            scrollTop: normalized.scrollTop,
+            scrollLeft: normalized.normalizedScrollLeft
         });
-
+        
         // scroll tiles content
         for (const tileKey of this.activeTiles) {
             const { ref } = this.tiles[tileKey];
-            ref.current.scroll({
-                scrollTop,
-                scrollLeft
-            });
+            ref.current.scroll(normalized);
         }
     };
 

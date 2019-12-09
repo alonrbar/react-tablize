@@ -17,21 +17,33 @@ stories.add('empty grid', () => (
 
 stories.add('simple grid', () => (
     <GridView
-        columnCount={1000}
-        rowCount={10}
-        estimatedColumnWidth={100}
+        style={{
+            direction: 'rtl',
+            width: 400
+        }}
+        columnCount={50}
+        rowCount={50}
+        estimatedColumnWidth={80}
+        estimatedRowHeight={40}
+        fixedHeaderHeight={40}
+        fixedRightWidth={80}
+        fixedLeftWidth={80}
+    >
+        {cellProps => (
+            <div style={{ textAlign: 'center' }}>
+                {`${cellProps.absRowIndex}, ${cellProps.absColIndex}`}
+            </div>
+        )}
+    </GridView>
+));
+
+stories.add('simple grid - list', () => (
+    <GridView
+        columnCount={1}
+        rowCount={50}
+        estimatedColumnWidth={400}
         estimatedRowHeight={40}
     >
-        {cellProps => {
-            if (cellProps.tilePosition.vertical === 'header') {
-                return (
-                    <div style={{ color: 'red' }}>
-                        {cellProps.absColIndex}
-                    </div>
-                );
-            }
-
-            return `${cellProps.absRowIndex}, ${cellProps.absColIndex}`;
-        }}
+        {cellProps => `${cellProps.absRowIndex}, ${cellProps.absColIndex}`}
     </GridView>
 ));
