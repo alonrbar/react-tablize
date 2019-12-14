@@ -28,5 +28,8 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx'],
         modules: [path.resolve('./src'), 'node_modules']
+    },
+    optimization:{
+        minimize: false
     }
 };
