@@ -417,11 +417,13 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         if (body)
             return body.getScrollableHeight();
 
+        // Body not rendered yet - have to calculate independently.  
         // Not so DRY, breaks encapsulation and not very efficient either but I
         // couldn't find a better way to do that which is not terribly ugly...
         return new WindowCalculator().getTotalSize(
             'row',
-            this.props.estimatedRowHeight ?? this.props.rowHeight,
+            this.props.rowHeight,
+            this.props.estimatedRowHeight,
             this.props.rowCount
         );
     }
@@ -440,11 +442,13 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         if (body)
             return body.getScrollableHeight();
 
+        // Body not rendered yet - have to calculate independently.  
         // Not so DRY, breaks encapsulation and not very efficient either but I
         // couldn't find a better way to do that which is not terribly ugly...
         return new WindowCalculator().getTotalSize(
             'column',
-            this.props.estimatedColumnWidth ?? this.props.columnWidth,
+            this.props.columnWidth,
+            this.props.estimatedColumnWidth,
             this.props.columnCount
         );
     }

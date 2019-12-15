@@ -82,23 +82,31 @@ export class WindowCalculator {
         return info;
     }
 
-    public getTotalSize(elementType: ElementType, elementSize: number | SizeCallback, elementsCount: number) {
+    public getTotalSize(
+        elementType: ElementType, 
+        elementSize: number | SizeCallback, 
+        estimatedElementSize: null | number,
+        elementsCount: number
+    ) {
 
         // Handle unmeasured elements
         let lastMeasuredIndex: number;
         let totalSizeOfUnmeasuredElements = 0;
-        if (typeof elementSize === "function") {
+        if (typeof elementSize === "function" && !estimatedElementSize) {
 
-            // Dynamic element size - force eager measurement of all unmeasured elements.
+            // Dynamic element size and no estimation - force evaluation of all unmeasured elements.
             this.getElementInfo(elementType, elementsCount - 1, elementSize);
+
+            // Update last measured index after evaluation
             lastMeasuredIndex = Math.min(this.data[elementType].lastMeasuredIndex, elementsCount - 1);
 
         } else {
 
             // Constant element size - use simple multiplication for unmeasured elements.
             lastMeasuredIndex = Math.min(this.data[elementType].lastMeasuredIndex, elementsCount - 1);
-            const numUnmeasuredElements = elementsCount - lastMeasuredIndex - 1;
-            totalSizeOfUnmeasuredElements = numUnmeasuredElements * elementSize;
+            const numUnmeasuredElementsCount = elementsCount - lastMeasuredIndex - 1;
+            const elementSizeOrEstimate = typeof elementSize === "number" ? elementSize : estimatedElementSize;
+            totalSizeOfUnmeasuredElements = numUnmeasuredElementsCount * elementSizeOrEstimate;
         }
 
         // Get total size of already measured elements

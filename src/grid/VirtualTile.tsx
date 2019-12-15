@@ -126,7 +126,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     public getScrollableHeight(): number {
         return this.windowCalc.getTotalSize(
             'row',
-            this.props.estimatedRowHeight ?? this.props.rowHeight,
+            this.props.rowHeight,
+            this.props.estimatedRowHeight,
             this.props.rowCount
         );
     }
@@ -134,7 +135,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     public getScrollableWidth(): number {
         return this.windowCalc.getTotalSize(
             'column',
-            this.props.estimatedColumnWidth ?? this.props.columnWidth,
+            this.props.columnWidth,
+            this.props.estimatedColumnWidth,
             this.props.columnCount
         );
     }
