@@ -9,3 +9,4 @@ export interface ScrollEvent {
     scrollTop: number;
     scrollLeft: number;
 }
+export declare type ScrollDirection = 'vertical' | 'horizontal' | 'none' | 'both';

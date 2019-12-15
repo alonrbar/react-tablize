@@ -7,10 +7,11 @@ export interface ElementInfo {
 }
 export declare class WindowCalculator {
     private readonly data;
-    elementsInRange(elementType: ElementType, fromPosition: number, toPosition: number, elementsOverscan: number, estimatedElementSize: number, calculateElementSize: SizeCallback, minElementsCountToReturn: number, totalElementsCount: number): ElementInfo[];
-    getEstimatedTotalSize(elementType: ElementType, estimatedElementSize: number, elementsCount: number): number;
+    elementsInRange(elementType: ElementType, fromPosition: number, toPosition: number, elementsOverscan: number, elementSize: number | SizeCallback, minElementsCountToReturn: number, totalElementsCount: number): ElementInfo[];
+    getTotalSize(elementType: ElementType, elementSize: number | SizeCallback, estimatedElementSize: null | number, elementsCount: number): number;
     private findNearestItem;
     private findNearestItemBinarySearch;
     private findNearestItemExponentialSearch;
     private getElementInfo;
+    private getSize;
 }

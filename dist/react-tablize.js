@@ -1,2 +1,3168 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("react-tablize",[],t):"object"==typeof exports?exports["react-tablize"]=t():e["react-tablize"]=t()}(this,function(){return function(e){var t={};function r(n){if(t[n])return t[n].exports;var o=t[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,r),o.l=!0,o.exports}return r.m=e,r.c=t,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)r.d(n,o,function(t){return e[t]}.bind(null,o));return n},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=13)}([function(e,t){e.exports=require("react")},function(e,t,r){"use strict";function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function o(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var i,l=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e)}var t,r,o;return t=e,o=[{key:"scrollbarWidth",get:function(){if(null!==this._scrollbarWidth)return this._scrollbarWidth;var e=document.createElement("div");return e.style.width="100px",e.style.height="100px",e.style.overflow="scroll",e.style.position="absolute",e.style.top="-9999px",document.body.appendChild(e),this._scrollbarWidth=e.offsetWidth-e.clientWidth,document.body.removeChild(e),this._scrollbarWidth}},{key:"rtlOffsetType",get:function(){if(e._rtlOffsetType)return e._rtlOffsetType;var t=document.createElement("div"),r=t.style;r.width="50px",r.height="50px",r.overflow="scroll",r.direction="rtl";var n=document.createElement("div"),o=n.style;return o.width="100px",o.height="100px",t.appendChild(n),document.body.appendChild(t),t.scrollLeft>0?e._rtlOffsetType="positive-descending":(t.scrollLeft=1,0===t.scrollLeft?e._rtlOffsetType="negative":e._rtlOffsetType="positive-ascending"),document.body.removeChild(t),e._rtlOffsetType}},{key:"isPositionStickySupported",get:function(){if(null!==e._isPositionStickySupported)return e._isPositionStickySupported;for(var t=["","-o-","-webkit-","-moz-","-ms-"],r=document.head.style,n=0;n<t.length;n+=1)r.position="".concat(t[n],"sticky");return e._isPositionStickySupported="sticky"===r.position,e._isPositionStickySupported}}],(r=null)&&n(t.prototype,r),o&&n(t,o),e}();o(l,"_scrollbarWidth",null),o(l,"_rtlOffsetType",void 0),o(l,"_isPositionStickySupported",null),function(e){e.PageUp="PageUp",e.PageDown="PageDown",e.End="End",e.Home="Home"}(i||(i={}));var u=r(0);function a(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}var c=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e)}var t,r,n;return t=e,n=[{key:"addPropsToChildren",value:function(e,t){return u.Children.map(e,function(e,r){var n=t(e,r);return u.cloneElement(e,n)})}},{key:"childrenOfType",value:function(t,r){var n=e.childrenArray(t);return n?n.filter(function(t){return e.elementInstanceOf(t,r)}):null}},{key:"singleChildOfType",value:function(t,r){var n=e.childrenOfType(t,r);if(!n||!n.length)return null;if(n.length>1)throw new Error("Only one ".concat(r.name," child element is allowed."));return n[0]}},{key:"childrenArray",value:function(e){if(!e)return null;if(!e.props)return null;var t=e.props.children;return Array.isArray(t)?t:u.Children.map(t,function(e){return e})}},{key:"elementInstanceOf",value:function(e,t){return!!e&&(!!e.type&&(e.type===t||e.type.prototype instanceof t||Object.prototype.isPrototypeOf.call(t,e.type)))}}],(r=null)&&a(t.prototype,r),n&&a(t,n),e}();function s(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}var f=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e)}var t,r,n;return t=e,n=[{key:"normalizeScrollEvent",value:function(e,t){var r,n=e.currentTarget,o=n.scrollTop,i=n.scrollLeft,u=e.currentTarget,a=u.scrollHeight,c=u.scrollWidth,s=u.clientHeight,f=u.clientWidth;if("rtl"===t)switch(l.rtlOffsetType){case"negative":r=-i;break;case"positive-ascending":break;case"positive-descending":default:r=c-f-i}var p=Math.min(o,a-s);return p=Math.max(0,o),r=Math.min(r,c-f),{scrollTop:p,rawScrollLeft:i,normalizedScrollLeft:r=Math.max(0,r)}}}],(r=null)&&s(t.prototype,r),n&&s(t,n),e}();function p(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}var h=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e)}var t,r,n;return t=e,n=[{key:"cssSizeString",value:function(e){return Number.isFinite(e)?e+"px":e}},{key:"geElementHeights",value:function(e,t){var r=e&&e.props.style||{},n=r.height,o=r.minHeight,i=r.maxHeight;return void 0===n&&void 0===o&&(n=t),{height:n=this.cssSizeString(n),minHeight:o=this.cssSizeString(o),maxHeight:i=this.cssSizeString(i)}}},{key:"getBodyHeights",value:function(e,t,r){var n=this.geElementHeights(e,r.total),o=this.getHeadHeight(t,r.head),i=this.geElementHeights(e,void 0),l=i.height||n.height,u=i.minHeight||n.minHeight,a=i.maxHeight||n.maxHeight;return o&&(l="calc(".concat(l," - ").concat(o,")"),u&&(u="calc(".concat(u," - ").concat(o,")")),a&&(a="calc(".concat(a," - ").concat(o,")"))),{height:l,minHeight:u,maxHeight:a}}},{key:"getHeadHeight",value:function(e,t){return e?this.geElementHeights(e,t).height:0}}],(r=null)&&p(t.prototype,r),n&&p(t,n),e}();function y(e){return null==e}function d(e){return Array.isArray(e)?e:[e]}function b(e,t){if(e===t)return!0;if(null==e||null==t)return!1;var r=Object.keys(e),n=Object.keys(t);if(r.length!==n.length)return!1;for(var o=0,i=r;o<i.length;o++){var l=i[o];if(e[l]!==t[l])return!1}return!0}r.d(t,"a",function(){return l}),r.d(t,"b",function(){return i}),r.d(t,"c",function(){return c}),r.d(t,"d",function(){return f}),r.d(t,"e",function(){return h}),r.d(t,"h",function(){return y}),r.d(t,"g",function(){return d}),r.d(t,"f",function(){return b})},function(e,t,r){"use strict";var n=r(0),o=r(9),i=r.n(o);function l(){return(l=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function u(e){return(u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function a(e,t){var r=Object.keys(e);return Object.getOwnPropertySymbols&&r.push.apply(r,Object.getOwnPropertySymbols(e)),t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),r}function c(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?a(r,!0).forEach(function(t){s(e,t,r[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):a(r).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))})}return e}function s(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function f(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function p(e,t){return!t||"object"!==u(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function h(e){return(h=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function y(e,t){return(y=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}var d=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),p(this,h(t).apply(this,arguments))}var r,o,l;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&y(e,t)}(t,n["PureComponent"]),r=t,(o=[{key:"render",value:function(){var e=this;return n.createElement(i.a,{ref:function(t){if(e.props.forwardedRef){var r=(t||{}).view;"function"==typeof e.props.forwardedRef?e.props.forwardedRef(r):e.props.forwardedRef.current=r}},style:c({},this.props.style,{overflow:"hidden",direction:"ltr"}),onScroll:this.props.onScroll},this.props.children)}}])&&f(r.prototype,o),l&&f(r,l),t}(),b=n.forwardRef(function(e,t){return n.createElement(d,l({},e,{forwardedRef:t}))});function v(e){return(v="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function m(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function g(e,t){return!t||"object"!==v(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function w(e){return(w=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function O(e,t){return(O=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function S(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}b.displayName="CustomScrollbars";var j=function(e){function t(e){var r;return S(this,t),(r=g(this,w(t).call(this,e))).state={hasError:!1},r}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&O(e,t)}(t,n["Component"]),r=t,(o=[{key:"componentDidCatch",value:function(e,t){this.setState({hasError:!0}),console.error(e)}},{key:"render",value:function(){return this.state.hasError?n.createElement("span",null,"X"):void 0!==this.props.children?this.props.children:null}}])&&m(r.prototype,o),i&&m(r,i),t}();r.d(t,"a",function(){return b}),r.d(t,"b",function(){return j})},function(e,t){e.exports=require("@emotion/styled-base")},function(e,t){e.exports=require("react-virtualized-auto-sizer")},function(e,t,r){"use strict";var n=r(6);r.o(n,"NonVirtualList")&&r.d(t,"NonVirtualList",function(){return n.NonVirtualList}),r.o(n,"VirtualList")&&r.d(t,"VirtualList",function(){return n.VirtualList});var o=r(7);r.d(t,"NonVirtualList",function(){return o.a});var i=r(8);r.d(t,"VirtualList",function(){return i.a})},function(e,t){},function(e,t,r){"use strict";r.d(t,"a",function(){return f});var n=r(0),o=r(2);function i(e){return(i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function l(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function u(e){return(u=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function a(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function c(e,t){return(c=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function s(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var f=function(e){function t(){var e,r,o,l;!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t);for(var c=arguments.length,f=new Array(c),p=0;p<c;p++)f[p]=arguments[p];return o=this,l=(e=u(t)).call.apply(e,[this].concat(f)),r=!l||"object"!==i(l)&&"function"!=typeof l?a(o):l,s(a(r),"disableScrollEvents",!1),s(a(r),"listRef",n.createRef()),s(a(r),"scrollTo",function(e){var t=r.listRef.current;if(t){if(void 0===e)return;if(e===(r.isHorizontal?t.scrollLeft:t.scrollTop))return;r.disableScrollEvents=!0,t.scrollTo({top:r.isHorizontal?void 0:e,left:r.isHorizontal?e:void 0})}}),s(a(r),"handleOnScroll",function(e){if(r.disableScrollEvents)r.disableScrollEvents=!1;else if(r.props.onScroll){var t=e.currentTarget,n=t.scrollTop,o=t.scrollLeft;r.props.onScroll(r.isHorizontal?o:n)}}),r}var r,f,p;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&c(e,t)}(t,n["PureComponent"]),r=t,(f=[{key:"render",value:function(){var e=this,t=s({height:this.props.height,width:this.props.width,direction:this.props.dir,boxSizing:"content-box",outline:"none",overflow:"auto"},this.isHorizontal?"overflowY":"overflowX","hidden");return this.isHorizontal&&(t.display="flex"),n.createElement(this.getListElementType(),{ref:this.listRef,style:t,onScroll:this.handleOnScroll},Array(this.props.itemCount).fill(0).map(function(t,r){var o;return n.createElement("div",{key:r,style:(o={},s(o,e.isHorizontal?"minWidth":"minHeight",e.props.itemSize(r)),s(o,e.isHorizontal?"height":"width",e.isHorizontal?e.props.height:e.props.width),o)},e.props.children(r))}))}},{key:"getListElementType",value:function(){return this.props.customScrollbar?o.a:"div"}},{key:"isHorizontal",get:function(){return"horizontal"===this.props.layout}}])&&l(r.prototype,f),p&&l(r,p),t}()},function(e,t,r){"use strict";r.d(t,"a",function(){return g});var n,o=r(0),i=r(11),l=r(12),u=r(2),a=r(1);function c(e){return(c="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function s(e,t){var r=Object.keys(e);return Object.getOwnPropertySymbols&&r.push.apply(r,Object.getOwnPropertySymbols(e)),t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),r}function f(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?s(r,!0).forEach(function(t){v(e,t,r[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):s(r).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))})}return e}function p(){return(p=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function h(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function y(e){return(y=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function d(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function b(e,t){return(b=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function v(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var m=(v(n={},a.b.PageUp,!0),v(n,a.b.PageDown,!0),v(n,a.b.End,!0),v(n,a.b.Home,!0),n),g=function(e){function t(){var e,r,n,l;!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t);for(var u=arguments.length,s=new Array(u),f=0;f<u;f++)s[f]=arguments[f];return n=this,l=(e=y(t)).call.apply(e,[this].concat(s)),r=!l||"object"!==c(l)&&"function"!=typeof l?d(n):l,v(d(r),"tableRef",o.createRef()),v(d(r),"tableInnerRef",o.createRef()),v(d(r),"tableOuterRef",o.createRef()),v(d(r),"registerKeyHandlers",function(){window.addEventListener("keydown",r.scrollByKey)}),v(d(r),"removeKeyHandlers",function(){window.removeEventListener("keydown",r.scrollByKey)}),v(d(r),"scrollByKey",function(e){var t,n=e.key;if(m[n]&&r.tableRef.current&&r.tableInnerRef.current&&r.tableOuterRef.current){var o=r.props.customScrollbar?r.tableOuterRef.current:r.tableRef.current,l=i.findDOMNode(o),u=l.scrollTop,c=.85*l.clientHeight,s=r.tableInnerRef.current.clientHeight,f=(v(t={},a.b.PageUp,Math.max(.1,u-c)),v(t,a.b.PageDown,Math.min(u+c,s)),v(t,a.b.End,s),v(t,a.b.Home,.1),t);r.tableRef.current.scrollTo(f[n])}}),r}var r,n,s;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&b(e,t)}(t,o["PureComponent"]),r=t,(n=[{key:"refresh",value:function(){this.tableRef.current&&this.tableRef.current.resetAfterIndex(0,!1),this.forceUpdate()}},{key:"scrollTo",value:function(e){this.tableRef.current&&this.tableRef.current.scrollTo(e)}},{key:"render",value:function(){var e=this;return o.createElement(l.VariableSizeList,p({ref:this.tableRef,innerRef:this.tableInnerRef,outerRef:this.tableOuterRef,style:Object.assign({outline:"none"},this.props.style),outerElementType:this.getOuterElementType(),direction:this.props.dir,layout:this.props.layout,height:this.props.height,width:this.props.width,itemCount:this.props.itemCount,itemSize:this.props.itemSize,overscanCount:this.props.overscan},this.getKeyScrollProps()),function(t){var r=t.index,n=t.style;return e.renderRow(r,n)})}},{key:"renderRow",value:function(e,t){var r=this.props.children(e);return o.cloneElement(r,{style:f({},r.props.style,{},t)})}},{key:"getKeyScrollProps",value:function(){return!1===this.props.keyScroll?{}:{onMouseEnter:this.registerKeyHandlers,onMouseLeave:this.removeKeyHandlers,onKeyDown:this.scrollByKey}}},{key:"getOuterElementType",value:function(){return this.props.customScrollbar?u.a:void 0}}])&&h(r.prototype,n),s&&h(r,s),t}()},function(e,t){e.exports=require("react-custom-scrollbars")},function(e,t){e.exports=require("emotion-theming")},function(e,t){e.exports=require("react-dom")},function(e,t){e.exports=require("react-window")},function(e,t,r){e.exports=r(15)},function(e,t){e.exports=require("lodash.flattendeep")},function(e,t,r){"use strict";r.r(t);var n=r(0),o=r(4),i=r.n(o),l=r(2),u=r(1);function a(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function c(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var s=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e),c(this,"stableKeySource",0),c(this,"freeKeysPool",{}),c(this,"usedKeysOriginalToStable",{})}var t,r,n;return t=e,(r=[{key:"freeUnusedKeys",value:function(e){for(var t=Object.keys(e),r=Object.keys(this.usedKeysOriginalToStable),n=t.length-1,o=r.length-1;n>=0&&o>=0;){var i=t[n],l=r[o];i===l?(n--,o--):i>l?n--:(this.freeUnusedKey(l),o--)}for(;o>=0;){var u=r[o];this.freeUnusedKey(u),o--}}},{key:"getStableKey",value:function(e){if(void 0!==this.usedKeysOriginalToStable[e])return this.usedKeysOriginalToStable[e];var t=this.getNextKeyFromPool();return this.usedKeysOriginalToStable[e]=t,t}},{key:"getNextKeyFromPool",value:function(){var e;for(var t in this.freeKeysPool)if(this.freeKeysPool.hasOwnProperty(t)){e=t;break}return void 0===e?(e=this.stableKeySource,this.stableKeySource++):delete this.freeKeysPool[e],e}},{key:"freeUnusedKey",value:function(e){var t=this.usedKeysOriginalToStable[e];delete this.usedKeysOriginalToStable[e],this.freeKeysPool[t]=!0}}])&&a(t.prototype,r),n&&a(t,n),e}();function f(e){return(f="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function p(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function h(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function y(e,t){return!t||"object"!==f(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function d(e){return(d=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function b(e,t){return(b=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}var v=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),y(this,d(t).apply(this,arguments))}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&b(e,t)}(t,n["PureComponent"]),r=t,(o=[{key:"render",value:function(){var e,t="rtl"===this.props.direction?"right":"left",r="rtl"===this.props.direction?-1:1,o="translate(".concat(this.props.left*r,"px,").concat(this.props.top,"px)");return n.createElement("div",{className:this.props.className,style:(e={height:this.props.height,width:this.props.width,position:"absolute"},p(e,t,0),p(e,"top",0),p(e,"willChange","transform"),p(e,"transform",o),e)},this.props.children)}}])&&h(r.prototype,o),i&&h(r,i),t}();function m(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function g(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function w(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var O=function e(){g(this,e),w(this,"cache",{}),w(this,"lastMeasuredIndex",-1)},S=function(){function e(){g(this,e),w(this,"data",{column:new O,row:new O})}var t,r,n;return t=e,(r=[{key:"elementsInRange",value:function(e,t,r,n,o,i,l,u){var a=this.findNearestItem(e,t,u,o,i);a=Math.max(0,a-n);var c=this.findNearestItem(e,r,u,o,i);for(c=Math.min(c+n,u-1);c-a+1<l;)c+1<u?c++:a--;for(var s=[],f=a;f<=c;f++)s.push(this.getElementInfo(e,f,o,i));return s}},{key:"getEstimatedTotalSize",value:function(e,t,r){var n=this.data[e].lastMeasuredIndex,o=this.data[e].cache;n>=r&&(n=r-1);var i=0;if(n>=0){var l=o[n];i=l.position+l.size}return i+(r-n-1)*t}},{key:"findNearestItem",value:function(e,t,r,n,o){var i,l,u=this.data[e],a=u.lastMeasuredIndex;return(null!==(i=null===(l=u.cache[a])||void 0===l?void 0:l.position)&&void 0!==i?i:-1)>=t?this.findNearestItemBinarySearch(e,a,0,t,n,o):this.findNearestItemExponentialSearch(e,Math.max(a,0),r,t,n,o)}},{key:"findNearestItemBinarySearch",value:function(e,t,r,n,o,i){for(;r<=t;){var l=r+Math.floor((t-r)/2),u=this.getElementInfo(e,l,o,i).position;if(u===n)return l;u<n?r=l+1:u>n&&(t=l-1)}return r>0?r-1:0}},{key:"findNearestItemExponentialSearch",value:function(e,t,r,n,o,i){for(var l=1;t<r&&this.getElementInfo(e,t,o,i).position<n;)t+=l,l*=2;return this.findNearestItemBinarySearch(e,Math.min(t,r-1),Math.floor(t/2),n,o,i)}},{key:"getElementInfo",value:function(e,t,r,n){var o=this.data[e],i=o.lastMeasuredIndex,l=o.cache;if(t>i){var u=0;if(-1!==i){var a=l[i];u=a.position+a.size}for(var c=i+1;c<=t;c++){var s,f,p,h=null!==(s=null!==(f=null===(p=l[c])||void 0===p?void 0:p.size)&&void 0!==f?f:null==n?void 0:n(c))&&void 0!==s?s:r;l[c]={index:c,position:u,size:h},u+=h}this.data[e].lastMeasuredIndex=t}return l[t]}}])&&m(t.prototype,r),n&&m(t,n),e}();function j(e){return(j="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function P(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function _(e){return(_=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function C(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function T(e,t){return(T=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function E(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function k(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var x,R=function e(){E(this,e),k(this,"scrollTop",0),k(this,"scrollLeft",0)},H=function(e){function t(e){var r,o,i;return E(this,t),o=this,r=!(i=_(t).call(this,e))||"object"!==j(i)&&"function"!=typeof i?C(o):i,k(C(r),"minColumnsToRender",0),k(C(r),"minRowsToRender",0),k(C(r),"windowCalc",new S),k(C(r),"recycler",new s),k(C(r),"containerElement",n.createRef()),r.state=new R,r}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&T(e,t)}(t,n["PureComponent"]),r=t,(o=[{key:"scroll",value:function(e){switch(this.props.scrollability){case"both":this.containerElement.current.scrollTop=e.scrollTop,this.containerElement.current.scrollLeft=e.rawScrollLeft,this.setState({scrollTop:e.scrollTop,scrollLeft:e.normalizedScrollLeft});break;case"vertical":this.containerElement.current.scrollTop=e.scrollTop,this.setState({scrollTop:e.scrollTop});break;case"horizontal":this.containerElement.current.scrollLeft=e.rawScrollLeft,this.setState({scrollLeft:e.normalizedScrollLeft});break;case"none":break;default:throw new Error("Invalid ".concat("scrollability"," value: '").concat(this.props.scrollability,"'."))}}},{key:"getScrollableHeight",value:function(){return this.windowCalc.getEstimatedTotalSize("row",this.props.estimatedRowHeight,this.props.rowCount)}},{key:"getScrollableWidth",value:function(){return this.windowCalc.getEstimatedTotalSize("column",this.props.estimatedColumnWidth,this.props.columnCount)}},{key:"clearCache",value:function(){this.windowCalc=new S,this.minColumnsToRender=0,this.minRowsToRender=0}},{key:"render",value:function(){var e,t="rtl"===this.props.direction?"right":"left";return n.createElement("div",{ref:this.containerElement,className:this.props.className+"_Container",style:(e={height:this.props.height,width:this.props.width,position:this.props.position,top:this.props.top},k(e,t,this.props.left),k(e,"float",this.props.float),k(e,"overflow","hidden"),e)},n.createElement("div",{className:this.props.className+"_ScrollableArea",style:{height:this.getScrollableHeight(),width:this.getScrollableWidth()}},this.renderCells()))}},{key:"renderCells",value:function(){var e=this.windowCalc.elementsInRange("column",this.state.scrollLeft,this.state.scrollLeft+this.props.width,this.props.overscanColumnsCount,this.props.estimatedColumnWidth,this.props.columnWidth,this.minColumnsToRender,this.props.columnCount),t=this.windowCalc.elementsInRange("row",this.state.scrollTop,this.state.scrollTop+this.props.height,this.props.overscanRowCount,this.props.estimatedRowHeight,this.props.rowHeight,this.minRowsToRender,this.props.rowCount);this.minColumnsToRender=e.length,this.minRowsToRender=t.length;var r={},n=!0,o=!1,i=void 0;try{for(var l,u=t[Symbol.iterator]();!(n=(l=u.next()).done);n=!0){var a=l.value,c=!0,s=!1,f=void 0;try{for(var p,h=e[Symbol.iterator]();!(c=(p=h.next()).done);c=!0){var y=p.value;r[this.getCellOriginalKey(y.index,a.index)]=!0}}catch(e){s=!0,f=e}finally{try{c||null==h.return||h.return()}finally{if(s)throw f}}}}catch(e){o=!0,i=e}finally{try{n||null==u.return||u.return()}finally{if(o)throw i}}this.recycler.freeUnusedKeys(r);var d={},b=!0,v=!1,m=void 0;try{for(var g,w=t[Symbol.iterator]();!(b=(g=w.next()).done);b=!0){var O=g.value,S=!0,j=!1,P=void 0;try{for(var _,C=e[Symbol.iterator]();!(S=(_=C.next()).done);S=!0){var T=_.value,E=this.getCellOriginalKey(T.index,O.index),k=this.recycler.getStableKey(E);d[k]=this.renderCell(T,O,k)}}catch(e){j=!0,P=e}finally{try{S||null==C.return||C.return()}finally{if(j)throw P}}}}catch(e){v=!0,m=e}finally{try{b||null==w.return||w.return()}finally{if(v)throw m}}for(var x=[],R=0,H=Object.keys(d);R<H.length;R++){var L=H[R];x.push(d[L])}return x}},{key:"renderCell",value:function(e,t,r){return n.createElement(v,{className:this.props.className+"_Cell",key:r,direction:this.props.direction,height:t.size,width:e.size,top:t.position,left:e.position},this.props.children({colIndex:e.index,rowIndex:t.index,height:t.size,width:e.size}))}},{key:"getCellOriginalKey",value:function(e,t){return"".concat(e,", ").concat(t)}}])&&P(r.prototype,o),i&&P(r,i),t}();function L(e){return(L="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function z(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){var r=[],n=!0,o=!1,i=void 0;try{for(var l,u=e[Symbol.iterator]();!(n=(l=u.next()).done)&&(r.push(l.value),!t||r.length!==t);n=!0);}catch(e){o=!0,i=e}finally{try{n||null==u.return||u.return()}finally{if(o)throw i}}return r}(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}()}function I(e,t){var r=Object.keys(e);return Object.getOwnPropertySymbols&&r.push.apply(r,Object.getOwnPropertySymbols(e)),t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),r}function W(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?I(r,!0).forEach(function(t){V(e,t,r[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):I(r).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))})}return e}function K(){return(K=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function N(e){return(N=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function M(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function B(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function D(e,t,r){return t&&B(e.prototype,t),r&&B(e,r),e}function A(e,t){return(A=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function F(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function V(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}!function(e){e.HeaderLeft="Header_Left",e.HeaderCenter="Header_Center",e.HeaderRight="Header_Right",e.BodyLeft="Body_Left",e.BodyCenter="Body_Center",e.BodyRight="Body_Right",e.FooterLeft="Footer_Left",e.FooterCenter="Footer_Center",e.FooterRight="Footer_Right"}(x||(x={}));var U=function e(){F(this,e),V(this,"onScroll",void 0),V(this,"height",void 0),V(this,"width",void 0),V(this,"columnCount",void 0),V(this,"rowCount",void 0),V(this,"estimatedColumnWidth",void 0),V(this,"estimatedRowHeight",void 0),V(this,"columnWidth",void 0),V(this,"rowHeight",void 0),V(this,"overscanColumnsCount",0),V(this,"overscanRowCount",0),V(this,"fixedHeaderHeight",0),V(this,"fixedFooterHeight",0),V(this,"fixedLeftWidth",0),V(this,"fixedRightWidth",0),V(this,"style",void 0),V(this,"tileStyle",void 0),V(this,"children",void 0)},q=function e(){F(this,e),V(this,"scrollTop",0),V(this,"scrollLeft",0)},G=function(e){function t(e){var r,o,i;return F(this,t),o=this,i=N(t).call(this,e),r=!i||"object"!==L(i)&&"function"!=typeof i?M(o):i,V(M(r),"tiles",{}),V(M(r),"renderTile",function(e){var t=u.a.isPositionStickySupported,o=t?0:r.state.scrollTop,i=t?0:r.state.scrollLeft,l=r.tiles[e],a=l.ref,c=l.props,s=l.rowIndexOffset,f=l.columnIndexOffset;return n.createElement(H,K({key:e,ref:a},c,{top:c.top+o,left:c.left+i}),function(t){return r.props.children({tileKey:e,tilePosition:r.getTilePosition(e),absRowIndex:t.rowIndex+s,absColIndex:t.colIndex+f,relRowIndex:t.rowIndex,relColIndex:t.colIndex,height:t.height,width:t.width})})}),V(M(r),"handleScroll",function(e){var t=u.d.normalizeScrollEvent(e,r.direction);r.setState({scrollTop:t.scrollTop,scrollLeft:t.normalizedScrollLeft});var n=!0,o=!1,i=void 0;try{for(var l,a=r.activeTiles[Symbol.iterator]();!(n=(l=a.next()).done);n=!0){var c=l.value;r.tiles[c].ref.current.scroll(t)}}catch(e){o=!0,i=e}finally{try{n||null==a.return||a.return()}finally{if(o)throw i}}}),r.state=new q,r}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&A(e,t)}(t,n["PureComponent"]),D(t,[{key:"direction",get:function(){var e;return"rtl"===(null===(e=this.props.style)||void 0===e?void 0:e.direction)?"rtl":"ltr"}},{key:"activeTiles",get:function(){return Object.keys(this.tiles)}}]),D(t,[{key:"componentDidMount",value:function(){this.tiles=this.createTilesMap(),this.forceUpdate()}},{key:"componentDidUpdate",value:function(e){Object(u.f)(this.props,e)||(this.tiles=this.createTilesMap(),this.forceUpdate())}},{key:"render",value:function(){var e=this.getScrollableAreaHeight(),t=this.getScrollableAreaWidth();return n.createElement("div",{className:this.createClassName("Main_Container"),style:W({direction:this.direction,position:"relative",height:this.getContainerHeight(e,t),width:this.getContainerWidth(e,t),overflow:"auto"},this.props.style),onScroll:this.handleScroll},n.createElement("div",{className:this.createClassName("Main_ScrollableArea"),style:{height:e,width:t}},this.activeTiles.map(this.renderTile)))}},{key:"createTilesMap",value:function(){this.resetTiles();var e={},t=!!this.props.fixedHeaderHeight,r=!!this.props.fixedFooterHeight,n=!!this.props.fixedLeftWidth,o=!!this.props.fixedRightWidth,i=this.createTileMapEntryFactory();return t&&(n&&(e[x.HeaderLeft]=i(x.HeaderLeft)),e[x.HeaderCenter]=i(x.HeaderCenter),o&&(e[x.HeaderRight]=i(x.HeaderRight))),n&&(e[x.BodyLeft]=i(x.BodyLeft)),e[x.BodyCenter]=i(x.BodyCenter),o&&(e[x.BodyRight]=i(x.BodyRight)),r&&(n&&(e[x.FooterLeft]=i(x.FooterLeft)),e[x.FooterCenter]=i(x.FooterCenter),o&&(e[x.FooterRight]=i(x.FooterRight))),e}},{key:"createTileMapEntryFactory",value:function(){var e=this,t=this.getScrollableAreaHeight(),r=this.getScrollableAreaWidth(),o=this.getHorizontalScrollbarWidth(r),i=this.getVerticalScrollbarWidth(t),l=this.getContainerHeight(t,r),a=this.getContainerWidth(t,r),c=this.props.fixedHeaderHeight,s=this.props.fixedFooterHeight,f=l-o-c-s,p=this.props.rowCount-(c&&1)-(s&&1),h=this.props.fixedLeftWidth,y=this.props.fixedRightWidth,d=a-i-h-y,b=this.props.columnCount-(h&&1)-(y&&1),v=u.a.isPositionStickySupported,m=v?"sticky":"absolute",g=v?"ltr"===this.direction?"left":"right":void 0;return function(t){var r=e.getTilePosition(t),o=r.vertical,i=r.horizontal,l="header"===o||"footer"===o,u="left"===i||"right"===i,a=l&&u,v="left"===i||"center"===i&&!!y;return{ref:n.createRef(),rowIndexOffset:"header"===o?0:"body"===o?c&&1:p+(c&&1),columnIndexOffset:"left"===i?0:"center"===i?h&&1:b+(h&&1),props:{className:e.createClassName(t),scrollability:a?"none":l?"horizontal":u?"vertical":"both",direction:e.direction,height:"header"===o?c:"body"===o?f:s,width:"left"===i?h:"center"===i?d:y,position:m,top:"header"===o?0:"body"===o?c:c+f,left:"left"===i?0:"center"===i?h:h+d,float:v?g:void 0,columnCount:"left"===i?1:"center"===i?b:1,rowCount:"header"===o?1:"body"===o?p:1,estimatedColumnWidth:"left"===i?h:"center"===i?e.props.estimatedColumnWidth:y,estimatedRowHeight:"header"===o?c:"body"===o?e.props.estimatedRowHeight:s,columnWidth:"left"===i?null:"center"===i?e.props.columnWidth:null,rowHeight:"header"===o?null:"body"===o?e.props.rowHeight:null,overscanColumnsCount:"left"===i?0:"center"===i?e.props.overscanColumnsCount:0,overscanRowCount:"header"===o?0:"body"===o?e.props.overscanRowCount:0}}}}},{key:"getTilePosition",value:function(e){var t=z(e.toLowerCase().split("_"),2);return{vertical:t[0],horizontal:t[1]}}},{key:"getScrollableAreaHeight",value:function(){var e,t,r,n=this.props.fixedHeaderHeight,o=this.props.fixedFooterHeight,i=null===(e=this.tiles[x.BodyCenter])||void 0===e?void 0:null===(t=e.ref)||void 0===t?void 0:t.current;i?r=i.getScrollableHeight():r=(this.props.rowCount-(n&&1)-(o&&1))*this.props.estimatedRowHeight;return r+n+o}},{key:"getScrollableAreaWidth",value:function(){var e,t,r,n=this.props.fixedLeftWidth,o=this.props.fixedRightWidth,i=null===(e=this.tiles[x.BodyCenter])||void 0===e?void 0:null===(t=e.ref)||void 0===t?void 0:t.current;i?r=i.getScrollableWidth():r=(this.props.columnCount-(n&&1)-(o&&1))*this.props.estimatedColumnWidth;return r+n+o}},{key:"getVerticalScrollbarWidth",value:function(e){return e>this.props.height&&u.a.scrollbarWidth||0}},{key:"getHorizontalScrollbarWidth",value:function(e){return e>this.props.width&&u.a.scrollbarWidth||0}},{key:"getContainerHeight",value:function(e,t){var r=this.getHorizontalScrollbarWidth(t);return Math.min(this.props.height,e+r)}},{key:"getContainerWidth",value:function(e,t){var r=this.getVerticalScrollbarWidth(e);return Math.min(this.props.width,t+r)}},{key:"createClassName",value:function(e){return"ReactTablize__VirtualGrid__".concat(e)}},{key:"resetTiles",value:function(){var e=!0,t=!1,r=void 0;try{for(var n,o=this.activeTiles[Symbol.iterator]();!(e=(n=o.next()).done);e=!0){var i=n.value;this.tiles[i].ref.current.clearCache()}}catch(e){t=!0,r=e}finally{try{e||null==o.return||o.return()}finally{if(t)throw r}}this.tiles={}}}]),t}();function X(e){return(X="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function Y(){return(Y=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function J(e,t){var r=Object.keys(e);return Object.getOwnPropertySymbols&&r.push.apply(r,Object.getOwnPropertySymbols(e)),t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),r}function Q(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?J(r,!0).forEach(function(t){re(e,t,r[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):J(r).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))})}return e}function Z(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function $(e,t){return!t||"object"!==X(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function ee(e){return(ee=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function te(e,t){return(te=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function re(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}V(G,"defaultProps",new U);var ne=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),$(this,ee(t).apply(this,arguments))}var r,o,a;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&te(e,t)}(t,n["PureComponent"]),r=t,(o=[{key:"render",value:function(){var e=this;return n.createElement(l.b,null,n.createElement("div",{style:Q({direction:this.direction,width:"100%"},this.props.style,{},u.e.geElementHeights(this,t.defaultHeight))},n.createElement(i.a,null,function(t){var r=t.width,o=t.height;return n.createElement(G,Y({},e.props,{height:o,width:r}))})))}},{key:"direction",get:function(){var e;return"rtl"===(null===(e=this.props.style)||void 0===e?void 0:e.direction)?"rtl":"ltr"}}])&&Z(r.prototype,o),a&&Z(r,a),t}();function oe(e){return(oe="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function ie(e,t){return!t||"object"!==oe(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function le(e){return(le=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function ue(e,t){return(ue=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function ae(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}re(ne,"defaultHeight","35vh");var ce=function e(){var t,r,n;ae(this,e),n=void 0,(r="children")in(t=this)?Object.defineProperty(t,r,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[r]=n},se=function(e){function t(){return ae(this,t),ie(this,le(t).apply(this,arguments))}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&ue(e,t)}(t,n["PureComponent"]),t}();function fe(e){return(fe="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function pe(e,t){return!t||"object"!==fe(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function he(e){return(he=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function ye(e,t){return(ye=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}var de=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),pe(this,he(t).apply(this,arguments))}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&ye(e,t)}(t,n["PureComponent"]),t}();function be(e){return(be="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function ve(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function me(e,t){return!t||"object"!==be(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function ge(e){return(ge=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function we(e,t){return(we=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function Oe(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var Se=function e(){var t,r,n;Oe(this,e),n=void 0,(r="children")in(t=this)?Object.defineProperty(t,r,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[r]=n},je=function(e){function t(){return Oe(this,t),me(this,ge(t).apply(this,arguments))}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&we(e,t)}(t,n["PureComponent"]),r=t,i=[{key:"hasChildren",value:function(e){return!!e&&(!Object(u.h)(e.props.children)&&("function"==typeof e.props.children||(Array.isArray(e.props.children)?e.props.children.length>0:n.Children.count(e.props.children)>0)))}}],(o=null)&&ve(r.prototype,o),i&&ve(r,i),t}(),Pe=r(3),_e=r.n(Pe),Ce=_e()("div",{target:"ea4b5ar0",label:"StyledTableView"})({name:"1bhr7rw",styles:"width:100%;overflow-y:hidden;"}),Te=_e()("div",{target:"ea4b5ar1",label:"StyledTableHead"})("display:flex;overflow-y:hidden;",function(e){return"rtl"===e.theme.dir?"padding-left":"padding-right"},":",u.a.scrollbarWidth,"px;"),Ee=_e()("div",{target:"ea4b5ar2",label:"StyledTableBody"})(""),ke=_e()("div",{target:"ea4b5ar3",label:"StyledTableRow"})({name:"k008qs",styles:"display:flex;"}),xe=_e()("div",{target:"ea4b5ar4",label:"StyledTableCell"})({name:"1jqn12",styles:"flex:1;overflow:hidden;text-overflow:ellipsis;"});function Re(e){return(Re="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function He(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function Le(e,t){return!t||"object"!==Re(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function ze(e){return(ze=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function Ie(e,t){return(Ie=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function We(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var Ke=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),Le(this,ze(t).apply(this,arguments))}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&Ie(e,t)}(t,n["PureComponent"]),r=t,i=[{key:"isTableCell",value:function(e){return n.isValidElement(e)&&e.props.__ReactTablize__TableCell__}},{key:"getCellProps",value:function(e){return t.isTableCell(e)&&e.props||{}}},{key:"getCellContent",value:function(e){return t.isTableCell(e)?e.props.children:e}}],(o=[{key:"render",value:function(){return n.createElement(xe,this.props,n.createElement(l.b,null,this.props.children))}}])&&He(r.prototype,o),i&&He(r,i),t}();function Ne(e){return(Ne="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function Me(e,t){return!t||"object"!==Ne(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function Be(e){return(Be=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function De(e,t){return(De=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}We(Ke,"defaultProps",We({},"__ReactTablize__TableCell__",!0));var Ae=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),Me(this,Be(t).apply(this,arguments))}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&De(e,t)}(t,n["PureComponent"]),t}();function Fe(e){return(Fe="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function Ve(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function Ue(e,t){return!t||"object"!==Fe(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function qe(e){return(qe=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function Ge(e,t){return(Ge=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function Xe(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var Ye=function e(){var t,r,n;Xe(this,e),n=void 0,(r="children")in(t=this)?Object.defineProperty(t,r,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[r]=n},Je=function(e){function t(){return Xe(this,t),Ue(this,qe(t).apply(this,arguments))}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&Ge(e,t)}(t,n["PureComponent"]),r=t,i=[{key:"createHeadFromColumns",value:function(e){return e.every(function(e){return!u.c.singleChildOfType(e,de)})?null:n.createElement(Ae,null,e.map(function(e){var t=u.c.singleChildOfType(e,de);return t?n.createElement(Ke,t.props):null}))}},{key:"createBodyFromColumns",value:function(e){return n.createElement(je,null,function(t){return e.map(function(e,r){var n=u.c.singleChildOfType(e,se).props.children;return n?n({rowIndex:t,columnIndex:r}):null})})}}],(o=null)&&Ve(r.prototype,o),i&&Ve(r,i),t}();function Qe(e){return(Qe="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function Ze(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function $e(e,t){return!t||"object"!==Qe(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function et(e){return(et=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function tt(e,t){return(tt=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function rt(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var nt=r(14),ot=function(e){function t(){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),$e(this,et(t).apply(this,arguments))}var r,o,i;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&tt(e,t)}(t,n["PureComponent"]),r=t,i=[{key:"isTableRow",value:function(e){return n.isValidElement(e)&&e.props.__ReactTablize__TableRow__}},{key:"getRowProps",value:function(e){return t.isTableRow(e)&&e.props||{}}},{key:"getRowContent",value:function(e){var r=e;return t.isTableRow(r)&&(r=r.props.children),Array.isArray(r)&&(r=nt(r)),r}}],(o=[{key:"render",value:function(){return n.createElement(ke,this.props,n.createElement(l.b,null,this.props.children))}}])&&Ze(r.prototype,o),i&&Ze(r,i),t}();rt(ot,"defaultProps",rt({},"__ReactTablize__TableRow__",!0));var it=r(10),lt=r(5);function ut(e){return(ut="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function at(){return(at=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function ct(e,t){if(null==e)return{};var r,n,o=function(e,t){if(null==e)return{};var r,n,o={},i=Object.keys(e);for(n=0;n<i.length;n++)r=i[n],t.indexOf(r)>=0||(o[r]=e[r]);return o}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(n=0;n<i.length;n++)r=i[n],t.indexOf(r)>=0||Object.prototype.propertyIsEnumerable.call(e,r)&&(o[r]=e[r])}return o}function st(e,t){var r=Object.keys(e);return Object.getOwnPropertySymbols&&r.push.apply(r,Object.getOwnPropertySymbols(e)),t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),r}function ft(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?st(r,!0).forEach(function(t){vt(e,t,r[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):st(r).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))})}return e}function pt(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function ht(e){return(ht=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function yt(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function dt(e,t){return(dt=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function bt(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function vt(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var mt=function(){},gt=function e(){bt(this,e),vt(this,"isVirtual",void 0),vt(this,"rowCount",void 0),vt(this,"rowKey",void 0),vt(this,"children",void 0),vt(this,"dir","ltr"),vt(this,"className",void 0),vt(this,"style",void 0),vt(this,"rowHeight",50),vt(this,"emptyMessage","No Items to Display"),vt(this,"customScrollbars",void 0),vt(this,"keyScroll",void 0),vt(this,"overscanCount",20)},wt=function(e){function t(){var e,r,o,i;bt(this,t);for(var l=arguments.length,u=new Array(l),a=0;a<l;a++)u[a]=arguments[a];return o=this,i=(e=ht(t)).call.apply(e,[this].concat(u)),r=!i||"object"!==ut(i)&&"function"!=typeof i?yt(o):i,vt(yt(r),"tableElement",n.createRef()),vt(yt(r),"getRowHeight",function(e){return"function"==typeof r.props.rowHeight?r.props.rowHeight(e):r.props.rowHeight}),r}var r,o,a;return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&dt(e,t)}(t,n["PureComponent"]),r=t,(o=[{key:"refresh",value:function(){this.tableElement.current&&this.tableElement.current.refresh(),this.forceUpdate()}},{key:"render",value:function(){var e=u.c.singleChildOfType(this,Ae),r=u.c.singleChildOfType(this,je),o=u.c.childrenOfType(this,Je);if(o&&o.length){if(e||r)throw new Error("Can not specify head and/or body when specifying table columns.");e=Je.createHeadFromColumns(o),r=Je.createBodyFromColumns(o)}return n.createElement(l.b,null,n.createElement(it.ThemeProvider,{theme:this.getTheme()},n.createElement(Ce,{className:this.props.className,style:ft({},this.props.style,{},u.e.geElementHeights(this,t.defaultHeight))},this.renderTableHead(e),this.renderTableBody(e,r))))}},{key:"renderTableHead",value:function(e){if(!e)return null;var r=e.props,o=r.children,i=ct(r,["children"]);return n.createElement(Te,at({},i,{style:ft({direction:this.props.dir},e.props.style,{},u.e.geElementHeights(e,t.defaultHeadHeight))}),n.Children.map(o,this.renderCell))}},{key:"renderTableBody",value:function(e,r){var o=u.e.getBodyHeights(this,e,{total:t.defaultHeight,head:t.defaultHeadHeight});return n.createElement(Ee,{style:ft({direction:this.props.dir},o)},n.createElement(l.b,null,this.renderTableRows(r)))}},{key:"renderTableRows",value:function(e){var t=this;if(0===this.props.rowCount||!je.hasChildren(e))return this.renderItemsPlaceHolder();var r=e.props.children,o=this.getListComponent();return n.createElement(i.a,null,function(e){var i=e.width,l=e.height;return n.createElement(o,{ref:t.tableElement,style:{outline:"none"},dir:t.props.dir,layout:"vertical",height:l,width:i,itemCount:t.props.rowCount,itemSize:t.getRowHeight,overscan:t.props.overscanCount,customScrollbar:t.props.customScrollbars},function(e){return t.renderBodyRow(e,r)})})}},{key:"renderBodyRow",value:function(e,t){if(!t)return null;var r=t(e),o=ot.getRowContent(r);if(o=Object(u.g)(o).map(this.renderCell),ot.isTableRow(r)){var i=this.getRowKey(r.props,e);return n.cloneElement(r,{key:i},o)}var l=this.getRowKey({},e);return n.createElement(ot,{key:l},o)}},{key:"renderCell",value:function(e,t){return!1===Ke.getCellProps(e).visible?null:Ke.isTableCell(e)?n.cloneElement(e,{key:t}):n.createElement(Ke,{key:t},e)}},{key:"renderItemsPlaceHolder",value:function(){return n.createElement("div",null,n.createElement("div",{style:{textAlign:"center"}},this.props.emptyMessage))}},{key:"getTheme",value:function(){return{dir:this.props.dir}}},{key:"getListComponent",value:function(){return!1!==this.props.isVirtual?lt.VirtualList:lt.NonVirtualList}},{key:"getRowKey",value:function(e,t){return Object(u.h)(e.key)?"function"==typeof this.props.rowKey?this.props.rowKey(t):t:e.key}}])&&pt(r.prototype,o),a&&pt(r,a),t}();vt(wt,"defaultHeight","35vh"),vt(wt,"defaultHeadHeight","40px"),vt(wt,"Head",Ae),vt(wt,"Body",je),vt(wt,"Row",ot),vt(wt,"Cell",Ke),vt(wt,"Column",Je),vt(wt,"defaultProps",new gt),r.d(t,"GridView",function(){return ne}),r.d(t,"TileKey",function(){return x}),r.d(t,"VirtualGridProps",function(){return U}),r.d(t,"VirtualGrid",function(){return G}),r.d(t,"ColumnBodyProps",function(){return ce}),r.d(t,"ColumnBody",function(){return se}),r.d(t,"ColumnHead",function(){return de}),r.d(t,"TableBodyProps",function(){return Se}),r.d(t,"TableBody",function(){return je}),r.d(t,"TableCell",function(){return Ke}),r.d(t,"TableColumnProps",function(){return Ye}),r.d(t,"TableColumn",function(){return Je}),r.d(t,"TableHead",function(){return Ae}),r.d(t,"TableRow",function(){return ot}),r.d(t,"RowAutoSize",function(){return mt}),r.d(t,"TableViewProps",function(){return gt}),r.d(t,"TableView",function(){return wt})}])});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("react-tablize", [], factory);
+	else if(typeof exports === 'object')
+		exports["react-tablize"] = factory();
+	else
+		root["react-tablize"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = require("react");
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./src/utils/domUtils.ts
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var DomUtils =
+/*#__PURE__*/
+function () {
+  function DomUtils() {
+    _classCallCheck(this, DomUtils);
+  }
+
+  _createClass(DomUtils, null, [{
+    key: "scrollbarWidth",
+    get: function get() {
+      if (this._scrollbarWidth !== null) return this._scrollbarWidth; // https://github.com/sonicdoe/measure-scrollbar/blob/master/index.js
+
+      var div = document.createElement('div');
+      div.style.width = '100px';
+      div.style.height = '100px';
+      div.style.overflow = 'scroll';
+      div.style.position = 'absolute';
+      div.style.top = '-9999px';
+      document.body.appendChild(div);
+      this._scrollbarWidth = div.offsetWidth - div.clientWidth;
+      document.body.removeChild(div);
+      return this._scrollbarWidth;
+    }
+    /**
+     * TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
+     * Chrome does not seem to adhere; its scrollLeft values are positive (measured relative to the left).
+     * Safari's elastic bounce makes detecting this even more complicated wrt potential false positives.
+     * The safest way to check this is to intentionally set a negative offset,
+     * and then verify that the subsequent "scroll" event matches the negative offset.
+     * If it does not match, then we can assume a non-standard RTL scroll implementation.
+     *
+     * From: https://github.com/bvaughn/react-window/blob/master/src/domHelpers.js
+     */
+
+  }, {
+    key: "rtlOffsetType",
+    get: function get() {
+      if (DomUtils._rtlOffsetType) return DomUtils._rtlOffsetType;
+      var outerDiv = document.createElement('div');
+      var outerStyle = outerDiv.style;
+      outerStyle.width = '50px';
+      outerStyle.height = '50px';
+      outerStyle.overflow = 'scroll';
+      outerStyle.direction = 'rtl';
+      var innerDiv = document.createElement('div');
+      var innerStyle = innerDiv.style;
+      innerStyle.width = '100px';
+      innerStyle.height = '100px';
+      outerDiv.appendChild(innerDiv);
+      document.body.appendChild(outerDiv);
+
+      if (outerDiv.scrollLeft > 0) {
+        DomUtils._rtlOffsetType = 'positive-descending';
+      } else {
+        outerDiv.scrollLeft = 1;
+
+        if (outerDiv.scrollLeft === 0) {
+          DomUtils._rtlOffsetType = 'negative';
+        } else {
+          DomUtils._rtlOffsetType = 'positive-ascending';
+        }
+      }
+
+      document.body.removeChild(outerDiv);
+      return DomUtils._rtlOffsetType;
+    }
+  }, {
+    key: "isPositionStickySupported",
+    get: function get() {
+      // https://github.com/dollarshaveclub/stickybits/issues/35#issuecomment-549929578
+      if (DomUtils._isPositionStickySupported !== null) return DomUtils._isPositionStickySupported;
+      var prefix = ['', '-o-', '-webkit-', '-moz-', '-ms-'];
+      var testElementStyle = document.head.style;
+
+      for (var i = 0; i < prefix.length; i += 1) {
+        testElementStyle.position = "".concat(prefix[i], "sticky");
+      }
+
+      DomUtils._isPositionStickySupported = testElementStyle.position === 'sticky';
+      return DomUtils._isPositionStickySupported;
+    }
+  }]);
+
+  return DomUtils;
+}();
+
+_defineProperty(DomUtils, "_scrollbarWidth", null);
+
+_defineProperty(DomUtils, "_rtlOffsetType", void 0);
+
+_defineProperty(DomUtils, "_isPositionStickySupported", null);
+// CONCATENATED MODULE: ./src/utils/keyboard.ts
+var Keys;
+
+(function (Keys) {
+  Keys["PageUp"] = "PageUp";
+  Keys["PageDown"] = "PageDown";
+  Keys["End"] = "End";
+  Keys["Home"] = "Home";
+})(Keys || (Keys = {}));
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./src/utils/reactUtils.ts
+function reactUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function reactUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function reactUtils_createClass(Constructor, protoProps, staticProps) { if (protoProps) reactUtils_defineProperties(Constructor.prototype, protoProps); if (staticProps) reactUtils_defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var reactUtils_ReactUtils =
+/*#__PURE__*/
+function () {
+  function ReactUtils() {
+    reactUtils_classCallCheck(this, ReactUtils);
+  }
+
+  reactUtils_createClass(ReactUtils, null, [{
+    key: "addPropsToChildren",
+    value: function addPropsToChildren(children, createPropsToAdd) {
+      // https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
+      return external_react_["Children"].map(children, function (child, index) {
+        var propsToAdd = createPropsToAdd(child, index);
+        return external_react_["cloneElement"](child, propsToAdd);
+      });
+    }
+  }, {
+    key: "childrenOfType",
+    value: function childrenOfType(parentElement, type) {
+      var children = ReactUtils.childrenArray(parentElement);
+      if (!children) return null;
+      return children.filter(function (child) {
+        return ReactUtils.elementInstanceOf(child, type);
+      });
+    }
+    /**
+     * Return the only child that matches the given type.  
+     * If more than one child matches an error is thrown.  
+     * 
+     * Notice that this function gives no indication of the total number of
+     * children, only the number of matching children.
+     * @param parentElement 
+     * @param type 
+     */
+
+  }, {
+    key: "singleChildOfType",
+    value: function singleChildOfType(parentElement, type) {
+      var matchingChildren = ReactUtils.childrenOfType(parentElement, type);
+      if (!matchingChildren || !matchingChildren.length) return null;
+      if (matchingChildren.length > 1) throw new Error("Only one ".concat(type.name, " child element is allowed."));
+      return matchingChildren[0];
+    } //
+    // private methods
+    //
+
+  }, {
+    key: "childrenArray",
+    value: function childrenArray(parentElement) {
+      if (!parentElement) return null;
+      if (!parentElement.props) return null;
+      var children = parentElement.props.children;
+      if (Array.isArray(children)) return children;
+      return external_react_["Children"].map(children, function (child) {
+        return child;
+      });
+    }
+  }, {
+    key: "elementInstanceOf",
+    value: function elementInstanceOf(elem, type) {
+      if (!elem) return false;
+      if (!elem.type) return false; // https://stackoverflow.com/questions/39387405/using-instanceof-to-test-for-base-class-of-a-react-component
+      // https://stackoverflow.com/questions/14486110/how-to-check-if-a-javascript-class-inherits-another-without-creating-an-obj
+      // https://stackoverflow.com/questions/2464426/whats-the-difference-between-isprototypeof-and-instanceof-in-javascript
+
+      return elem.type === type || elem.type.prototype instanceof type || Object.prototype.isPrototypeOf.call(type, elem.type);
+    }
+  }]);
+
+  return ReactUtils;
+}();
+// CONCATENATED MODULE: ./src/utils/scrollUtils.ts
+function scrollUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function scrollUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function scrollUtils_createClass(Constructor, protoProps, staticProps) { if (protoProps) scrollUtils_defineProperties(Constructor.prototype, protoProps); if (staticProps) scrollUtils_defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var scrollUtils_ScrollUtils =
+/*#__PURE__*/
+function () {
+  function ScrollUtils() {
+    scrollUtils_classCallCheck(this, ScrollUtils);
+  }
+
+  scrollUtils_createClass(ScrollUtils, null, [{
+    key: "normalizeScrollEvent",
+    value: function normalizeScrollEvent(e, docDir) {
+      var _e$currentTarget = e.currentTarget,
+          scrollTop = _e$currentTarget.scrollTop,
+          scrollLeft = _e$currentTarget.scrollLeft;
+      var _e$currentTarget2 = e.currentTarget,
+          scrollHeight = _e$currentTarget2.scrollHeight,
+          scrollWidth = _e$currentTarget2.scrollWidth,
+          clientHeight = _e$currentTarget2.clientHeight,
+          clientWidth = _e$currentTarget2.clientWidth; // RTL support
+
+      var normalizedScrollLeft = scrollLeft;
+
+      if (docDir === 'rtl') {
+        switch (DomUtils.rtlOffsetType) {
+          case 'negative':
+            normalizedScrollLeft = -scrollLeft;
+            break;
+
+          case 'positive-ascending':
+            // noop
+            break;
+
+          case 'positive-descending':
+          default:
+            normalizedScrollLeft = scrollWidth - clientWidth - scrollLeft;
+            break;
+        }
+      } // fix scroll offset to prevent "over scroll"
+
+
+      var normalizedScrollTop = Math.min(scrollTop, scrollHeight - clientHeight);
+      normalizedScrollTop = Math.max(0, scrollTop);
+      normalizedScrollLeft = Math.min(normalizedScrollLeft, scrollWidth - clientWidth);
+      normalizedScrollLeft = Math.max(0, normalizedScrollLeft);
+      return {
+        scrollTop: normalizedScrollTop,
+        rawScrollLeft: scrollLeft,
+        normalizedScrollLeft: normalizedScrollLeft
+      };
+    }
+  }]);
+
+  return ScrollUtils;
+}();
+// CONCATENATED MODULE: ./src/utils/sizeUtils.ts
+function sizeUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function sizeUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function sizeUtils_createClass(Constructor, protoProps, staticProps) { if (protoProps) sizeUtils_defineProperties(Constructor.prototype, protoProps); if (staticProps) sizeUtils_defineProperties(Constructor, staticProps); return Constructor; }
+
+var SizeUtils =
+/*#__PURE__*/
+function () {
+  function SizeUtils() {
+    sizeUtils_classCallCheck(this, SizeUtils);
+  }
+
+  sizeUtils_createClass(SizeUtils, null, [{
+    key: "cssSizeString",
+    value: function cssSizeString(size) {
+      if (Number.isFinite(size)) return size + 'px';
+      return size;
+    }
+  }, {
+    key: "geElementHeights",
+    value: function geElementHeights(component, defaultHeight) {
+      var style = component && component.props.style || {};
+      var height = style.height;
+      var minHeight = style.minHeight;
+      var maxHeight = style.maxHeight;
+
+      if (height === undefined && minHeight === undefined) {
+        height = defaultHeight;
+      }
+
+      height = this.cssSizeString(height);
+      minHeight = this.cssSizeString(minHeight);
+      maxHeight = this.cssSizeString(maxHeight);
+      return {
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+      };
+    }
+  }, {
+    key: "getBodyHeights",
+    value: function getBodyHeights(table, head, defaultHeights) {
+      var totalHeights = this.geElementHeights(table, defaultHeights.total);
+      var headHeight = this.getHeadHeight(head, defaultHeights.head);
+      var bodyHeights = this.geElementHeights(table, undefined);
+      var height = bodyHeights.height || totalHeights.height;
+      var minHeight = bodyHeights.minHeight || totalHeights.minHeight;
+      var maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
+
+      if (headHeight) {
+        height = "calc(".concat(height, " - ").concat(headHeight, ")");
+        if (minHeight) minHeight = "calc(".concat(minHeight, " - ").concat(headHeight, ")");
+        if (maxHeight) maxHeight = "calc(".concat(maxHeight, " - ").concat(headHeight, ")");
+      }
+
+      return {
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+      };
+    }
+  }, {
+    key: "getHeadHeight",
+    value: function getHeadHeight(head, defaultHeight) {
+      if (head) {
+        return this.geElementHeights(head, defaultHeight).height;
+      }
+
+      return 0;
+    }
+  }]);
+
+  return SizeUtils;
+}();
+// CONCATENATED MODULE: ./src/utils/utils.ts
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function isNullOrUndefined(val) {
+  return val === null || val === undefined;
+}
+function asArray(val) {
+  if (Array.isArray(val)) return val;
+  return [val];
+}
+function range(count) {
+  // https://stackoverflow.com/questions/3895478/does-javascript-have-a-method-like-range-to-generate-a-range-within-the-supp
+  return _toConsumableArray(Array(count || 0).keys());
+}
+function areShallowEqual(a, b) {
+  if (a === b) {
+    return true;
+  }
+
+  if (a === null || a === undefined || b === null || b === undefined) {
+    return false;
+  }
+
+  var keysA = Object.keys(a);
+  var keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  for (var _i = 0, _keysA = keysA; _i < _keysA.length; _i++) {
+    var key = _keysA[_i];
+    if (a[key] !== b[key]) return false;
+  }
+
+  return true;
+}
+// CONCATENATED MODULE: ./src/utils/index.ts
+/* concated harmony reexport DomUtils */__webpack_require__.d(__webpack_exports__, "a", function() { return DomUtils; });
+/* concated harmony reexport Keys */__webpack_require__.d(__webpack_exports__, "b", function() { return Keys; });
+/* concated harmony reexport ReactUtils */__webpack_require__.d(__webpack_exports__, "c", function() { return reactUtils_ReactUtils; });
+/* concated harmony reexport ScrollUtils */__webpack_require__.d(__webpack_exports__, "d", function() { return scrollUtils_ScrollUtils; });
+/* concated harmony reexport SizeUtils */__webpack_require__.d(__webpack_exports__, "e", function() { return SizeUtils; });
+/* concated harmony reexport isNullOrUndefined */__webpack_require__.d(__webpack_exports__, "h", function() { return isNullOrUndefined; });
+/* concated harmony reexport asArray */__webpack_require__.d(__webpack_exports__, "g", function() { return asArray; });
+/* unused concated harmony import range */
+/* concated harmony reexport areShallowEqual */__webpack_require__.d(__webpack_exports__, "f", function() { return areShallowEqual; });
+
+
+
+
+
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(0);
+
+// EXTERNAL MODULE: external "react-custom-scrollbars"
+var external_react_custom_scrollbars_ = __webpack_require__(9);
+var external_react_custom_scrollbars_default = /*#__PURE__*/__webpack_require__.n(external_react_custom_scrollbars_);
+
+// CONCATENATED MODULE: ./src/internal/CustomScrollbars.tsx
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+var CustomScrollbars_CustomScrollbarsInner =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(CustomScrollbarsInner, _React$PureComponent);
+
+  function CustomScrollbarsInner() {
+    _classCallCheck(this, CustomScrollbarsInner);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(CustomScrollbarsInner).apply(this, arguments));
+  }
+
+  _createClass(CustomScrollbarsInner, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      // https://github.com/bvaughn/react-window/issues/110#issuecomment-469061213
+      var refSetter = function refSetter(elem) {
+        if (!_this.props.forwardedRef) return;
+        var ref = (elem || {}).view;
+
+        if (typeof _this.props.forwardedRef === 'function') {
+          _this.props.forwardedRef(ref);
+        } else {
+          _this.props.forwardedRef.current = ref;
+        }
+      };
+
+      return external_react_["createElement"](external_react_custom_scrollbars_default.a, {
+        ref: refSetter,
+        style: _objectSpread({}, this.props.style, {
+          overflow: 'hidden',
+          direction: 'ltr'
+        }),
+        onScroll: this.props.onScroll
+      }, this.props.children);
+    }
+  }]);
+
+  return CustomScrollbarsInner;
+}(external_react_["PureComponent"]);
+
+var CustomScrollbars = external_react_["forwardRef"](function (props, ref) {
+  return external_react_["createElement"](CustomScrollbars_CustomScrollbarsInner, _extends({}, props, {
+    forwardedRef: ref
+  }));
+});
+CustomScrollbars.displayName = 'CustomScrollbars';
+// CONCATENATED MODULE: ./src/internal/ErrorBoundary.tsx
+function ErrorBoundary_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ErrorBoundary_typeof = function _typeof(obj) { return typeof obj; }; } else { ErrorBoundary_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ErrorBoundary_typeof(obj); }
+
+function ErrorBoundary_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function ErrorBoundary_createClass(Constructor, protoProps, staticProps) { if (protoProps) ErrorBoundary_defineProperties(Constructor.prototype, protoProps); if (staticProps) ErrorBoundary_defineProperties(Constructor, staticProps); return Constructor; }
+
+function ErrorBoundary_possibleConstructorReturn(self, call) { if (call && (ErrorBoundary_typeof(call) === "object" || typeof call === "function")) { return call; } return ErrorBoundary_assertThisInitialized(self); }
+
+function ErrorBoundary_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ErrorBoundary_getPrototypeOf(o) { ErrorBoundary_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ErrorBoundary_getPrototypeOf(o); }
+
+function ErrorBoundary_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ErrorBoundary_setPrototypeOf(subClass, superClass); }
+
+function ErrorBoundary_setPrototypeOf(o, p) { ErrorBoundary_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ErrorBoundary_setPrototypeOf(o, p); }
+
+function ErrorBoundary_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function ErrorBoundary_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var ErrorBoundaryState = function ErrorBoundaryState() {
+  ErrorBoundary_classCallCheck(this, ErrorBoundaryState);
+
+  ErrorBoundary_defineProperty(this, "hasError", void 0);
+};
+
+var ErrorBoundary_ErrorBoundary =
+/*#__PURE__*/
+function (_React$Component) {
+  ErrorBoundary_inherits(ErrorBoundary, _React$Component);
+
+  function ErrorBoundary(props) {
+    var _this;
+
+    ErrorBoundary_classCallCheck(this, ErrorBoundary);
+
+    _this = ErrorBoundary_possibleConstructorReturn(this, ErrorBoundary_getPrototypeOf(ErrorBoundary).call(this, props));
+    _this.state = {
+      hasError: false
+    };
+    return _this;
+  }
+
+  ErrorBoundary_createClass(ErrorBoundary, [{
+    key: "componentDidCatch",
+    value: function componentDidCatch(error, errorInfo) {
+      this.setState({
+        hasError: true
+      });
+      console.error(error); // eslint-disable-line no-console
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      if (this.state.hasError) {
+        return external_react_["createElement"]("span", null, "X");
+      }
+
+      return this.props.children !== undefined ? this.props.children : null;
+    }
+  }]);
+
+  return ErrorBoundary;
+}(external_react_["Component"]);
+// CONCATENATED MODULE: ./src/internal/index.ts
+/* concated harmony reexport CustomScrollbars */__webpack_require__.d(__webpack_exports__, "a", function() { return CustomScrollbars; });
+/* concated harmony reexport ErrorBoundary */__webpack_require__.d(__webpack_exports__, "b", function() { return ErrorBoundary_ErrorBoundary; });
+
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("@emotion/styled-base");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-virtualized-auto-sizer");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _List__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var _List__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_List__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (checked) */ if(__webpack_require__.o(_List__WEBPACK_IMPORTED_MODULE_0__, "NonVirtualList")) __webpack_require__.d(__webpack_exports__, "NonVirtualList", function() { return _List__WEBPACK_IMPORTED_MODULE_0__["NonVirtualList"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_List__WEBPACK_IMPORTED_MODULE_0__, "VirtualList")) __webpack_require__.d(__webpack_exports__, "VirtualList", function() { return _List__WEBPACK_IMPORTED_MODULE_0__["VirtualList"]; });
+
+/* harmony import */ var _NonVirtualList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NonVirtualList", function() { return _NonVirtualList__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+
+/* harmony import */ var _VirtualList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VirtualList", function() { return _VirtualList__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+
+
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NonVirtualList; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _internal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var NonVirtualList =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(NonVirtualList, _React$PureComponent);
+
+  function NonVirtualList() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, NonVirtualList);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(NonVirtualList)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "disableScrollEvents", false);
+
+    _defineProperty(_assertThisInitialized(_this), "listRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
+
+    _defineProperty(_assertThisInitialized(_this), "scrollTo", function (scrollOffset) {
+      var currentInner = _this.listRef.current;
+
+      if (currentInner) {
+        if (scrollOffset === undefined) return;
+        var currentOffset = _this.isHorizontal ? currentInner.scrollLeft : currentInner.scrollTop;
+        if (scrollOffset === currentOffset) return;
+        _this.disableScrollEvents = true;
+        currentInner.scrollTo({
+          top: _this.isHorizontal ? undefined : scrollOffset,
+          left: _this.isHorizontal ? scrollOffset : undefined
+        });
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleOnScroll", function (e) {
+      if (_this.disableScrollEvents) {
+        _this.disableScrollEvents = false;
+        return;
+      }
+
+      if (!_this.props.onScroll) return;
+      var _e$currentTarget = e.currentTarget,
+          scrollTop = _e$currentTarget.scrollTop,
+          scrollLeft = _e$currentTarget.scrollLeft;
+
+      _this.props.onScroll(_this.isHorizontal ? scrollLeft : scrollTop);
+    });
+
+    return _this;
+  }
+
+  _createClass(NonVirtualList, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var listStyle = _defineProperty({
+        height: this.props.height,
+        width: this.props.width,
+        direction: this.props.dir,
+        boxSizing: 'content-box',
+        outline: 'none',
+        overflow: 'auto'
+      }, this.isHorizontal ? 'overflowY' : 'overflowX', 'hidden');
+
+      if (this.isHorizontal) {
+        listStyle.display = 'flex';
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](this.getListElementType(), {
+        ref: this.listRef,
+        style: listStyle,
+        onScroll: this.handleOnScroll
+      }, // rows
+      Array(this.props.itemCount).fill(0).map(function (_, index) {
+        var _ref;
+
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          key: index,
+          style: (_ref = {}, _defineProperty(_ref, _this2.isHorizontal ? 'minWidth' : 'minHeight', _this2.props.itemSize(index)), _defineProperty(_ref, _this2.isHorizontal ? 'height' : 'width', _this2.isHorizontal ? _this2.props.height : _this2.props.width), _ref)
+        }, _this2.props.children(index));
+      }));
+    }
+  }, {
+    key: "getListElementType",
+    value: function getListElementType() {
+      return this.props.customScrollbar ? _internal__WEBPACK_IMPORTED_MODULE_1__[/* CustomScrollbars */ "a"] : 'div';
+    }
+  }, {
+    key: "isHorizontal",
+    get: function get() {
+      return this.props.layout === 'horizontal';
+    }
+  }]);
+
+  return NonVirtualList;
+}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VirtualList; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_window__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var react_window__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_window__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _internal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+var _scrollKeys;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var scrollKeys = (_scrollKeys = {}, _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageUp, true), _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageDown, true), _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].End, true), _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].Home, true), _scrollKeys);
+var VirtualList =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(VirtualList, _React$PureComponent);
+
+  function VirtualList() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, VirtualList);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(VirtualList)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "tableRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
+
+    _defineProperty(_assertThisInitialized(_this), "tableInnerRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
+
+    _defineProperty(_assertThisInitialized(_this), "tableOuterRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
+
+    _defineProperty(_assertThisInitialized(_this), "registerKeyHandlers", function () {
+      window.addEventListener('keydown', _this.scrollByKey);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "removeKeyHandlers", function () {
+      window.removeEventListener('keydown', _this.scrollByKey);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "scrollByKey", function (_ref) {
+      var _offsetByKey;
+
+      var key = _ref.key;
+      // https://dev.to/dance2die/scrolling-with-page-up-down-keys-in-react-window-31ei
+      if (!scrollKeys[key]) return;
+      if (!_this.tableRef.current || !_this.tableInnerRef.current || !_this.tableOuterRef.current) return;
+      var scrollElement = _this.props.customScrollbar ? _this.tableOuterRef.current : _this.tableRef.current;
+      var table = react_dom__WEBPACK_IMPORTED_MODULE_1__["findDOMNode"](scrollElement);
+      var currentOffset = table.scrollTop;
+      var bodyHeight = table.clientHeight;
+      var pageSize = bodyHeight * 0.85;
+      var minOffset = 0.1;
+      var maxOffset = _this.tableInnerRef.current.clientHeight;
+      var offsetByKey = (_offsetByKey = {}, _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageUp, Math.max(minOffset, currentOffset - pageSize)), _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageDown, Math.min(currentOffset + pageSize, maxOffset)), _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].End, maxOffset), _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].Home, minOffset), _offsetByKey);
+
+      _this.tableRef.current.scrollTo(offsetByKey[key]);
+    });
+
+    return _this;
+  }
+
+  _createClass(VirtualList, [{
+    key: "refresh",
+    value: function refresh() {
+      if (this.tableRef.current) {
+        this.tableRef.current.resetAfterIndex(0, false);
+      }
+
+      this.forceUpdate();
+    }
+  }, {
+    key: "scrollTo",
+    value: function scrollTo(offset) {
+      if (this.tableRef.current) {
+        this.tableRef.current.scrollTo(offset);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_window__WEBPACK_IMPORTED_MODULE_2__["VariableSizeList"], _extends({
+        ref: this.tableRef,
+        innerRef: this.tableInnerRef,
+        outerRef: this.tableOuterRef,
+        style: Object.assign({
+          outline: 'none'
+        }, this.props.style),
+        outerElementType: this.getOuterElementType(),
+        direction: this.props.dir,
+        layout: this.props.layout,
+        height: this.props.height,
+        width: this.props.width,
+        itemCount: this.props.itemCount,
+        itemSize: this.props.itemSize,
+        overscanCount: this.props.overscan
+      }, this.getKeyScrollProps()), function (_ref2) {
+        var index = _ref2.index,
+            style = _ref2.style;
+        return _this2.renderRow(index, style);
+      });
+    }
+  }, {
+    key: "renderRow",
+    value: function renderRow(index, style) {
+      var row = this.props.children(index);
+      return react__WEBPACK_IMPORTED_MODULE_0__["cloneElement"](row, {
+        style: _objectSpread({}, row.props.style, {}, style)
+      });
+    } //
+    // scroll with keys
+    //
+
+  }, {
+    key: "getKeyScrollProps",
+    value: function getKeyScrollProps() {
+      if (this.props.keyScroll === false) return {};
+      return {
+        onMouseEnter: this.registerKeyHandlers,
+        onMouseLeave: this.removeKeyHandlers,
+        onKeyDown: this.scrollByKey
+      };
+    }
+  }, {
+    key: "getOuterElementType",
+    value: function getOuterElementType() {
+      return this.props.customScrollbar ? _internal__WEBPACK_IMPORTED_MODULE_3__[/* CustomScrollbars */ "a"] : undefined;
+    }
+  }]);
+
+  return VirtualList;
+}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-custom-scrollbars");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("emotion-theming");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-dom");
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-window");
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(15);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash.flattendeep");
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(0);
+
+// EXTERNAL MODULE: external "react-virtualized-auto-sizer"
+var external_react_virtualized_auto_sizer_ = __webpack_require__(4);
+var external_react_virtualized_auto_sizer_default = /*#__PURE__*/__webpack_require__.n(external_react_virtualized_auto_sizer_);
+
+// EXTERNAL MODULE: ./src/internal/index.ts + 2 modules
+var internal = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/utils/index.ts + 6 modules
+var utils = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./src/grid/recycleManager.ts
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Note: In few places the recycling logic leverages the fact that in JavaScript
+ * when object keys are integers they are iterated in ascending numeric order
+ * (except for IE of course...). See:
+ * https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order.
+ */
+var RecycleManager =
+/*#__PURE__*/
+function () {
+  function RecycleManager() {
+    _classCallCheck(this, RecycleManager);
+
+    _defineProperty(this, "stableKeySource", 0);
+
+    _defineProperty(this, "freeKeysPool", {});
+
+    _defineProperty(this, "usedKeysOriginalToStable", {});
+  }
+
+  _createClass(RecycleManager, [{
+    key: "freeUnusedKeys",
+    //
+    // public methods
+    //
+    value: function freeUnusedKeys(nextOriginalKeys) {
+      var nextKeys = Object.keys(nextOriginalKeys);
+      var prevKeys = Object.keys(this.usedKeysOriginalToStable);
+      var nextIndex = nextKeys.length - 1;
+      var prevIndex = prevKeys.length - 1;
+
+      while (nextIndex >= 0 && prevIndex >= 0) {
+        var nextOriginal = nextKeys[nextIndex];
+        var prevOriginal = prevKeys[prevIndex];
+
+        if (nextOriginal === prevOriginal) {
+          // still using the key - don't free
+          nextIndex--;
+          prevIndex--;
+        } else if (nextOriginal > prevOriginal) {
+          // still using the key - don't free
+          nextIndex--;
+        } else {
+          // not using the key - return to pool
+          this.freeUnusedKey(prevOriginal);
+          prevIndex--;
+        }
+      } // return remaining keys to pool
+
+
+      while (prevIndex >= 0) {
+        var _prevOriginal = prevKeys[prevIndex];
+        this.freeUnusedKey(_prevOriginal);
+        prevIndex--;
+      }
+    }
+  }, {
+    key: "getStableKey",
+    value: function getStableKey(originalKey) {
+      if (this.usedKeysOriginalToStable[originalKey] !== undefined) {
+        return this.usedKeysOriginalToStable[originalKey];
+      } else {
+        var stableKey = this.getNextKeyFromPool();
+        this.usedKeysOriginalToStable[originalKey] = stableKey;
+        return stableKey;
+      }
+    } //
+    // private methods
+    //
+
+  }, {
+    key: "getNextKeyFromPool",
+    value: function getNextKeyFromPool() {
+      // find next key in pool        
+      var result;
+
+      for (var key in this.freeKeysPool) {
+        if (this.freeKeysPool.hasOwnProperty(key)) {
+          result = key;
+          break;
+        }
+      }
+
+      if (result === undefined) {
+        // generate new key
+        result = this.stableKeySource;
+        this.stableKeySource++;
+      } else {
+        // remove from pool
+        delete this.freeKeysPool[result];
+      }
+
+      return result;
+    }
+  }, {
+    key: "freeUnusedKey",
+    value: function freeUnusedKey(originalKey) {
+      var stableKey = this.usedKeysOriginalToStable[originalKey];
+      delete this.usedKeysOriginalToStable[originalKey];
+      this.freeKeysPool[stableKey] = true;
+    }
+  }]);
+
+  return RecycleManager;
+}();
+// CONCATENATED MODULE: ./src/grid/VirtualCell.tsx
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function VirtualCell_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function VirtualCell_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function VirtualCell_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function VirtualCell_createClass(Constructor, protoProps, staticProps) { if (protoProps) VirtualCell_defineProperties(Constructor.prototype, protoProps); if (staticProps) VirtualCell_defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+/***
+ * Each `VirtualTile` creates a constant number of these `VirtualCell`s and just
+ * moves them around. This is much more efficient than creating a new cell on
+ * each scroll.
+ *
+ * based on:
+ * https://github.com/Flipkart/recyclerlistview/blob/master/src/platform/web/viewrenderer/ViewRenderer.tsx
+ */
+var VirtualCell_VirtualCell =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(VirtualCell, _React$PureComponent);
+
+  function VirtualCell() {
+    VirtualCell_classCallCheck(this, VirtualCell);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(VirtualCell).apply(this, arguments));
+  }
+
+  VirtualCell_createClass(VirtualCell, [{
+    key: "render",
+    value: function render() {
+      var _ref;
+
+      var rightOrLeft = this.props.direction === 'rtl' ? 'right' : 'left'; // https://rtl-css.net/tutorial/quick-tip-rtling-css3-transform-functions-translate-and-translatex
+
+      var transformModifier = this.props.direction === 'rtl' ? -1 : 1;
+      var transform = "translate(".concat(this.props.left * transformModifier, "px,").concat(this.props.top, "px)");
+      return external_react_["createElement"]("div", {
+        className: this.props.className,
+        style: (_ref = {
+          height: this.props.height,
+          width: this.props.width,
+          position: "absolute"
+        }, VirtualCell_defineProperty(_ref, rightOrLeft, 0), VirtualCell_defineProperty(_ref, "top", 0), VirtualCell_defineProperty(_ref, "willChange", "transform"), VirtualCell_defineProperty(_ref, "transform", transform), _ref)
+      }, this.props.children);
+    }
+  }]);
+
+  return VirtualCell;
+}(external_react_["PureComponent"]);
+// CONCATENATED MODULE: ./src/grid/windowCalculator.ts
+function windowCalculator_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { windowCalculator_typeof = function _typeof(obj) { return typeof obj; }; } else { windowCalculator_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return windowCalculator_typeof(obj); }
+
+function windowCalculator_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function windowCalculator_createClass(Constructor, protoProps, staticProps) { if (protoProps) windowCalculator_defineProperties(Constructor.prototype, protoProps); if (staticProps) windowCalculator_defineProperties(Constructor, staticProps); return Constructor; }
+
+function windowCalculator_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function windowCalculator_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var CalcData = function CalcData() {
+  windowCalculator_classCallCheck(this, CalcData);
+
+  windowCalculator_defineProperty(this, "cache", {});
+
+  windowCalculator_defineProperty(this, "lastMeasuredIndex", -1);
+
+  windowCalculator_defineProperty(this, "lastFromPosition", -1);
+};
+
+/**
+ * Calculates the index, size and position of all visible items within a given
+ * range.
+ *
+ * based on:
+ * - https://github.com/bvaughn/react-window/blob/master/src/VariableSizeGrid.js
+ * - https://github.com/fulcrumapp/react-virtual-grid/blob/master/src/grid-calculator.js
+ * - https://github.com/ranneyd/sticky-table/blob/master/src/useVirtual.js
+ */
+var WindowCalculator =
+/*#__PURE__*/
+function () {
+  function WindowCalculator() {
+    windowCalculator_classCallCheck(this, WindowCalculator);
+
+    windowCalculator_defineProperty(this, "data", {
+      column: new CalcData(),
+      row: new CalcData()
+    });
+  }
+
+  windowCalculator_createClass(WindowCalculator, [{
+    key: "elementsInRange",
+    //
+    // public methods
+    //
+    value: function elementsInRange(elementType, fromPosition, toPosition, elementsOverscan, elementSize, minElementsCountToReturn, totalElementsCount) {
+      var fromIndex = this.findNearestItem(elementType, fromPosition, totalElementsCount, elementSize);
+      var toIndex = this.findNearestItem(elementType, toPosition, totalElementsCount, elementSize); // Determine scroll direction and set overscan accordingly
+
+      if (fromPosition < this.data[elementType].lastFromPosition) {
+        fromIndex -= elementsOverscan;
+      } else {
+        toIndex += elementsOverscan;
+      }
+
+      this.data[elementType].lastFromPosition = fromPosition; // Prevent range error
+
+      fromIndex = Math.max(0, fromIndex);
+      toIndex = Math.min(toIndex, totalElementsCount - 1); // Enforce "minElementsCountToReturn"
+
+      while (toIndex - fromIndex + 1 < minElementsCountToReturn) {
+        if (toIndex + 1 < totalElementsCount) {
+          toIndex++;
+        } else {
+          fromIndex--;
+        }
+      } // Get elements info
+
+
+      var info = [];
+
+      for (var i = fromIndex; i <= toIndex; i++) {
+        info.push(this.getElementInfo(elementType, i, elementSize));
+      }
+
+      return info;
+    }
+  }, {
+    key: "getTotalSize",
+    value: function getTotalSize(elementType, elementSize, estimatedElementSize, elementsCount) {
+      // Handle unmeasured elements
+      var lastMeasuredIndex;
+      var totalSizeOfUnmeasuredElements = 0;
+
+      if (typeof elementSize === "function" && !estimatedElementSize) {
+        // Dynamic element size and no estimation - force evaluation of all unmeasured elements.
+        this.getElementInfo(elementType, elementsCount - 1, elementSize); // Update last measured index after evaluation
+
+        lastMeasuredIndex = Math.min(this.data[elementType].lastMeasuredIndex, elementsCount - 1);
+      } else {
+        // Constant element size - use simple multiplication for unmeasured elements.
+        lastMeasuredIndex = Math.min(this.data[elementType].lastMeasuredIndex, elementsCount - 1);
+        var numUnmeasuredElementsCount = elementsCount - lastMeasuredIndex - 1;
+        var elementSizeOrEstimate = typeof elementSize === "number" ? elementSize : estimatedElementSize;
+        totalSizeOfUnmeasuredElements = numUnmeasuredElementsCount * elementSizeOrEstimate;
+      } // Get total size of already measured elements
+
+
+      var totalSizeOfMeasuredElements = 0;
+
+      if (lastMeasuredIndex >= 0) {
+        var cache = this.data[elementType].cache;
+        var lastMeasuredElemInfo = cache[lastMeasuredIndex];
+        totalSizeOfMeasuredElements = lastMeasuredElemInfo.position + lastMeasuredElemInfo.size;
+      } // Sum and return
+
+
+      return totalSizeOfMeasuredElements + totalSizeOfUnmeasuredElements;
+    } //
+    // private methods
+    //
+
+  }, {
+    key: "findNearestItem",
+    value: function findNearestItem(elementType, position, maxIndex, elementSize) {
+      var _ref, _cache$lastMeasuredIn;
+
+      var _this$data$elementTyp = this.data[elementType],
+          lastMeasuredIndex = _this$data$elementTyp.lastMeasuredIndex,
+          cache = _this$data$elementTyp.cache;
+      var lastMeasuredPosition = (_ref = (_cache$lastMeasuredIn = cache[lastMeasuredIndex]) === null || _cache$lastMeasuredIn === void 0 ? void 0 : _cache$lastMeasuredIn.position) !== null && _ref !== void 0 ? _ref : -1;
+
+      if (lastMeasuredPosition >= position) {
+        // If we've already measured items within this range just use a binary search as it's faster.
+        return this.findNearestItemBinarySearch(elementType, lastMeasuredIndex, 0, position, elementSize);
+      } else {
+        // If we haven't yet measured this high, fallback to an exponential search with an inner binary search.
+        // The exponential search avoids pre-computing sizes for the full set of items as a binary search would.
+        // The overall complexity for this approach is O(log n).
+        return this.findNearestItemExponentialSearch(elementType, Math.max(lastMeasuredIndex, 0), maxIndex, position, elementSize);
+      }
+    }
+  }, {
+    key: "findNearestItemBinarySearch",
+    value: function findNearestItemBinarySearch(elementType, high, low, position, elementSize) {
+      while (low <= high) {
+        var middle = low + Math.floor((high - low) / 2);
+        var currentPosition = this.getElementInfo(elementType, middle, elementSize).position;
+
+        if (currentPosition === position) {
+          return middle;
+        } else if (currentPosition < position) {
+          low = middle + 1;
+        } else if (currentPosition > position) {
+          high = middle - 1;
+        }
+      }
+
+      if (low > 0) {
+        return low - 1;
+      } else {
+        return 0;
+      }
+    }
+  }, {
+    key: "findNearestItemExponentialSearch",
+    value: function findNearestItemExponentialSearch(elementType, index, maxIndex, position, elementSize) {
+      var interval = 1;
+
+      while (index < maxIndex && this.getElementInfo(elementType, index, elementSize).position < position) {
+        index += interval;
+        interval *= 2;
+      }
+
+      return this.findNearestItemBinarySearch(elementType, Math.min(index, maxIndex - 1), Math.floor(index / 2), position, elementSize);
+    }
+  }, {
+    key: "getElementInfo",
+    value: function getElementInfo(elementType, elementIndex, elementSize) {
+      var _this$data$elementTyp2 = this.data[elementType],
+          lastMeasuredIndex = _this$data$elementTyp2.lastMeasuredIndex,
+          cache = _this$data$elementTyp2.cache; // fill missing cache entries
+
+      if (elementIndex > lastMeasuredIndex) {
+        var position = 0; // skipped already cached entries
+
+        if (lastMeasuredIndex !== -1) {
+          var elementInfo = cache[lastMeasuredIndex];
+          position = elementInfo.position + elementInfo.size;
+        } // add new cache entries
+
+
+        for (var index = lastMeasuredIndex + 1; index <= elementIndex; index++) {
+          var _cache$index;
+
+          var size = this.getSize(index, elementSize, (_cache$index = cache[index]) === null || _cache$index === void 0 ? void 0 : _cache$index.size);
+          cache[index] = {
+            index: index,
+            position: position,
+            size: size
+          };
+          position += size;
+        }
+
+        this.data[elementType].lastMeasuredIndex = elementIndex;
+      }
+
+      return cache[elementIndex];
+    }
+  }, {
+    key: "getSize",
+    value: function getSize(index, elementSize, cache) {
+      if (cache !== null && cache !== undefined) return cache;
+      if (typeof elementSize === "number") return elementSize;
+      if (typeof elementSize === "function") return elementSize(index);
+      throw new Error("Invalid argument '".concat("elementSize", "' expected a number or a function ") + "but received '".concat(windowCalculator_typeof(elementSize), "': ").concat(elementSize, "."));
+    }
+  }]);
+
+  return WindowCalculator;
+}();
+// CONCATENATED MODULE: ./src/grid/VirtualTile.tsx
+function VirtualTile_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VirtualTile_typeof = function _typeof(obj) { return typeof obj; }; } else { VirtualTile_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VirtualTile_typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { VirtualTile_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function VirtualTile_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function VirtualTile_createClass(Constructor, protoProps, staticProps) { if (protoProps) VirtualTile_defineProperties(Constructor.prototype, protoProps); if (staticProps) VirtualTile_defineProperties(Constructor, staticProps); return Constructor; }
+
+function VirtualTile_possibleConstructorReturn(self, call) { if (call && (VirtualTile_typeof(call) === "object" || typeof call === "function")) { return call; } return VirtualTile_assertThisInitialized(self); }
+
+function VirtualTile_getPrototypeOf(o) { VirtualTile_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VirtualTile_getPrototypeOf(o); }
+
+function VirtualTile_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function VirtualTile_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) VirtualTile_setPrototypeOf(subClass, superClass); }
+
+function VirtualTile_setPrototypeOf(o, p) { VirtualTile_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VirtualTile_setPrototypeOf(o, p); }
+
+function VirtualTile_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function VirtualTile_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var VirtualTileProps = function VirtualTileProps() {
+  VirtualTile_classCallCheck(this, VirtualTileProps);
+
+  VirtualTile_defineProperty(this, "direction", 'ltr');
+
+  VirtualTile_defineProperty(this, "controlledScroll", void 0);
+
+  VirtualTile_defineProperty(this, "height", void 0);
+
+  VirtualTile_defineProperty(this, "width", void 0);
+
+  VirtualTile_defineProperty(this, "columnCount", void 0);
+
+  VirtualTile_defineProperty(this, "rowCount", void 0);
+
+  VirtualTile_defineProperty(this, "columnWidth", void 0);
+
+  VirtualTile_defineProperty(this, "rowHeight", void 0);
+
+  VirtualTile_defineProperty(this, "estimatedColumnWidth", void 0);
+
+  VirtualTile_defineProperty(this, "estimatedRowHeight", void 0);
+
+  VirtualTile_defineProperty(this, "overscanColumnsCount", 0);
+
+  VirtualTile_defineProperty(this, "overscanRowCount", 0);
+
+  VirtualTile_defineProperty(this, "className", void 0);
+
+  VirtualTile_defineProperty(this, "style", void 0);
+
+  VirtualTile_defineProperty(this, "children", void 0);
+};
+
+var VirtualTileState = function VirtualTileState() {
+  VirtualTile_classCallCheck(this, VirtualTileState);
+
+  VirtualTile_defineProperty(this, "scrollTop", 0);
+
+  VirtualTile_defineProperty(this, "scrollLeft", 0);
+};
+
+var VirtualTile_VirtualTile =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  VirtualTile_inherits(VirtualTile, _React$PureComponent);
+
+  /**
+   * Make sure to return a constant number of elements, this is important for
+   * recycling purposes.
+   */
+
+  /**
+   * Make sure to return a constant number of elements, this is important for
+   * recycling purposes.
+   */
+  function VirtualTile(props) {
+    var _this;
+
+    VirtualTile_classCallCheck(this, VirtualTile);
+
+    _this = VirtualTile_possibleConstructorReturn(this, VirtualTile_getPrototypeOf(VirtualTile).call(this, props));
+
+    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "minColumnsToRender", 0);
+
+    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "minRowsToRender", 0);
+
+    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "windowCalc", new WindowCalculator());
+
+    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "recycler", new RecycleManager());
+
+    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "containerElement", external_react_["createRef"]());
+
+    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "handleScroll", function (e) {
+      var normalized = utils["d" /* ScrollUtils */].normalizeScrollEvent(e, _this.props.direction);
+
+      _this.setState({
+        scrollTop: normalized.scrollTop,
+        scrollLeft: normalized.normalizedScrollLeft
+      });
+    });
+
+    _this.state = new VirtualTileState();
+    return _this;
+  } //
+  // public methods
+  //
+
+
+  VirtualTile_createClass(VirtualTile, [{
+    key: "scrollTo",
+    value: function scrollTo(e) {
+      var _this2 = this;
+
+      var scrollDirection = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'both';
+
+      switch (scrollDirection) {
+        case 'both':
+          window.requestAnimationFrame(function () {
+            _this2.containerElement.current.scrollTop = e.scrollTop;
+            _this2.containerElement.current.scrollLeft = e.rawScrollLeft;
+          });
+          this.setState({
+            scrollTop: e.scrollTop,
+            scrollLeft: e.normalizedScrollLeft
+          });
+          break;
+
+        case 'vertical':
+          window.requestAnimationFrame(function () {
+            _this2.containerElement.current.scrollTop = e.scrollTop;
+          });
+          this.setState({
+            scrollTop: e.scrollTop
+          });
+          break;
+
+        case 'horizontal':
+          window.requestAnimationFrame(function () {
+            _this2.containerElement.current.scrollLeft = e.rawScrollLeft;
+          });
+          this.setState({
+            scrollLeft: e.normalizedScrollLeft
+          });
+          break;
+
+        case 'none':
+          break;
+
+        default:
+          throw new Error("Invalid ".concat("scrollDirection", " value: '").concat(scrollDirection, "'."));
+      }
+    }
+  }, {
+    key: "getScrollableHeight",
+    value: function getScrollableHeight() {
+      return this.windowCalc.getTotalSize('row', this.props.rowHeight, this.props.estimatedRowHeight, this.props.rowCount);
+    }
+  }, {
+    key: "getScrollableWidth",
+    value: function getScrollableWidth() {
+      return this.windowCalc.getTotalSize('column', this.props.columnWidth, this.props.estimatedColumnWidth, this.props.columnCount);
+    }
+  }, {
+    key: "clearCache",
+    value: function clearCache() {
+      this.windowCalc = new WindowCalculator();
+      this.minColumnsToRender = 0;
+      this.minRowsToRender = 0;
+    } //
+    // life cycle
+    //
+
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.clearCache();
+      this.forceUpdate();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (!Object(utils["f" /* areShallowEqual */])(this.props, prevProps)) {
+        this.clearCache();
+        this.forceUpdate();
+      }
+    } //
+    // render methods
+    //
+
+  }, {
+    key: "render",
+    value: function render() {
+      var overflow = this.props.controlledScroll ? 'hidden' : 'auto';
+      var onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
+      return external_react_["createElement"]("div", {
+        ref: this.containerElement,
+        className: this.props.className + '_Container',
+        style: _objectSpread({
+          direction: this.props.direction,
+          height: this.props.height,
+          width: this.props.width,
+          position: 'relative',
+          overflow: overflow
+        }, this.props.style),
+        onScroll: onScroll
+      }, external_react_["createElement"]("div", {
+        className: this.props.className + '_ScrollableArea',
+        style: {
+          height: this.getScrollableHeight(),
+          width: this.getScrollableWidth()
+        }
+      }, this.renderCells()));
+    }
+  }, {
+    key: "renderCells",
+    value: function renderCells() {
+      // get cell indexes to render
+      var columns = this.windowCalc.elementsInRange('column', this.state.scrollLeft, this.state.scrollLeft + this.props.width, this.props.overscanColumnsCount, this.props.columnWidth, this.minColumnsToRender, this.props.columnCount);
+      var rows = this.windowCalc.elementsInRange('row', this.state.scrollTop, this.state.scrollTop + this.props.height, this.props.overscanRowCount, this.props.rowHeight, this.minRowsToRender, this.props.rowCount);
+      this.minColumnsToRender = columns.length;
+      this.minRowsToRender = rows.length; // free unused stable keys before rendering
+
+      var originalKeys = {};
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = rows[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var row = _step.value;
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
+
+          try {
+            for (var _iterator3 = columns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var col = _step3.value;
+              var originalKey = this.getCellOriginalKey(col.index, row.index);
+              originalKeys[originalKey] = true;
+            }
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+                _iterator3["return"]();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this.recycler.freeUnusedKeys(originalKeys); // render cells
+
+      var cellsByKey = {};
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = rows[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _row = _step2.value;
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
+
+          try {
+            for (var _iterator4 = columns[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var _col = _step4.value;
+
+              var _originalKey = this.getCellOriginalKey(_col.index, _row.index);
+
+              var stableKey = this.recycler.getStableKey(_originalKey);
+              cellsByKey[stableKey] = this.renderCell(_col, _row, stableKey);
+            }
+          } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+                _iterator4["return"]();
+              }
+            } finally {
+              if (_didIteratorError4) {
+                throw _iteratorError4;
+              }
+            }
+          }
+        } // sort the cells by key order (important for recycling)
+        // https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order
+
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      var cells = [];
+
+      for (var _i = 0, _Object$keys = Object.keys(cellsByKey); _i < _Object$keys.length; _i++) {
+        var key = _Object$keys[_i];
+        cells.push(cellsByKey[key]);
+      }
+
+      return cells;
+    }
+  }, {
+    key: "renderCell",
+    value: function renderCell(col, row, stableKey) {
+      return external_react_["createElement"](VirtualCell_VirtualCell, {
+        className: this.props.className + '_Cell',
+        key: stableKey,
+        direction: this.props.direction,
+        height: row.size,
+        width: col.size,
+        top: row.position,
+        left: col.position
+      }, this.props.children({
+        colIndex: col.index,
+        rowIndex: row.index,
+        height: row.size,
+        width: col.size
+      }));
+    } //
+    // event handlers
+    //
+
+  }, {
+    key: "getCellOriginalKey",
+    //
+    // render helpers
+    //
+    value: function getCellOriginalKey(colIndex, rowIndex) {
+      return "".concat(colIndex, ", ").concat(rowIndex);
+    }
+  }]);
+
+  return VirtualTile;
+}(external_react_["PureComponent"]);
+
+VirtualTile_defineProperty(VirtualTile_VirtualTile, "defaultProps", new VirtualTileProps());
+// CONCATENATED MODULE: ./src/grid/VirtualGrid.tsx
+function VirtualGrid_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VirtualGrid_typeof = function _typeof(obj) { return typeof obj; }; } else { VirtualGrid_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VirtualGrid_typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function VirtualGrid_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function VirtualGrid_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { VirtualGrid_ownKeys(source, true).forEach(function (key) { VirtualGrid_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { VirtualGrid_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function VirtualGrid_possibleConstructorReturn(self, call) { if (call && (VirtualGrid_typeof(call) === "object" || typeof call === "function")) { return call; } return VirtualGrid_assertThisInitialized(self); }
+
+function VirtualGrid_getPrototypeOf(o) { VirtualGrid_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VirtualGrid_getPrototypeOf(o); }
+
+function VirtualGrid_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function VirtualGrid_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function VirtualGrid_createClass(Constructor, protoProps, staticProps) { if (protoProps) VirtualGrid_defineProperties(Constructor.prototype, protoProps); if (staticProps) VirtualGrid_defineProperties(Constructor, staticProps); return Constructor; }
+
+function VirtualGrid_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) VirtualGrid_setPrototypeOf(subClass, superClass); }
+
+function VirtualGrid_setPrototypeOf(o, p) { VirtualGrid_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VirtualGrid_setPrototypeOf(o, p); }
+
+function VirtualGrid_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function VirtualGrid_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var TileKey;
+
+(function (TileKey) {
+  TileKey["HeaderLeft"] = "Header_Left";
+  TileKey["HeaderCenter"] = "Header_Center";
+  TileKey["HeaderRight"] = "Header_Right";
+  TileKey["BodyLeft"] = "Body_Left";
+  TileKey["BodyCenter"] = "Body_Center";
+  TileKey["BodyRight"] = "Body_Right";
+  TileKey["FooterLeft"] = "Footer_Left";
+  TileKey["FooterCenter"] = "Footer_Center";
+  TileKey["FooterRight"] = "Footer_Right";
+})(TileKey || (TileKey = {}));
+
+var VirtualGridProps = function VirtualGridProps() {
+  VirtualGrid_classCallCheck(this, VirtualGridProps);
+
+  VirtualGrid_defineProperty(this, "onScroll", void 0);
+
+  VirtualGrid_defineProperty(this, "height", void 0);
+
+  VirtualGrid_defineProperty(this, "width", void 0);
+
+  VirtualGrid_defineProperty(this, "columnCount", void 0);
+
+  VirtualGrid_defineProperty(this, "rowCount", void 0);
+
+  VirtualGrid_defineProperty(this, "columnWidth", void 0);
+
+  VirtualGrid_defineProperty(this, "rowHeight", void 0);
+
+  VirtualGrid_defineProperty(this, "estimatedColumnWidth", void 0);
+
+  VirtualGrid_defineProperty(this, "estimatedRowHeight", void 0);
+
+  VirtualGrid_defineProperty(this, "overscanColumnsCount", 0);
+
+  VirtualGrid_defineProperty(this, "overscanRowCount", 0);
+
+  VirtualGrid_defineProperty(this, "fixedHeaderHeight", 0);
+
+  VirtualGrid_defineProperty(this, "fixedFooterHeight", 0);
+
+  VirtualGrid_defineProperty(this, "fixedLeftWidth", 0);
+
+  VirtualGrid_defineProperty(this, "fixedRightWidth", 0);
+
+  VirtualGrid_defineProperty(this, "style", void 0);
+
+  VirtualGrid_defineProperty(this, "tileStyle", void 0);
+
+  VirtualGrid_defineProperty(this, "children", void 0);
+};
+
+var VirtualGridState = function VirtualGridState() {
+  VirtualGrid_classCallCheck(this, VirtualGridState);
+
+  VirtualGrid_defineProperty(this, "scrollTop", 0);
+
+  VirtualGrid_defineProperty(this, "scrollLeft", 0);
+};
+
+var VirtualGrid_VirtualGrid =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  VirtualGrid_inherits(VirtualGrid, _React$PureComponent);
+
+  VirtualGrid_createClass(VirtualGrid, [{
+    key: "direction",
+    get: function get() {
+      var _this$props$style;
+
+      return ((_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.direction) === 'rtl' ? 'rtl' : 'ltr';
+    }
+  }, {
+    key: "activeTiles",
+    get: function get() {
+      return Object.keys(this.tiles);
+    }
+  }, {
+    key: "headerTiles",
+    get: function get() {
+      var _this2 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this2.tiles[key].position.vertical === 'header';
+      });
+    }
+  }, {
+    key: "bodyTiles",
+    get: function get() {
+      var _this3 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this3.tiles[key].position.vertical === 'body';
+      });
+    }
+  }, {
+    key: "footerTiles",
+    get: function get() {
+      var _this4 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this4.tiles[key].position.vertical === 'footer';
+      });
+    }
+  }]);
+
+  function VirtualGrid(_props) {
+    var _this;
+
+    VirtualGrid_classCallCheck(this, VirtualGrid);
+
+    _this = VirtualGrid_possibleConstructorReturn(this, VirtualGrid_getPrototypeOf(VirtualGrid).call(this, _props));
+
+    VirtualGrid_defineProperty(VirtualGrid_assertThisInitialized(_this), "tiles", {});
+
+    VirtualGrid_defineProperty(VirtualGrid_assertThisInitialized(_this), "renderTile", function (tileKey) {
+      var _this$tiles$tileKey = _this.tiles[tileKey],
+          ref = _this$tiles$tileKey.ref,
+          props = _this$tiles$tileKey.props,
+          rowIndexOffset = _this$tiles$tileKey.rowIndexOffset,
+          columnIndexOffset = _this$tiles$tileKey.columnIndexOffset;
+      return external_react_["createElement"](VirtualTile_VirtualTile, _extends({
+        key: tileKey,
+        ref: ref
+      }, props), function (renderProps) {
+        return _this.props.children({
+          tileKey: tileKey,
+          tilePosition: _this.getTilePosition(tileKey),
+          absRowIndex: renderProps.rowIndex + rowIndexOffset,
+          absColIndex: renderProps.colIndex + columnIndexOffset,
+          relRowIndex: renderProps.rowIndex,
+          relColIndex: renderProps.colIndex,
+          height: renderProps.height,
+          width: renderProps.width
+        });
+      });
+    });
+
+    VirtualGrid_defineProperty(VirtualGrid_assertThisInitialized(_this), "handleScroll", function (e) {
+      var normalized = utils["d" /* ScrollUtils */].normalizeScrollEvent(e, _this.direction); // restore tiles position
+
+      _this.setState({
+        scrollTop: normalized.scrollTop,
+        scrollLeft: normalized.normalizedScrollLeft
+      }); // scroll tiles content
+
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = _this.activeTiles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _tileKey = _step.value;
+          var _this$tiles$_tileKey = _this.tiles[_tileKey],
+              ref = _this$tiles$_tileKey.ref,
+              scrollDirection = _this$tiles$_tileKey.scrollDirection;
+          ref.current.scrollTo(normalized, scrollDirection);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    });
+
+    _this.state = new VirtualGridState();
+    _this.tiles = _this.createTilesMap();
+    return _this;
+  } //
+  // life cycle
+  //
+
+
+  VirtualGrid_createClass(VirtualGrid, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (!Object(utils["f" /* areShallowEqual */])(this.props, prevProps)) {
+        this.tiles = this.createTilesMap();
+        this.forceUpdate();
+      }
+    } //
+    // render methods
+    //
+
+  }, {
+    key: "render",
+    value: function render() {
+      var scrollableHeight = this.getScrollableAreaHeight();
+      var scrollableWidth = this.getScrollableAreaWidth();
+      return external_react_["createElement"]("div", {
+        className: this.createClassName('Main_Container'),
+        style: VirtualGrid_objectSpread({
+          direction: this.direction,
+          position: 'relative',
+          height: this.getContainerHeight(scrollableHeight, scrollableWidth),
+          width: this.getContainerWidth(scrollableHeight, scrollableWidth),
+          overflow: 'auto'
+        }, this.props.style),
+        onScroll: this.handleScroll
+      }, external_react_["createElement"]("div", {
+        className: this.createClassName('Main_ScrollableArea'),
+        style: {
+          height: scrollableHeight,
+          width: scrollableWidth
+        }
+      }, this.renderTilesRow(this.headerTiles), this.renderTilesRow(this.bodyTiles), this.renderTilesRow(this.footerTiles)));
+    }
+  }, {
+    key: "renderTilesRow",
+    value: function renderTilesRow(tileKeys) {
+      var _this5 = this,
+          _ref;
+
+      if (!(tileKeys === null || tileKeys === void 0 ? void 0 : tileKeys.length)) return null;
+      var firstTile = this.tiles[tileKeys[0]];
+      var rightOrLeft = this.direction === 'rtl' ? 'right' : 'left';
+      var isSticky = utils["a" /* DomUtils */].isPositionStickySupported;
+      var position = isSticky ? 'sticky' : 'absolute';
+      var topOffset = isSticky ? 0 : this.state.scrollTop;
+      var leftOffset = isSticky ? 0 : this.state.scrollLeft;
+      var width = tileKeys.map(function (key) {
+        return _this5.tiles[key].props.width;
+      }).reduce(function (total, cur) {
+        return total + cur;
+      }, 0);
+      return external_react_["createElement"]("div", {
+        style: (_ref = {
+          display: 'flex',
+          position: position,
+          top: firstTile.tileRowTop + topOffset
+        }, VirtualGrid_defineProperty(_ref, rightOrLeft, 0 + leftOffset), VirtualGrid_defineProperty(_ref, "height", firstTile.props.height), VirtualGrid_defineProperty(_ref, "width", width), _ref)
+      }, tileKeys.map(this.renderTile));
+    }
+  }, {
+    key: "createTilesMap",
+    //
+    // render helpers
+    //
+    value: function createTilesMap() {
+      this.resetTiles();
+      var map = {};
+      var hasHeader = !!this.props.fixedHeaderHeight;
+      var hasFooter = !!this.props.fixedFooterHeight;
+      var hasFixedLeftColumn = !!this.props.fixedLeftWidth;
+      var hasFixedRightColumn = !!this.props.fixedRightWidth;
+      var createTilesMapEntry = this.createTileMapEntryFactory(); // header
+
+      if (hasHeader) {
+        if (hasFixedLeftColumn) {
+          map[TileKey.HeaderLeft] = createTilesMapEntry(TileKey.HeaderLeft);
+        }
+
+        map[TileKey.HeaderCenter] = createTilesMapEntry(TileKey.HeaderCenter);
+
+        if (hasFixedRightColumn) {
+          map[TileKey.HeaderRight] = createTilesMapEntry(TileKey.HeaderRight);
+        }
+      } // body
+
+
+      if (hasFixedLeftColumn) {
+        map[TileKey.BodyLeft] = createTilesMapEntry(TileKey.BodyLeft);
+      }
+
+      map[TileKey.BodyCenter] = createTilesMapEntry(TileKey.BodyCenter);
+
+      if (hasFixedRightColumn) {
+        map[TileKey.BodyRight] = createTilesMapEntry(TileKey.BodyRight);
+      } // footer
+
+
+      if (hasFooter) {
+        if (hasFixedLeftColumn) {
+          map[TileKey.FooterLeft] = createTilesMapEntry(TileKey.FooterLeft);
+        }
+
+        map[TileKey.FooterCenter] = createTilesMapEntry(TileKey.FooterCenter);
+
+        if (hasFixedRightColumn) {
+          map[TileKey.FooterRight] = createTilesMapEntry(TileKey.FooterRight);
+        }
+      }
+
+      return map;
+    }
+  }, {
+    key: "createTileMapEntryFactory",
+    value: function createTileMapEntryFactory() {
+      var _this6 = this;
+
+      // calculate base dimensions
+      var scrollableHeight = this.getScrollableAreaHeight();
+      var scrollableWidth = this.getScrollableAreaWidth();
+      var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth(scrollableWidth);
+      var verticalScrollbarWidth = this.getVerticalScrollbarWidth(scrollableHeight);
+      var containerHeight = this.getContainerHeight(scrollableHeight, scrollableWidth);
+      var containerWidth = this.getContainerWidth(scrollableHeight, scrollableWidth);
+      var headerHeight = this.props.fixedHeaderHeight;
+      var footerHeight = this.props.fixedFooterHeight;
+      var bodyHeight = containerHeight - horizontalScrollbarWidth - headerHeight - footerHeight;
+      var leftWidth = this.props.fixedLeftWidth;
+      var rightWidth = this.props.fixedRightWidth;
+      var centerWidth = containerWidth - verticalScrollbarWidth - leftWidth - rightWidth; // create factory method
+
+      return function (tileKey) {
+        var _this6$getTilePositio = _this6.getTilePosition(tileKey),
+            vertical = _this6$getTilePositio.vertical,
+            horizontal = _this6$getTilePositio.horizontal;
+
+        var isVerticalFixed = vertical === 'header' || vertical === 'footer';
+        var isHorizontalFixed = horizontal === 'left' || horizontal === 'right';
+        var isCorner = isVerticalFixed && isHorizontalFixed;
+        return {
+          ref: external_react_["createRef"](),
+          position: {
+            vertical: vertical,
+            horizontal: horizontal
+          },
+          tileRowTop: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight : headerHeight + bodyHeight,
+          rowIndexOffset: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight && 1 : _this6.props.rowCount + (headerHeight && 1),
+          columnIndexOffset: horizontal === 'left' ? 0 : horizontal === 'center' ? leftWidth && 1 : _this6.props.columnCount + (leftWidth && 1),
+          scrollDirection: isCorner ? 'none' : isVerticalFixed ? 'horizontal' : isHorizontalFixed ? 'vertical' : 'both',
+          props: {
+            className: _this6.createClassName(tileKey),
+            controlledScroll: true,
+            direction: _this6.direction,
+            height: vertical === 'header' ? headerHeight : vertical === 'body' ? bodyHeight : footerHeight,
+            width: horizontal === 'left' ? leftWidth : horizontal === 'center' ? centerWidth : rightWidth,
+            columnCount: horizontal === 'left' ? 1 : horizontal === 'center' ? _this6.props.columnCount : 1,
+            rowCount: vertical === 'header' ? 1 : vertical === 'body' ? _this6.props.rowCount : 1,
+            columnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.columnWidth : rightWidth,
+            rowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.rowHeight : footerHeight,
+            estimatedColumnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.estimatedColumnWidth : rightWidth,
+            estimatedRowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.estimatedRowHeight : footerHeight,
+            overscanColumnsCount: horizontal === 'left' ? 0 : horizontal === 'center' ? _this6.props.overscanColumnsCount : 0,
+            overscanRowCount: vertical === 'header' ? 0 : vertical === 'body' ? _this6.props.overscanRowCount : 0
+          }
+        };
+      };
+    }
+  }, {
+    key: "getTilePosition",
+    value: function getTilePosition(tileKey) {
+      var _tileKey$toLowerCase$ = tileKey.toLowerCase().split('_'),
+          _tileKey$toLowerCase$2 = _slicedToArray(_tileKey$toLowerCase$, 2),
+          vertical = _tileKey$toLowerCase$2[0],
+          horizontal = _tileKey$toLowerCase$2[1];
+
+      return {
+        vertical: vertical,
+        horizontal: horizontal
+      };
+    }
+  }, {
+    key: "getScrollableAreaHeight",
+    value: function getScrollableAreaHeight() {
+      var headerHeight = this.props.fixedHeaderHeight;
+      var footerHeight = this.props.fixedFooterHeight;
+      var bodyHeight = this.getBodyScrollableHeight();
+      return bodyHeight + headerHeight + footerHeight;
+    }
+  }, {
+    key: "getBodyScrollableHeight",
+    value: function getBodyScrollableHeight() {
+      var _this$tiles$TileKey$B, _this$tiles$TileKey$B2;
+
+      var body = (_this$tiles$TileKey$B = this.tiles[TileKey.BodyCenter]) === null || _this$tiles$TileKey$B === void 0 ? void 0 : (_this$tiles$TileKey$B2 = _this$tiles$TileKey$B.ref) === null || _this$tiles$TileKey$B2 === void 0 ? void 0 : _this$tiles$TileKey$B2.current;
+      if (body) return body.getScrollableHeight(); // Body not rendered yet - have to calculate independently.  
+      // Not so DRY, breaks encapsulation and not very efficient either but I
+      // couldn't find a better way to do that which is not terribly ugly...
+
+      return new WindowCalculator().getTotalSize('row', this.props.rowHeight, this.props.estimatedRowHeight, this.props.rowCount);
+    }
+  }, {
+    key: "getScrollableAreaWidth",
+    value: function getScrollableAreaWidth() {
+      var leftWidth = this.props.fixedLeftWidth;
+      var rightWidth = this.props.fixedRightWidth;
+      var bodyWidth = this.getBodyScrollableAreaWidth();
+      return bodyWidth + leftWidth + rightWidth;
+    }
+  }, {
+    key: "getBodyScrollableAreaWidth",
+    value: function getBodyScrollableAreaWidth() {
+      var _this$tiles$TileKey$B3, _this$tiles$TileKey$B4;
+
+      var body = (_this$tiles$TileKey$B3 = this.tiles[TileKey.BodyCenter]) === null || _this$tiles$TileKey$B3 === void 0 ? void 0 : (_this$tiles$TileKey$B4 = _this$tiles$TileKey$B3.ref) === null || _this$tiles$TileKey$B4 === void 0 ? void 0 : _this$tiles$TileKey$B4.current;
+      if (body) return body.getScrollableWidth(); // Body not rendered yet - have to calculate independently.  
+      // Not so DRY, breaks encapsulation and not very efficient either but I
+      // couldn't find a better way to do that which is not terribly ugly...
+
+      return new WindowCalculator().getTotalSize('column', this.props.columnWidth, this.props.estimatedColumnWidth, this.props.columnCount);
+    }
+  }, {
+    key: "getVerticalScrollbarWidth",
+    value: function getVerticalScrollbarWidth(scrollableHeight) {
+      var hasVerticalScrollbar = scrollableHeight > this.props.height;
+      return hasVerticalScrollbar && utils["a" /* DomUtils */].scrollbarWidth || 0;
+    }
+  }, {
+    key: "getHorizontalScrollbarWidth",
+    value: function getHorizontalScrollbarWidth(scrollableWidth) {
+      var hasHorizontalScrollbar = scrollableWidth > this.props.width;
+      return hasHorizontalScrollbar && utils["a" /* DomUtils */].scrollbarWidth || 0;
+    }
+  }, {
+    key: "getContainerHeight",
+    value: function getContainerHeight(scrollableHeight, scrollableWidth) {
+      var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth(scrollableWidth);
+      return Math.min(this.props.height, scrollableHeight + horizontalScrollbarWidth);
+    }
+  }, {
+    key: "getContainerWidth",
+    value: function getContainerWidth(scrollableHeight, scrollableWidth) {
+      var verticalScrollbarWidth = this.getVerticalScrollbarWidth(scrollableHeight);
+      return Math.min(this.props.width, scrollableWidth + verticalScrollbarWidth);
+    }
+    /**
+     * We are only using classes for easier debug inspection...
+     */
+
+  }, {
+    key: "createClassName",
+    value: function createClassName(className) {
+      return "ReactTablize__VirtualGrid__".concat(className);
+    } //
+    // misc
+    //
+
+  }, {
+    key: "resetTiles",
+    value: function resetTiles() {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.activeTiles[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _tileKey2 = _step2.value;
+
+          this.tiles[_tileKey2].ref.current.clearCache();
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      this.tiles = {};
+    }
+  }]);
+
+  return VirtualGrid;
+}(external_react_["PureComponent"]);
+
+VirtualGrid_defineProperty(VirtualGrid_VirtualGrid, "defaultProps", new VirtualGridProps());
+// CONCATENATED MODULE: ./src/grid/GridView.tsx
+function GridView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridView_typeof = function _typeof(obj) { return typeof obj; }; } else { GridView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridView_typeof(obj); }
+
+function GridView_extends() { GridView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return GridView_extends.apply(this, arguments); }
+
+function GridView_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function GridView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { GridView_ownKeys(source, true).forEach(function (key) { GridView_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { GridView_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function GridView_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function GridView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function GridView_createClass(Constructor, protoProps, staticProps) { if (protoProps) GridView_defineProperties(Constructor.prototype, protoProps); if (staticProps) GridView_defineProperties(Constructor, staticProps); return Constructor; }
+
+function GridView_possibleConstructorReturn(self, call) { if (call && (GridView_typeof(call) === "object" || typeof call === "function")) { return call; } return GridView_assertThisInitialized(self); }
+
+function GridView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function GridView_getPrototypeOf(o) { GridView_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return GridView_getPrototypeOf(o); }
+
+function GridView_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) GridView_setPrototypeOf(subClass, superClass); }
+
+function GridView_setPrototypeOf(o, p) { GridView_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GridView_setPrototypeOf(o, p); }
+
+function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var GridView_GridView =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  GridView_inherits(GridView, _React$PureComponent);
+
+  function GridView() {
+    GridView_classCallCheck(this, GridView);
+
+    return GridView_possibleConstructorReturn(this, GridView_getPrototypeOf(GridView).apply(this, arguments));
+  }
+
+  GridView_createClass(GridView, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return external_react_["createElement"](internal["b" /* ErrorBoundary */], null, external_react_["createElement"]("div", {
+        style: GridView_objectSpread({
+          direction: this.direction,
+          width: '100%'
+        }, this.props.style, {}, utils["e" /* SizeUtils */].geElementHeights(this, GridView.defaultHeight))
+      }, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
+        var width = _ref.width,
+            height = _ref.height;
+        return external_react_["createElement"](VirtualGrid_VirtualGrid, GridView_extends({}, _this.props, {
+          height: height,
+          width: width
+        }));
+      })));
+    }
+  }, {
+    key: "direction",
+    get: function get() {
+      var _this$props$style;
+
+      return ((_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.direction) === 'rtl' ? 'rtl' : 'ltr';
+    }
+  }]);
+
+  return GridView;
+}(external_react_["PureComponent"]);
+
+GridView_defineProperty(GridView_GridView, "defaultHeight", '35vh');
+// CONCATENATED MODULE: ./src/grid/index.ts
+
+
+
+// CONCATENATED MODULE: ./src/table/ColumnBody.tsx
+function ColumnBody_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ColumnBody_typeof = function _typeof(obj) { return typeof obj; }; } else { ColumnBody_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ColumnBody_typeof(obj); }
+
+function ColumnBody_possibleConstructorReturn(self, call) { if (call && (ColumnBody_typeof(call) === "object" || typeof call === "function")) { return call; } return ColumnBody_assertThisInitialized(self); }
+
+function ColumnBody_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ColumnBody_getPrototypeOf(o) { ColumnBody_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ColumnBody_getPrototypeOf(o); }
+
+function ColumnBody_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ColumnBody_setPrototypeOf(subClass, superClass); }
+
+function ColumnBody_setPrototypeOf(o, p) { ColumnBody_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ColumnBody_setPrototypeOf(o, p); }
+
+function ColumnBody_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function ColumnBody_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var ColumnBodyProps = function ColumnBodyProps() {
+  ColumnBody_classCallCheck(this, ColumnBodyProps);
+
+  ColumnBody_defineProperty(this, "children", void 0);
+};
+var ColumnBody =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  ColumnBody_inherits(ColumnBody, _React$PureComponent);
+
+  function ColumnBody() {
+    ColumnBody_classCallCheck(this, ColumnBody);
+
+    return ColumnBody_possibleConstructorReturn(this, ColumnBody_getPrototypeOf(ColumnBody).apply(this, arguments));
+  }
+
+  return ColumnBody;
+}(external_react_["PureComponent"]);
+// CONCATENATED MODULE: ./src/table/ColumnHead.tsx
+function ColumnHead_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ColumnHead_typeof = function _typeof(obj) { return typeof obj; }; } else { ColumnHead_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ColumnHead_typeof(obj); }
+
+function ColumnHead_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function ColumnHead_possibleConstructorReturn(self, call) { if (call && (ColumnHead_typeof(call) === "object" || typeof call === "function")) { return call; } return ColumnHead_assertThisInitialized(self); }
+
+function ColumnHead_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function ColumnHead_getPrototypeOf(o) { ColumnHead_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ColumnHead_getPrototypeOf(o); }
+
+function ColumnHead_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ColumnHead_setPrototypeOf(subClass, superClass); }
+
+function ColumnHead_setPrototypeOf(o, p) { ColumnHead_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ColumnHead_setPrototypeOf(o, p); }
+
+
+var ColumnHead =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  ColumnHead_inherits(ColumnHead, _React$PureComponent);
+
+  function ColumnHead() {
+    ColumnHead_classCallCheck(this, ColumnHead);
+
+    return ColumnHead_possibleConstructorReturn(this, ColumnHead_getPrototypeOf(ColumnHead).apply(this, arguments));
+  }
+
+  return ColumnHead;
+}(external_react_["PureComponent"]);
+// CONCATENATED MODULE: ./src/table/TableBody.tsx
+function TableBody_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableBody_typeof = function _typeof(obj) { return typeof obj; }; } else { TableBody_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableBody_typeof(obj); }
+
+function TableBody_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function TableBody_createClass(Constructor, protoProps, staticProps) { if (protoProps) TableBody_defineProperties(Constructor.prototype, protoProps); if (staticProps) TableBody_defineProperties(Constructor, staticProps); return Constructor; }
+
+function TableBody_possibleConstructorReturn(self, call) { if (call && (TableBody_typeof(call) === "object" || typeof call === "function")) { return call; } return TableBody_assertThisInitialized(self); }
+
+function TableBody_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TableBody_getPrototypeOf(o) { TableBody_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableBody_getPrototypeOf(o); }
+
+function TableBody_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableBody_setPrototypeOf(subClass, superClass); }
+
+function TableBody_setPrototypeOf(o, p) { TableBody_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableBody_setPrototypeOf(o, p); }
+
+function TableBody_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function TableBody_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var TableBodyProps = function TableBodyProps() {
+  TableBody_classCallCheck(this, TableBodyProps);
+
+  TableBody_defineProperty(this, "children", void 0);
+};
+var TableBody_TableBody =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  TableBody_inherits(TableBody, _React$PureComponent);
+
+  function TableBody() {
+    TableBody_classCallCheck(this, TableBody);
+
+    return TableBody_possibleConstructorReturn(this, TableBody_getPrototypeOf(TableBody).apply(this, arguments));
+  }
+
+  TableBody_createClass(TableBody, null, [{
+    key: "hasChildren",
+    value: function hasChildren(body) {
+      if (!body) return false;
+      if (Object(utils["h" /* isNullOrUndefined */])(body.props.children)) return false;
+      if (typeof body.props.children === 'function') return true;
+      if (Array.isArray(body.props.children)) return body.props.children.length > 0;
+      var childrenCount = external_react_["Children"].count(body.props.children);
+      return childrenCount > 0;
+    }
+  }]);
+
+  return TableBody;
+}(external_react_["PureComponent"]);
+// EXTERNAL MODULE: external "@emotion/styled-base"
+var styled_base_ = __webpack_require__(3);
+var styled_base_default = /*#__PURE__*/__webpack_require__.n(styled_base_);
+
+// CONCATENATED MODULE: ./src/table/style.tsx
+
+
+var StyledTableView = styled_base_default()("div", {
+  target: "ea4b5ar0",
+  label: "StyledTableView"
+})( true ? {
+  name: "1bhr7rw",
+  styles: "width:100%;overflow-y:hidden;"
+} : undefined);
+var StyledTableHead = styled_base_default()("div", {
+  target: "ea4b5ar1",
+  label: "StyledTableHead"
+})("display:flex;overflow-y:hidden;", function (props) {
+  return props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right';
+}, ":", utils["a" /* DomUtils */].scrollbarWidth, "px;" + ( true ? "" : undefined));
+var StyledTableBody = styled_base_default()("div", {
+  target: "ea4b5ar2",
+  label: "StyledTableBody"
+})( true ? "" : undefined);
+var StyledTableRow = styled_base_default()("div", {
+  target: "ea4b5ar3",
+  label: "StyledTableRow"
+})( true ? {
+  name: "k008qs",
+  styles: "display:flex;"
+} : undefined);
+var StyledTableCell = styled_base_default()("div", {
+  target: "ea4b5ar4",
+  label: "StyledTableCell"
+})( true ? {
+  name: "1jqn12",
+  styles: "flex:1;overflow:hidden;text-overflow:ellipsis;"
+} : undefined);
+// CONCATENATED MODULE: ./src/table/TableCell.tsx
+function TableCell_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableCell_typeof = function _typeof(obj) { return typeof obj; }; } else { TableCell_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableCell_typeof(obj); }
+
+function TableCell_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function TableCell_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function TableCell_createClass(Constructor, protoProps, staticProps) { if (protoProps) TableCell_defineProperties(Constructor.prototype, protoProps); if (staticProps) TableCell_defineProperties(Constructor, staticProps); return Constructor; }
+
+function TableCell_possibleConstructorReturn(self, call) { if (call && (TableCell_typeof(call) === "object" || typeof call === "function")) { return call; } return TableCell_assertThisInitialized(self); }
+
+function TableCell_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TableCell_getPrototypeOf(o) { TableCell_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableCell_getPrototypeOf(o); }
+
+function TableCell_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableCell_setPrototypeOf(subClass, superClass); }
+
+function TableCell_setPrototypeOf(o, p) { TableCell_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableCell_setPrototypeOf(o, p); }
+
+function TableCell_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var TableCellSymbol = '__ReactTablize__TableCell__';
+var TableCell_TableCell =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  TableCell_inherits(TableCell, _React$PureComponent);
+
+  function TableCell() {
+    TableCell_classCallCheck(this, TableCell);
+
+    return TableCell_possibleConstructorReturn(this, TableCell_getPrototypeOf(TableCell).apply(this, arguments));
+  }
+
+  TableCell_createClass(TableCell, [{
+    key: "render",
+    value: function render() {
+      return external_react_["createElement"](StyledTableCell, this.props, external_react_["createElement"](internal["b" /* ErrorBoundary */], null, this.props.children));
+    }
+  }], [{
+    key: "isTableCell",
+    value: function isTableCell(cell) {
+      return external_react_["isValidElement"](cell) && cell.props[TableCellSymbol];
+    }
+  }, {
+    key: "getCellProps",
+    value: function getCellProps(cell) {
+      return TableCell.isTableCell(cell) && cell.props || {};
+    }
+  }, {
+    key: "getCellContent",
+    value: function getCellContent(cell) {
+      return TableCell.isTableCell(cell) ? cell.props.children : cell;
+    }
+  }]);
+
+  return TableCell;
+}(external_react_["PureComponent"]);
+
+TableCell_defineProperty(TableCell_TableCell, "defaultProps", TableCell_defineProperty({}, TableCellSymbol, true));
+// CONCATENATED MODULE: ./src/table/TableHead.tsx
+function TableHead_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableHead_typeof = function _typeof(obj) { return typeof obj; }; } else { TableHead_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableHead_typeof(obj); }
+
+function TableHead_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function TableHead_possibleConstructorReturn(self, call) { if (call && (TableHead_typeof(call) === "object" || typeof call === "function")) { return call; } return TableHead_assertThisInitialized(self); }
+
+function TableHead_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TableHead_getPrototypeOf(o) { TableHead_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableHead_getPrototypeOf(o); }
+
+function TableHead_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableHead_setPrototypeOf(subClass, superClass); }
+
+function TableHead_setPrototypeOf(o, p) { TableHead_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableHead_setPrototypeOf(o, p); }
+
+
+var TableHead =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  TableHead_inherits(TableHead, _React$PureComponent);
+
+  function TableHead() {
+    TableHead_classCallCheck(this, TableHead);
+
+    return TableHead_possibleConstructorReturn(this, TableHead_getPrototypeOf(TableHead).apply(this, arguments));
+  }
+
+  return TableHead;
+}(external_react_["PureComponent"]);
+// CONCATENATED MODULE: ./src/table/TableColumn.tsx
+function TableColumn_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableColumn_typeof = function _typeof(obj) { return typeof obj; }; } else { TableColumn_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableColumn_typeof(obj); }
+
+function TableColumn_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function TableColumn_createClass(Constructor, protoProps, staticProps) { if (protoProps) TableColumn_defineProperties(Constructor.prototype, protoProps); if (staticProps) TableColumn_defineProperties(Constructor, staticProps); return Constructor; }
+
+function TableColumn_possibleConstructorReturn(self, call) { if (call && (TableColumn_typeof(call) === "object" || typeof call === "function")) { return call; } return TableColumn_assertThisInitialized(self); }
+
+function TableColumn_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TableColumn_getPrototypeOf(o) { TableColumn_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableColumn_getPrototypeOf(o); }
+
+function TableColumn_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableColumn_setPrototypeOf(subClass, superClass); }
+
+function TableColumn_setPrototypeOf(o, p) { TableColumn_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableColumn_setPrototypeOf(o, p); }
+
+function TableColumn_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function TableColumn_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+var TableColumnProps = function TableColumnProps() {
+  TableColumn_classCallCheck(this, TableColumnProps);
+
+  TableColumn_defineProperty(this, "children", void 0);
+};
+var TableColumn_TableColumn =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  TableColumn_inherits(TableColumn, _React$PureComponent);
+
+  function TableColumn() {
+    TableColumn_classCallCheck(this, TableColumn);
+
+    return TableColumn_possibleConstructorReturn(this, TableColumn_getPrototypeOf(TableColumn).apply(this, arguments));
+  }
+
+  TableColumn_createClass(TableColumn, null, [{
+    key: "createHeadFromColumns",
+    value: function createHeadFromColumns(columns) {
+      if (columns.every(function (col) {
+        return !utils["c" /* ReactUtils */].singleChildOfType(col, ColumnHead);
+      })) return null;
+      var head = external_react_["createElement"](TableHead, null, columns.map(function (col) {
+        var colHead = utils["c" /* ReactUtils */].singleChildOfType(col, ColumnHead);
+        if (!colHead) return null; // eslint-disable-next-line react/jsx-key
+
+        return external_react_["createElement"](TableCell_TableCell, colHead.props);
+      }));
+      return head;
+    }
+  }, {
+    key: "createBodyFromColumns",
+    value: function createBodyFromColumns(columns) {
+      var body = external_react_["createElement"](TableBody_TableBody, null, function (rowIndex) {
+        return columns.map(function (col, columnIndex) {
+          var cellRender = utils["c" /* ReactUtils */].singleChildOfType(col, ColumnBody).props.children;
+          if (!cellRender) return null;
+          return cellRender({
+            rowIndex: rowIndex,
+            columnIndex: columnIndex
+          });
+        });
+      });
+      return body;
+    }
+  }]);
+
+  return TableColumn;
+}(external_react_["PureComponent"]);
+// CONCATENATED MODULE: ./src/table/TableRow.tsx
+function TableRow_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableRow_typeof = function _typeof(obj) { return typeof obj; }; } else { TableRow_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableRow_typeof(obj); }
+
+function TableRow_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function TableRow_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function TableRow_createClass(Constructor, protoProps, staticProps) { if (protoProps) TableRow_defineProperties(Constructor.prototype, protoProps); if (staticProps) TableRow_defineProperties(Constructor, staticProps); return Constructor; }
+
+function TableRow_possibleConstructorReturn(self, call) { if (call && (TableRow_typeof(call) === "object" || typeof call === "function")) { return call; } return TableRow_assertThisInitialized(self); }
+
+function TableRow_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TableRow_getPrototypeOf(o) { TableRow_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableRow_getPrototypeOf(o); }
+
+function TableRow_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableRow_setPrototypeOf(subClass, superClass); }
+
+function TableRow_setPrototypeOf(o, p) { TableRow_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableRow_setPrototypeOf(o, p); }
+
+function TableRow_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var flattenDeep = __webpack_require__(14);
+
+var TableRowSymbol = '__ReactTablize__TableRow__';
+/**
+ * One or more cells.
+ */
+
+var TableRow_TableRow =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  TableRow_inherits(TableRow, _React$PureComponent);
+
+  function TableRow() {
+    TableRow_classCallCheck(this, TableRow);
+
+    return TableRow_possibleConstructorReturn(this, TableRow_getPrototypeOf(TableRow).apply(this, arguments));
+  }
+
+  TableRow_createClass(TableRow, [{
+    key: "render",
+    value: function render() {
+      return external_react_["createElement"](StyledTableRow, this.props, external_react_["createElement"](internal["b" /* ErrorBoundary */], null, this.props.children));
+    }
+  }], [{
+    key: "isTableRow",
+    value: function isTableRow(row) {
+      return external_react_["isValidElement"](row) && row.props[TableRowSymbol];
+    }
+  }, {
+    key: "getRowProps",
+    value: function getRowProps(row) {
+      return TableRow.isTableRow(row) && row.props || {};
+    }
+  }, {
+    key: "getRowContent",
+    value: function getRowContent(row) {
+      var content = row; // row element
+
+      if (TableRow.isTableRow(content)) {
+        content = content.props.children;
+      } // actual content
+
+
+      if (Array.isArray(content)) {
+        content = flattenDeep(content);
+      }
+
+      return content;
+    }
+  }]);
+
+  return TableRow;
+}(external_react_["PureComponent"]);
+
+TableRow_defineProperty(TableRow_TableRow, "defaultProps", TableRow_defineProperty({}, TableRowSymbol, true));
+// EXTERNAL MODULE: external "emotion-theming"
+var external_emotion_theming_ = __webpack_require__(10);
+
+// EXTERNAL MODULE: ./src/list/index.ts
+var list = __webpack_require__(5);
+
+// CONCATENATED MODULE: ./src/table/TableView.tsx
+function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
+
+function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function TableView_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function TableView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { TableView_ownKeys(source, true).forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { TableView_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function TableView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function TableView_createClass(Constructor, protoProps, staticProps) { if (protoProps) TableView_defineProperties(Constructor.prototype, protoProps); if (staticProps) TableView_defineProperties(Constructor, staticProps); return Constructor; }
+
+function TableView_possibleConstructorReturn(self, call) { if (call && (TableView_typeof(call) === "object" || typeof call === "function")) { return call; } return TableView_assertThisInitialized(self); }
+
+function TableView_getPrototypeOf(o) { TableView_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return TableView_getPrototypeOf(o); }
+
+function TableView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function TableView_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) TableView_setPrototypeOf(subClass, superClass); }
+
+function TableView_setPrototypeOf(o, p) { TableView_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return TableView_setPrototypeOf(o, p); }
+
+function TableView_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function TableView_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Applicable only on non-virtual tables.
+ */
+var RowAutoSize = function RowAutoSize() {
+  return undefined;
+};
+var TableViewProps = function TableViewProps() {
+  TableView_classCallCheck(this, TableViewProps);
+
+  TableView_defineProperty(this, "isVirtual", void 0);
+
+  TableView_defineProperty(this, "rowCount", void 0);
+
+  TableView_defineProperty(this, "rowKey", void 0);
+
+  TableView_defineProperty(this, "children", void 0);
+
+  TableView_defineProperty(this, "dir", 'ltr');
+
+  TableView_defineProperty(this, "className", void 0);
+
+  TableView_defineProperty(this, "style", void 0);
+
+  TableView_defineProperty(this, "rowHeight", 50);
+
+  TableView_defineProperty(this, "emptyMessage", "No Items to Display");
+
+  TableView_defineProperty(this, "customScrollbars", void 0);
+
+  TableView_defineProperty(this, "keyScroll", void 0);
+
+  TableView_defineProperty(this, "overscanCount", 20);
+};
+var TableView_TableView =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  TableView_inherits(TableView, _React$PureComponent);
+
+  function TableView() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    TableView_classCallCheck(this, TableView);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = TableView_possibleConstructorReturn(this, (_getPrototypeOf2 = TableView_getPrototypeOf(TableView)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "tableElement", external_react_["createRef"]());
+
+    TableView_defineProperty(TableView_assertThisInitialized(_this), "getRowHeight", function (rowIndex) {
+      if (typeof _this.props.rowHeight === 'function') return _this.props.rowHeight(rowIndex);
+      return _this.props.rowHeight;
+    });
+
+    return _this;
+  }
+
+  TableView_createClass(TableView, [{
+    key: "refresh",
+    //
+    // public methods
+    //
+    value: function refresh() {
+      if (this.tableElement.current) {
+        this.tableElement.current.refresh();
+      }
+
+      this.forceUpdate();
+    } //
+    // render methods
+    //
+
+  }, {
+    key: "render",
+    value: function render() {
+      // head & body
+      var head = utils["c" /* ReactUtils */].singleChildOfType(this, TableHead);
+      var body = utils["c" /* ReactUtils */].singleChildOfType(this, TableBody_TableBody);
+      var columns = utils["c" /* ReactUtils */].childrenOfType(this, TableColumn_TableColumn); // columns
+
+      if (columns && columns.length) {
+        if (head || body) throw new Error('Can not specify head and/or body when specifying table columns.');
+        head = TableColumn_TableColumn.createHeadFromColumns(columns);
+        body = TableColumn_TableColumn.createBodyFromColumns(columns);
+      } // render
+
+
+      return external_react_["createElement"](internal["b" /* ErrorBoundary */], null, external_react_["createElement"](external_emotion_theming_["ThemeProvider"], {
+        theme: this.getTheme()
+      }, external_react_["createElement"](StyledTableView, {
+        className: this.props.className,
+        style: TableView_objectSpread({}, this.props.style, {}, utils["e" /* SizeUtils */].geElementHeights(this, TableView.defaultHeight))
+      }, this.renderTableHead(head), this.renderTableBody(head, body))));
+    }
+  }, {
+    key: "renderTableHead",
+    value: function renderTableHead(head) {
+      if (!head) return null;
+
+      var _head$props = head.props,
+          children = _head$props.children,
+          divProps = _objectWithoutProperties(_head$props, ["children"]);
+
+      return external_react_["createElement"](StyledTableHead, TableView_extends({}, divProps, {
+        style: TableView_objectSpread({
+          direction: this.props.dir
+        }, head.props.style, {}, utils["e" /* SizeUtils */].geElementHeights(head, TableView.defaultHeadHeight))
+      }), external_react_["Children"].map(children, this.renderCell));
+    }
+  }, {
+    key: "renderTableBody",
+    value: function renderTableBody(head, body) {
+      var bodyHeights = utils["e" /* SizeUtils */].getBodyHeights(this, head, {
+        total: TableView.defaultHeight,
+        head: TableView.defaultHeadHeight
+      });
+      return external_react_["createElement"](StyledTableBody, {
+        style: TableView_objectSpread({
+          direction: this.props.dir
+        }, bodyHeights)
+      }, external_react_["createElement"](internal["b" /* ErrorBoundary */], null, this.renderTableRows(body)));
+    }
+  }, {
+    key: "renderTableRows",
+    value: function renderTableRows(body) {
+      var _this2 = this;
+
+      // placeholder
+      if (this.props.rowCount === 0 || !TableBody_TableBody.hasChildren(body)) {
+        return this.renderItemsPlaceHolder();
+      } // table rows
+
+
+      var rowRender = body.props.children;
+      var ListComponent = this.getListComponent();
+      return external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
+        var width = _ref.width,
+            height = _ref.height;
+        return external_react_["createElement"](ListComponent, {
+          ref: _this2.tableElement,
+          style: {
+            outline: 'none'
+          },
+          dir: _this2.props.dir,
+          layout: "vertical",
+          height: height,
+          width: width,
+          itemCount: _this2.props.rowCount,
+          itemSize: _this2.getRowHeight,
+          overscan: _this2.props.overscanCount,
+          customScrollbar: _this2.props.customScrollbars
+        }, function (index) {
+          return _this2.renderBodyRow(index, rowRender);
+        });
+      });
+    }
+  }, {
+    key: "renderBodyRow",
+    value: function renderBodyRow(index, rowRender) {
+      if (!rowRender) return null;
+      var row = rowRender(index);
+      var rowContent = TableRow_TableRow.getRowContent(row);
+      rowContent = Object(utils["g" /* asArray */])(rowContent).map(this.renderCell); // already a row - just adjust the content
+
+      if (TableRow_TableRow.isTableRow(row)) {
+        var rowKey = this.getRowKey(row.props, index);
+        return external_react_["cloneElement"](row, {
+          key: rowKey
+        }, rowContent);
+      } // not a row - wrap content with row element
+      else {
+          var _rowKey = this.getRowKey({}, index);
+
+          return external_react_["createElement"](TableRow_TableRow, {
+            key: _rowKey
+          }, rowContent);
+        }
+    }
+  }, {
+    key: "renderCell",
+    value: function renderCell(cell, columnIndex) {
+      var cellProps = TableCell_TableCell.getCellProps(cell);
+      if (cellProps.visible === false) return null; // already a cell - just add key and return
+
+      if (TableCell_TableCell.isTableCell(cell)) {
+        return external_react_["cloneElement"](cell, {
+          key: columnIndex
+        });
+      } // not a cell - wrap content with cell element
+
+
+      return external_react_["createElement"](TableCell_TableCell, {
+        key: columnIndex
+      }, cell);
+    }
+  }, {
+    key: "renderItemsPlaceHolder",
+    value: function renderItemsPlaceHolder() {
+      return external_react_["createElement"]("div", null, external_react_["createElement"]("div", {
+        style: {
+          textAlign: 'center'
+        }
+      }, this.props.emptyMessage));
+    } //
+    // helpers
+    //
+
+  }, {
+    key: "getTheme",
+    value: function getTheme() {
+      return {
+        dir: this.props.dir
+      };
+    }
+  }, {
+    key: "getListComponent",
+    value: function getListComponent() {
+      return this.props.isVirtual !== false ? list["VirtualList"] : list["NonVirtualList"];
+    }
+  }, {
+    key: "getRowKey",
+    value: function getRowKey(rowProps, index) {
+      if (!Object(utils["h" /* isNullOrUndefined */])(rowProps.key)) return rowProps.key;
+      if (typeof this.props.rowKey === 'function') return this.props.rowKey(index);
+      return index;
+    }
+  }]);
+
+  return TableView;
+}(external_react_["PureComponent"]);
+
+TableView_defineProperty(TableView_TableView, "defaultHeight", '35vh');
+
+TableView_defineProperty(TableView_TableView, "defaultHeadHeight", '40px');
+
+TableView_defineProperty(TableView_TableView, "Head", TableHead);
+
+TableView_defineProperty(TableView_TableView, "Body", TableBody_TableBody);
+
+TableView_defineProperty(TableView_TableView, "Row", TableRow_TableRow);
+
+TableView_defineProperty(TableView_TableView, "Cell", TableCell_TableCell);
+
+TableView_defineProperty(TableView_TableView, "Column", TableColumn_TableColumn);
+
+TableView_defineProperty(TableView_TableView, "defaultProps", new TableViewProps());
+// CONCATENATED MODULE: ./src/table/index.ts
+
+
+
+
+
+
+
+
+// CONCATENATED MODULE: ./src/index.ts
+/* concated harmony reexport GridView */__webpack_require__.d(__webpack_exports__, "GridView", function() { return GridView_GridView; });
+/* concated harmony reexport TileKey */__webpack_require__.d(__webpack_exports__, "TileKey", function() { return TileKey; });
+/* concated harmony reexport VirtualGridProps */__webpack_require__.d(__webpack_exports__, "VirtualGridProps", function() { return VirtualGridProps; });
+/* concated harmony reexport VirtualGrid */__webpack_require__.d(__webpack_exports__, "VirtualGrid", function() { return VirtualGrid_VirtualGrid; });
+/* concated harmony reexport VirtualTileProps */__webpack_require__.d(__webpack_exports__, "VirtualTileProps", function() { return VirtualTileProps; });
+/* concated harmony reexport VirtualTile */__webpack_require__.d(__webpack_exports__, "VirtualTile", function() { return VirtualTile_VirtualTile; });
+/* concated harmony reexport ColumnBodyProps */__webpack_require__.d(__webpack_exports__, "ColumnBodyProps", function() { return ColumnBodyProps; });
+/* concated harmony reexport ColumnBody */__webpack_require__.d(__webpack_exports__, "ColumnBody", function() { return ColumnBody; });
+/* concated harmony reexport ColumnHead */__webpack_require__.d(__webpack_exports__, "ColumnHead", function() { return ColumnHead; });
+/* concated harmony reexport TableBodyProps */__webpack_require__.d(__webpack_exports__, "TableBodyProps", function() { return TableBodyProps; });
+/* concated harmony reexport TableBody */__webpack_require__.d(__webpack_exports__, "TableBody", function() { return TableBody_TableBody; });
+/* concated harmony reexport TableCell */__webpack_require__.d(__webpack_exports__, "TableCell", function() { return TableCell_TableCell; });
+/* concated harmony reexport TableColumnProps */__webpack_require__.d(__webpack_exports__, "TableColumnProps", function() { return TableColumnProps; });
+/* concated harmony reexport TableColumn */__webpack_require__.d(__webpack_exports__, "TableColumn", function() { return TableColumn_TableColumn; });
+/* concated harmony reexport TableHead */__webpack_require__.d(__webpack_exports__, "TableHead", function() { return TableHead; });
+/* concated harmony reexport TableRow */__webpack_require__.d(__webpack_exports__, "TableRow", function() { return TableRow_TableRow; });
+/* concated harmony reexport RowAutoSize */__webpack_require__.d(__webpack_exports__, "RowAutoSize", function() { return RowAutoSize; });
+/* concated harmony reexport TableViewProps */__webpack_require__.d(__webpack_exports__, "TableViewProps", function() { return TableViewProps; });
+/* concated harmony reexport TableView */__webpack_require__.d(__webpack_exports__, "TableView", function() { return TableView_TableView; });
+
+
+
+/***/ })
+/******/ ]);
+});
 //# sourceMappingURL=react-tablize.js.map
