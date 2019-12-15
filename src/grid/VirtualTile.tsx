@@ -12,33 +12,43 @@ export interface RenderTileCellProps {
     width: number;
 }
 
-export interface VirtualTileProps {
-    direction?: DocDir;
+export class VirtualTileProps {
+    public direction?: DocDir = 'ltr';
     /**
      * Allow scrolling only via calling the `scrollTo` method.
      */
-    controlledScroll?: boolean;
-    height: number;
-    width: number;
-    position?: 'absolute' | 'relative' | 'sticky';
-    top?: number;
-    left?: number;
-    float?: 'right' | 'left';
-    columnCount: number;
-    rowCount: number;
-    estimatedColumnWidth: number;
-    estimatedRowHeight: number;
-    columnWidth?: SizeCallback;
-    rowHeight?: SizeCallback;
-    overscanColumnsCount?: number;
-    overscanRowCount?: number;
+    public controlledScroll?: boolean;
+    public height: number;
+    public width: number;
+    public position?: 'absolute' | 'relative' | 'sticky' = 'relative';
+    public top?: number;
+    public left?: number;
+    public float?: 'right' | 'left';
+    public columnCount: number;
+    public rowCount: number;
+    public columnWidth: number | SizeCallback;
+    public rowHeight: number | SizeCallback;
+    /**
+     * If `columnWidth` is a function and this prop is not specified will use
+     * eager evaluation (invoke the method for all cells on component mount) to
+     * calculate the total scroll width.
+     */
+    public estimatedColumnWidth?: number;
+    /**
+     * If `rowHeight` is a function and this prop is not specified will use
+     * eager evaluation (invoke the method for all cells on component mount) to
+     * calculate the total scroll height.
+     */
+    public estimatedRowHeight?: number;
+    public overscanColumnsCount?= 0;
+    public overscanRowCount?= 0;
 
     /**
      * We are only using classes for easier debug inspection...
      */
-    className?: string;
+    public className?: string;
 
-    children: (props: RenderTileCellProps) => React.ReactNode;
+    public children: (props: RenderTileCellProps) => React.ReactNode;
 }
 
 class VirtualTileState {
@@ -48,13 +58,7 @@ class VirtualTileState {
 
 export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTileState> {
 
-    public static defaultProps: unknown = {
-        direction: 'ltr',
-        controlledScroll: false,
-        position: 'relative',
-        overscanColumnsCount: 0,
-        overscanRowCount: 0
-    };
+    public static defaultProps: unknown = new VirtualTileProps();
 
     /**
      * Make sure to return a constant number of elements, this is important for
@@ -120,11 +124,19 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     }
 
     public getScrollableHeight(): number {
-        return this.windowCalc.getEstimatedTotalSize('row', this.props.estimatedRowHeight, this.props.rowCount);
+        return this.windowCalc.getTotalSize(
+            'row',
+            this.props.estimatedRowHeight ?? this.props.rowHeight,
+            this.props.rowCount
+        );
     }
 
     public getScrollableWidth(): number {
-        return this.windowCalc.getEstimatedTotalSize('column', this.props.estimatedColumnWidth, this.props.columnCount);
+        return this.windowCalc.getTotalSize(
+            'column',
+            this.props.estimatedColumnWidth ?? this.props.columnWidth,
+            this.props.columnCount
+        );
     }
 
     public clearCache(): void {
@@ -197,7 +209,6 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             this.state.scrollLeft,
             this.state.scrollLeft + this.props.width,
             this.props.overscanColumnsCount,
-            this.props.estimatedColumnWidth,
             this.props.columnWidth,
             this.minColumnsToRender,
             this.props.columnCount
@@ -207,7 +218,6 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             this.state.scrollTop,
             this.state.scrollTop + this.props.height,
             this.props.overscanRowCount,
-            this.props.estimatedRowHeight,
             this.props.rowHeight,
             this.minRowsToRender,
             this.props.rowCount

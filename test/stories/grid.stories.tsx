@@ -8,8 +8,8 @@ stories.add('empty grid', () => (
     <GridView
         columnCount={0}
         rowCount={0}
-        estimatedColumnWidth={0}
-        estimatedRowHeight={0}
+        columnWidth={1}
+        rowHeight={1}
     >
         {() => null}
     </GridView>
@@ -23,8 +23,8 @@ stories.add('simple grid', () => (
         }}
         columnCount={1000}
         rowCount={1000}
-        estimatedColumnWidth={80}
-        estimatedRowHeight={40}
+        columnWidth={80}
+        rowHeight={40}
         fixedHeaderHeight={40}
         fixedRightWidth={80}
         fixedLeftWidth={80}
@@ -41,8 +41,8 @@ stories.add('simple grid - list', () => (
     <GridView
         columnCount={1}
         rowCount={50}
-        estimatedColumnWidth={400}
-        estimatedRowHeight={40}
+        columnWidth={400}
+        rowHeight={40}
     >
         {cellProps => `${cellProps.absColIndex}, ${cellProps.absRowIndex}`}
     </GridView>

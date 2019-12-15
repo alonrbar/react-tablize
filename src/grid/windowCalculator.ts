@@ -42,8 +42,7 @@ export class WindowCalculator {
         fromPosition: number,
         toPosition: number,
         elementsOverscan: number,
-        estimatedElementSize: number,
-        calculateElementSize: SizeCallback,
+        elementSize: number | SizeCallback,
         minElementsCountToReturn: number,
         totalElementsCount: number
     ) {
@@ -52,8 +51,7 @@ export class WindowCalculator {
             elementType,
             fromPosition,
             totalElementsCount,
-            estimatedElementSize,
-            calculateElementSize
+            elementSize
         );
         fromIndex = Math.max(0, fromIndex - elementsOverscan);
 
@@ -61,11 +59,10 @@ export class WindowCalculator {
             elementType,
             toPosition,
             totalElementsCount,
-            estimatedElementSize,
-            calculateElementSize
+            elementSize
         );
         toIndex = Math.min(toIndex + elementsOverscan, totalElementsCount - 1);
-        
+
         while (toIndex - fromIndex + 1 < minElementsCountToReturn) {
             if (toIndex + 1 < totalElementsCount) {
                 toIndex++;
@@ -79,33 +76,40 @@ export class WindowCalculator {
             info.push(this.getElementInfo(
                 elementType,
                 i,
-                estimatedElementSize,
-                calculateElementSize
+                elementSize
             ));
         }
         return info;
     }
 
-    public getEstimatedTotalSize(elementType: ElementType, estimatedElementSize: number, elementsCount: number) {
+    public getTotalSize(elementType: ElementType, elementSize: number | SizeCallback, elementsCount: number) {
 
-        let { lastMeasuredIndex } = this.data[elementType];
-        const { cache } = this.data[elementType];
+        // Handle unmeasured elements
+        let lastMeasuredIndex: number;
+        let totalSizeOfUnmeasuredElements = 0;
+        if (typeof elementSize === "function") {
 
-        // Edge case check for when the number of items decreases while a scroll is in progress.
-        // https://github.com/bvaughn/react-window/pull/138
-        if (lastMeasuredIndex >= elementsCount) {
-            lastMeasuredIndex = elementsCount - 1;
+            // Dynamic element size - force eager measurement of all unmeasured elements.
+            this.getElementInfo(elementType, elementsCount - 1, elementSize);
+            lastMeasuredIndex = Math.min(this.data[elementType].lastMeasuredIndex, elementsCount - 1);
+
+        } else {
+
+            // Constant element size - use simple multiplication for unmeasured elements.
+            lastMeasuredIndex = Math.min(this.data[elementType].lastMeasuredIndex, elementsCount - 1);
+            const numUnmeasuredElements = elementsCount - lastMeasuredIndex - 1;
+            totalSizeOfUnmeasuredElements = numUnmeasuredElements * elementSize;
         }
 
+        // Get total size of already measured elements
         let totalSizeOfMeasuredElements = 0;
         if (lastMeasuredIndex >= 0) {
+            const { cache } = this.data[elementType];
             const lastMeasuredElemInfo = cache[lastMeasuredIndex];
             totalSizeOfMeasuredElements = lastMeasuredElemInfo.position + lastMeasuredElemInfo.size;
         }
 
-        const numUnmeasuredElements = elementsCount - lastMeasuredIndex - 1;
-        const totalSizeOfUnmeasuredElements = numUnmeasuredElements * estimatedElementSize;
-
+        // Sum and return
         return totalSizeOfMeasuredElements + totalSizeOfUnmeasuredElements;
     }
 
@@ -117,8 +121,7 @@ export class WindowCalculator {
         elementType: ElementType,
         position: number,
         maxIndex: number,
-        estimatedElementSize: number,
-        calculateElementSize: SizeCallback
+        elementSize: number | SizeCallback
     ) {
 
         const { lastMeasuredIndex, cache } = this.data[elementType];
@@ -132,8 +135,7 @@ export class WindowCalculator {
                 lastMeasuredIndex,
                 0,
                 position,
-                estimatedElementSize,
-                calculateElementSize
+                elementSize
             );
 
         } else {
@@ -146,8 +148,7 @@ export class WindowCalculator {
                 Math.max(lastMeasuredIndex, 0),
                 maxIndex,
                 position,
-                estimatedElementSize,
-                calculateElementSize
+                elementSize
             );
         }
     };
@@ -157,12 +158,11 @@ export class WindowCalculator {
         high: number,
         low: number,
         position: number,
-        estimatedElementSize: number,
-        calculateElementSize: SizeCallback
+        elementSize: number | SizeCallback
     ) {
         while (low <= high) {
             const middle = low + Math.floor((high - low) / 2);
-            const currentPosition = this.getElementInfo(elementType, middle, estimatedElementSize, calculateElementSize).position;
+            const currentPosition = this.getElementInfo(elementType, middle, elementSize).position;
 
             if (currentPosition === position) {
                 return middle;
@@ -185,14 +185,13 @@ export class WindowCalculator {
         index: number,
         maxIndex: number,
         position: number,
-        estimatedElementSize: number,
-        calculateElementSize: SizeCallback
+        elementSize: number | SizeCallback
     ) {
         let interval = 1;
 
         while (
             index < maxIndex &&
-            this.getElementInfo(elementType, index, estimatedElementSize, calculateElementSize).position < position
+            this.getElementInfo(elementType, index, elementSize).position < position
         ) {
             index += interval;
             interval *= 2;
@@ -203,16 +202,14 @@ export class WindowCalculator {
             Math.min(index, maxIndex - 1),
             Math.floor(index / 2),
             position,
-            estimatedElementSize,
-            calculateElementSize
+            elementSize
         );
     };
 
     private getElementInfo(
         elementType: ElementType,
         elementIndex: number,
-        estimatedElementSize: number,
-        calculateElementSize: SizeCallback
+        elementSize: number | SizeCallback
     ) {
 
         const { lastMeasuredIndex, cache } = this.data[elementType];
@@ -230,7 +227,7 @@ export class WindowCalculator {
 
             // add new cache entries
             for (let index = (lastMeasuredIndex + 1); index <= elementIndex; index++) {
-                const size = cache[index]?.size ?? calculateElementSize?.(index) ?? estimatedElementSize;
+                const size = this.getSize(index, elementSize, cache[index]?.size);
 
                 cache[index] = {
                     index,
@@ -245,5 +242,22 @@ export class WindowCalculator {
         }
 
         return cache[elementIndex];
+    }
+
+    private getSize(index: number, elementSize: number | SizeCallback, cache: number): number {
+
+        if (cache !== null && cache !== undefined)
+            return cache;
+
+        if (typeof elementSize === "number")
+            return elementSize;
+
+        if (typeof elementSize === "function")
+            return elementSize(index);
+
+        throw new Error(
+            `Invalid argument '${nameof(elementSize)}' expected a number or a function ` +
+            `but received '${typeof elementSize}': ${elementSize}.`
+        );
     }
 }

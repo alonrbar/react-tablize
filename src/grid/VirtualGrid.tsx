@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DocDir, ScrollDirection, ScrollEvent, SizeCallback } from '../types';
 import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
 import { VirtualTile, VirtualTileProps } from './VirtualTile';
+import { WindowCalculator } from './windowCalculator';
 
 export enum TileKey {
     HeaderLeft = 'Header_Left',
@@ -51,10 +52,20 @@ export class VirtualGridProps {
     public width: number;
     public columnCount: number;
     public rowCount: number;
-    public estimatedColumnWidth: number;
-    public estimatedRowHeight: number;
-    public columnWidth?: SizeCallback;
-    public rowHeight?: SizeCallback;
+    public columnWidth: number | SizeCallback;
+    public rowHeight: number | SizeCallback;
+    /**
+     * If `columnWidth` is a function and this prop is not specified will use
+     * eager evaluation (invoke the method for all cells on component mount) to
+     * calculate the total scroll width.
+     */
+    public estimatedColumnWidth?: number;
+    /**
+     * If `rowHeight` is a function and this prop is not specified will use
+     * eager evaluation (invoke the method for all cells on component mount) to
+     * calculate the total scroll height.
+     */
+    public estimatedRowHeight?: number;
     public overscanColumnsCount?= 0;
     public overscanRowCount?= 0;
 
@@ -103,16 +114,12 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     constructor(props: VirtualGridProps) {
         super(props);
         this.state = new VirtualGridState();
+        this.tiles = this.createTilesMap();
     }
 
     //
     // life cycle
     //
-
-    public componentDidMount() {
-        this.tiles = this.createTilesMap();
-        this.forceUpdate();
-    }
 
     public componentDidUpdate(prevProps: VirtualGridProps) {
         if (!areShallowEqual(this.props, prevProps)) {
@@ -359,6 +366,14 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                         vertical === 'body' ? bodyRowsCount :
                             1,
 
+                    columnWidth: horizontal === 'left' ? leftWidth :
+                        horizontal === 'center' ? this.props.columnWidth :
+                            rightWidth,
+
+                    rowHeight: vertical === 'header' ? headerHeight :
+                        vertical === 'body' ? this.props.rowHeight :
+                            footerHeight,
+
                     estimatedColumnWidth: horizontal === 'left' ? leftWidth :
                         horizontal === 'center' ? this.props.estimatedColumnWidth :
                             rightWidth,
@@ -366,14 +381,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     estimatedRowHeight: vertical === 'header' ? headerHeight :
                         vertical === 'body' ? this.props.estimatedRowHeight :
                             footerHeight,
-
-                    columnWidth: horizontal === 'left' ? null :
-                        horizontal === 'center' ? this.props.columnWidth :
-                            null,
-
-                    rowHeight: vertical === 'header' ? null :
-                        vertical === 'body' ? this.props.rowHeight :
-                            null,
 
                     overscanColumnsCount: horizontal === 'left' ? 0 :
                         horizontal === 'center' ? this.props.overscanColumnsCount :
@@ -400,34 +407,46 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         const headerHeight = this.props.fixedHeaderHeight;
         const footerHeight = this.props.fixedFooterHeight;
-
-        let bodyHeight: number;
-        const body = this.tiles[TileKey.BodyCenter]?.ref?.current;
-        if (body) {
-            bodyHeight = body.getScrollableHeight();
-        } else {
-            const bodyRows = this.props.rowCount - (headerHeight && 1) - (footerHeight && 1);
-            bodyHeight = bodyRows * this.props.estimatedRowHeight;
-        }
+        const bodyHeight = this.getBodyScrollableHeight();
 
         return bodyHeight + headerHeight + footerHeight;
+    }
+
+    private getBodyScrollableHeight() {
+        const body = this.tiles[TileKey.BodyCenter]?.ref?.current;
+        if (body)
+            return body.getScrollableHeight();
+
+        // Not so DRY, breaks encapsulation and not very efficient either but I
+        // couldn't find a better way to do that which is not terribly ugly...
+        return new WindowCalculator().getTotalSize(
+            'row',
+            this.props.estimatedRowHeight ?? this.props.rowHeight,
+            this.props.rowCount
+        );
     }
 
     private getScrollableAreaWidth() {
 
         const leftWidth = this.props.fixedLeftWidth;
         const rightWidth = this.props.fixedRightWidth;
-
-        let bodyWidth: number;
-        const body = this.tiles[TileKey.BodyCenter]?.ref?.current;
-        if (body) {
-            bodyWidth = body.getScrollableWidth();
-        } else {
-            const bodyColumns = this.props.columnCount - (leftWidth && 1) - (rightWidth && 1);
-            bodyWidth = bodyColumns * this.props.estimatedColumnWidth;
-        }
+        const bodyWidth = this.getBodyScrollableAreaWidth();
 
         return bodyWidth + leftWidth + rightWidth;
+    }
+
+    private getBodyScrollableAreaWidth() {
+        const body = this.tiles[TileKey.BodyCenter]?.ref?.current;
+        if (body)
+            return body.getScrollableHeight();
+
+        // Not so DRY, breaks encapsulation and not very efficient either but I
+        // couldn't find a better way to do that which is not terribly ugly...
+        return new WindowCalculator().getTotalSize(
+            'column',
+            this.props.estimatedColumnWidth ?? this.props.columnWidth,
+            this.props.columnCount
+        );
     }
 
     private getVerticalScrollbarWidth(scrollableHeight: number): number {

@@ -10,8 +10,8 @@ stories.add('empty tile', () => (
         width={500}
         columnCount={0}
         rowCount={0}
-        estimatedColumnWidth={0}
-        estimatedRowHeight={0}
+        columnWidth={1}
+        rowHeight={1}
     >
         {() => null}
     </VirtualTile>
@@ -23,8 +23,8 @@ stories.add('simple tile - grid', () => (
         width={500}
         columnCount={1000}
         rowCount={1000}
-        estimatedColumnWidth={80}
-        estimatedRowHeight={40}
+        columnWidth={80}
+        rowHeight={40}
     >
         {cellProps => (
             <div style={{ textAlign: 'center' }}>
@@ -41,8 +41,8 @@ stories.add('simple tile - grid - rtl', () => (
         width={500}
         columnCount={1000}
         rowCount={1000}
-        estimatedColumnWidth={80}
-        estimatedRowHeight={40}
+        columnWidth={80}
+        rowHeight={40}
     >
         {cellProps => (
             <div style={{ direction: 'ltr', textAlign: 'center' }}>
@@ -58,8 +58,8 @@ stories.add('simple tile - list', () => (
         width={500}
         columnCount={1}
         rowCount={50}
-        estimatedColumnWidth={400}
-        estimatedRowHeight={40}
+        columnWidth={400}
+        rowHeight={40}
     >
         {cellProps => `${cellProps.colIndex}, ${cellProps.rowIndex}`}
     </VirtualTile>
