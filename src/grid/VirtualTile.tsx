@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { DocDir, IMap, SizeCallback } from '../types';
-import { NormalizedScrollEvent } from '../utils';
+import { DocDir, IMap, ScrollDirection, SizeCallback } from '../types';
+import { areShallowEqual, NormalizedScrollEvent, ScrollUtils } from '../utils';
 import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
 import { ElementInfo, WindowCalculator } from './windowCalculator';
-
-export type Scrollability = 'vertical' | 'horizontal' | 'none' | 'both';
 
 export interface RenderTileCellProps {
     colIndex: number;
@@ -15,14 +13,17 @@ export interface RenderTileCellProps {
 }
 
 export interface VirtualTileProps {
-    scrollability: Scrollability;
-    direction: DocDir;
+    direction?: DocDir;
+    /**
+     * Allow scrolling only via calling the `scrollTo` method.
+     */
+    controlledScroll?: boolean;
     height: number;
     width: number;
-    position: 'absolute' | 'sticky';
-    top: number;
-    left: number;
-    float: 'right' | 'left';
+    position?: 'absolute' | 'relative' | 'sticky';
+    top?: number;
+    left?: number;
+    float?: 'right' | 'left';
     columnCount: number;
     rowCount: number;
     estimatedColumnWidth: number;
@@ -35,7 +36,7 @@ export interface VirtualTileProps {
     /**
      * We are only using classes for easier debug inspection...
      */
-    className: string;
+    className?: string;
 
     children: (props: RenderTileCellProps) => React.ReactNode;
 }
@@ -46,6 +47,14 @@ class VirtualTileState {
 }
 
 export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTileState> {
+
+    public static defaultProps: unknown = {
+        direction: 'ltr',
+        controlledScroll: false,
+        position: 'relative',
+        overscanColumnsCount: 0,
+        overscanRowCount: 0
+    };
 
     /**
      * Make sure to return a constant number of elements, this is important for
@@ -73,9 +82,9 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     // public methods
     //
 
-    public scroll(e: NormalizedScrollEvent): void {
+    public scrollTo(e: NormalizedScrollEvent, scrollDirection: ScrollDirection = 'both'): void {
 
-        switch (this.props.scrollability) {
+        switch (scrollDirection) {
 
             case 'both':
                 window.requestAnimationFrame(() => {
@@ -106,7 +115,7 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                 break;
 
             default:
-                throw new Error(`Invalid ${nameof(this.props.scrollability)} value: '${this.props.scrollability}'.`);
+                throw new Error(`Invalid ${nameof(scrollDirection)} value: '${scrollDirection}'.`);
         }
     }
 
@@ -125,26 +134,46 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     }
 
     //
+    // life cycle
+    //
+
+    public componentDidMount() {
+        this.clearCache();
+        this.forceUpdate();
+    }
+
+    public componentDidUpdate(prevProps: VirtualTileProps) {
+        if (!areShallowEqual(this.props, prevProps)) {
+            this.clearCache();
+            this.forceUpdate();
+        }
+    }
+
+    //
     // render methods
     //
 
     public render() {
 
         const rightOrLeft = this.props.direction === 'rtl' ? 'right' : 'left';
+        const overflow = this.props.controlledScroll ? 'hidden' : 'auto';
+        const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
 
         return (
             <div
                 ref={this.containerElement}
                 className={this.props.className + '_Container'}
                 style={{
+                    direction: this.props.direction,
                     height: this.props.height,
                     width: this.props.width,
                     position: this.props.position,
                     top: this.props.top,
                     [rightOrLeft]: this.props.left,
                     float: this.props.float,
-                    overflow: 'hidden'
+                    overflow
                 }}
+                onScroll={onScroll}
             >
                 <div
                     className={this.props.className + '_ScrollableArea'}
@@ -241,6 +270,18 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             </VirtualCell>
         );
     }
+
+    //
+    // event handlers
+    //
+
+    private handleScroll = (e: React.UIEvent<HTMLDivElement>): void => {
+        const normalized = ScrollUtils.normalizeScrollEvent(e, this.props.direction);
+        this.setState({
+            scrollTop: normalized.scrollTop,
+            scrollLeft: normalized.normalizedScrollLeft
+        });
+    };
 
     //
     // render helpers

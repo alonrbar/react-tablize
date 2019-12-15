@@ -19,10 +19,10 @@ stories.add('simple grid', () => (
     <GridView
         style={{
             direction: 'rtl',
-            width: 400
+            width: 500
         }}
-        columnCount={50}
-        rowCount={50}
+        columnCount={1000}
+        rowCount={1000}
         estimatedColumnWidth={80}
         estimatedRowHeight={40}
         fixedHeaderHeight={40}
@@ -30,8 +30,8 @@ stories.add('simple grid', () => (
         fixedLeftWidth={80}
     >
         {cellProps => (
-            <div style={{ textAlign: 'center' }}>
-                {`${cellProps.absRowIndex}, ${cellProps.absColIndex}`}
+            <div style={{ direction: 'ltr', textAlign: 'center' }}>
+                {`${cellProps.absColIndex}, ${cellProps.absRowIndex}`}
             </div>
         )}
     </GridView>
@@ -44,6 +44,6 @@ stories.add('simple grid - list', () => (
         estimatedColumnWidth={400}
         estimatedRowHeight={40}
     >
-        {cellProps => `${cellProps.absRowIndex}, ${cellProps.absColIndex}`}
+        {cellProps => `${cellProps.absColIndex}, ${cellProps.absRowIndex}`}
     </GridView>
 ));

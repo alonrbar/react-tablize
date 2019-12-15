@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../types';
-import { DomUtils, areShallowEqual, ScrollUtils } from '../utils';
+import { DocDir, ScrollDirection, ScrollEvent, SizeCallback } from '../types';
+import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
 import { VirtualTile, VirtualTileProps } from './VirtualTile';
 
 export enum TileKey {
@@ -73,6 +73,7 @@ interface TileEntry {
     ref: React.RefObject<VirtualTile>;
     rowIndexOffset: number;
     columnIndexOffset: number;
+    scrollDirection: ScrollDirection;
     props: Omit<VirtualTileProps, "children">;
 }
 
@@ -191,17 +192,17 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
     private handleScroll = (e: React.UIEvent<HTMLDivElement>): void => {
         const normalized = ScrollUtils.normalizeScrollEvent(e, this.direction);
-        
+
         // restore tiles position
         this.setState({
             scrollTop: normalized.scrollTop,
             scrollLeft: normalized.normalizedScrollLeft
         });
-        
+
         // scroll tiles content
         for (const tileKey of this.activeTiles) {
-            const { ref } = this.tiles[tileKey];
-            ref.current.scroll(normalized);
+            const { ref, scrollDirection } = this.tiles[tileKey];
+            ref.current.scrollTo(normalized, scrollDirection);
         }
     };
 
@@ -318,13 +319,15 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     horizontal === 'center' ? (leftWidth && 1) :
                         centerColumnsCount + (leftWidth && 1),
 
+                scrollDirection: isCorner ? 'none' :
+                    isVerticalFixed ? 'horizontal' :
+                        isHorizontalFixed ? 'vertical' :
+                            'both',
+
                 props: {
                     className: this.createClassName(tileKey),
 
-                    scrollability: isCorner ? 'none' :
-                        isVerticalFixed ? 'horizontal' :
-                            isHorizontalFixed ? 'vertical' :
-                                'both',
+                    controlledScroll: true,
 
                     direction: this.direction,
 

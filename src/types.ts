@@ -14,3 +14,5 @@ export interface ScrollEvent {
     scrollTop: number;
     scrollLeft: number;
 }
+
+export type ScrollDirection = 'vertical' | 'horizontal' | 'none' | 'both';
