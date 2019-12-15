@@ -11,6 +11,7 @@ export interface ElementInfo {
 class CalcData {
     public cache: IMap<ElementInfo> = {};
     public lastMeasuredIndex = -1;
+    public lastFromPosition = -1;
 }
 
 type CalcDataMap = {
@@ -53,7 +54,6 @@ export class WindowCalculator {
             totalElementsCount,
             elementSize
         );
-        fromIndex = Math.max(0, fromIndex - elementsOverscan);
 
         let toIndex = this.findNearestItem(
             elementType,
@@ -61,8 +61,20 @@ export class WindowCalculator {
             totalElementsCount,
             elementSize
         );
-        toIndex = Math.min(toIndex + elementsOverscan, totalElementsCount - 1);
 
+        // Determine scroll direction and set overscan accordingly
+        if (fromPosition < this.data[elementType].lastFromPosition) {
+            fromIndex -= elementsOverscan;
+        } else {
+            toIndex += elementsOverscan;
+        }
+        this.data[elementType].lastFromPosition = fromPosition;
+
+        // Prevent range error
+        fromIndex = Math.max(0, fromIndex);
+        toIndex = Math.min(toIndex, totalElementsCount - 1);
+
+        // Enforce "minElementsCountToReturn"
         while (toIndex - fromIndex + 1 < minElementsCountToReturn) {
             if (toIndex + 1 < totalElementsCount) {
                 toIndex++;
@@ -71,6 +83,7 @@ export class WindowCalculator {
             }
         }
 
+        // Get elements info
         const info: ElementInfo[] = [];
         for (let i = fromIndex; i <= toIndex; i++) {
             info.push(this.getElementInfo(
@@ -83,8 +96,8 @@ export class WindowCalculator {
     }
 
     public getTotalSize(
-        elementType: ElementType, 
-        elementSize: number | SizeCallback, 
+        elementType: ElementType,
+        elementSize: number | SizeCallback,
         estimatedElementSize: null | number,
         elementsCount: number
     ) {

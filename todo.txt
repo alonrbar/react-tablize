@@ -1,3 +1,2 @@
-- render ahead only
 - (graph table)
 - custom scrollbar?
