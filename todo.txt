@@ -1,2 +1,1 @@
-- (graph table)
 - custom scrollbar?

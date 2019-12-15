@@ -50,7 +50,13 @@ export class VirtualGridProps {
 
     public height: number;
     public width: number;
+    /**
+     * Number of columns in the grid, excluding fixed columns.
+     */
     public columnCount: number;
+    /**
+     * Number of rows in the grid, excluding the header and footer.
+     */
     public rowCount: number;
     public columnWidth: number | SizeCallback;
     public rowHeight: number | SizeCallback;
@@ -332,13 +338,9 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         const footerHeight = this.props.fixedFooterHeight;
         const bodyHeight = containerHeight - horizontalScrollbarWidth - headerHeight - footerHeight;
 
-        const bodyRowsCount = this.props.rowCount - (headerHeight && 1) - (footerHeight && 1);
-
         const leftWidth = this.props.fixedLeftWidth;
         const rightWidth = this.props.fixedRightWidth;
         const centerWidth = containerWidth - verticalScrollbarWidth - leftWidth - rightWidth;
-
-        const centerColumnsCount = this.props.columnCount - (leftWidth && 1) - (rightWidth && 1);
 
         // create factory method
 
@@ -364,11 +366,11 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
                 rowIndexOffset: vertical === 'header' ? 0 :
                     vertical === 'body' ? (headerHeight && 1) :
-                        bodyRowsCount + (headerHeight && 1),
+                        this.props.rowCount + (headerHeight && 1),
 
                 columnIndexOffset: horizontal === 'left' ? 0 :
                     horizontal === 'center' ? (leftWidth && 1) :
-                        centerColumnsCount + (leftWidth && 1),
+                        this.props.columnCount + (leftWidth && 1),
 
                 scrollDirection: isCorner ? 'none' :
                     isVerticalFixed ? 'horizontal' :
@@ -391,11 +393,11 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                             rightWidth,
 
                     columnCount: horizontal === 'left' ? 1 :
-                        horizontal === 'center' ? centerColumnsCount :
+                        horizontal === 'center' ? this.props.columnCount :
                             1,
 
                     rowCount: vertical === 'header' ? 1 :
-                        vertical === 'body' ? bodyRowsCount :
+                        vertical === 'body' ? this.props.rowCount :
                             1,
 
                     columnWidth: horizontal === 'left' ? leftWidth :
