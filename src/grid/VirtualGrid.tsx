@@ -472,7 +472,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     private getBodyScrollableAreaWidth() {
         const body = this.tiles[TileKey.BodyCenter]?.ref?.current;
         if (body)
-            return body.getScrollableHeight();
+            return body.getScrollableWidth();
 
         // Body not rendered yet - have to calculate independently.  
         // Not so DRY, breaks encapsulation and not very efficient either but I
