@@ -7,6 +7,9 @@ import { TableHead } from './TableHead';
 import { TableRow } from './TableRow';
 declare type TableChildren_RowsSyntax = [React.SubComp<TableHead>, React.SubComp<TableBody>];
 declare type TableChildren_ColumnsSyntax = OneOrMore<React.SubComp<TableColumn>>;
+/**
+ * Applicable only on non-virtual tables.
+ */
 export declare const RowAutoSize: () => number;
 export declare type RowKeyCallback = (index: number) => React.Key;
 export declare class TableViewProps {
@@ -17,10 +20,22 @@ export declare class TableViewProps {
     dir?: DocDir;
     className?: string;
     style?: React.CSSProperties;
+    /**
+     * Row height in pixels.
+     *
+     * Default: 50
+     */
     rowHeight?: number | SizeCallback;
     emptyMessage?: string;
     customScrollbars?: boolean;
     keyScroll?: boolean;
+    /**
+     * Number of extra buffer items to render above/below the visible items.
+     * Tweaking this can help reduce scroll flickering on certain
+     * browsers/devices.
+     *
+     * Default: 20
+     */
     overscanCount?: number;
 }
 export declare class TableView extends React.PureComponent<TableViewProps> {

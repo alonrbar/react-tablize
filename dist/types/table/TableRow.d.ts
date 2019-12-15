@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { OneOrMore } from '../types';
 import { CellContent, TableCell } from './TableCell';
+/**
+ * One or more cells.
+ */
 export declare type RowContent = OneOrMore<React.SubComp<TableCell> | CellContent>;
 export interface TableRowProps extends React.DivProps {
     children?: RowContent;

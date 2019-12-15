@@ -11,7 +11,7 @@
         "sourceMap": true,
         "target": "es5",
         "module": "es2015",
-        "removeComments": true,
+        "removeComments": false,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "downlevelIteration": true,

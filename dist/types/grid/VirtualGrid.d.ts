@@ -16,9 +16,21 @@ export interface TilePosition {
     horizontal: 'left' | 'center' | 'right';
 }
 export interface RenderCellProps {
+    /**
+     * Absolute column index, taking into account fixed columns.
+     */
     absColIndex: number;
+    /**
+     * Absolute row index, taking into account fixed header and/or footer.
+     */
     absRowIndex: number;
+    /**
+     * Column index relative to the current tile.
+     */
     relColIndex: number;
+    /**
+     * Row index relative to the current tile.
+     */
     relRowIndex: number;
     tileKey: TileKey;
     tilePosition: TilePosition;
@@ -29,11 +41,27 @@ export declare class VirtualGridProps {
     onScroll?: (e: ScrollEvent) => void;
     height: number;
     width: number;
+    /**
+     * Number of columns in the grid, excluding fixed columns.
+     */
     columnCount: number;
+    /**
+     * Number of rows in the grid, excluding the header and footer.
+     */
     rowCount: number;
     columnWidth: number | SizeCallback;
     rowHeight: number | SizeCallback;
+    /**
+     * If `columnWidth` is a function and this prop is not specified will use
+     * eager evaluation (invoke the method for all cells on component mount) to
+     * calculate the total scroll width.
+     */
     estimatedColumnWidth?: number;
+    /**
+     * If `rowHeight` is a function and this prop is not specified will use
+     * eager evaluation (invoke the method for all cells on component mount) to
+     * calculate the total scroll height.
+     */
     estimatedRowHeight?: number;
     overscanColumnsCount?: number;
     overscanRowCount?: number;
@@ -74,6 +102,9 @@ export declare class VirtualGrid extends React.PureComponent<VirtualGridProps, V
     private getHorizontalScrollbarWidth;
     private getContainerHeight;
     private getContainerWidth;
+    /**
+     * We are only using classes for easier debug inspection...
+     */
     private createClassName;
     private resetTiles;
 }
