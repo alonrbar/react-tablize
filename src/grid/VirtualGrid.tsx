@@ -82,6 +82,8 @@ export class VirtualGridProps {
 
 interface TileEntry {
     ref: React.RefObject<VirtualTile>;
+    position: TilePosition;
+    tileRowTop: number;
     rowIndexOffset: number;
     columnIndexOffset: number;
     scrollDirection: ScrollDirection;
@@ -107,6 +109,18 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
     private get activeTiles(): TileKey[] {
         return Object.keys(this.tiles) as TileKey[];
+    }
+
+    private get headerTiles(): TileKey[] {
+        return this.activeTiles.filter(key => this.tiles[key].position.vertical === 'header');
+    }
+
+    private get bodyTiles(): TileKey[] {
+        return this.activeTiles.filter(key => this.tiles[key].position.vertical === 'body');
+    }
+
+    private get footerTiles(): TileKey[] {
+        return this.activeTiles.filter(key => this.tiles[key].position.vertical === 'footer');
     }
 
     private tiles: Partial<TilesMap> = {};
@@ -157,27 +171,54 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                         width: scrollableWidth
                     }}
                 >
-                    {this.activeTiles.map(this.renderTile)}
+                    {this.renderTilesRow(this.headerTiles)}
+                    {this.renderTilesRow(this.bodyTiles)}
+                    {this.renderTilesRow(this.footerTiles)}
                 </div>
             </div>
         );
     }
 
-    private renderTile = (tileKey: TileKey): React.ReactNode => {
+    private renderTilesRow(tileKeys: TileKey[]) {
+        if (!tileKeys?.length)
+            return null;
+
+        const firstTile = this.tiles[tileKeys[0]];
+
+        const rightOrLeft = this.direction === 'rtl' ? 'right' : 'left';
 
         const isSticky = DomUtils.isPositionStickySupported;
+        const position = isSticky ? 'sticky' : 'absolute';
         const topOffset = (isSticky ? 0 : this.state.scrollTop);
         const leftOffset = (isSticky ? 0 : this.state.scrollLeft);
 
-        const { ref, props, rowIndexOffset, columnIndexOffset } = this.tiles[tileKey];
+        const width = tileKeys
+            .map(key => this.tiles[key].props.width)
+            .reduce((total, cur) => total + cur, 0);
 
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    position,
+                    top: firstTile.tileRowTop + topOffset,
+                    [rightOrLeft]: 0 + leftOffset,
+                    height: firstTile.props.height,
+                    width
+                }}
+            >
+                {tileKeys.map(this.renderTile)}
+            </div>
+        );
+    }
+
+    private renderTile = (tileKey: TileKey): React.ReactNode => {
+        const { ref, props, rowIndexOffset, columnIndexOffset } = this.tiles[tileKey];
         return (
             <VirtualTile
                 key={tileKey}
                 ref={ref}
                 {...props}
-                top={props.top + topOffset}
-                left={props.left + leftOffset}
             >
                 {renderProps => this.props.children({
                     tileKey,
@@ -299,10 +340,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         const centerColumnsCount = this.props.columnCount - (leftWidth && 1) - (rightWidth && 1);
 
-        const isSticky = DomUtils.isPositionStickySupported;
-        const position = isSticky ? 'sticky' : 'absolute';
-        const float = (!isSticky ? undefined : this.direction === 'ltr' ? 'left' : 'right');
-
         // create factory method
 
         return (tileKey: TileKey): TileEntry => {
@@ -313,10 +350,17 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
             const isHorizontalFixed = horizontal === 'left' || horizontal === 'right';
             const isCorner = isVerticalFixed && isHorizontalFixed;
 
-            const shouldFloat = (horizontal === 'left' || (horizontal === 'center' && !!rightWidth));
-
             return {
                 ref: React.createRef<VirtualTile>(),
+
+                position: {
+                    vertical,
+                    horizontal
+                },
+
+                tileRowTop: vertical === 'header' ? 0 :
+                    vertical === 'body' ? headerHeight :
+                        headerHeight + bodyHeight,
 
                 rowIndexOffset: vertical === 'header' ? 0 :
                     vertical === 'body' ? (headerHeight && 1) :
@@ -345,18 +389,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     width: horizontal === 'left' ? leftWidth :
                         horizontal === 'center' ? centerWidth :
                             rightWidth,
-
-                    position,
-
-                    top: vertical === 'header' ? 0 :
-                        vertical === 'body' ? headerHeight :
-                            headerHeight + bodyHeight,
-
-                    left: horizontal === 'left' ? 0 :
-                        horizontal === 'center' ? leftWidth :
-                            leftWidth + centerWidth,
-
-                    float: shouldFloat ? float : undefined,
 
                     columnCount: horizontal === 'left' ? 1 :
                         horizontal === 'center' ? centerColumnsCount :

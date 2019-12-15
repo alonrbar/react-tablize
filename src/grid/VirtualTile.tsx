@@ -20,10 +20,6 @@ export class VirtualTileProps {
     public controlledScroll?: boolean;
     public height: number;
     public width: number;
-    public position?: 'absolute' | 'relative' | 'sticky' = 'relative';
-    public top?: number;
-    public left?: number;
-    public float?: 'right' | 'left';
     public columnCount: number;
     public rowCount: number;
     public columnWidth: number | SizeCallback;
@@ -47,6 +43,7 @@ export class VirtualTileProps {
      * We are only using classes for easier debug inspection...
      */
     public className?: string;
+    public style?: React.CSSProperties;
 
     public children: (props: RenderTileCellProps) => React.ReactNode;
 }
@@ -169,7 +166,6 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
     public render() {
 
-        const rightOrLeft = this.props.direction === 'rtl' ? 'right' : 'left';
         const overflow = this.props.controlledScroll ? 'hidden' : 'auto';
         const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
 
@@ -181,11 +177,9 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                     direction: this.props.direction,
                     height: this.props.height,
                     width: this.props.width,
-                    position: this.props.position,
-                    top: this.props.top,
-                    [rightOrLeft]: this.props.left,
-                    float: this.props.float,
-                    overflow
+                    position: 'relative',
+                    overflow,
+                    ...this.props.style
                 }}
                 onScroll={onScroll}
             >
