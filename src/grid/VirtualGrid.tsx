@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir, ScrollDirection, ScrollEvent, SizeCallback } from '../types';
+import { DocDir, ScrollEvent, SizeCallback } from '../types';
 import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
 import { VirtualTile, VirtualTileProps } from './VirtualTile';
 import { WindowCalculator } from './windowCalculator';
@@ -92,7 +92,6 @@ interface TileEntry {
     tileRowTop: number;
     rowIndexOffset: number;
     columnIndexOffset: number;
-    scrollDirection: ScrollDirection;
     props: Omit<VirtualTileProps, "children">;
 }
 
@@ -257,8 +256,8 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         // Scroll tiles content
         for (const tileKey of this.activeTiles) {
-            const { ref, scrollDirection } = this.tiles[tileKey];
-            ref.current.scrollTo(normalized, scrollDirection);
+            const { ref } = this.tiles[tileKey];
+            ref.current.scrollTo(normalized);
         }
     };
 
@@ -374,15 +373,15 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     horizontal === 'center' ? (leftWidth && 1) :
                         this.props.columnCount + (leftWidth && 1),
 
-                scrollDirection: isCorner ? 'none' :
-                    isVerticalFixed ? 'horizontal' :
-                        isHorizontalFixed ? 'vertical' :
-                            'both',
-
                 props: {
                     className: this.createClassName(tileKey),
 
                     controlledScroll: true,
+
+                    scrollDirection: isCorner ? 'none' :
+                        isVerticalFixed ? 'horizontal' :
+                            isHorizontalFixed ? 'vertical' :
+                                'both',
 
                     direction: this.direction,
 

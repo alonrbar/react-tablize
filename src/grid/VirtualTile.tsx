@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir, IMap, ScrollDirection, SizeCallback } from '../types';
+import { DocDir, IMap, ScrollDirection, ScrollEvent, SizeCallback } from '../types';
 import { areShallowEqual, NormalizedScrollEvent, ScrollUtils } from '../utils';
 import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
@@ -18,6 +18,7 @@ export class VirtualTileProps {
      * Allow scrolling only via calling the `scrollTo` method.
      */
     public controlledScroll?: boolean;
+    public scrollDirection?: ScrollDirection = 'both';
     public height: number;
     public width: number;
     public columnCount: number;
@@ -38,6 +39,26 @@ export class VirtualTileProps {
     public estimatedRowHeight?: number;
     public overscanColumnsCount?= 0;
     public overscanRowCount?= 0;
+
+    /**
+     * Tag name passed to `React.createElement` to create the inner "scrollable
+     * area" element. This is an advanced property.
+     */
+    public innerElementType?: React.ElementType = 'div';
+    /**
+     * Ref to attach to the inner "scrollable area" element. This is an advanced
+     * property.
+     */
+    public innerRef?: React.RefObject<any>;
+    /**
+     * Tag name passed to `React.createElement` to create the outer container
+     * element. This is an advanced property.
+     */
+    public outerElementType?: React.ElementType = 'div';
+    /**
+     * Ref to attach to the outer container element. This is an advanced property.
+     */
+    public outerRef?: React.RefObject<any>;
 
     /**
      * We are only using classes for easier debug inspection...
@@ -87,41 +108,15 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     // public methods
     //
 
-    public scrollTo(e: NormalizedScrollEvent, scrollDirection: ScrollDirection = 'both'): void {
-
-        switch (scrollDirection) {
-
-            case 'both':
-                window.requestAnimationFrame(() => {
-                    this.containerElement.current.scrollTop = e.scrollTop;
-                    this.containerElement.current.scrollLeft = e.rawScrollLeft;
-                });
-                this.setState({
-                    scrollTop: e.scrollTop,
-                    scrollLeft: e.normalizedScrollLeft
-                });
-                break;
-
-            case 'vertical':
-                window.requestAnimationFrame(() => {
-                    this.containerElement.current.scrollTop = e.scrollTop;
-                });
-                this.setState({ scrollTop: e.scrollTop });
-                break;
-
-            case 'horizontal':
-                window.requestAnimationFrame(() => {
-                    this.containerElement.current.scrollLeft = e.rawScrollLeft;
-                });
-                this.setState({ scrollLeft: e.normalizedScrollLeft });
-                break;
-
-            case 'none':
-                break;
-
-            default:
-                throw new Error(`Invalid ${nameof(scrollDirection)} value: '${scrollDirection}'.`);
-        }
+    public scrollTo(e: NormalizedScrollEvent): void {
+        this.containerElementScroll({
+            scrollTop: e.scrollTop,
+            scrollLeft: e.rawScrollLeft
+        });
+        this.setScrollState({
+            scrollTop: e.scrollTop,
+            scrollLeft: e.normalizedScrollLeft
+        });
     }
 
     public getScrollableHeight(): number {
@@ -162,6 +157,9 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
             this.clearCache();
             this.forceUpdate();
         }
+        if (this.props.outerRef) {
+            (this.props.outerRef as any).current = this.containerElement.current;
+        }
     }
 
     //
@@ -171,33 +169,41 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     public render() {
 
         const overflow = this.props.controlledScroll ? 'hidden' : 'auto';
-        const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;        
+        const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
 
         return (
-            <div
-                ref={this.containerElement}
-                className={this.className + '_Container'}
-                style={{
-                    direction: this.props.direction,
-                    height: this.props.height,
-                    width: this.props.width,
-                    position: 'relative',
-                    overflow,
-                    ...this.props.style
-                }}
-                onScroll={onScroll}
-            >
-                <div
-                    className={this.className + '_ScrollableArea'}
-                    style={{
-                        height: this.getScrollableHeight(),
-                        width: this.getScrollableWidth()
-                    }}
-                >
-                    {this.renderCells()}
-                </div>
-            </div>
-        );
+
+            // outer element - container
+            React.createElement(
+                this.props.outerElementType,
+                {
+                    ref: this.containerElement,
+                    className: this.className + '_Container',
+                    style: {
+                        direction: this.props.direction,
+                        height: this.props.height,
+                        width: this.props.width,
+                        position: 'relative',
+                        overflow,
+                        ...this.props.style
+                    },
+                    onScroll: onScroll,
+                },
+
+                // inner element - scrollable area
+                React.createElement(
+                    this.props.innerElementType,
+                    {
+                        ref: this.props.innerRef,
+                        className: this.className + '_ScrollableArea',
+                        style: {
+                            height: this.getScrollableHeight(),
+                            width: this.getScrollableWidth()
+                        }
+                    },
+                    this.renderCells()
+                )
+            ));
     }
 
     private renderCells() {
@@ -282,16 +288,69 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     }
 
     //
-    // event handlers
+    // scroll handlers
     //
 
     private handleScroll = (e: React.UIEvent<HTMLDivElement>): void => {
         const normalized = ScrollUtils.normalizeScrollEvent(e, this.props.direction);
-        this.setState({
+        this.setScrollState({
             scrollTop: normalized.scrollTop,
             scrollLeft: normalized.normalizedScrollLeft
         });
     };
+
+    private containerElementScroll(e: ScrollEvent): void {
+        switch (this.props.scrollDirection) {
+
+            case 'both':
+                window.requestAnimationFrame(() => {
+                    this.containerElement.current.scrollTop = e.scrollTop;
+                    this.containerElement.current.scrollLeft = e.scrollLeft;
+                });
+                break;
+
+            case 'vertical':
+                window.requestAnimationFrame(() => {
+                    this.containerElement.current.scrollTop = e.scrollTop;
+                });
+                break;
+
+            case 'horizontal':
+                window.requestAnimationFrame(() => {
+                    this.containerElement.current.scrollLeft = e.scrollLeft;
+                });
+                break;
+
+            case 'none':
+                break;
+
+            default:
+                throw new Error(`Invalid ${nameof(this.props.scrollDirection)} value: '${this.props.scrollDirection}'.`);
+        }
+    }
+
+    private setScrollState(e: ScrollEvent): void {
+        switch (this.props.scrollDirection) {
+
+            case 'both':
+                this.setState(e);
+                break;
+
+            case 'vertical':
+                this.setState({ scrollTop: e.scrollTop });
+                break;
+
+            case 'horizontal':
+                this.setState({ scrollLeft: e.scrollLeft });
+                break;
+
+            case 'none':
+                break;
+
+            default:
+                throw new Error(`Invalid ${nameof(this.props.scrollDirection)} value: '${this.props.scrollDirection}'.`);
+        }
+    }
 
     //
     // render helpers

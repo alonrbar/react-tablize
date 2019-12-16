@@ -26,4 +26,5 @@ export const StyledTableCell = styled.div`
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-sizing: border-box;
 `;

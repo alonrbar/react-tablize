@@ -1,17 +1,7 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { VariableSizeList } from 'react-window';
+import { RenderTileCellProps, VirtualTile } from '../grid';
 import { CustomScrollbars } from '../internal';
-import { IMap } from '../types';
-import { KeyEvent, Keys } from '../utils';
 import { List, ListProps } from './List';
-
-const scrollKeys: IMap<boolean> = {
-    [Keys.PageUp]: true,
-    [Keys.PageDown]: true,
-    [Keys.End]: true,
-    [Keys.Home]: true,
-};
 
 export interface VirtualListProps extends ListProps {
     keyScroll?: boolean;
@@ -19,52 +9,69 @@ export interface VirtualListProps extends ListProps {
 
 export class VirtualList extends React.PureComponent<VirtualListProps> implements List {
 
-    private tableRef = React.createRef<VariableSizeList>();
-    private tableInnerRef = React.createRef<HTMLElement>();
-    private tableOuterRef = React.createRef<HTMLElement>();
+    private get isHorizontal(): boolean {
+        return this.props.layout === 'horizontal';
+    }
+
+    private tableRef = React.createRef<VirtualTile>();
 
     public refresh() {
         if (this.tableRef.current) {
-            this.tableRef.current.resetAfterIndex(0, false);
+            this.tableRef.current.clearCache();
         }
         this.forceUpdate();
     }
 
     public scrollTo(offset: number): void {
         if (this.tableRef.current) {
-            this.tableRef.current.scrollTo(offset);
+
+            const top = (this.isHorizontal ? undefined : offset);
+            const left = (this.isHorizontal ? offset : undefined);
+
+            this.tableRef.current.scrollTo({
+                scrollTop: top,
+                rawScrollLeft: left,
+                normalizedScrollLeft: left
+            });
         }
     }
 
     public render() {
         return (
-            <VariableSizeList
+            <VirtualTile
+
                 ref={this.tableRef}
-                innerRef={this.tableInnerRef}
-                outerRef={this.tableOuterRef}
+
+                direction={this.props.dir}
+                scrollDirection={this.isHorizontal ? 'horizontal' : 'vertical'}
+
                 style={Object.assign({ outline: 'none' }, this.props.style)}
                 outerElementType={this.getOuterElementType()}
-                direction={this.props.dir}
-                layout={this.props.layout}
+
                 height={this.props.height}
                 width={this.props.width}
-                itemCount={this.props.itemCount}
-                itemSize={this.props.itemSize}
-                overscanCount={this.props.overscan}
-                {...this.getKeyScrollProps()}
+
+                columnCount={this.isHorizontal ? this.props.itemCount : 1}
+                rowCount={this.isHorizontal ? 1 : this.props.itemCount}
+
+                columnWidth={this.isHorizontal ? this.props.itemSize : this.props.width}
+                rowHeight={this.isHorizontal ? this.props.height : this.props.itemSize}
+
+                overscanColumnsCount={this.isHorizontal ? this.props.overscan : 0}
+                overscanRowCount={this.isHorizontal ? 0 : this.props.overscan}
             >
-                {({ index, style }) => this.renderRow(index, style)}
-            </VariableSizeList>
+                {cellProps => this.renderRow(cellProps)}
+            </VirtualTile>
         );
     }
 
-    private renderRow(index: number, style: React.CSSProperties) {
+    private renderRow(cellProps: RenderTileCellProps) {
+        const index = (this.props.layout === 'horizontal' ? cellProps.colIndex : cellProps.rowIndex);
         const row = this.props.children(index);
 
         return React.cloneElement(row, {
             style: {
-                ...row.props.style,
-                ...style
+                ...row.props.style
             }
         });
     }
@@ -72,52 +79,6 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
     //
     // scroll with keys
     //
-
-    private getKeyScrollProps() {
-        if (this.props.keyScroll === false)
-            return {};
-        return {
-            onMouseEnter: this.registerKeyHandlers,
-            onMouseLeave: this.removeKeyHandlers,
-            onKeyDown: this.scrollByKey
-        };
-    }
-
-    private registerKeyHandlers = () => {
-        window.addEventListener('keydown', this.scrollByKey);
-    };
-
-    private removeKeyHandlers = () => {
-        window.removeEventListener('keydown', this.scrollByKey);
-    };
-
-    private scrollByKey = ({ key }: KeyEvent) => {
-
-        // https://dev.to/dance2die/scrolling-with-page-up-down-keys-in-react-window-31ei
-
-        if (!scrollKeys[key])
-            return;
-
-        if (!this.tableRef.current || !this.tableInnerRef.current || !this.tableOuterRef.current)
-            return;
-
-        const scrollElement = (this.props.customScrollbar ? this.tableOuterRef.current : this.tableRef.current);
-        const table = (ReactDOM.findDOMNode(scrollElement) as HTMLElement);
-        const currentOffset = table.scrollTop;
-        const bodyHeight = table.clientHeight;
-        const pageSize = bodyHeight * 0.85;
-        const minOffset = 0.1;
-        const maxOffset = this.tableInnerRef.current.clientHeight;
-
-        const offsetByKey: IMap<number> = {
-            [Keys.PageUp]: Math.max(minOffset, currentOffset - pageSize),
-            [Keys.PageDown]: Math.min(currentOffset + pageSize, maxOffset),
-            [Keys.End]: maxOffset,
-            [Keys.Home]: minOffset,
-        };
-
-        this.tableRef.current.scrollTo(offsetByKey[key]);
-    };
 
     private getOuterElementType() {
         return this.props.customScrollbar ? CustomScrollbars : undefined;
