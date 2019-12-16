@@ -35,6 +35,7 @@ export class VirtualCell extends React.PureComponent<VirtualCellProps> {
             <div
                 className={this.props.className}
                 style={{
+                    boxSizing: 'border-box',
                     height: this.props.height,
                     width: this.props.width,
                     position: "absolute",
