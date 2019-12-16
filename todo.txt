@@ -1,1 +1,4 @@
-- custom scrollbar?
+
+- fix table view RTL
+- fix dynamic height handling
+- improve stable id - support grids over 99,999,999 * 99,999,999

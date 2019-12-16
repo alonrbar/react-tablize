@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import * as React from 'react';
 import { GridView } from 'src/grid';
 
-const stories = storiesOf('GridView - Basic', module);
+const stories = storiesOf('GridView', module);
 
 stories.add('empty grid', () => (
     <GridView
@@ -47,3 +47,64 @@ stories.add('simple grid - list', () => (
         {cellProps => `${cellProps.absColIndex}, ${cellProps.absRowIndex}`}
     </GridView>
 ));
+
+stories.add('dynamic width', () => {
+    const colCount = 3;
+    const cellStyle: React.CSSProperties = {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        boxSizing: 'border-box',
+        alignItems: 'center',
+        padding: 5
+    };
+    return (
+        <GridView
+            style={{
+                direction: 'rtl',
+                width: 300
+            }}
+            columnCount={colCount}
+            rowCount={20}
+            columnWidth={(index: number): number => {
+
+                // average column
+                if (index === colCount - 1)
+                    return 80;
+
+                // assignment
+                return 120;
+            }}
+            rowHeight={70}
+            estimatedColumnWidth={80}
+            fixedHeaderHeight={60}
+            fixedFooterHeight={70}
+            fixedLeftWidth={120}
+        >
+            {cellProps => {
+
+                if (cellProps.tilePosition.vertical === 'header') {
+                    return (
+                        <div style={{ background: 'beige', ...cellStyle }}>
+                            {cellProps.absColIndex}, {cellProps.absRowIndex}
+                        </div>
+                    );
+                }
+
+                if (cellProps.tilePosition.vertical === 'footer') {
+                    return (
+                        <div style={{ background: 'beige', ...cellStyle }}>
+                            {cellProps.absColIndex}, {cellProps.absRowIndex}
+                        </div>
+                    );
+                }
+
+                return (
+                    <div style={{ background: 'antiquewhite', ...cellStyle }}>
+                        {cellProps.absColIndex}, {cellProps.absRowIndex}
+                    </div>
+                );
+            }}
+        </GridView>
+    );
+});
