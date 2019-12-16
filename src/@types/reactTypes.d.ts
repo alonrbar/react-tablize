@@ -7,4 +7,6 @@ declare module 'react' {
     type DivProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
     type RefFunction<T> = (elem: T) => void;
+
+    type ComponentWithStyle = React.Component<{ style?: React.CSSProperties }>;
 }

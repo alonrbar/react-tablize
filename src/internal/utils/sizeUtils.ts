@@ -1,3 +1,4 @@
+import * as React from 'react';
 
 export interface ElementHeights {
     height: string | number;
@@ -5,22 +6,15 @@ export interface ElementHeights {
     maxHeight: string | number;
 }
 
-export interface TableHeights {
-    total: string | number;
-    head: string | number;
-}
-
-export type ComponentWithStyle = React.Component<{ style?: React.CSSProperties }>;
-
 export class SizeUtils {
 
-    public static cssSizeString(size: any): string {
-        if (Number.isFinite(size))
+    public static cssSizeString(size: number | string): string {
+        if (Number.isFinite(size as number))
             return size + 'px';
-        return size;
+        return size as string;
     }
 
-    public static geElementHeights(component: ComponentWithStyle, defaultHeight: number | string): ElementHeights {
+    public static getElementHeights(component: React.ComponentWithStyle, defaultHeight: number | string): ElementHeights {
         const style = (component && component.props.style) || {};
 
         let height = style.height;
@@ -41,36 +35,4 @@ export class SizeUtils {
             maxHeight
         };
     }
-
-    public static getBodyHeights(table: ComponentWithStyle, head: ComponentWithStyle, defaultHeights: TableHeights): ElementHeights {
-
-        const totalHeights = this.geElementHeights(table, defaultHeights.total);
-        const headHeight = this.getHeadHeight(head, defaultHeights.head);
-        const bodyHeights = this.geElementHeights(table, undefined);
-
-        let height = bodyHeights.height || totalHeights.height;
-        let minHeight = bodyHeights.minHeight || totalHeights.minHeight;
-        let maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
-
-        if (headHeight) {
-            height = `calc(${height} - ${headHeight})`;
-            if (minHeight)
-                minHeight = `calc(${minHeight} - ${headHeight})`;
-            if (maxHeight)
-                maxHeight = `calc(${maxHeight} - ${headHeight})`;
-        }
-
-        return {
-            height,
-            minHeight,
-            maxHeight
-        };
-    }
-
-    private static getHeadHeight(head: ComponentWithStyle, defaultHeight: string | number): string | number {
-        if (head) {
-            return this.geElementHeights(head, defaultHeight).height;
-        }
-        return 0;
-    }    
 }

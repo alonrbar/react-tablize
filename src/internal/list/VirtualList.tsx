@@ -77,7 +77,7 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
     }
 
     //
-    // scroll with keys
+    // render helpers
     //
 
     private getOuterElementType() {

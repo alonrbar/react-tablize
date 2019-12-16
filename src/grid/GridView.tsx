@@ -26,7 +26,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                         direction: this.direction,
                         width: '100%',
                         ...this.props.style,
-                        ...SizeUtils.geElementHeights(this, GridView.defaultHeight)
+                        ...SizeUtils.getElementHeights(this, GridView.defaultHeight)
                     }}
                 >
                     <AutoSizer>
