@@ -1,89 +1,8 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../../types';
+import { DocDir } from '../../types';
 import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
 import { VirtualWindow, VirtualWindowProps, WindowCalculator } from '../window';
-
-export enum TileKey {
-    HeaderLeft = 'Header_Left',
-    HeaderCenter = 'Header_Center',
-    HeaderRight = 'Header_Right',
-    BodyLeft = 'Body_Left',
-    BodyCenter = 'Body_Center',
-    BodyRight = 'Body_Right',
-    FooterLeft = 'Footer_Left',
-    FooterCenter = 'Footer_Center',
-    FooterRight = 'Footer_Right'
-}
-
-export interface TilePosition {
-    vertical: 'header' | 'body' | 'footer';
-    horizontal: 'left' | 'center' | 'right';
-}
-
-export interface RenderCellProps {
-    /**
-     * Absolute column index, taking into account fixed columns.
-     */
-    absColIndex: number;
-    /**
-     * Absolute row index, taking into account fixed header and/or footer.
-     */
-    absRowIndex: number;
-    /**
-     * Column index relative to the current tile.
-     */
-    relColIndex: number;
-    /**
-     * Row index relative to the current tile.
-     */
-    relRowIndex: number;
-    tileKey: TileKey;
-    tilePosition: TilePosition;
-    height: number;
-    width: number;
-}
-
-export class VirtualGridProps {
-
-    public onScroll?: (e: ScrollEvent) => void;
-
-    public height: number;
-    public width: number;
-    /**
-     * Number of columns in the grid, excluding fixed columns.
-     */
-    public columnCount: number;
-    /**
-     * Number of rows in the grid, excluding the header and footer.
-     */
-    public rowCount: number;
-    public columnWidth: number | SizeCallback;
-    public rowHeight: number | SizeCallback;
-    /**
-     * If `columnWidth` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll width.
-     */
-    public estimatedColumnWidth?: number;
-    /**
-     * If `rowHeight` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll height.
-     */
-    public estimatedRowHeight?: number;
-    public overscanColumnsCount?= 0;
-    public overscanRowCount?= 0;
-
-    public fixedHeaderHeight?= 0;
-    public fixedFooterHeight?= 0;
-    public fixedLeftWidth?= 0;
-    public fixedRightWidth?= 0;
-
-    public style?: React.CSSProperties;
-    public tileStyle?: (tileKey: TileKey) => React.CSSProperties;
-
-    public children: (props: RenderCellProps) => React.ReactNode;
-}
+import { TileKey, TilePosition, VirtualGridProps } from './virtualGridProps';
 
 interface TileEntry {
     ref: React.RefObject<VirtualWindow>;
@@ -129,6 +48,8 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
     private tiles: Partial<TilesMap> = {};
 
+    private initialCalculator = new WindowCalculator();
+
     constructor(props: VirtualGridProps) {
         super(props);
         this.state = new VirtualGridState();
@@ -141,6 +62,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
     public componentDidUpdate(prevProps: VirtualGridProps) {
         if (!areShallowEqual(this.props, prevProps)) {
+            this.initialCalculator = new WindowCalculator();
             this.tiles = this.createTilesMap();
             this.forceUpdate();
         }
@@ -151,18 +73,14 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     //
 
     public render() {
-
-        const scrollableHeight = this.getScrollableAreaHeight();
-        const scrollableWidth = this.getScrollableAreaWidth();
-
         return (
             <div
                 className={this.createClassName('Main_Container')}
                 style={{
                     direction: this.direction,
                     position: 'relative',
-                    height: this.getContainerHeight(scrollableHeight, scrollableWidth),
-                    width: this.getContainerWidth(scrollableHeight, scrollableWidth),
+                    height: this.getContainerHeight(),
+                    width: this.getContainerWidth(),
                     overflow: 'auto',
                     ...this.props.style
                 }}
@@ -171,8 +89,8 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                 <div
                     className={this.createClassName('Main_ScrollableArea')}
                     style={{
-                        height: scrollableHeight,
-                        width: scrollableWidth
+                        height: this.getScrollableHeight(),
+                        width: this.getScrollableWidth()
                     }}
                 >
                     {this.renderTilesRow(this.headerTiles)}
@@ -325,14 +243,11 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         // calculate base dimensions
 
-        const scrollableHeight = this.getScrollableAreaHeight();
-        const scrollableWidth = this.getScrollableAreaWidth();
+        const horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
+        const verticalScrollbarWidth = this.getVerticalScrollbarWidth();
 
-        const horizontalScrollbarWidth = this.getHorizontalScrollbarWidth(scrollableWidth);
-        const verticalScrollbarWidth = this.getVerticalScrollbarWidth(scrollableHeight);
-
-        const containerHeight = this.getContainerHeight(scrollableHeight, scrollableWidth);
-        const containerWidth = this.getContainerWidth(scrollableHeight, scrollableWidth);
+        const containerHeight = this.getContainerHeight();
+        const containerWidth = this.getContainerWidth();
 
         const headerHeight = this.props.fixedHeaderHeight;
         const footerHeight = this.props.fixedFooterHeight;
@@ -437,7 +352,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         } as TilePosition;
     }
 
-    private getScrollableAreaHeight() {
+    private getScrollableHeight() {
 
         const headerHeight = this.props.fixedHeaderHeight;
         const footerHeight = this.props.fixedFooterHeight;
@@ -454,7 +369,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         // Body not rendered yet - have to calculate independently.  
         // Not so DRY, breaks encapsulation and not very efficient either but I
         // couldn't find a better way to do that which is not terribly ugly...
-        return new WindowCalculator().getTotalSize(
+        return this.initialCalculator.getTotalSize(
             'row',
             this.props.rowHeight,
             this.props.estimatedRowHeight,
@@ -462,16 +377,16 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         );
     }
 
-    private getScrollableAreaWidth() {
+    private getScrollableWidth() {
 
         const leftWidth = this.props.fixedLeftWidth;
         const rightWidth = this.props.fixedRightWidth;
-        const bodyWidth = this.getBodyScrollableAreaWidth();
+        const bodyWidth = this.getBodyScrollableWidth();
 
         return bodyWidth + leftWidth + rightWidth;
     }
 
-    private getBodyScrollableAreaWidth() {
+    private getBodyScrollableWidth() {
         const body = this.tiles[TileKey.BodyCenter]?.ref?.current;
         if (body)
             return body.getScrollableWidth();
@@ -479,7 +394,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         // Body not rendered yet - have to calculate independently.  
         // Not so DRY, breaks encapsulation and not very efficient either but I
         // couldn't find a better way to do that which is not terribly ugly...
-        return new WindowCalculator().getTotalSize(
+        return this.initialCalculator.getTotalSize(
             'column',
             this.props.columnWidth,
             this.props.estimatedColumnWidth,
@@ -487,23 +402,27 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         );
     }
 
-    private getVerticalScrollbarWidth(scrollableHeight: number): number {
+    private getVerticalScrollbarWidth(): number {
+        const scrollableHeight = this.getScrollableHeight();
         const hasVerticalScrollbar = scrollableHeight > this.props.height;
         return (hasVerticalScrollbar && DomUtils.scrollbarWidth) || 0;
     }
 
-    private getHorizontalScrollbarWidth(scrollableWidth: number): number {
+    private getHorizontalScrollbarWidth(): number {
+        const scrollableWidth = this.getScrollableWidth();
         const hasHorizontalScrollbar = scrollableWidth > this.props.width;
         return (hasHorizontalScrollbar && DomUtils.scrollbarWidth) || 0;
     }
 
-    private getContainerHeight(scrollableHeight: number, scrollableWidth: number): number {
-        const horizontalScrollbarWidth = this.getHorizontalScrollbarWidth(scrollableWidth);
+    private getContainerHeight(): number {
+        const scrollableHeight = this.getScrollableHeight();
+        const horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
         return Math.min(this.props.height, scrollableHeight + horizontalScrollbarWidth);
     }
 
-    private getContainerWidth(scrollableHeight: number, scrollableWidth: number): number {
-        const verticalScrollbarWidth = this.getVerticalScrollbarWidth(scrollableHeight);
+    private getContainerWidth(): number {
+        const scrollableWidth = this.getScrollableWidth();
+        const verticalScrollbarWidth = this.getVerticalScrollbarWidth();
         return Math.min(this.props.width, scrollableWidth + verticalScrollbarWidth);
     }
 
