@@ -293,7 +293,8 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     // render helpers
     //
 
-    private getCellOriginalKey(colIndex: number, rowIndex: number): React.Key {
-        return `${colIndex}, ${rowIndex}`;
+    private getCellOriginalKey(colIndex: number, rowIndex: number): number {
+        const rowCountDigits = this.props.rowCount.toString().length;
+        return colIndex * Math.pow(10, rowCountDigits) + rowIndex;;
     }
 }
