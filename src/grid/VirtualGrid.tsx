@@ -247,13 +247,15 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     private handleScroll = (e: React.UIEvent<HTMLDivElement>): void => {
         const normalized = ScrollUtils.normalizeScrollEvent(e, this.direction);
 
-        // restore tiles position
-        this.setState({
-            scrollTop: normalized.scrollTop,
-            scrollLeft: normalized.normalizedScrollLeft
-        });
+        if (!DomUtils.isPositionStickySupported) {
+            // Need to restore tiles position
+            this.setState({
+                scrollTop: normalized.scrollTop,
+                scrollLeft: normalized.normalizedScrollLeft
+            });
+        }
 
-        // scroll tiles content
+        // Scroll tiles content
         for (const tileKey of this.activeTiles) {
             const { ref, scrollDirection } = this.tiles[tileKey];
             ref.current.scrollTo(normalized, scrollDirection);
