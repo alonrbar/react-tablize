@@ -57,6 +57,10 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
     public static defaultProps: unknown = new VirtualTileProps();
 
+    private get className() {
+        return this.props.className || nameof(VirtualTile);
+    }
+
     /**
      * Make sure to return a constant number of elements, this is important for
      * recycling purposes.
@@ -167,12 +171,12 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     public render() {
 
         const overflow = this.props.controlledScroll ? 'hidden' : 'auto';
-        const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
+        const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;        
 
         return (
             <div
                 ref={this.containerElement}
-                className={this.props.className + '_Container'}
+                className={this.className + '_Container'}
                 style={{
                     direction: this.props.direction,
                     height: this.props.height,
@@ -184,7 +188,7 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
                 onScroll={onScroll}
             >
                 <div
-                    className={this.props.className + '_ScrollableArea'}
+                    className={this.className + '_ScrollableArea'}
                     style={{
                         height: this.getScrollableHeight(),
                         width: this.getScrollableWidth()
@@ -259,7 +263,7 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
     private renderCell(col: ElementInfo, row: ElementInfo, stableKey: React.Key): React.ReactNode {
         return (
             <VirtualCell
-                className={this.props.className + '_Cell'}
+                className={this.className + '_Cell'}
                 key={stableKey}
                 direction={this.props.direction}
                 height={row.size}
