@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { DocDir } from '../types';
+import { DocDir } from '../../types';
 export interface NormalizedScrollEvent {
     scrollTop: number;
     /**

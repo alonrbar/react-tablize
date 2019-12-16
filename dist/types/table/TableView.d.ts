@@ -60,5 +60,7 @@ export declare class TableView extends React.PureComponent<TableViewProps> {
     private getListComponent;
     private getRowKey;
     private getRowHeight;
+    private getBodyHeights;
+    private getHeadHeight;
 }
 export {};

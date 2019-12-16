@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -106,7 +106,7 @@ module.exports = require("react");
 
 "use strict";
 
-// CONCATENATED MODULE: ./src/utils/domUtils.ts
+// CONCATENATED MODULE: ./src/internal/utils/domUtils.ts
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -206,19 +206,10 @@ _defineProperty(DomUtils, "_scrollbarWidth", null);
 _defineProperty(DomUtils, "_rtlOffsetType", void 0);
 
 _defineProperty(DomUtils, "_isPositionStickySupported", null);
-// CONCATENATED MODULE: ./src/utils/keyboard.ts
-var Keys;
-
-(function (Keys) {
-  Keys["PageUp"] = "PageUp";
-  Keys["PageDown"] = "PageDown";
-  Keys["End"] = "End";
-  Keys["Home"] = "Home";
-})(Keys || (Keys = {}));
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__(0);
 
-// CONCATENATED MODULE: ./src/utils/reactUtils.ts
+// CONCATENATED MODULE: ./src/internal/utils/reactUtils.ts
 function reactUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function reactUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -268,6 +259,17 @@ function () {
       if (!matchingChildren || !matchingChildren.length) return null;
       if (matchingChildren.length > 1) throw new Error("Only one ".concat(type.name, " child element is allowed."));
       return matchingChildren[0];
+    }
+  }, {
+    key: "compareKeys",
+    value: function compareKeys(a, b) {
+      if (a < b) {
+        return -1;
+      } else if (a > b) {
+        return 1;
+      }
+
+      return 0;
     } //
     // private methods
     //
@@ -297,7 +299,7 @@ function () {
 
   return ReactUtils;
 }();
-// CONCATENATED MODULE: ./src/utils/scrollUtils.ts
+// CONCATENATED MODULE: ./src/internal/utils/scrollUtils.ts
 function scrollUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function scrollUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -358,7 +360,7 @@ function () {
 
   return ScrollUtils;
 }();
-// CONCATENATED MODULE: ./src/utils/sizeUtils.ts
+// CONCATENATED MODULE: ./src/internal/utils/sizeUtils.ts
 function sizeUtils_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function sizeUtils_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -379,8 +381,8 @@ function () {
       return size;
     }
   }, {
-    key: "geElementHeights",
-    value: function geElementHeights(component, defaultHeight) {
+    key: "getElementHeights",
+    value: function getElementHeights(component, defaultHeight) {
       var style = component && component.props.style || {};
       var height = style.height;
       var minHeight = style.minHeight;
@@ -399,42 +401,11 @@ function () {
         maxHeight: maxHeight
       };
     }
-  }, {
-    key: "getBodyHeights",
-    value: function getBodyHeights(table, head, defaultHeights) {
-      var totalHeights = this.geElementHeights(table, defaultHeights.total);
-      var headHeight = this.getHeadHeight(head, defaultHeights.head);
-      var bodyHeights = this.geElementHeights(table, undefined);
-      var height = bodyHeights.height || totalHeights.height;
-      var minHeight = bodyHeights.minHeight || totalHeights.minHeight;
-      var maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
-
-      if (headHeight) {
-        height = "calc(".concat(height, " - ").concat(headHeight, ")");
-        if (minHeight) minHeight = "calc(".concat(minHeight, " - ").concat(headHeight, ")");
-        if (maxHeight) maxHeight = "calc(".concat(maxHeight, " - ").concat(headHeight, ")");
-      }
-
-      return {
-        height: height,
-        minHeight: minHeight,
-        maxHeight: maxHeight
-      };
-    }
-  }, {
-    key: "getHeadHeight",
-    value: function getHeadHeight(head, defaultHeight) {
-      if (head) {
-        return this.geElementHeights(head, defaultHeight).height;
-      }
-
-      return 0;
-    }
   }]);
 
   return SizeUtils;
 }();
-// CONCATENATED MODULE: ./src/utils/utils.ts
+// CONCATENATED MODULE: ./src/internal/utils/utils.ts
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -477,17 +448,15 @@ function areShallowEqual(a, b) {
 
   return true;
 }
-// CONCATENATED MODULE: ./src/utils/index.ts
+// CONCATENATED MODULE: ./src/internal/utils/index.ts
 /* concated harmony reexport DomUtils */__webpack_require__.d(__webpack_exports__, "a", function() { return DomUtils; });
-/* concated harmony reexport Keys */__webpack_require__.d(__webpack_exports__, "b", function() { return Keys; });
-/* concated harmony reexport ReactUtils */__webpack_require__.d(__webpack_exports__, "c", function() { return reactUtils_ReactUtils; });
-/* concated harmony reexport ScrollUtils */__webpack_require__.d(__webpack_exports__, "d", function() { return scrollUtils_ScrollUtils; });
-/* concated harmony reexport SizeUtils */__webpack_require__.d(__webpack_exports__, "e", function() { return SizeUtils; });
-/* concated harmony reexport isNullOrUndefined */__webpack_require__.d(__webpack_exports__, "h", function() { return isNullOrUndefined; });
-/* concated harmony reexport asArray */__webpack_require__.d(__webpack_exports__, "g", function() { return asArray; });
+/* concated harmony reexport ReactUtils */__webpack_require__.d(__webpack_exports__, "b", function() { return reactUtils_ReactUtils; });
+/* concated harmony reexport ScrollUtils */__webpack_require__.d(__webpack_exports__, "c", function() { return scrollUtils_ScrollUtils; });
+/* concated harmony reexport SizeUtils */__webpack_require__.d(__webpack_exports__, "d", function() { return SizeUtils; });
+/* concated harmony reexport isNullOrUndefined */__webpack_require__.d(__webpack_exports__, "g", function() { return isNullOrUndefined; });
+/* concated harmony reexport asArray */__webpack_require__.d(__webpack_exports__, "f", function() { return asArray; });
 /* unused concated harmony import range */
-/* concated harmony reexport areShallowEqual */__webpack_require__.d(__webpack_exports__, "f", function() { return areShallowEqual; });
-
+/* concated harmony reexport areShallowEqual */__webpack_require__.d(__webpack_exports__, "e", function() { return areShallowEqual; });
 
 
 
@@ -499,26 +468,75 @@ function areShallowEqual(a, b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-// EXTERNAL MODULE: external "react"
-var external_react_ = __webpack_require__(0);
-
-// EXTERNAL MODULE: external "react-custom-scrollbars"
-var external_react_custom_scrollbars_ = __webpack_require__(9);
-var external_react_custom_scrollbars_default = /*#__PURE__*/__webpack_require__.n(external_react_custom_scrollbars_);
-
-// CONCATENATED MODULE: ./src/internal/CustomScrollbars.tsx
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TileKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return VirtualGridProps; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var TileKey;
+
+(function (TileKey) {
+  TileKey["HeaderLeft"] = "Header_Left";
+  TileKey["HeaderCenter"] = "Header_Center";
+  TileKey["HeaderRight"] = "Header_Right";
+  TileKey["BodyLeft"] = "Body_Left";
+  TileKey["BodyCenter"] = "Body_Center";
+  TileKey["BodyRight"] = "Body_Right";
+  TileKey["FooterLeft"] = "Footer_Left";
+  TileKey["FooterCenter"] = "Footer_Center";
+  TileKey["FooterRight"] = "Footer_Right";
+})(TileKey || (TileKey = {}));
+
+var VirtualGridProps = function VirtualGridProps() {
+  _classCallCheck(this, VirtualGridProps);
+
+  _defineProperty(this, "onScroll", void 0);
+
+  _defineProperty(this, "height", void 0);
+
+  _defineProperty(this, "width", void 0);
+
+  _defineProperty(this, "columnCount", void 0);
+
+  _defineProperty(this, "rowCount", void 0);
+
+  _defineProperty(this, "columnWidth", void 0);
+
+  _defineProperty(this, "rowHeight", void 0);
+
+  _defineProperty(this, "estimatedColumnWidth", void 0);
+
+  _defineProperty(this, "estimatedRowHeight", void 0);
+
+  _defineProperty(this, "overscanColumnsCount", 0);
+
+  _defineProperty(this, "overscanRowCount", 0);
+
+  _defineProperty(this, "fixedHeaderHeight", 0);
+
+  _defineProperty(this, "fixedFooterHeight", 0);
+
+  _defineProperty(this, "fixedLeftWidth", 0);
+
+  _defineProperty(this, "fixedRightWidth", 0);
+
+  _defineProperty(this, "style", void 0);
+
+  _defineProperty(this, "tileStyle", void 0);
+
+  _defineProperty(this, "children", void 0);
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ErrorBoundary; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -534,104 +552,36 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-
-
-var CustomScrollbars_CustomScrollbarsInner =
-/*#__PURE__*/
-function (_React$PureComponent) {
-  _inherits(CustomScrollbarsInner, _React$PureComponent);
-
-  function CustomScrollbarsInner() {
-    _classCallCheck(this, CustomScrollbarsInner);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(CustomScrollbarsInner).apply(this, arguments));
-  }
-
-  _createClass(CustomScrollbarsInner, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      // https://github.com/bvaughn/react-window/issues/110#issuecomment-469061213
-      var refSetter = function refSetter(elem) {
-        if (!_this.props.forwardedRef) return;
-        var ref = (elem || {}).view;
-
-        if (typeof _this.props.forwardedRef === 'function') {
-          _this.props.forwardedRef(ref);
-        } else {
-          _this.props.forwardedRef.current = ref;
-        }
-      };
-
-      return external_react_["createElement"](external_react_custom_scrollbars_default.a, {
-        ref: refSetter,
-        style: _objectSpread({}, this.props.style, {
-          overflow: 'hidden',
-          direction: 'ltr'
-        }),
-        onScroll: this.props.onScroll
-      }, this.props.children);
-    }
-  }]);
-
-  return CustomScrollbarsInner;
-}(external_react_["PureComponent"]);
-
-var CustomScrollbars = external_react_["forwardRef"](function (props, ref) {
-  return external_react_["createElement"](CustomScrollbars_CustomScrollbarsInner, _extends({}, props, {
-    forwardedRef: ref
-  }));
-});
-CustomScrollbars.displayName = 'CustomScrollbars';
-// CONCATENATED MODULE: ./src/internal/ErrorBoundary.tsx
-function ErrorBoundary_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ErrorBoundary_typeof = function _typeof(obj) { return typeof obj; }; } else { ErrorBoundary_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ErrorBoundary_typeof(obj); }
-
-function ErrorBoundary_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function ErrorBoundary_createClass(Constructor, protoProps, staticProps) { if (protoProps) ErrorBoundary_defineProperties(Constructor.prototype, protoProps); if (staticProps) ErrorBoundary_defineProperties(Constructor, staticProps); return Constructor; }
-
-function ErrorBoundary_possibleConstructorReturn(self, call) { if (call && (ErrorBoundary_typeof(call) === "object" || typeof call === "function")) { return call; } return ErrorBoundary_assertThisInitialized(self); }
-
-function ErrorBoundary_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function ErrorBoundary_getPrototypeOf(o) { ErrorBoundary_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ErrorBoundary_getPrototypeOf(o); }
-
-function ErrorBoundary_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ErrorBoundary_setPrototypeOf(subClass, superClass); }
-
-function ErrorBoundary_setPrototypeOf(o, p) { ErrorBoundary_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ErrorBoundary_setPrototypeOf(o, p); }
-
-function ErrorBoundary_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function ErrorBoundary_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 var ErrorBoundaryState = function ErrorBoundaryState() {
-  ErrorBoundary_classCallCheck(this, ErrorBoundaryState);
+  _classCallCheck(this, ErrorBoundaryState);
 
-  ErrorBoundary_defineProperty(this, "hasError", void 0);
+  _defineProperty(this, "hasError", void 0);
 };
 
-var ErrorBoundary_ErrorBoundary =
+var ErrorBoundary =
 /*#__PURE__*/
 function (_React$Component) {
-  ErrorBoundary_inherits(ErrorBoundary, _React$Component);
+  _inherits(ErrorBoundary, _React$Component);
 
   function ErrorBoundary(props) {
     var _this;
 
-    ErrorBoundary_classCallCheck(this, ErrorBoundary);
+    _classCallCheck(this, ErrorBoundary);
 
-    _this = ErrorBoundary_possibleConstructorReturn(this, ErrorBoundary_getPrototypeOf(ErrorBoundary).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ErrorBoundary).call(this, props));
     _this.state = {
       hasError: false
     };
     return _this;
   }
 
-  ErrorBoundary_createClass(ErrorBoundary, [{
+  _createClass(ErrorBoundary, [{
     key: "componentDidCatch",
     value: function componentDidCatch(error, errorInfo) {
       this.setState({
@@ -643,7 +593,7 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       if (this.state.hasError) {
-        return external_react_["createElement"]("span", null, "X");
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, "X");
       }
 
       return this.props.children !== undefined ? this.props.children : null;
@@ -651,417 +601,15 @@ function (_React$Component) {
   }]);
 
   return ErrorBoundary;
-}(external_react_["Component"]);
-// CONCATENATED MODULE: ./src/internal/index.ts
-/* concated harmony reexport CustomScrollbars */__webpack_require__.d(__webpack_exports__, "a", function() { return CustomScrollbars; });
-/* concated harmony reexport ErrorBoundary */__webpack_require__.d(__webpack_exports__, "b", function() { return ErrorBoundary_ErrorBoundary; });
-
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("@emotion/styled-base");
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-virtualized-auto-sizer");
-
-/***/ }),
-/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _List__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-/* harmony import */ var _List__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_List__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (checked) */ if(__webpack_require__.o(_List__WEBPACK_IMPORTED_MODULE_0__, "NonVirtualList")) __webpack_require__.d(__webpack_exports__, "NonVirtualList", function() { return _List__WEBPACK_IMPORTED_MODULE_0__["NonVirtualList"]; });
 
-/* harmony reexport (checked) */ if(__webpack_require__.o(_List__WEBPACK_IMPORTED_MODULE_0__, "VirtualList")) __webpack_require__.d(__webpack_exports__, "VirtualList", function() { return _List__WEBPACK_IMPORTED_MODULE_0__["VirtualList"]; });
-
-/* harmony import */ var _NonVirtualList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NonVirtualList", function() { return _NonVirtualList__WEBPACK_IMPORTED_MODULE_1__["a"]; });
-
-/* harmony import */ var _VirtualList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VirtualList", function() { return _VirtualList__WEBPACK_IMPORTED_MODULE_2__["a"]; });
-
-
-
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NonVirtualList; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _internal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var NonVirtualList =
-/*#__PURE__*/
-function (_React$PureComponent) {
-  _inherits(NonVirtualList, _React$PureComponent);
-
-  function NonVirtualList() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    _classCallCheck(this, NonVirtualList);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(NonVirtualList)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_this), "disableScrollEvents", false);
-
-    _defineProperty(_assertThisInitialized(_this), "listRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
-
-    _defineProperty(_assertThisInitialized(_this), "scrollTo", function (scrollOffset) {
-      var currentInner = _this.listRef.current;
-
-      if (currentInner) {
-        if (scrollOffset === undefined) return;
-        var currentOffset = _this.isHorizontal ? currentInner.scrollLeft : currentInner.scrollTop;
-        if (scrollOffset === currentOffset) return;
-        _this.disableScrollEvents = true;
-        currentInner.scrollTo({
-          top: _this.isHorizontal ? undefined : scrollOffset,
-          left: _this.isHorizontal ? scrollOffset : undefined
-        });
-      }
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "handleOnScroll", function (e) {
-      if (_this.disableScrollEvents) {
-        _this.disableScrollEvents = false;
-        return;
-      }
-
-      if (!_this.props.onScroll) return;
-      var _e$currentTarget = e.currentTarget,
-          scrollTop = _e$currentTarget.scrollTop,
-          scrollLeft = _e$currentTarget.scrollLeft;
-
-      _this.props.onScroll(_this.isHorizontal ? scrollLeft : scrollTop);
-    });
-
-    return _this;
-  }
-
-  _createClass(NonVirtualList, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var listStyle = _defineProperty({
-        height: this.props.height,
-        width: this.props.width,
-        direction: this.props.dir,
-        boxSizing: 'content-box',
-        outline: 'none',
-        overflow: 'auto'
-      }, this.isHorizontal ? 'overflowY' : 'overflowX', 'hidden');
-
-      if (this.isHorizontal) {
-        listStyle.display = 'flex';
-      }
-
-      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](this.getListElementType(), {
-        ref: this.listRef,
-        style: listStyle,
-        onScroll: this.handleOnScroll
-      }, // rows
-      Array(this.props.itemCount).fill(0).map(function (_, index) {
-        var _ref;
-
-        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-          key: index,
-          style: (_ref = {}, _defineProperty(_ref, _this2.isHorizontal ? 'minWidth' : 'minHeight', _this2.props.itemSize(index)), _defineProperty(_ref, _this2.isHorizontal ? 'height' : 'width', _this2.isHorizontal ? _this2.props.height : _this2.props.width), _ref)
-        }, _this2.props.children(index));
-      }));
-    }
-  }, {
-    key: "getListElementType",
-    value: function getListElementType() {
-      return this.props.customScrollbar ? _internal__WEBPACK_IMPORTED_MODULE_1__[/* CustomScrollbars */ "a"] : 'div';
-    }
-  }, {
-    key: "isHorizontal",
-    get: function get() {
-      return this.props.layout === 'horizontal';
-    }
-  }]);
-
-  return NonVirtualList;
-}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VirtualList; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_window__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-/* harmony import */ var react_window__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_window__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _internal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-var _scrollKeys;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var scrollKeys = (_scrollKeys = {}, _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageUp, true), _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageDown, true), _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].End, true), _defineProperty(_scrollKeys, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].Home, true), _scrollKeys);
-var VirtualList =
-/*#__PURE__*/
-function (_React$PureComponent) {
-  _inherits(VirtualList, _React$PureComponent);
-
-  function VirtualList() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    _classCallCheck(this, VirtualList);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(VirtualList)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_this), "tableRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
-
-    _defineProperty(_assertThisInitialized(_this), "tableInnerRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
-
-    _defineProperty(_assertThisInitialized(_this), "tableOuterRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
-
-    _defineProperty(_assertThisInitialized(_this), "registerKeyHandlers", function () {
-      window.addEventListener('keydown', _this.scrollByKey);
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "removeKeyHandlers", function () {
-      window.removeEventListener('keydown', _this.scrollByKey);
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "scrollByKey", function (_ref) {
-      var _offsetByKey;
-
-      var key = _ref.key;
-      // https://dev.to/dance2die/scrolling-with-page-up-down-keys-in-react-window-31ei
-      if (!scrollKeys[key]) return;
-      if (!_this.tableRef.current || !_this.tableInnerRef.current || !_this.tableOuterRef.current) return;
-      var scrollElement = _this.props.customScrollbar ? _this.tableOuterRef.current : _this.tableRef.current;
-      var table = react_dom__WEBPACK_IMPORTED_MODULE_1__["findDOMNode"](scrollElement);
-      var currentOffset = table.scrollTop;
-      var bodyHeight = table.clientHeight;
-      var pageSize = bodyHeight * 0.85;
-      var minOffset = 0.1;
-      var maxOffset = _this.tableInnerRef.current.clientHeight;
-      var offsetByKey = (_offsetByKey = {}, _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageUp, Math.max(minOffset, currentOffset - pageSize)), _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].PageDown, Math.min(currentOffset + pageSize, maxOffset)), _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].End, maxOffset), _defineProperty(_offsetByKey, _utils__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "b"].Home, minOffset), _offsetByKey);
-
-      _this.tableRef.current.scrollTo(offsetByKey[key]);
-    });
-
-    return _this;
-  }
-
-  _createClass(VirtualList, [{
-    key: "refresh",
-    value: function refresh() {
-      if (this.tableRef.current) {
-        this.tableRef.current.resetAfterIndex(0, false);
-      }
-
-      this.forceUpdate();
-    }
-  }, {
-    key: "scrollTo",
-    value: function scrollTo(offset) {
-      if (this.tableRef.current) {
-        this.tableRef.current.scrollTo(offset);
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_window__WEBPACK_IMPORTED_MODULE_2__["VariableSizeList"], _extends({
-        ref: this.tableRef,
-        innerRef: this.tableInnerRef,
-        outerRef: this.tableOuterRef,
-        style: Object.assign({
-          outline: 'none'
-        }, this.props.style),
-        outerElementType: this.getOuterElementType(),
-        direction: this.props.dir,
-        layout: this.props.layout,
-        height: this.props.height,
-        width: this.props.width,
-        itemCount: this.props.itemCount,
-        itemSize: this.props.itemSize,
-        overscanCount: this.props.overscan
-      }, this.getKeyScrollProps()), function (_ref2) {
-        var index = _ref2.index,
-            style = _ref2.style;
-        return _this2.renderRow(index, style);
-      });
-    }
-  }, {
-    key: "renderRow",
-    value: function renderRow(index, style) {
-      var row = this.props.children(index);
-      return react__WEBPACK_IMPORTED_MODULE_0__["cloneElement"](row, {
-        style: _objectSpread({}, row.props.style, {}, style)
-      });
-    } //
-    // scroll with keys
-    //
-
-  }, {
-    key: "getKeyScrollProps",
-    value: function getKeyScrollProps() {
-      if (this.props.keyScroll === false) return {};
-      return {
-        onMouseEnter: this.registerKeyHandlers,
-        onMouseLeave: this.removeKeyHandlers,
-        onKeyDown: this.scrollByKey
-      };
-    }
-  }, {
-    key: "getOuterElementType",
-    value: function getOuterElementType() {
-      return this.props.customScrollbar ? _internal__WEBPACK_IMPORTED_MODULE_3__[/* CustomScrollbars */ "a"] : undefined;
-    }
-  }]);
-
-  return VirtualList;
-}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-custom-scrollbars");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("emotion-theming");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom");
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-window");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(15);
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash.flattendeep");
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: external "react"
-var external_react_ = __webpack_require__(0);
-
-// EXTERNAL MODULE: external "react-virtualized-auto-sizer"
-var external_react_virtualized_auto_sizer_ = __webpack_require__(4);
-var external_react_virtualized_auto_sizer_default = /*#__PURE__*/__webpack_require__.n(external_react_virtualized_auto_sizer_);
-
-// EXTERNAL MODULE: ./src/internal/index.ts + 2 modules
-var internal = __webpack_require__(2);
-
-// EXTERNAL MODULE: ./src/utils/index.ts + 6 modules
-var utils = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./src/grid/recycleManager.ts
+// CONCATENATED MODULE: ./src/internal/window/recycleManager.ts
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1070,12 +618,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/**
- * Note: In few places the recycling logic leverages the fact that in JavaScript
- * when object keys are integers they are iterated in ascending numeric order
- * (except for IE of course...). See:
- * https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order.
- */
 var RecycleManager =
 /*#__PURE__*/
 function () {
@@ -1095,8 +637,10 @@ function () {
     // public methods
     //
     value: function freeUnusedKeys(nextOriginalKeys) {
-      var nextKeys = Object.keys(nextOriginalKeys);
+      var nextKeys = nextOriginalKeys.slice();
+      nextKeys.sort();
       var prevKeys = Object.keys(this.usedKeysOriginalToStable);
+      prevKeys.sort();
       var nextIndex = nextKeys.length - 1;
       var prevIndex = prevKeys.length - 1;
 
@@ -1174,7 +718,10 @@ function () {
 
   return RecycleManager;
 }();
-// CONCATENATED MODULE: ./src/grid/VirtualCell.tsx
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./src/internal/window/VirtualCell.tsx
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function VirtualCell_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -1198,7 +745,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 /***
- * Each `VirtualTile` creates a constant number of these `VirtualCell`s and just
+ * Each `VirtualWindow` creates a constant number of these `VirtualCell`s and just
  * moves them around. This is much more efficient than creating a new cell on
  * each scroll.
  *
@@ -1228,6 +775,7 @@ function (_React$PureComponent) {
       return external_react_["createElement"]("div", {
         className: this.props.className,
         style: (_ref = {
+          boxSizing: 'border-box',
           height: this.props.height,
           width: this.props.width,
           position: "absolute"
@@ -1238,7 +786,10 @@ function (_React$PureComponent) {
 
   return VirtualCell;
 }(external_react_["PureComponent"]);
-// CONCATENATED MODULE: ./src/grid/windowCalculator.ts
+// EXTERNAL MODULE: ./src/internal/utils/index.ts + 5 modules
+var utils = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./src/internal/window/windowCalculator.ts
 function windowCalculator_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { windowCalculator_typeof = function _typeof(obj) { return typeof obj; }; } else { windowCalculator_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return windowCalculator_typeof(obj); }
 
 function windowCalculator_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1451,168 +1002,149 @@ function () {
 
   return WindowCalculator;
 }();
-// CONCATENATED MODULE: ./src/grid/VirtualTile.tsx
-function VirtualTile_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VirtualTile_typeof = function _typeof(obj) { return typeof obj; }; } else { VirtualTile_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VirtualTile_typeof(obj); }
+// CONCATENATED MODULE: ./src/internal/window/VirtualWindow.tsx
+function VirtualWindow_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VirtualWindow_typeof = function _typeof(obj) { return typeof obj; }; } else { VirtualWindow_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VirtualWindow_typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { VirtualTile_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { VirtualWindow_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function VirtualTile_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function VirtualWindow_possibleConstructorReturn(self, call) { if (call && (VirtualWindow_typeof(call) === "object" || typeof call === "function")) { return call; } return VirtualWindow_assertThisInitialized(self); }
 
-function VirtualTile_createClass(Constructor, protoProps, staticProps) { if (protoProps) VirtualTile_defineProperties(Constructor.prototype, protoProps); if (staticProps) VirtualTile_defineProperties(Constructor, staticProps); return Constructor; }
+function VirtualWindow_getPrototypeOf(o) { VirtualWindow_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VirtualWindow_getPrototypeOf(o); }
 
-function VirtualTile_possibleConstructorReturn(self, call) { if (call && (VirtualTile_typeof(call) === "object" || typeof call === "function")) { return call; } return VirtualTile_assertThisInitialized(self); }
+function VirtualWindow_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function VirtualTile_getPrototypeOf(o) { VirtualTile_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VirtualTile_getPrototypeOf(o); }
+function VirtualWindow_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function VirtualTile_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function VirtualWindow_createClass(Constructor, protoProps, staticProps) { if (protoProps) VirtualWindow_defineProperties(Constructor.prototype, protoProps); if (staticProps) VirtualWindow_defineProperties(Constructor, staticProps); return Constructor; }
 
-function VirtualTile_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) VirtualTile_setPrototypeOf(subClass, superClass); }
+function VirtualWindow_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) VirtualWindow_setPrototypeOf(subClass, superClass); }
 
-function VirtualTile_setPrototypeOf(o, p) { VirtualTile_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VirtualTile_setPrototypeOf(o, p); }
+function VirtualWindow_setPrototypeOf(o, p) { VirtualWindow_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VirtualWindow_setPrototypeOf(o, p); }
 
-function VirtualTile_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function VirtualWindow_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function VirtualTile_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
+function VirtualWindow_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
-var VirtualTileProps = function VirtualTileProps() {
-  VirtualTile_classCallCheck(this, VirtualTileProps);
 
-  VirtualTile_defineProperty(this, "direction", 'ltr');
 
-  VirtualTile_defineProperty(this, "controlledScroll", void 0);
+var VirtualWindowProps = function VirtualWindowProps() {
+  VirtualWindow_classCallCheck(this, VirtualWindowProps);
 
-  VirtualTile_defineProperty(this, "height", void 0);
+  VirtualWindow_defineProperty(this, "direction", 'ltr');
 
-  VirtualTile_defineProperty(this, "width", void 0);
+  VirtualWindow_defineProperty(this, "controlledScroll", void 0);
 
-  VirtualTile_defineProperty(this, "columnCount", void 0);
+  VirtualWindow_defineProperty(this, "scrollDirection", 'both');
 
-  VirtualTile_defineProperty(this, "rowCount", void 0);
+  VirtualWindow_defineProperty(this, "height", void 0);
 
-  VirtualTile_defineProperty(this, "columnWidth", void 0);
+  VirtualWindow_defineProperty(this, "width", void 0);
 
-  VirtualTile_defineProperty(this, "rowHeight", void 0);
+  VirtualWindow_defineProperty(this, "columnCount", void 0);
 
-  VirtualTile_defineProperty(this, "estimatedColumnWidth", void 0);
+  VirtualWindow_defineProperty(this, "rowCount", void 0);
 
-  VirtualTile_defineProperty(this, "estimatedRowHeight", void 0);
+  VirtualWindow_defineProperty(this, "columnWidth", void 0);
 
-  VirtualTile_defineProperty(this, "overscanColumnsCount", 0);
+  VirtualWindow_defineProperty(this, "rowHeight", void 0);
 
-  VirtualTile_defineProperty(this, "overscanRowCount", 0);
+  VirtualWindow_defineProperty(this, "estimatedColumnWidth", void 0);
 
-  VirtualTile_defineProperty(this, "className", void 0);
+  VirtualWindow_defineProperty(this, "estimatedRowHeight", void 0);
 
-  VirtualTile_defineProperty(this, "style", void 0);
+  VirtualWindow_defineProperty(this, "overscanColumnsCount", 0);
 
-  VirtualTile_defineProperty(this, "children", void 0);
+  VirtualWindow_defineProperty(this, "overscanRowCount", 0);
+
+  VirtualWindow_defineProperty(this, "innerElementType", 'div');
+
+  VirtualWindow_defineProperty(this, "innerRef", void 0);
+
+  VirtualWindow_defineProperty(this, "outerElementType", 'div');
+
+  VirtualWindow_defineProperty(this, "outerRef", void 0);
+
+  VirtualWindow_defineProperty(this, "className", void 0);
+
+  VirtualWindow_defineProperty(this, "style", void 0);
+
+  VirtualWindow_defineProperty(this, "children", void 0);
 };
 
-var VirtualTileState = function VirtualTileState() {
-  VirtualTile_classCallCheck(this, VirtualTileState);
+var VirtualWindowState = function VirtualWindowState() {
+  VirtualWindow_classCallCheck(this, VirtualWindowState);
 
-  VirtualTile_defineProperty(this, "scrollTop", 0);
+  VirtualWindow_defineProperty(this, "scrollTop", 0);
 
-  VirtualTile_defineProperty(this, "scrollLeft", 0);
+  VirtualWindow_defineProperty(this, "scrollLeft", 0);
 };
 
-var VirtualTile_VirtualTile =
+var VirtualWindow_VirtualWindow =
 /*#__PURE__*/
 function (_React$PureComponent) {
-  VirtualTile_inherits(VirtualTile, _React$PureComponent);
+  VirtualWindow_inherits(VirtualWindow, _React$PureComponent);
 
-  /**
-   * Make sure to return a constant number of elements, this is important for
-   * recycling purposes.
-   */
+  VirtualWindow_createClass(VirtualWindow, [{
+    key: "className",
+    get: function get() {
+      return this.props.className || "VirtualWindow";
+    }
+    /**
+     * Make sure to return a constant number of elements, this is important for
+     * recycling purposes.
+     */
 
-  /**
-   * Make sure to return a constant number of elements, this is important for
-   * recycling purposes.
-   */
-  function VirtualTile(props) {
+  }]);
+
+  function VirtualWindow(props) {
     var _this;
 
-    VirtualTile_classCallCheck(this, VirtualTile);
+    VirtualWindow_classCallCheck(this, VirtualWindow);
 
-    _this = VirtualTile_possibleConstructorReturn(this, VirtualTile_getPrototypeOf(VirtualTile).call(this, props));
+    _this = VirtualWindow_possibleConstructorReturn(this, VirtualWindow_getPrototypeOf(VirtualWindow).call(this, props));
 
-    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "minColumnsToRender", 0);
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "minColumnsToRender", 0);
 
-    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "minRowsToRender", 0);
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "minRowsToRender", 0);
 
-    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "windowCalc", new WindowCalculator());
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "windowCalc", new WindowCalculator());
 
-    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "recycler", new RecycleManager());
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "recycler", new RecycleManager());
 
-    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "containerElement", external_react_["createRef"]());
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "containerElement", external_react_["createRef"]());
 
-    VirtualTile_defineProperty(VirtualTile_assertThisInitialized(_this), "handleScroll", function (e) {
-      var normalized = utils["d" /* ScrollUtils */].normalizeScrollEvent(e, _this.props.direction);
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "handleScroll", function (e) {
+      var normalized = utils["c" /* ScrollUtils */].normalizeScrollEvent(e, _this.props.direction);
 
-      _this.setState({
+      _this.setScrollState({
         scrollTop: normalized.scrollTop,
         scrollLeft: normalized.normalizedScrollLeft
       });
     });
 
-    _this.state = new VirtualTileState();
+    _this.state = new VirtualWindowState();
     return _this;
   } //
   // public methods
   //
 
 
-  VirtualTile_createClass(VirtualTile, [{
+  VirtualWindow_createClass(VirtualWindow, [{
     key: "scrollTo",
     value: function scrollTo(e) {
-      var _this2 = this;
-
-      var scrollDirection = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'both';
-
-      switch (scrollDirection) {
-        case 'both':
-          window.requestAnimationFrame(function () {
-            _this2.containerElement.current.scrollTop = e.scrollTop;
-            _this2.containerElement.current.scrollLeft = e.rawScrollLeft;
-          });
-          this.setState({
-            scrollTop: e.scrollTop,
-            scrollLeft: e.normalizedScrollLeft
-          });
-          break;
-
-        case 'vertical':
-          window.requestAnimationFrame(function () {
-            _this2.containerElement.current.scrollTop = e.scrollTop;
-          });
-          this.setState({
-            scrollTop: e.scrollTop
-          });
-          break;
-
-        case 'horizontal':
-          window.requestAnimationFrame(function () {
-            _this2.containerElement.current.scrollLeft = e.rawScrollLeft;
-          });
-          this.setState({
-            scrollLeft: e.normalizedScrollLeft
-          });
-          break;
-
-        case 'none':
-          break;
-
-        default:
-          throw new Error("Invalid ".concat("scrollDirection", " value: '").concat(scrollDirection, "'."));
-      }
+      this.containerElementScroll({
+        scrollTop: e.scrollTop,
+        scrollLeft: e.rawScrollLeft
+      });
+      this.setScrollState({
+        scrollTop: e.scrollTop,
+        scrollLeft: e.normalizedScrollLeft
+      });
     }
   }, {
     key: "getScrollableHeight",
@@ -1643,9 +1175,13 @@ function (_React$PureComponent) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      if (!Object(utils["f" /* areShallowEqual */])(this.props, prevProps)) {
+      if (!Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
         this.clearCache();
         this.forceUpdate();
+      }
+
+      if (this.props.outerRef) {
+        this.props.outerRef.current = this.containerElement.current;
       }
     } //
     // render methods
@@ -1656,35 +1192,40 @@ function (_React$PureComponent) {
     value: function render() {
       var overflow = this.props.controlledScroll ? 'hidden' : 'auto';
       var onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
-      return external_react_["createElement"]("div", {
-        ref: this.containerElement,
-        className: this.props.className + '_Container',
-        style: _objectSpread({
-          direction: this.props.direction,
-          height: this.props.height,
-          width: this.props.width,
-          position: 'relative',
-          overflow: overflow
-        }, this.props.style),
-        onScroll: onScroll
-      }, external_react_["createElement"]("div", {
-        className: this.props.className + '_ScrollableArea',
-        style: {
-          height: this.getScrollableHeight(),
-          width: this.getScrollableWidth()
-        }
-      }, this.renderCells()));
+      return (// outer element - container
+        external_react_["createElement"](this.props.outerElementType, {
+          ref: this.containerElement,
+          className: this.className + '_Container',
+          style: _objectSpread({
+            direction: this.props.direction,
+            height: this.props.height,
+            width: this.props.width,
+            position: 'relative',
+            overflow: overflow
+          }, this.props.style),
+          onScroll: onScroll
+        }, // inner element - scrollable area
+        external_react_["createElement"](this.props.innerElementType, {
+          ref: this.props.innerRef,
+          className: this.className + '_ScrollableArea',
+          style: {
+            height: this.getScrollableHeight(),
+            width: this.getScrollableWidth()
+          }
+        }, this.renderCells()))
+      );
     }
   }, {
     key: "renderCells",
     value: function renderCells() {
       // get cell indexes to render
       var columns = this.windowCalc.elementsInRange('column', this.state.scrollLeft, this.state.scrollLeft + this.props.width, this.props.overscanColumnsCount, this.props.columnWidth, this.minColumnsToRender, this.props.columnCount);
-      var rows = this.windowCalc.elementsInRange('row', this.state.scrollTop, this.state.scrollTop + this.props.height, this.props.overscanRowCount, this.props.rowHeight, this.minRowsToRender, this.props.rowCount);
+      var rows = this.windowCalc.elementsInRange('row', this.state.scrollTop, this.state.scrollTop + this.props.height, this.props.overscanRowCount, this.props.rowHeight, this.minRowsToRender, this.props.rowCount); // always render the same amount of items (important for recycling)
+
       this.minColumnsToRender = columns.length;
       this.minRowsToRender = rows.length; // free unused stable keys before rendering
 
-      var originalKeys = {};
+      var originalKeys = [];
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -1699,8 +1240,7 @@ function (_React$PureComponent) {
           try {
             for (var _iterator3 = columns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               var col = _step3.value;
-              var originalKey = this.getCellOriginalKey(col.index, row.index);
-              originalKeys[originalKey] = true;
+              originalKeys.push(this.getCellOriginalKey(col.index, row.index));
             }
           } catch (err) {
             _didIteratorError3 = true;
@@ -1734,7 +1274,7 @@ function (_React$PureComponent) {
 
       this.recycler.freeUnusedKeys(originalKeys); // render cells
 
-      var cellsByKey = {};
+      var cells = [];
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
@@ -1749,11 +1289,9 @@ function (_React$PureComponent) {
           try {
             for (var _iterator4 = columns[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
               var _col = _step4.value;
-
-              var _originalKey = this.getCellOriginalKey(_col.index, _row.index);
-
-              var stableKey = this.recycler.getStableKey(_originalKey);
-              cellsByKey[stableKey] = this.renderCell(_col, _row, stableKey);
+              var originalKey = this.getCellOriginalKey(_col.index, _row.index);
+              var stableKey = this.recycler.getStableKey(originalKey);
+              cells.push(this.renderCell(_col, _row, stableKey));
             }
           } catch (err) {
             _didIteratorError4 = true;
@@ -1770,7 +1308,6 @@ function (_React$PureComponent) {
             }
           }
         } // sort the cells by key order (important for recycling)
-        // https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order
 
       } catch (err) {
         _didIteratorError2 = true;
@@ -1787,20 +1324,16 @@ function (_React$PureComponent) {
         }
       }
 
-      var cells = [];
-
-      for (var _i = 0, _Object$keys = Object.keys(cellsByKey); _i < _Object$keys.length; _i++) {
-        var key = _Object$keys[_i];
-        cells.push(cellsByKey[key]);
-      }
-
+      cells.sort(function (a, b) {
+        return utils["b" /* ReactUtils */].compareKeys(a.key, b.key);
+      });
       return cells;
     }
   }, {
     key: "renderCell",
     value: function renderCell(col, row, stableKey) {
       return external_react_["createElement"](VirtualCell_VirtualCell, {
-        className: this.props.className + '_Cell',
+        className: this.className + '_Cell',
         key: stableKey,
         direction: this.props.direction,
         height: row.size,
@@ -1814,650 +1347,569 @@ function (_React$PureComponent) {
         width: col.size
       }));
     } //
-    // event handlers
+    // scroll handlers
+    //
+
+  }, {
+    key: "containerElementScroll",
+    value: function containerElementScroll(e) {
+      var _this2 = this;
+
+      switch (this.props.scrollDirection) {
+        case 'both':
+          window.requestAnimationFrame(function () {
+            _this2.containerElement.current.scrollTop = e.scrollTop;
+            _this2.containerElement.current.scrollLeft = e.scrollLeft;
+          });
+          break;
+
+        case 'vertical':
+          window.requestAnimationFrame(function () {
+            _this2.containerElement.current.scrollTop = e.scrollTop;
+          });
+          break;
+
+        case 'horizontal':
+          window.requestAnimationFrame(function () {
+            _this2.containerElement.current.scrollLeft = e.scrollLeft;
+          });
+          break;
+
+        case 'none':
+          break;
+
+        default:
+          throw new Error("Invalid ".concat("scrollDirection", " value: '").concat(this.props.scrollDirection, "'."));
+      }
+    }
+  }, {
+    key: "setScrollState",
+    value: function setScrollState(e) {
+      switch (this.props.scrollDirection) {
+        case 'both':
+          this.setState(e);
+          break;
+
+        case 'vertical':
+          this.setState({
+            scrollTop: e.scrollTop
+          });
+          break;
+
+        case 'horizontal':
+          this.setState({
+            scrollLeft: e.scrollLeft
+          });
+          break;
+
+        case 'none':
+          break;
+
+        default:
+          throw new Error("Invalid ".concat("scrollDirection", " value: '").concat(this.props.scrollDirection, "'."));
+      }
+    } //
+    // render helpers
     //
 
   }, {
     key: "getCellOriginalKey",
-    //
-    // render helpers
-    //
     value: function getCellOriginalKey(colIndex, rowIndex) {
       return "".concat(colIndex, ", ").concat(rowIndex);
     }
   }]);
 
-  return VirtualTile;
+  return VirtualWindow;
 }(external_react_["PureComponent"]);
 
-VirtualTile_defineProperty(VirtualTile_VirtualTile, "defaultProps", new VirtualTileProps());
-// CONCATENATED MODULE: ./src/grid/VirtualGrid.tsx
-function VirtualGrid_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { VirtualGrid_typeof = function _typeof(obj) { return typeof obj; }; } else { VirtualGrid_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return VirtualGrid_typeof(obj); }
+VirtualWindow_defineProperty(VirtualWindow_VirtualWindow, "defaultProps", new VirtualWindowProps());
+// CONCATENATED MODULE: ./src/internal/window/index.ts
+/* unused concated harmony import RecycleManager */
+/* unused concated harmony import VirtualCell */
+/* unused concated harmony import VirtualWindowProps */
+/* concated harmony reexport VirtualWindow */__webpack_require__.d(__webpack_exports__, "a", function() { return VirtualWindow_VirtualWindow; });
+/* concated harmony reexport WindowCalculator */__webpack_require__.d(__webpack_exports__, "b", function() { return WindowCalculator; });
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function VirtualGrid_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
 
-function VirtualGrid_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { VirtualGrid_ownKeys(source, true).forEach(function (key) { VirtualGrid_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { VirtualGrid_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+module.exports = require("@emotion/styled-base");
 
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-virtualized-auto-sizer");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomScrollbars; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
+/* harmony import */ var react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1__);
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function VirtualGrid_possibleConstructorReturn(self, call) { if (call && (VirtualGrid_typeof(call) === "object" || typeof call === "function")) { return call; } return VirtualGrid_assertThisInitialized(self); }
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function VirtualGrid_getPrototypeOf(o) { VirtualGrid_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return VirtualGrid_getPrototypeOf(o); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
 
-function VirtualGrid_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function VirtualGrid_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function VirtualGrid_createClass(Constructor, protoProps, staticProps) { if (protoProps) VirtualGrid_defineProperties(Constructor.prototype, protoProps); if (staticProps) VirtualGrid_defineProperties(Constructor, staticProps); return Constructor; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function VirtualGrid_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) VirtualGrid_setPrototypeOf(subClass, superClass); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function VirtualGrid_setPrototypeOf(o, p) { VirtualGrid_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return VirtualGrid_setPrototypeOf(o, p); }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function VirtualGrid_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function VirtualGrid_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
 
-
-var TileKey;
-
-(function (TileKey) {
-  TileKey["HeaderLeft"] = "Header_Left";
-  TileKey["HeaderCenter"] = "Header_Center";
-  TileKey["HeaderRight"] = "Header_Right";
-  TileKey["BodyLeft"] = "Body_Left";
-  TileKey["BodyCenter"] = "Body_Center";
-  TileKey["BodyRight"] = "Body_Right";
-  TileKey["FooterLeft"] = "Footer_Left";
-  TileKey["FooterCenter"] = "Footer_Center";
-  TileKey["FooterRight"] = "Footer_Right";
-})(TileKey || (TileKey = {}));
-
-var VirtualGridProps = function VirtualGridProps() {
-  VirtualGrid_classCallCheck(this, VirtualGridProps);
-
-  VirtualGrid_defineProperty(this, "onScroll", void 0);
-
-  VirtualGrid_defineProperty(this, "height", void 0);
-
-  VirtualGrid_defineProperty(this, "width", void 0);
-
-  VirtualGrid_defineProperty(this, "columnCount", void 0);
-
-  VirtualGrid_defineProperty(this, "rowCount", void 0);
-
-  VirtualGrid_defineProperty(this, "columnWidth", void 0);
-
-  VirtualGrid_defineProperty(this, "rowHeight", void 0);
-
-  VirtualGrid_defineProperty(this, "estimatedColumnWidth", void 0);
-
-  VirtualGrid_defineProperty(this, "estimatedRowHeight", void 0);
-
-  VirtualGrid_defineProperty(this, "overscanColumnsCount", 0);
-
-  VirtualGrid_defineProperty(this, "overscanRowCount", 0);
-
-  VirtualGrid_defineProperty(this, "fixedHeaderHeight", 0);
-
-  VirtualGrid_defineProperty(this, "fixedFooterHeight", 0);
-
-  VirtualGrid_defineProperty(this, "fixedLeftWidth", 0);
-
-  VirtualGrid_defineProperty(this, "fixedRightWidth", 0);
-
-  VirtualGrid_defineProperty(this, "style", void 0);
-
-  VirtualGrid_defineProperty(this, "tileStyle", void 0);
-
-  VirtualGrid_defineProperty(this, "children", void 0);
-};
-
-var VirtualGridState = function VirtualGridState() {
-  VirtualGrid_classCallCheck(this, VirtualGridState);
-
-  VirtualGrid_defineProperty(this, "scrollTop", 0);
-
-  VirtualGrid_defineProperty(this, "scrollLeft", 0);
-};
-
-var VirtualGrid_VirtualGrid =
+var CustomScrollbarsInner =
 /*#__PURE__*/
 function (_React$PureComponent) {
-  VirtualGrid_inherits(VirtualGrid, _React$PureComponent);
+  _inherits(CustomScrollbarsInner, _React$PureComponent);
 
-  VirtualGrid_createClass(VirtualGrid, [{
-    key: "direction",
-    get: function get() {
-      var _this$props$style;
+  function CustomScrollbarsInner() {
+    _classCallCheck(this, CustomScrollbarsInner);
 
-      return ((_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.direction) === 'rtl' ? 'rtl' : 'ltr';
-    }
-  }, {
-    key: "activeTiles",
-    get: function get() {
-      return Object.keys(this.tiles);
-    }
-  }, {
-    key: "headerTiles",
-    get: function get() {
-      var _this2 = this;
-
-      return this.activeTiles.filter(function (key) {
-        return _this2.tiles[key].position.vertical === 'header';
-      });
-    }
-  }, {
-    key: "bodyTiles",
-    get: function get() {
-      var _this3 = this;
-
-      return this.activeTiles.filter(function (key) {
-        return _this3.tiles[key].position.vertical === 'body';
-      });
-    }
-  }, {
-    key: "footerTiles",
-    get: function get() {
-      var _this4 = this;
-
-      return this.activeTiles.filter(function (key) {
-        return _this4.tiles[key].position.vertical === 'footer';
-      });
-    }
-  }]);
-
-  function VirtualGrid(_props) {
-    var _this;
-
-    VirtualGrid_classCallCheck(this, VirtualGrid);
-
-    _this = VirtualGrid_possibleConstructorReturn(this, VirtualGrid_getPrototypeOf(VirtualGrid).call(this, _props));
-
-    VirtualGrid_defineProperty(VirtualGrid_assertThisInitialized(_this), "tiles", {});
-
-    VirtualGrid_defineProperty(VirtualGrid_assertThisInitialized(_this), "renderTile", function (tileKey) {
-      var _this$tiles$tileKey = _this.tiles[tileKey],
-          ref = _this$tiles$tileKey.ref,
-          props = _this$tiles$tileKey.props,
-          rowIndexOffset = _this$tiles$tileKey.rowIndexOffset,
-          columnIndexOffset = _this$tiles$tileKey.columnIndexOffset;
-      return external_react_["createElement"](VirtualTile_VirtualTile, _extends({
-        key: tileKey,
-        ref: ref
-      }, props), function (renderProps) {
-        return _this.props.children({
-          tileKey: tileKey,
-          tilePosition: _this.getTilePosition(tileKey),
-          absRowIndex: renderProps.rowIndex + rowIndexOffset,
-          absColIndex: renderProps.colIndex + columnIndexOffset,
-          relRowIndex: renderProps.rowIndex,
-          relColIndex: renderProps.colIndex,
-          height: renderProps.height,
-          width: renderProps.width
-        });
-      });
-    });
-
-    VirtualGrid_defineProperty(VirtualGrid_assertThisInitialized(_this), "handleScroll", function (e) {
-      var normalized = utils["d" /* ScrollUtils */].normalizeScrollEvent(e, _this.direction); // restore tiles position
-
-      _this.setState({
-        scrollTop: normalized.scrollTop,
-        scrollLeft: normalized.normalizedScrollLeft
-      }); // scroll tiles content
-
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = _this.activeTiles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _tileKey = _step.value;
-          var _this$tiles$_tileKey = _this.tiles[_tileKey],
-              ref = _this$tiles$_tileKey.ref,
-              scrollDirection = _this$tiles$_tileKey.scrollDirection;
-          ref.current.scrollTo(normalized, scrollDirection);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    });
-
-    _this.state = new VirtualGridState();
-    _this.tiles = _this.createTilesMap();
-    return _this;
-  } //
-  // life cycle
-  //
-
-
-  VirtualGrid_createClass(VirtualGrid, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps) {
-      if (!Object(utils["f" /* areShallowEqual */])(this.props, prevProps)) {
-        this.tiles = this.createTilesMap();
-        this.forceUpdate();
-      }
-    } //
-    // render methods
-    //
-
-  }, {
-    key: "render",
-    value: function render() {
-      var scrollableHeight = this.getScrollableAreaHeight();
-      var scrollableWidth = this.getScrollableAreaWidth();
-      return external_react_["createElement"]("div", {
-        className: this.createClassName('Main_Container'),
-        style: VirtualGrid_objectSpread({
-          direction: this.direction,
-          position: 'relative',
-          height: this.getContainerHeight(scrollableHeight, scrollableWidth),
-          width: this.getContainerWidth(scrollableHeight, scrollableWidth),
-          overflow: 'auto'
-        }, this.props.style),
-        onScroll: this.handleScroll
-      }, external_react_["createElement"]("div", {
-        className: this.createClassName('Main_ScrollableArea'),
-        style: {
-          height: scrollableHeight,
-          width: scrollableWidth
-        }
-      }, this.renderTilesRow(this.headerTiles), this.renderTilesRow(this.bodyTiles), this.renderTilesRow(this.footerTiles)));
-    }
-  }, {
-    key: "renderTilesRow",
-    value: function renderTilesRow(tileKeys) {
-      var _this5 = this,
-          _ref;
-
-      if (!(tileKeys === null || tileKeys === void 0 ? void 0 : tileKeys.length)) return null;
-      var firstTile = this.tiles[tileKeys[0]];
-      var rightOrLeft = this.direction === 'rtl' ? 'right' : 'left';
-      var isSticky = utils["a" /* DomUtils */].isPositionStickySupported;
-      var position = isSticky ? 'sticky' : 'absolute';
-      var topOffset = isSticky ? 0 : this.state.scrollTop;
-      var leftOffset = isSticky ? 0 : this.state.scrollLeft;
-      var width = tileKeys.map(function (key) {
-        return _this5.tiles[key].props.width;
-      }).reduce(function (total, cur) {
-        return total + cur;
-      }, 0);
-      return external_react_["createElement"]("div", {
-        style: (_ref = {
-          display: 'flex',
-          position: position,
-          top: firstTile.tileRowTop + topOffset
-        }, VirtualGrid_defineProperty(_ref, rightOrLeft, 0 + leftOffset), VirtualGrid_defineProperty(_ref, "height", firstTile.props.height), VirtualGrid_defineProperty(_ref, "width", width), _ref)
-      }, tileKeys.map(this.renderTile));
-    }
-  }, {
-    key: "createTilesMap",
-    //
-    // render helpers
-    //
-    value: function createTilesMap() {
-      this.resetTiles();
-      var map = {};
-      var hasHeader = !!this.props.fixedHeaderHeight;
-      var hasFooter = !!this.props.fixedFooterHeight;
-      var hasFixedLeftColumn = !!this.props.fixedLeftWidth;
-      var hasFixedRightColumn = !!this.props.fixedRightWidth;
-      var createTilesMapEntry = this.createTileMapEntryFactory(); // header
-
-      if (hasHeader) {
-        if (hasFixedLeftColumn) {
-          map[TileKey.HeaderLeft] = createTilesMapEntry(TileKey.HeaderLeft);
-        }
-
-        map[TileKey.HeaderCenter] = createTilesMapEntry(TileKey.HeaderCenter);
-
-        if (hasFixedRightColumn) {
-          map[TileKey.HeaderRight] = createTilesMapEntry(TileKey.HeaderRight);
-        }
-      } // body
-
-
-      if (hasFixedLeftColumn) {
-        map[TileKey.BodyLeft] = createTilesMapEntry(TileKey.BodyLeft);
-      }
-
-      map[TileKey.BodyCenter] = createTilesMapEntry(TileKey.BodyCenter);
-
-      if (hasFixedRightColumn) {
-        map[TileKey.BodyRight] = createTilesMapEntry(TileKey.BodyRight);
-      } // footer
-
-
-      if (hasFooter) {
-        if (hasFixedLeftColumn) {
-          map[TileKey.FooterLeft] = createTilesMapEntry(TileKey.FooterLeft);
-        }
-
-        map[TileKey.FooterCenter] = createTilesMapEntry(TileKey.FooterCenter);
-
-        if (hasFixedRightColumn) {
-          map[TileKey.FooterRight] = createTilesMapEntry(TileKey.FooterRight);
-        }
-      }
-
-      return map;
-    }
-  }, {
-    key: "createTileMapEntryFactory",
-    value: function createTileMapEntryFactory() {
-      var _this6 = this;
-
-      // calculate base dimensions
-      var scrollableHeight = this.getScrollableAreaHeight();
-      var scrollableWidth = this.getScrollableAreaWidth();
-      var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth(scrollableWidth);
-      var verticalScrollbarWidth = this.getVerticalScrollbarWidth(scrollableHeight);
-      var containerHeight = this.getContainerHeight(scrollableHeight, scrollableWidth);
-      var containerWidth = this.getContainerWidth(scrollableHeight, scrollableWidth);
-      var headerHeight = this.props.fixedHeaderHeight;
-      var footerHeight = this.props.fixedFooterHeight;
-      var bodyHeight = containerHeight - horizontalScrollbarWidth - headerHeight - footerHeight;
-      var leftWidth = this.props.fixedLeftWidth;
-      var rightWidth = this.props.fixedRightWidth;
-      var centerWidth = containerWidth - verticalScrollbarWidth - leftWidth - rightWidth; // create factory method
-
-      return function (tileKey) {
-        var _this6$getTilePositio = _this6.getTilePosition(tileKey),
-            vertical = _this6$getTilePositio.vertical,
-            horizontal = _this6$getTilePositio.horizontal;
-
-        var isVerticalFixed = vertical === 'header' || vertical === 'footer';
-        var isHorizontalFixed = horizontal === 'left' || horizontal === 'right';
-        var isCorner = isVerticalFixed && isHorizontalFixed;
-        return {
-          ref: external_react_["createRef"](),
-          position: {
-            vertical: vertical,
-            horizontal: horizontal
-          },
-          tileRowTop: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight : headerHeight + bodyHeight,
-          rowIndexOffset: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight && 1 : _this6.props.rowCount + (headerHeight && 1),
-          columnIndexOffset: horizontal === 'left' ? 0 : horizontal === 'center' ? leftWidth && 1 : _this6.props.columnCount + (leftWidth && 1),
-          scrollDirection: isCorner ? 'none' : isVerticalFixed ? 'horizontal' : isHorizontalFixed ? 'vertical' : 'both',
-          props: {
-            className: _this6.createClassName(tileKey),
-            controlledScroll: true,
-            direction: _this6.direction,
-            height: vertical === 'header' ? headerHeight : vertical === 'body' ? bodyHeight : footerHeight,
-            width: horizontal === 'left' ? leftWidth : horizontal === 'center' ? centerWidth : rightWidth,
-            columnCount: horizontal === 'left' ? 1 : horizontal === 'center' ? _this6.props.columnCount : 1,
-            rowCount: vertical === 'header' ? 1 : vertical === 'body' ? _this6.props.rowCount : 1,
-            columnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.columnWidth : rightWidth,
-            rowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.rowHeight : footerHeight,
-            estimatedColumnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.estimatedColumnWidth : rightWidth,
-            estimatedRowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.estimatedRowHeight : footerHeight,
-            overscanColumnsCount: horizontal === 'left' ? 0 : horizontal === 'center' ? _this6.props.overscanColumnsCount : 0,
-            overscanRowCount: vertical === 'header' ? 0 : vertical === 'body' ? _this6.props.overscanRowCount : 0
-          }
-        };
-      };
-    }
-  }, {
-    key: "getTilePosition",
-    value: function getTilePosition(tileKey) {
-      var _tileKey$toLowerCase$ = tileKey.toLowerCase().split('_'),
-          _tileKey$toLowerCase$2 = _slicedToArray(_tileKey$toLowerCase$, 2),
-          vertical = _tileKey$toLowerCase$2[0],
-          horizontal = _tileKey$toLowerCase$2[1];
-
-      return {
-        vertical: vertical,
-        horizontal: horizontal
-      };
-    }
-  }, {
-    key: "getScrollableAreaHeight",
-    value: function getScrollableAreaHeight() {
-      var headerHeight = this.props.fixedHeaderHeight;
-      var footerHeight = this.props.fixedFooterHeight;
-      var bodyHeight = this.getBodyScrollableHeight();
-      return bodyHeight + headerHeight + footerHeight;
-    }
-  }, {
-    key: "getBodyScrollableHeight",
-    value: function getBodyScrollableHeight() {
-      var _this$tiles$TileKey$B, _this$tiles$TileKey$B2;
-
-      var body = (_this$tiles$TileKey$B = this.tiles[TileKey.BodyCenter]) === null || _this$tiles$TileKey$B === void 0 ? void 0 : (_this$tiles$TileKey$B2 = _this$tiles$TileKey$B.ref) === null || _this$tiles$TileKey$B2 === void 0 ? void 0 : _this$tiles$TileKey$B2.current;
-      if (body) return body.getScrollableHeight(); // Body not rendered yet - have to calculate independently.  
-      // Not so DRY, breaks encapsulation and not very efficient either but I
-      // couldn't find a better way to do that which is not terribly ugly...
-
-      return new WindowCalculator().getTotalSize('row', this.props.rowHeight, this.props.estimatedRowHeight, this.props.rowCount);
-    }
-  }, {
-    key: "getScrollableAreaWidth",
-    value: function getScrollableAreaWidth() {
-      var leftWidth = this.props.fixedLeftWidth;
-      var rightWidth = this.props.fixedRightWidth;
-      var bodyWidth = this.getBodyScrollableAreaWidth();
-      return bodyWidth + leftWidth + rightWidth;
-    }
-  }, {
-    key: "getBodyScrollableAreaWidth",
-    value: function getBodyScrollableAreaWidth() {
-      var _this$tiles$TileKey$B3, _this$tiles$TileKey$B4;
-
-      var body = (_this$tiles$TileKey$B3 = this.tiles[TileKey.BodyCenter]) === null || _this$tiles$TileKey$B3 === void 0 ? void 0 : (_this$tiles$TileKey$B4 = _this$tiles$TileKey$B3.ref) === null || _this$tiles$TileKey$B4 === void 0 ? void 0 : _this$tiles$TileKey$B4.current;
-      if (body) return body.getScrollableWidth(); // Body not rendered yet - have to calculate independently.  
-      // Not so DRY, breaks encapsulation and not very efficient either but I
-      // couldn't find a better way to do that which is not terribly ugly...
-
-      return new WindowCalculator().getTotalSize('column', this.props.columnWidth, this.props.estimatedColumnWidth, this.props.columnCount);
-    }
-  }, {
-    key: "getVerticalScrollbarWidth",
-    value: function getVerticalScrollbarWidth(scrollableHeight) {
-      var hasVerticalScrollbar = scrollableHeight > this.props.height;
-      return hasVerticalScrollbar && utils["a" /* DomUtils */].scrollbarWidth || 0;
-    }
-  }, {
-    key: "getHorizontalScrollbarWidth",
-    value: function getHorizontalScrollbarWidth(scrollableWidth) {
-      var hasHorizontalScrollbar = scrollableWidth > this.props.width;
-      return hasHorizontalScrollbar && utils["a" /* DomUtils */].scrollbarWidth || 0;
-    }
-  }, {
-    key: "getContainerHeight",
-    value: function getContainerHeight(scrollableHeight, scrollableWidth) {
-      var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth(scrollableWidth);
-      return Math.min(this.props.height, scrollableHeight + horizontalScrollbarWidth);
-    }
-  }, {
-    key: "getContainerWidth",
-    value: function getContainerWidth(scrollableHeight, scrollableWidth) {
-      var verticalScrollbarWidth = this.getVerticalScrollbarWidth(scrollableHeight);
-      return Math.min(this.props.width, scrollableWidth + verticalScrollbarWidth);
-    }
-    /**
-     * We are only using classes for easier debug inspection...
-     */
-
-  }, {
-    key: "createClassName",
-    value: function createClassName(className) {
-      return "ReactTablize__VirtualGrid__".concat(className);
-    } //
-    // misc
-    //
-
-  }, {
-    key: "resetTiles",
-    value: function resetTiles() {
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.activeTiles[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _tileKey2 = _step2.value;
-
-          this.tiles[_tileKey2].ref.current.clearCache();
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      this.tiles = {};
-    }
-  }]);
-
-  return VirtualGrid;
-}(external_react_["PureComponent"]);
-
-VirtualGrid_defineProperty(VirtualGrid_VirtualGrid, "defaultProps", new VirtualGridProps());
-// CONCATENATED MODULE: ./src/grid/GridView.tsx
-function GridView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridView_typeof = function _typeof(obj) { return typeof obj; }; } else { GridView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridView_typeof(obj); }
-
-function GridView_extends() { GridView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return GridView_extends.apply(this, arguments); }
-
-function GridView_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
-
-function GridView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { GridView_ownKeys(source, true).forEach(function (key) { GridView_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { GridView_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function GridView_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function GridView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function GridView_createClass(Constructor, protoProps, staticProps) { if (protoProps) GridView_defineProperties(Constructor.prototype, protoProps); if (staticProps) GridView_defineProperties(Constructor, staticProps); return Constructor; }
-
-function GridView_possibleConstructorReturn(self, call) { if (call && (GridView_typeof(call) === "object" || typeof call === "function")) { return call; } return GridView_assertThisInitialized(self); }
-
-function GridView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function GridView_getPrototypeOf(o) { GridView_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return GridView_getPrototypeOf(o); }
-
-function GridView_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) GridView_setPrototypeOf(subClass, superClass); }
-
-function GridView_setPrototypeOf(o, p) { GridView_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GridView_setPrototypeOf(o, p); }
-
-function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var GridView_GridView =
-/*#__PURE__*/
-function (_React$PureComponent) {
-  GridView_inherits(GridView, _React$PureComponent);
-
-  function GridView() {
-    GridView_classCallCheck(this, GridView);
-
-    return GridView_possibleConstructorReturn(this, GridView_getPrototypeOf(GridView).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(CustomScrollbarsInner).apply(this, arguments));
   }
 
-  GridView_createClass(GridView, [{
+  _createClass(CustomScrollbarsInner, [{
     key: "render",
     value: function render() {
       var _this = this;
 
-      return external_react_["createElement"](internal["b" /* ErrorBoundary */], null, external_react_["createElement"]("div", {
-        style: GridView_objectSpread({
-          direction: this.direction,
-          width: '100%'
-        }, this.props.style, {}, utils["e" /* SizeUtils */].geElementHeights(this, GridView.defaultHeight))
-      }, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
-        var width = _ref.width,
-            height = _ref.height;
-        return external_react_["createElement"](VirtualGrid_VirtualGrid, GridView_extends({}, _this.props, {
-          height: height,
-          width: width
-        }));
-      })));
-    }
-  }, {
-    key: "direction",
-    get: function get() {
-      var _this$props$style;
+      // https://github.com/bvaughn/react-window/issues/110#issuecomment-469061213
+      var refSetter = function refSetter(elem) {
+        if (!_this.props.forwardedRef) return;
+        var ref = (elem || {}).view;
 
-      return ((_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.direction) === 'rtl' ? 'rtl' : 'ltr';
+        if (typeof _this.props.forwardedRef === 'function') {
+          _this.props.forwardedRef(ref);
+        } else {
+          _this.props.forwardedRef.current = ref;
+        }
+      };
+
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1___default.a, {
+        ref: refSetter,
+        style: _objectSpread({}, this.props.style, {
+          overflow: 'hidden',
+          direction: 'ltr'
+        }),
+        onScroll: this.props.onScroll
+      }, this.props.children);
     }
   }]);
 
-  return GridView;
-}(external_react_["PureComponent"]);
+  return CustomScrollbarsInner;
+}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
 
-GridView_defineProperty(GridView_GridView, "defaultHeight", '35vh');
-// CONCATENATED MODULE: ./src/grid/index.ts
+var CustomScrollbars = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](CustomScrollbarsInner, _extends({}, props, {
+    forwardedRef: ref
+  }));
+});
+CustomScrollbars.displayName = 'CustomScrollbars';
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _List__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var _List__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_List__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (checked) */ if(__webpack_require__.o(_List__WEBPACK_IMPORTED_MODULE_0__, "NonVirtualList")) __webpack_require__.d(__webpack_exports__, "NonVirtualList", function() { return _List__WEBPACK_IMPORTED_MODULE_0__["NonVirtualList"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_List__WEBPACK_IMPORTED_MODULE_0__, "VirtualList")) __webpack_require__.d(__webpack_exports__, "VirtualList", function() { return _List__WEBPACK_IMPORTED_MODULE_0__["VirtualList"]; });
+
+/* harmony import */ var _NonVirtualList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NonVirtualList", function() { return _NonVirtualList__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+
+/* harmony import */ var _VirtualList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VirtualList", function() { return _VirtualList__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
 
+
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NonVirtualList; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _CustomScrollbars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var NonVirtualList =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(NonVirtualList, _React$PureComponent);
+
+  function NonVirtualList() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, NonVirtualList);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(NonVirtualList)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "disableScrollEvents", false);
+
+    _defineProperty(_assertThisInitialized(_this), "listRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
+
+    _defineProperty(_assertThisInitialized(_this), "scrollTo", function (scrollOffset) {
+      var currentInner = _this.listRef.current;
+
+      if (currentInner) {
+        if (scrollOffset === undefined) return;
+        var currentOffset = _this.isHorizontal ? currentInner.scrollLeft : currentInner.scrollTop;
+        if (scrollOffset === currentOffset) return;
+        _this.disableScrollEvents = true;
+        currentInner.scrollTo({
+          top: _this.isHorizontal ? undefined : scrollOffset,
+          left: _this.isHorizontal ? scrollOffset : undefined
+        });
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleOnScroll", function (e) {
+      if (_this.disableScrollEvents) {
+        _this.disableScrollEvents = false;
+        return;
+      }
+
+      if (!_this.props.onScroll) return;
+      var _e$currentTarget = e.currentTarget,
+          scrollTop = _e$currentTarget.scrollTop,
+          scrollLeft = _e$currentTarget.scrollLeft;
+
+      _this.props.onScroll(_this.isHorizontal ? scrollLeft : scrollTop);
+    });
+
+    return _this;
+  }
+
+  _createClass(NonVirtualList, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var listStyle = _defineProperty({
+        height: this.props.height,
+        width: this.props.width,
+        direction: this.props.dir,
+        boxSizing: 'content-box',
+        outline: 'none',
+        overflow: 'auto'
+      }, this.isHorizontal ? 'overflowY' : 'overflowX', 'hidden');
+
+      if (this.isHorizontal) {
+        listStyle.display = 'flex';
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](this.getListElementType(), {
+        ref: this.listRef,
+        style: listStyle,
+        onScroll: this.handleOnScroll
+      }, // rows
+      Array(this.props.itemCount).fill(0).map(function (_, index) {
+        var _ref;
+
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          key: index,
+          style: (_ref = {}, _defineProperty(_ref, _this2.isHorizontal ? 'minWidth' : 'minHeight', _this2.props.itemSize(index)), _defineProperty(_ref, _this2.isHorizontal ? 'height' : 'width', _this2.isHorizontal ? _this2.props.height : _this2.props.width), _ref)
+        }, _this2.props.children(index));
+      }));
+    }
+  }, {
+    key: "getListElementType",
+    value: function getListElementType() {
+      return this.props.customScrollbar ? _CustomScrollbars__WEBPACK_IMPORTED_MODULE_1__[/* CustomScrollbars */ "a"] : 'div';
+    }
+  }, {
+    key: "isHorizontal",
+    get: function get() {
+      return this.props.layout === 'horizontal';
+    }
+  }]);
+
+  return NonVirtualList;
+}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VirtualList; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _CustomScrollbars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var _window__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var VirtualList =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(VirtualList, _React$PureComponent);
+
+  function VirtualList() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, VirtualList);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(VirtualList)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "windowRef", react__WEBPACK_IMPORTED_MODULE_0__["createRef"]());
+
+    _defineProperty(_assertThisInitialized(_this), "initialCalculator", new _window__WEBPACK_IMPORTED_MODULE_3__[/* WindowCalculator */ "b"]());
+
+    return _this;
+  }
+
+  _createClass(VirtualList, [{
+    key: "refresh",
+    value: function refresh() {
+      if (this.windowRef.current) {
+        this.windowRef.current.clearCache();
+      }
+
+      this.forceUpdate();
+    }
+  }, {
+    key: "scrollTo",
+    value: function scrollTo(offset) {
+      if (this.windowRef.current) {
+        var top = this.isHorizontal ? undefined : offset;
+        var left = this.isHorizontal ? offset : undefined;
+        this.windowRef.current.scrollTo({
+          scrollTop: top,
+          rawScrollLeft: left,
+          normalizedScrollLeft: left
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_window__WEBPACK_IMPORTED_MODULE_3__[/* VirtualWindow */ "a"], {
+        ref: this.windowRef,
+        direction: this.props.dir,
+        scrollDirection: this.isHorizontal ? 'horizontal' : 'vertical',
+        style: Object.assign({
+          outline: 'none'
+        }, this.props.style),
+        outerElementType: this.getOuterElementType(),
+        height: this.props.height,
+        width: this.props.width,
+        columnCount: this.isHorizontal ? this.props.itemCount : 1,
+        rowCount: this.isHorizontal ? 1 : this.props.itemCount,
+        columnWidth: this.isHorizontal ? this.props.itemSize : this.props.width - this.getVerticalScrollbarWidth(),
+        rowHeight: this.isHorizontal ? this.props.height - this.getHorizontalScrollbarWidth() : this.props.itemSize,
+        overscanColumnsCount: this.isHorizontal ? this.props.overscan : 0,
+        overscanRowCount: this.isHorizontal ? 0 : this.props.overscan
+      }, function (cellProps) {
+        return _this2.renderRow(cellProps);
+      });
+    }
+  }, {
+    key: "renderRow",
+    value: function renderRow(cellProps) {
+      var index = this.props.layout === 'horizontal' ? cellProps.colIndex : cellProps.rowIndex;
+      var row = this.props.children(index);
+      return react__WEBPACK_IMPORTED_MODULE_0__["cloneElement"](row, {
+        style: _objectSpread({}, row.props.style)
+      });
+    } //
+    // render helpers
+    //
+
+  }, {
+    key: "getVerticalScrollbarWidth",
+    value: function getVerticalScrollbarWidth() {
+      var scrollableHeight = this.getScrollableHeight();
+      var hasVerticalScrollbar = scrollableHeight > this.props.height;
+      return hasVerticalScrollbar && _utils__WEBPACK_IMPORTED_MODULE_2__[/* DomUtils */ "a"].scrollbarWidth || 0;
+    }
+  }, {
+    key: "getHorizontalScrollbarWidth",
+    value: function getHorizontalScrollbarWidth() {
+      var scrollableWidth = this.getScrollableWidth();
+      var hasHorizontalScrollbar = scrollableWidth > this.props.width;
+      return hasHorizontalScrollbar && _utils__WEBPACK_IMPORTED_MODULE_2__[/* DomUtils */ "a"].scrollbarWidth || 0;
+    }
+  }, {
+    key: "getScrollableHeight",
+    value: function getScrollableHeight() {
+      if (this.windowRef.current) return this.windowRef.current.getScrollableHeight(); // Body not rendered yet - have to calculate independently.  
+      // Not so DRY, breaks encapsulation and not very efficient either but I
+      // couldn't find a better way to do that which is not terribly ugly...
+
+      return this.initialCalculator.getTotalSize('row', this.props.itemSize, undefined, this.props.itemCount);
+    }
+  }, {
+    key: "getScrollableWidth",
+    value: function getScrollableWidth() {
+      if (this.windowRef.current) return this.windowRef.current.getScrollableWidth(); // Body not rendered yet - have to calculate independently.  
+      // Not so DRY, breaks encapsulation and not very efficient either but I
+      // couldn't find a better way to do that which is not terribly ugly...
+
+      return this.initialCalculator.getTotalSize('column', this.props.itemSize, undefined, this.props.itemCount);
+    }
+  }, {
+    key: "getOuterElementType",
+    value: function getOuterElementType() {
+      return this.props.customScrollbar ? _CustomScrollbars__WEBPACK_IMPORTED_MODULE_1__[/* CustomScrollbars */ "a"] : undefined;
+    }
+  }, {
+    key: "isHorizontal",
+    get: function get() {
+      return this.props.layout === 'horizontal';
+    }
+  }]);
+
+  return VirtualList;
+}(react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"]);
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/table/ColumnBody.tsx
-function ColumnBody_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { ColumnBody_typeof = function _typeof(obj) { return typeof obj; }; } else { ColumnBody_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return ColumnBody_typeof(obj); }
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function ColumnBody_possibleConstructorReturn(self, call) { if (call && (ColumnBody_typeof(call) === "object" || typeof call === "function")) { return call; } return ColumnBody_assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function ColumnBody_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function ColumnBody_getPrototypeOf(o) { ColumnBody_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return ColumnBody_getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function ColumnBody_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) ColumnBody_setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function ColumnBody_setPrototypeOf(o, p) { ColumnBody_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return ColumnBody_setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function ColumnBody_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function ColumnBody_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 var ColumnBodyProps = function ColumnBodyProps() {
-  ColumnBody_classCallCheck(this, ColumnBodyProps);
+  _classCallCheck(this, ColumnBodyProps);
 
-  ColumnBody_defineProperty(this, "children", void 0);
+  _defineProperty(this, "children", void 0);
 };
 var ColumnBody =
 /*#__PURE__*/
 function (_React$PureComponent) {
-  ColumnBody_inherits(ColumnBody, _React$PureComponent);
+  _inherits(ColumnBody, _React$PureComponent);
 
   function ColumnBody() {
-    ColumnBody_classCallCheck(this, ColumnBody);
+    _classCallCheck(this, ColumnBody);
 
-    return ColumnBody_possibleConstructorReturn(this, ColumnBody_getPrototypeOf(ColumnBody).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ColumnBody).apply(this, arguments));
   }
 
   return ColumnBody;
@@ -2491,12 +1943,15 @@ function (_React$PureComponent) {
 
   return ColumnHead;
 }(external_react_["PureComponent"]);
+// EXTERNAL MODULE: ./src/internal/utils/index.ts + 5 modules
+var utils = __webpack_require__(1);
+
 // CONCATENATED MODULE: ./src/table/TableBody.tsx
 function TableBody_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableBody_typeof = function _typeof(obj) { return typeof obj; }; } else { TableBody_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableBody_typeof(obj); }
 
-function TableBody_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function TableBody_createClass(Constructor, protoProps, staticProps) { if (protoProps) TableBody_defineProperties(Constructor.prototype, protoProps); if (staticProps) TableBody_defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function TableBody_possibleConstructorReturn(self, call) { if (call && (TableBody_typeof(call) === "object" || typeof call === "function")) { return call; } return TableBody_assertThisInitialized(self); }
 
@@ -2530,11 +1985,11 @@ function (_React$PureComponent) {
     return TableBody_possibleConstructorReturn(this, TableBody_getPrototypeOf(TableBody).apply(this, arguments));
   }
 
-  TableBody_createClass(TableBody, null, [{
+  _createClass(TableBody, null, [{
     key: "hasChildren",
     value: function hasChildren(body) {
       if (!body) return false;
-      if (Object(utils["h" /* isNullOrUndefined */])(body.props.children)) return false;
+      if (Object(utils["g" /* isNullOrUndefined */])(body.props.children)) return false;
       if (typeof body.props.children === 'function') return true;
       if (Array.isArray(body.props.children)) return body.props.children.length > 0;
       var childrenCount = external_react_["Children"].count(body.props.children);
@@ -2544,8 +1999,11 @@ function (_React$PureComponent) {
 
   return TableBody;
 }(external_react_["PureComponent"]);
+// EXTERNAL MODULE: ./src/internal/ErrorBoundary.tsx
+var ErrorBoundary = __webpack_require__(3);
+
 // EXTERNAL MODULE: external "@emotion/styled-base"
-var styled_base_ = __webpack_require__(3);
+var styled_base_ = __webpack_require__(5);
 var styled_base_default = /*#__PURE__*/__webpack_require__.n(styled_base_);
 
 // CONCATENATED MODULE: ./src/table/style.tsx
@@ -2579,8 +2037,8 @@ var StyledTableCell = styled_base_default()("div", {
   target: "ea4b5ar4",
   label: "StyledTableCell"
 })( true ? {
-  name: "1jqn12",
-  styles: "flex:1;overflow:hidden;text-overflow:ellipsis;"
+  name: "n7ngvn",
+  styles: "flex:1;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box;"
 } : undefined);
 // CONCATENATED MODULE: ./src/table/TableCell.tsx
 function TableCell_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableCell_typeof = function _typeof(obj) { return typeof obj; }; } else { TableCell_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableCell_typeof(obj); }
@@ -2621,7 +2079,7 @@ function (_React$PureComponent) {
   TableCell_createClass(TableCell, [{
     key: "render",
     value: function render() {
-      return external_react_["createElement"](StyledTableCell, this.props, external_react_["createElement"](internal["b" /* ErrorBoundary */], null, this.props.children));
+      return external_react_["createElement"](StyledTableCell, this.props, external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, this.props.children));
     }
   }], [{
     key: "isTableCell",
@@ -2721,10 +2179,10 @@ function (_React$PureComponent) {
     key: "createHeadFromColumns",
     value: function createHeadFromColumns(columns) {
       if (columns.every(function (col) {
-        return !utils["c" /* ReactUtils */].singleChildOfType(col, ColumnHead);
+        return !utils["b" /* ReactUtils */].singleChildOfType(col, ColumnHead);
       })) return null;
       var head = external_react_["createElement"](TableHead, null, columns.map(function (col) {
-        var colHead = utils["c" /* ReactUtils */].singleChildOfType(col, ColumnHead);
+        var colHead = utils["b" /* ReactUtils */].singleChildOfType(col, ColumnHead);
         if (!colHead) return null; // eslint-disable-next-line react/jsx-key
 
         return external_react_["createElement"](TableCell_TableCell, colHead.props);
@@ -2736,7 +2194,7 @@ function (_React$PureComponent) {
     value: function createBodyFromColumns(columns) {
       var body = external_react_["createElement"](TableBody_TableBody, null, function (rowIndex) {
         return columns.map(function (col, columnIndex) {
-          var cellRender = utils["c" /* ReactUtils */].singleChildOfType(col, ColumnBody).props.children;
+          var cellRender = utils["b" /* ReactUtils */].singleChildOfType(col, ColumnBody).props.children;
           if (!cellRender) return null;
           return cellRender({
             rowIndex: rowIndex,
@@ -2775,7 +2233,7 @@ function TableRow_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 
 
-var flattenDeep = __webpack_require__(14);
+var flattenDeep = __webpack_require__(19);
 
 var TableRowSymbol = '__ReactTablize__TableRow__';
 /**
@@ -2796,7 +2254,7 @@ function (_React$PureComponent) {
   TableRow_createClass(TableRow, [{
     key: "render",
     value: function render() {
-      return external_react_["createElement"](StyledTableRow, this.props, external_react_["createElement"](internal["b" /* ErrorBoundary */], null, this.props.children));
+      return external_react_["createElement"](StyledTableRow, this.props, external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, this.props.children));
     }
   }], [{
     key: "isTableRow",
@@ -2831,23 +2289,27 @@ function (_React$PureComponent) {
 
 TableRow_defineProperty(TableRow_TableRow, "defaultProps", TableRow_defineProperty({}, TableRowSymbol, true));
 // EXTERNAL MODULE: external "emotion-theming"
-var external_emotion_theming_ = __webpack_require__(10);
+var external_emotion_theming_ = __webpack_require__(15);
 
-// EXTERNAL MODULE: ./src/list/index.ts
-var list = __webpack_require__(5);
+// EXTERNAL MODULE: external "react-virtualized-auto-sizer"
+var external_react_virtualized_auto_sizer_ = __webpack_require__(6);
+var external_react_virtualized_auto_sizer_default = /*#__PURE__*/__webpack_require__.n(external_react_virtualized_auto_sizer_);
+
+// EXTERNAL MODULE: ./src/internal/list/index.ts
+var list = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/table/TableView.tsx
 function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
 
-function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function TableView_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
 
-function TableView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { TableView_ownKeys(source, true).forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { TableView_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { TableView_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function TableView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -2960,9 +2422,9 @@ function (_React$PureComponent) {
     key: "render",
     value: function render() {
       // head & body
-      var head = utils["c" /* ReactUtils */].singleChildOfType(this, TableHead);
-      var body = utils["c" /* ReactUtils */].singleChildOfType(this, TableBody_TableBody);
-      var columns = utils["c" /* ReactUtils */].childrenOfType(this, TableColumn_TableColumn); // columns
+      var head = utils["b" /* ReactUtils */].singleChildOfType(this, TableHead);
+      var body = utils["b" /* ReactUtils */].singleChildOfType(this, TableBody_TableBody);
+      var columns = utils["b" /* ReactUtils */].childrenOfType(this, TableColumn_TableColumn); // columns
 
       if (columns && columns.length) {
         if (head || body) throw new Error('Can not specify head and/or body when specifying table columns.');
@@ -2971,11 +2433,11 @@ function (_React$PureComponent) {
       } // render
 
 
-      return external_react_["createElement"](internal["b" /* ErrorBoundary */], null, external_react_["createElement"](external_emotion_theming_["ThemeProvider"], {
+      return external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, external_react_["createElement"](external_emotion_theming_["ThemeProvider"], {
         theme: this.getTheme()
       }, external_react_["createElement"](StyledTableView, {
         className: this.props.className,
-        style: TableView_objectSpread({}, this.props.style, {}, utils["e" /* SizeUtils */].geElementHeights(this, TableView.defaultHeight))
+        style: _objectSpread({}, this.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(this, TableView.defaultHeight))
       }, this.renderTableHead(head), this.renderTableBody(head, body))));
     }
   }, {
@@ -2987,24 +2449,24 @@ function (_React$PureComponent) {
           children = _head$props.children,
           divProps = _objectWithoutProperties(_head$props, ["children"]);
 
-      return external_react_["createElement"](StyledTableHead, TableView_extends({}, divProps, {
-        style: TableView_objectSpread({
+      return external_react_["createElement"](StyledTableHead, _extends({}, divProps, {
+        style: _objectSpread({
           direction: this.props.dir
-        }, head.props.style, {}, utils["e" /* SizeUtils */].geElementHeights(head, TableView.defaultHeadHeight))
+        }, head.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(head, TableView.defaultHeadHeight))
       }), external_react_["Children"].map(children, this.renderCell));
     }
   }, {
     key: "renderTableBody",
     value: function renderTableBody(head, body) {
-      var bodyHeights = utils["e" /* SizeUtils */].getBodyHeights(this, head, {
+      var bodyHeights = this.getBodyHeights(this, head, {
         total: TableView.defaultHeight,
         head: TableView.defaultHeadHeight
       });
       return external_react_["createElement"](StyledTableBody, {
-        style: TableView_objectSpread({
+        style: _objectSpread({
           direction: this.props.dir
         }, bodyHeights)
-      }, external_react_["createElement"](internal["b" /* ErrorBoundary */], null, this.renderTableRows(body)));
+      }, external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, this.renderTableRows(body)));
     }
   }, {
     key: "renderTableRows",
@@ -3046,7 +2508,7 @@ function (_React$PureComponent) {
       if (!rowRender) return null;
       var row = rowRender(index);
       var rowContent = TableRow_TableRow.getRowContent(row);
-      rowContent = Object(utils["g" /* asArray */])(rowContent).map(this.renderCell); // already a row - just adjust the content
+      rowContent = Object(utils["f" /* asArray */])(rowContent).map(this.renderCell); // already a row - just adjust the content
 
       if (TableRow_TableRow.isTableRow(row)) {
         var rowKey = this.getRowKey(row.props, index);
@@ -3106,9 +2568,40 @@ function (_React$PureComponent) {
   }, {
     key: "getRowKey",
     value: function getRowKey(rowProps, index) {
-      if (!Object(utils["h" /* isNullOrUndefined */])(rowProps.key)) return rowProps.key;
+      if (!Object(utils["g" /* isNullOrUndefined */])(rowProps.key)) return rowProps.key;
       if (typeof this.props.rowKey === 'function') return this.props.rowKey(index);
       return index;
+    }
+  }, {
+    key: "getBodyHeights",
+    value: function getBodyHeights(table, head, defaultHeights) {
+      var totalHeights = utils["d" /* SizeUtils */].getElementHeights(table, defaultHeights.total);
+      var headHeight = this.getHeadHeight(head, defaultHeights.head);
+      var bodyHeights = utils["d" /* SizeUtils */].getElementHeights(table, undefined);
+      var height = bodyHeights.height || totalHeights.height;
+      var minHeight = bodyHeights.minHeight || totalHeights.minHeight;
+      var maxHeight = bodyHeights.maxHeight || totalHeights.maxHeight;
+
+      if (headHeight) {
+        height = "calc(".concat(height, " - ").concat(headHeight, ")");
+        if (minHeight) minHeight = "calc(".concat(minHeight, " - ").concat(headHeight, ")");
+        if (maxHeight) maxHeight = "calc(".concat(maxHeight, " - ").concat(headHeight, ")");
+      }
+
+      return {
+        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+      };
+    }
+  }, {
+    key: "getHeadHeight",
+    value: function getHeadHeight(head, defaultHeight) {
+      if (head) {
+        return utils["d" /* SizeUtils */].getElementHeights(head, defaultHeight).height;
+      }
+
+      return 0;
     }
   }]);
 
@@ -3131,6 +2624,19 @@ TableView_defineProperty(TableView_TableView, "Column", TableColumn_TableColumn)
 
 TableView_defineProperty(TableView_TableView, "defaultProps", new TableViewProps());
 // CONCATENATED MODULE: ./src/table/index.ts
+/* concated harmony reexport ColumnBodyProps */__webpack_require__.d(__webpack_exports__, "b", function() { return ColumnBodyProps; });
+/* concated harmony reexport ColumnBody */__webpack_require__.d(__webpack_exports__, "a", function() { return ColumnBody; });
+/* concated harmony reexport ColumnHead */__webpack_require__.d(__webpack_exports__, "c", function() { return ColumnHead; });
+/* concated harmony reexport TableBodyProps */__webpack_require__.d(__webpack_exports__, "f", function() { return TableBodyProps; });
+/* concated harmony reexport TableBody */__webpack_require__.d(__webpack_exports__, "e", function() { return TableBody_TableBody; });
+/* concated harmony reexport TableCell */__webpack_require__.d(__webpack_exports__, "g", function() { return TableCell_TableCell; });
+/* concated harmony reexport TableColumnProps */__webpack_require__.d(__webpack_exports__, "i", function() { return TableColumnProps; });
+/* concated harmony reexport TableColumn */__webpack_require__.d(__webpack_exports__, "h", function() { return TableColumn_TableColumn; });
+/* concated harmony reexport TableHead */__webpack_require__.d(__webpack_exports__, "j", function() { return TableHead; });
+/* concated harmony reexport TableRow */__webpack_require__.d(__webpack_exports__, "k", function() { return TableRow_TableRow; });
+/* concated harmony reexport RowAutoSize */__webpack_require__.d(__webpack_exports__, "d", function() { return RowAutoSize; });
+/* concated harmony reexport TableViewProps */__webpack_require__.d(__webpack_exports__, "m", function() { return TableViewProps; });
+/* concated harmony reexport TableView */__webpack_require__.d(__webpack_exports__, "l", function() { return TableView_TableView; });
 
 
 
@@ -3139,28 +2645,650 @@ TableView_defineProperty(TableView_TableView, "defaultProps", new TableViewProps
 
 
 
-// CONCATENATED MODULE: ./src/index.ts
-/* concated harmony reexport GridView */__webpack_require__.d(__webpack_exports__, "GridView", function() { return GridView_GridView; });
-/* concated harmony reexport TileKey */__webpack_require__.d(__webpack_exports__, "TileKey", function() { return TileKey; });
-/* concated harmony reexport VirtualGridProps */__webpack_require__.d(__webpack_exports__, "VirtualGridProps", function() { return VirtualGridProps; });
-/* concated harmony reexport VirtualGrid */__webpack_require__.d(__webpack_exports__, "VirtualGrid", function() { return VirtualGrid_VirtualGrid; });
-/* concated harmony reexport VirtualTileProps */__webpack_require__.d(__webpack_exports__, "VirtualTileProps", function() { return VirtualTileProps; });
-/* concated harmony reexport VirtualTile */__webpack_require__.d(__webpack_exports__, "VirtualTile", function() { return VirtualTile_VirtualTile; });
-/* concated harmony reexport ColumnBodyProps */__webpack_require__.d(__webpack_exports__, "ColumnBodyProps", function() { return ColumnBodyProps; });
-/* concated harmony reexport ColumnBody */__webpack_require__.d(__webpack_exports__, "ColumnBody", function() { return ColumnBody; });
-/* concated harmony reexport ColumnHead */__webpack_require__.d(__webpack_exports__, "ColumnHead", function() { return ColumnHead; });
-/* concated harmony reexport TableBodyProps */__webpack_require__.d(__webpack_exports__, "TableBodyProps", function() { return TableBodyProps; });
-/* concated harmony reexport TableBody */__webpack_require__.d(__webpack_exports__, "TableBody", function() { return TableBody_TableBody; });
-/* concated harmony reexport TableCell */__webpack_require__.d(__webpack_exports__, "TableCell", function() { return TableCell_TableCell; });
-/* concated harmony reexport TableColumnProps */__webpack_require__.d(__webpack_exports__, "TableColumnProps", function() { return TableColumnProps; });
-/* concated harmony reexport TableColumn */__webpack_require__.d(__webpack_exports__, "TableColumn", function() { return TableColumn_TableColumn; });
-/* concated harmony reexport TableHead */__webpack_require__.d(__webpack_exports__, "TableHead", function() { return TableHead; });
-/* concated harmony reexport TableRow */__webpack_require__.d(__webpack_exports__, "TableRow", function() { return TableRow_TableRow; });
-/* concated harmony reexport RowAutoSize */__webpack_require__.d(__webpack_exports__, "RowAutoSize", function() { return RowAutoSize; });
-/* concated harmony reexport TableViewProps */__webpack_require__.d(__webpack_exports__, "TableViewProps", function() { return TableViewProps; });
-/* concated harmony reexport TableView */__webpack_require__.d(__webpack_exports__, "TableView", function() { return TableView_TableView; });
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(0);
+
+// EXTERNAL MODULE: external "react-virtualized-auto-sizer"
+var external_react_virtualized_auto_sizer_ = __webpack_require__(6);
+var external_react_virtualized_auto_sizer_default = /*#__PURE__*/__webpack_require__.n(external_react_virtualized_auto_sizer_);
+
+// EXTERNAL MODULE: ./src/internal/ErrorBoundary.tsx
+var ErrorBoundary = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/internal/utils/index.ts + 5 modules
+var utils = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./src/internal/window/index.ts + 4 modules
+var internal_window = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/internal/grid/virtualGridProps.ts
+var virtualGridProps = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./src/internal/grid/VirtualGrid.tsx
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+
+
+
+
+var VirtualGridState = function VirtualGridState() {
+  _classCallCheck(this, VirtualGridState);
+
+  _defineProperty(this, "scrollTop", 0);
+
+  _defineProperty(this, "scrollLeft", 0);
+};
+
+var VirtualGrid_VirtualGrid =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  _inherits(VirtualGrid, _React$PureComponent);
+
+  _createClass(VirtualGrid, [{
+    key: "direction",
+    get: function get() {
+      var _this$props$style;
+
+      return ((_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.direction) === 'rtl' ? 'rtl' : 'ltr';
+    }
+  }, {
+    key: "activeTiles",
+    get: function get() {
+      return Object.keys(this.tiles);
+    }
+  }, {
+    key: "headerTiles",
+    get: function get() {
+      var _this2 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this2.tiles[key].position.vertical === 'header';
+      });
+    }
+  }, {
+    key: "bodyTiles",
+    get: function get() {
+      var _this3 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this3.tiles[key].position.vertical === 'body';
+      });
+    }
+  }, {
+    key: "footerTiles",
+    get: function get() {
+      var _this4 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this4.tiles[key].position.vertical === 'footer';
+      });
+    }
+  }]);
+
+  function VirtualGrid(_props) {
+    var _this;
+
+    _classCallCheck(this, VirtualGrid);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(VirtualGrid).call(this, _props));
+
+    _defineProperty(_assertThisInitialized(_this), "tiles", {});
+
+    _defineProperty(_assertThisInitialized(_this), "initialCalculator", new internal_window["b" /* WindowCalculator */]());
+
+    _defineProperty(_assertThisInitialized(_this), "renderTile", function (tileKey) {
+      var _this$tiles$tileKey = _this.tiles[tileKey],
+          ref = _this$tiles$tileKey.ref,
+          props = _this$tiles$tileKey.props,
+          rowIndexOffset = _this$tiles$tileKey.rowIndexOffset,
+          columnIndexOffset = _this$tiles$tileKey.columnIndexOffset;
+      return external_react_["createElement"](internal_window["a" /* VirtualWindow */], _extends({
+        key: tileKey,
+        ref: ref
+      }, props), function (renderProps) {
+        return _this.props.children({
+          tileKey: tileKey,
+          tilePosition: _this.getTilePosition(tileKey),
+          absRowIndex: renderProps.rowIndex + rowIndexOffset,
+          absColIndex: renderProps.colIndex + columnIndexOffset,
+          relRowIndex: renderProps.rowIndex,
+          relColIndex: renderProps.colIndex,
+          height: renderProps.height,
+          width: renderProps.width
+        });
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleScroll", function (e) {
+      var normalized = utils["c" /* ScrollUtils */].normalizeScrollEvent(e, _this.direction);
+
+      if (!utils["a" /* DomUtils */].isPositionStickySupported) {
+        // Need to restore tiles position
+        _this.setState({
+          scrollTop: normalized.scrollTop,
+          scrollLeft: normalized.normalizedScrollLeft
+        });
+      } // Scroll tiles content
+
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = _this.activeTiles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var tileKey = _step.value;
+          var ref = _this.tiles[tileKey].ref;
+          ref.current.scrollTo(normalized);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    });
+
+    _this.state = new VirtualGridState();
+    _this.tiles = _this.createTilesMap();
+    return _this;
+  } //
+  // life cycle
+  //
+
+
+  _createClass(VirtualGrid, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (!Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
+        this.initialCalculator = new internal_window["b" /* WindowCalculator */]();
+        this.tiles = this.createTilesMap();
+        this.forceUpdate();
+      }
+    } //
+    // render methods
+    //
+
+  }, {
+    key: "render",
+    value: function render() {
+      return external_react_["createElement"]("div", {
+        className: this.createClassName('Main_Container'),
+        style: _objectSpread({
+          direction: this.direction,
+          position: 'relative',
+          height: this.getContainerHeight(),
+          width: this.getContainerWidth(),
+          overflow: 'auto'
+        }, this.props.style),
+        onScroll: this.handleScroll
+      }, external_react_["createElement"]("div", {
+        className: this.createClassName('Main_ScrollableArea'),
+        style: {
+          height: this.getScrollableHeight(),
+          width: this.getScrollableWidth()
+        }
+      }, this.renderTilesRow(this.headerTiles), this.renderTilesRow(this.bodyTiles), this.renderTilesRow(this.footerTiles)));
+    }
+  }, {
+    key: "renderTilesRow",
+    value: function renderTilesRow(tileKeys) {
+      var _this5 = this,
+          _ref;
+
+      if (!(tileKeys === null || tileKeys === void 0 ? void 0 : tileKeys.length)) return null;
+      var firstTile = this.tiles[tileKeys[0]];
+      var rightOrLeft = this.direction === 'rtl' ? 'right' : 'left';
+      var isSticky = utils["a" /* DomUtils */].isPositionStickySupported;
+      var position = isSticky ? 'sticky' : 'absolute';
+      var topOffset = isSticky ? 0 : this.state.scrollTop;
+      var leftOffset = isSticky ? 0 : this.state.scrollLeft;
+      var width = tileKeys.map(function (key) {
+        return _this5.tiles[key].props.width;
+      }).reduce(function (total, cur) {
+        return total + cur;
+      }, 0);
+      return external_react_["createElement"]("div", {
+        style: (_ref = {
+          display: 'flex',
+          position: position,
+          top: firstTile.tileRowTop + topOffset
+        }, _defineProperty(_ref, rightOrLeft, 0 + leftOffset), _defineProperty(_ref, "height", firstTile.props.height), _defineProperty(_ref, "width", width), _ref)
+      }, tileKeys.map(this.renderTile));
+    }
+  }, {
+    key: "createTilesMap",
+    //
+    // render helpers
+    //
+    value: function createTilesMap() {
+      this.resetTiles();
+      var map = {};
+      var hasHeader = !!this.props.fixedHeaderHeight;
+      var hasFooter = !!this.props.fixedFooterHeight;
+      var hasFixedLeftColumn = !!this.props.fixedLeftWidth;
+      var hasFixedRightColumn = !!this.props.fixedRightWidth;
+      var createTilesMapEntry = this.createTileMapEntryFactory(); // header
+
+      if (hasHeader) {
+        if (hasFixedLeftColumn) {
+          map[virtualGridProps["a" /* TileKey */].HeaderLeft] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].HeaderLeft);
+        }
+
+        map[virtualGridProps["a" /* TileKey */].HeaderCenter] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].HeaderCenter);
+
+        if (hasFixedRightColumn) {
+          map[virtualGridProps["a" /* TileKey */].HeaderRight] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].HeaderRight);
+        }
+      } // body
+
+
+      if (hasFixedLeftColumn) {
+        map[virtualGridProps["a" /* TileKey */].BodyLeft] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].BodyLeft);
+      }
+
+      map[virtualGridProps["a" /* TileKey */].BodyCenter] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].BodyCenter);
+
+      if (hasFixedRightColumn) {
+        map[virtualGridProps["a" /* TileKey */].BodyRight] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].BodyRight);
+      } // footer
+
+
+      if (hasFooter) {
+        if (hasFixedLeftColumn) {
+          map[virtualGridProps["a" /* TileKey */].FooterLeft] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].FooterLeft);
+        }
+
+        map[virtualGridProps["a" /* TileKey */].FooterCenter] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].FooterCenter);
+
+        if (hasFixedRightColumn) {
+          map[virtualGridProps["a" /* TileKey */].FooterRight] = createTilesMapEntry(virtualGridProps["a" /* TileKey */].FooterRight);
+        }
+      }
+
+      return map;
+    }
+  }, {
+    key: "createTileMapEntryFactory",
+    value: function createTileMapEntryFactory() {
+      var _this6 = this;
+
+      // calculate base dimensions
+      var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
+      var verticalScrollbarWidth = this.getVerticalScrollbarWidth();
+      var containerHeight = this.getContainerHeight();
+      var containerWidth = this.getContainerWidth();
+      var headerHeight = this.props.fixedHeaderHeight;
+      var footerHeight = this.props.fixedFooterHeight;
+      var bodyHeight = containerHeight - horizontalScrollbarWidth - headerHeight - footerHeight;
+      var leftWidth = this.props.fixedLeftWidth;
+      var rightWidth = this.props.fixedRightWidth;
+      var centerWidth = containerWidth - verticalScrollbarWidth - leftWidth - rightWidth; // create factory method
+
+      return function (tileKey) {
+        var _this6$getTilePositio = _this6.getTilePosition(tileKey),
+            vertical = _this6$getTilePositio.vertical,
+            horizontal = _this6$getTilePositio.horizontal;
+
+        var isVerticalFixed = vertical === 'header' || vertical === 'footer';
+        var isHorizontalFixed = horizontal === 'left' || horizontal === 'right';
+        var isCorner = isVerticalFixed && isHorizontalFixed;
+        return {
+          ref: external_react_["createRef"](),
+          position: {
+            vertical: vertical,
+            horizontal: horizontal
+          },
+          tileRowTop: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight : headerHeight + bodyHeight,
+          rowIndexOffset: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight && 1 : _this6.props.rowCount + (headerHeight && 1),
+          columnIndexOffset: horizontal === 'left' ? 0 : horizontal === 'center' ? leftWidth && 1 : _this6.props.columnCount + (leftWidth && 1),
+          props: {
+            className: _this6.createClassName(tileKey),
+            controlledScroll: true,
+            scrollDirection: isCorner ? 'none' : isVerticalFixed ? 'horizontal' : isHorizontalFixed ? 'vertical' : 'both',
+            direction: _this6.direction,
+            height: vertical === 'header' ? headerHeight : vertical === 'body' ? bodyHeight : footerHeight,
+            width: horizontal === 'left' ? leftWidth : horizontal === 'center' ? centerWidth : rightWidth,
+            columnCount: horizontal === 'left' ? 1 : horizontal === 'center' ? _this6.props.columnCount : 1,
+            rowCount: vertical === 'header' ? 1 : vertical === 'body' ? _this6.props.rowCount : 1,
+            columnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.columnWidth : rightWidth,
+            rowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.rowHeight : footerHeight,
+            estimatedColumnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.estimatedColumnWidth : rightWidth,
+            estimatedRowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.estimatedRowHeight : footerHeight,
+            overscanColumnsCount: horizontal === 'left' ? 0 : horizontal === 'center' ? _this6.props.overscanColumnsCount : 0,
+            overscanRowCount: vertical === 'header' ? 0 : vertical === 'body' ? _this6.props.overscanRowCount : 0
+          }
+        };
+      };
+    }
+  }, {
+    key: "getTilePosition",
+    value: function getTilePosition(tileKey) {
+      var _tileKey$toLowerCase$ = tileKey.toLowerCase().split('_'),
+          _tileKey$toLowerCase$2 = _slicedToArray(_tileKey$toLowerCase$, 2),
+          vertical = _tileKey$toLowerCase$2[0],
+          horizontal = _tileKey$toLowerCase$2[1];
+
+      return {
+        vertical: vertical,
+        horizontal: horizontal
+      };
+    }
+  }, {
+    key: "resetTiles",
+    value: function resetTiles() {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.activeTiles[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var tileKey = _step2.value;
+          this.tiles[tileKey].ref.current.clearCache();
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      this.tiles = {};
+    }
+  }, {
+    key: "getContainerHeight",
+    value: function getContainerHeight() {
+      var scrollableHeight = this.getScrollableHeight();
+      var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
+      return Math.min(this.props.height, scrollableHeight + horizontalScrollbarWidth);
+    }
+  }, {
+    key: "getContainerWidth",
+    value: function getContainerWidth() {
+      var scrollableWidth = this.getScrollableWidth();
+      var verticalScrollbarWidth = this.getVerticalScrollbarWidth();
+      return Math.min(this.props.width, scrollableWidth + verticalScrollbarWidth);
+    }
+  }, {
+    key: "getScrollableHeight",
+    value: function getScrollableHeight() {
+      var headerHeight = this.props.fixedHeaderHeight;
+      var footerHeight = this.props.fixedFooterHeight;
+      var bodyHeight = this.getBodyScrollableHeight();
+      return bodyHeight + headerHeight + footerHeight;
+    }
+  }, {
+    key: "getScrollableWidth",
+    value: function getScrollableWidth() {
+      var leftWidth = this.props.fixedLeftWidth;
+      var rightWidth = this.props.fixedRightWidth;
+      var bodyWidth = this.getBodyScrollableWidth();
+      return bodyWidth + leftWidth + rightWidth;
+    }
+  }, {
+    key: "getBodyScrollableHeight",
+    value: function getBodyScrollableHeight() {
+      var _this$tiles$TileKey$B, _this$tiles$TileKey$B2;
+
+      var body = (_this$tiles$TileKey$B = this.tiles[virtualGridProps["a" /* TileKey */].BodyCenter]) === null || _this$tiles$TileKey$B === void 0 ? void 0 : (_this$tiles$TileKey$B2 = _this$tiles$TileKey$B.ref) === null || _this$tiles$TileKey$B2 === void 0 ? void 0 : _this$tiles$TileKey$B2.current;
+      if (body) return body.getScrollableHeight(); // Body not rendered yet - have to calculate independently.  
+      // Not so DRY, breaks encapsulation and not very efficient either but I
+      // couldn't find a better way to do that which is not terribly ugly...
+
+      return this.initialCalculator.getTotalSize('row', this.props.rowHeight, this.props.estimatedRowHeight, this.props.rowCount);
+    }
+  }, {
+    key: "getBodyScrollableWidth",
+    value: function getBodyScrollableWidth() {
+      var _this$tiles$TileKey$B3, _this$tiles$TileKey$B4;
+
+      var body = (_this$tiles$TileKey$B3 = this.tiles[virtualGridProps["a" /* TileKey */].BodyCenter]) === null || _this$tiles$TileKey$B3 === void 0 ? void 0 : (_this$tiles$TileKey$B4 = _this$tiles$TileKey$B3.ref) === null || _this$tiles$TileKey$B4 === void 0 ? void 0 : _this$tiles$TileKey$B4.current;
+      if (body) return body.getScrollableWidth(); // Body not rendered yet - have to calculate independently.  
+      // Not so DRY, breaks encapsulation and not very efficient either but I
+      // couldn't find a better way to do that which is not terribly ugly...
+
+      return this.initialCalculator.getTotalSize('column', this.props.columnWidth, this.props.estimatedColumnWidth, this.props.columnCount);
+    }
+  }, {
+    key: "getVerticalScrollbarWidth",
+    value: function getVerticalScrollbarWidth() {
+      var scrollableHeight = this.getScrollableHeight();
+      var hasVerticalScrollbar = scrollableHeight > this.props.height;
+      return hasVerticalScrollbar && utils["a" /* DomUtils */].scrollbarWidth || 0;
+    }
+  }, {
+    key: "getHorizontalScrollbarWidth",
+    value: function getHorizontalScrollbarWidth() {
+      var scrollableWidth = this.getScrollableWidth();
+      var hasHorizontalScrollbar = scrollableWidth > this.props.width;
+      return hasHorizontalScrollbar && utils["a" /* DomUtils */].scrollbarWidth || 0;
+    }
+    /**
+     * We are only using classes for easier debug inspection...
+     */
+
+  }, {
+    key: "createClassName",
+    value: function createClassName(className) {
+      return "ReactTablize__VirtualGrid__".concat(className);
+    }
+  }]);
+
+  return VirtualGrid;
+}(external_react_["PureComponent"]);
+
+_defineProperty(VirtualGrid_VirtualGrid, "defaultProps", new virtualGridProps["b" /* VirtualGridProps */]());
+// CONCATENATED MODULE: ./src/internal/grid/index.ts
+
+
+// CONCATENATED MODULE: ./src/grid/GridView.tsx
+function GridView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { GridView_typeof = function _typeof(obj) { return typeof obj; }; } else { GridView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return GridView_typeof(obj); }
+
+function GridView_extends() { GridView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return GridView_extends.apply(this, arguments); }
+
+function GridView_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function GridView_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { GridView_ownKeys(source, true).forEach(function (key) { GridView_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { GridView_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function GridView_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function GridView_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function GridView_createClass(Constructor, protoProps, staticProps) { if (protoProps) GridView_defineProperties(Constructor.prototype, protoProps); if (staticProps) GridView_defineProperties(Constructor, staticProps); return Constructor; }
+
+function GridView_possibleConstructorReturn(self, call) { if (call && (GridView_typeof(call) === "object" || typeof call === "function")) { return call; } return GridView_assertThisInitialized(self); }
+
+function GridView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function GridView_getPrototypeOf(o) { GridView_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return GridView_getPrototypeOf(o); }
+
+function GridView_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) GridView_setPrototypeOf(subClass, superClass); }
+
+function GridView_setPrototypeOf(o, p) { GridView_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return GridView_setPrototypeOf(o, p); }
+
+function GridView_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var GridView_GridView =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  GridView_inherits(GridView, _React$PureComponent);
+
+  function GridView() {
+    GridView_classCallCheck(this, GridView);
+
+    return GridView_possibleConstructorReturn(this, GridView_getPrototypeOf(GridView).apply(this, arguments));
+  }
+
+  GridView_createClass(GridView, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, external_react_["createElement"]("div", {
+        style: GridView_objectSpread({
+          direction: this.direction,
+          width: '100%'
+        }, this.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(this, GridView.defaultHeight))
+      }, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
+        var width = _ref.width,
+            height = _ref.height;
+        return external_react_["createElement"](VirtualGrid_VirtualGrid, GridView_extends({}, _this.props, {
+          height: height,
+          width: width
+        }));
+      })));
+    }
+  }, {
+    key: "direction",
+    get: function get() {
+      var _this$props$style;
+
+      return ((_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.direction) === 'rtl' ? 'rtl' : 'ltr';
+    }
+  }]);
+
+  return GridView;
+}(external_react_["PureComponent"]);
+
+GridView_defineProperty(GridView_GridView, "defaultHeight", '35vh');
+// CONCATENATED MODULE: ./src/grid/index.ts
+/* concated harmony reexport GridView */__webpack_require__.d(__webpack_exports__, "a", function() { return GridView_GridView; });
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = require("emotion-theming");
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-custom-scrollbars");
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(18);
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _grid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GridView", function() { return _grid__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+
+/* harmony import */ var _table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ColumnBodyProps", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ColumnBody", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ColumnHead", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["c"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableBodyProps", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["f"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableBody", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["e"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableCell", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["g"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableColumnProps", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["i"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableColumn", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["h"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableHead", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["j"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableRow", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["k"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RowAutoSize", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["d"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableViewProps", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["m"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TableView", function() { return _table__WEBPACK_IMPORTED_MODULE_1__["l"]; });
+
+/* harmony import */ var _internal_grid_virtualGridProps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TileKey", function() { return _internal_grid_virtualGridProps__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VirtualGridProps", function() { return _internal_grid_virtualGridProps__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _types__WEBPACK_IMPORTED_MODULE_3__) if(["GridView","ColumnBodyProps","ColumnBody","ColumnHead","TableBodyProps","TableBody","TableCell","TableColumnProps","TableColumn","TableHead","TableRow","RowAutoSize","TableViewProps","TableView","TileKey","VirtualGridProps","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _types__WEBPACK_IMPORTED_MODULE_3__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash.flattendeep");
 
 /***/ })
 /******/ ]);

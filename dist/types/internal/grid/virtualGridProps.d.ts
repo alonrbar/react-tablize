@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollEvent, SizeCallback } from '../types';
+import { ScrollEvent, SizeCallback } from '../../types';
 export declare enum TileKey {
     HeaderLeft = "Header_Left",
     HeaderCenter = "Header_Center",
@@ -73,39 +73,3 @@ export declare class VirtualGridProps {
     tileStyle?: (tileKey: TileKey) => React.CSSProperties;
     children: (props: RenderCellProps) => React.ReactNode;
 }
-declare class VirtualGridState {
-    scrollTop: number;
-    scrollLeft: number;
-}
-export declare class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGridState> {
-    static defaultProps: unknown;
-    private get direction();
-    private get activeTiles();
-    private get headerTiles();
-    private get bodyTiles();
-    private get footerTiles();
-    private tiles;
-    constructor(props: VirtualGridProps);
-    componentDidUpdate(prevProps: VirtualGridProps): void;
-    render(): JSX.Element;
-    private renderTilesRow;
-    private renderTile;
-    private handleScroll;
-    private createTilesMap;
-    private createTileMapEntryFactory;
-    private getTilePosition;
-    private getScrollableAreaHeight;
-    private getBodyScrollableHeight;
-    private getScrollableAreaWidth;
-    private getBodyScrollableAreaWidth;
-    private getVerticalScrollbarWidth;
-    private getHorizontalScrollbarWidth;
-    private getContainerHeight;
-    private getContainerWidth;
-    /**
-     * We are only using classes for easier debug inspection...
-     */
-    private createClassName;
-    private resetTiles;
-}
-export {};

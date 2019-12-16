@@ -65,7 +65,7 @@ stories.add('dynamic width', () => {
                 return 120;
             }}
             rowHeight={70}
-            estimatedColumnWidth={80}
+            // estimatedColumnWidth={80}
             fixedHeaderHeight={60}
             fixedFooterHeight={70}
             fixedLeftWidth={120}

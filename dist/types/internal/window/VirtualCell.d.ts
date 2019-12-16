@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir } from '../types';
+import { DocDir } from '../../types';
 export interface VirtualCellProps {
     /**
      * We are only using classes for easier debug inspection...
@@ -13,7 +13,7 @@ export interface VirtualCellProps {
     children: React.ReactNode;
 }
 /***
- * Each `VirtualTile` creates a constant number of these `VirtualCell`s and just
+ * Each `VirtualWindow` creates a constant number of these `VirtualCell`s and just
  * moves them around. This is much more efficient than creating a new cell on
  * each scroll.
  *

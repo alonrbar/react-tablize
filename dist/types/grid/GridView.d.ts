@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VirtualGridProps } from './VirtualGrid';
+import { VirtualGridProps } from '../internal/grid';
 export interface GridViewProps extends Omit<VirtualGridProps, 'height' | 'width'> {
     height?: string | number;
     width?: string | number;
