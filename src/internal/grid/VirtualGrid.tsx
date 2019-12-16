@@ -352,6 +352,25 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         } as TilePosition;
     }
 
+    private resetTiles() {
+        for (const tileKey of this.activeTiles) {
+            this.tiles[tileKey].ref.current.clearCache();
+        }
+        this.tiles = {};
+    }
+
+    private getContainerHeight(): number {
+        const scrollableHeight = this.getScrollableHeight();
+        const horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
+        return Math.min(this.props.height, scrollableHeight + horizontalScrollbarWidth);
+    }
+
+    private getContainerWidth(): number {
+        const scrollableWidth = this.getScrollableWidth();
+        const verticalScrollbarWidth = this.getVerticalScrollbarWidth();
+        return Math.min(this.props.width, scrollableWidth + verticalScrollbarWidth);
+    }
+
     private getScrollableHeight() {
 
         const headerHeight = this.props.fixedHeaderHeight;
@@ -359,6 +378,15 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         const bodyHeight = this.getBodyScrollableHeight();
 
         return bodyHeight + headerHeight + footerHeight;
+    }
+
+    private getScrollableWidth() {
+
+        const leftWidth = this.props.fixedLeftWidth;
+        const rightWidth = this.props.fixedRightWidth;
+        const bodyWidth = this.getBodyScrollableWidth();
+
+        return bodyWidth + leftWidth + rightWidth;
     }
 
     private getBodyScrollableHeight() {
@@ -375,15 +403,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
             this.props.estimatedRowHeight,
             this.props.rowCount
         );
-    }
-
-    private getScrollableWidth() {
-
-        const leftWidth = this.props.fixedLeftWidth;
-        const rightWidth = this.props.fixedRightWidth;
-        const bodyWidth = this.getBodyScrollableWidth();
-
-        return bodyWidth + leftWidth + rightWidth;
     }
 
     private getBodyScrollableWidth() {
@@ -414,33 +433,10 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         return (hasHorizontalScrollbar && DomUtils.scrollbarWidth) || 0;
     }
 
-    private getContainerHeight(): number {
-        const scrollableHeight = this.getScrollableHeight();
-        const horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
-        return Math.min(this.props.height, scrollableHeight + horizontalScrollbarWidth);
-    }
-
-    private getContainerWidth(): number {
-        const scrollableWidth = this.getScrollableWidth();
-        const verticalScrollbarWidth = this.getVerticalScrollbarWidth();
-        return Math.min(this.props.width, scrollableWidth + verticalScrollbarWidth);
-    }
-
     /**
      * We are only using classes for easier debug inspection...
      */
     private createClassName(className: string): string {
         return `ReactTablize__VirtualGrid__${className}`;
-    }
-
-    //
-    // misc
-    //
-
-    private resetTiles() {
-        for (const tileKey of this.activeTiles) {
-            this.tiles[tileKey].ref.current.clearCache();
-        }
-        this.tiles = {};
     }
 }
