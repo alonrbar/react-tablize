@@ -5,14 +5,14 @@ import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
 import { ElementInfo, WindowCalculator } from './windowCalculator';
 
-export interface RenderTileCellProps {
+export interface RenderWindowCellProps {
     colIndex: number;
     rowIndex: number;
     height: number;
     width: number;
 }
 
-export class VirtualTileProps {
+export class VirtualWindowProps {
     public direction?: DocDir = 'ltr';
     /**
      * Allow scrolling only via calling the `scrollTo` method.
@@ -66,20 +66,20 @@ export class VirtualTileProps {
     public className?: string;
     public style?: React.CSSProperties;
 
-    public children: (props: RenderTileCellProps) => React.ReactNode;
+    public children: (props: RenderWindowCellProps) => React.ReactNode;
 }
 
-class VirtualTileState {
+class VirtualWindowState {
     public scrollTop = 0;
     public scrollLeft = 0;
 }
 
-export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTileState> {
+export class VirtualWindow extends React.PureComponent<VirtualWindowProps, VirtualWindowState> {
 
-    public static defaultProps: unknown = new VirtualTileProps();
+    public static defaultProps: unknown = new VirtualWindowProps();
 
     private get className() {
-        return this.props.className || nameof(VirtualTile);
+        return this.props.className || nameof(VirtualWindow);
     }
 
     /**
@@ -98,10 +98,10 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
 
     private containerElement = React.createRef<HTMLDivElement>();
 
-    constructor(props: VirtualTileProps) {
+    constructor(props: VirtualWindowProps) {
         super(props);
 
-        this.state = new VirtualTileState();
+        this.state = new VirtualWindowState();
     }
 
     //
@@ -152,7 +152,7 @@ export class VirtualTile extends React.PureComponent<VirtualTileProps, VirtualTi
         this.forceUpdate();
     }
 
-    public componentDidUpdate(prevProps: VirtualTileProps) {
+    public componentDidUpdate(prevProps: VirtualWindowProps) {
         if (!areShallowEqual(this.props, prevProps)) {
             this.clearCache();
             this.forceUpdate();

@@ -1,11 +1,11 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { VirtualTile } from 'src/internal/tile';
+import { VirtualWindow } from 'src/internal/window';
 
-const stories = storiesOf('VirtualTile', module);
+const stories = storiesOf('VirtualWindow', module);
 
-stories.add('empty tile', () => (
-    <VirtualTile
+stories.add('empty window', () => (
+    <VirtualWindow
         height={500}
         width={500}
         columnCount={0}
@@ -14,11 +14,11 @@ stories.add('empty tile', () => (
         rowHeight={1}
     >
         {() => null}
-    </VirtualTile>
+    </VirtualWindow>
 ));
 
-stories.add('simple tile - grid', () => (
-    <VirtualTile
+stories.add('simple window - grid', () => (
+    <VirtualWindow
         height={500}
         width={500}
         columnCount={1000}
@@ -31,11 +31,11 @@ stories.add('simple tile - grid', () => (
                 {`${cellProps.rowIndex}, ${cellProps.colIndex}`}
             </div>
         )}
-    </VirtualTile>
+    </VirtualWindow>
 ));
 
-stories.add('simple tile - grid - rtl', () => (
-    <VirtualTile
+stories.add('simple window - grid - rtl', () => (
+    <VirtualWindow
         direction='rtl'
         height={500}
         width={500}
@@ -49,11 +49,11 @@ stories.add('simple tile - grid - rtl', () => (
                 {`${cellProps.colIndex}, ${cellProps.rowIndex}`}
             </div>
         )}
-    </VirtualTile>
+    </VirtualWindow>
 ));
 
-stories.add('simple tile - list', () => (
-    <VirtualTile
+stories.add('simple window - list', () => (
+    <VirtualWindow
         height={500}
         width={500}
         columnCount={1}
@@ -62,5 +62,20 @@ stories.add('simple tile - list', () => (
         rowHeight={40}
     >
         {cellProps => `${cellProps.colIndex}, ${cellProps.rowIndex}`}
-    </VirtualTile>
+    </VirtualWindow>
+));
+
+stories.add('simple window - list - rtl', () => (
+    <VirtualWindow
+        direction='rtl'
+        scrollDirection='vertical'
+        height={500}
+        width={500}
+        columnCount={1}
+        rowCount={50}
+        columnWidth={400}
+        rowHeight={40}
+    >
+        {cellProps => `${cellProps.colIndex}, ${cellProps.rowIndex}`}
+    </VirtualWindow>
 ));

@@ -15,7 +15,7 @@ export interface VirtualCellProps {
 }
 
 /***
- * Each `VirtualTile` creates a constant number of these `VirtualCell`s and just
+ * Each `VirtualWindow` creates a constant number of these `VirtualCell`s and just
  * moves them around. This is much more efficient than creating a new cell on
  * each scroll.
  *

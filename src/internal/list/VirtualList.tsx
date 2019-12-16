@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CustomScrollbars } from '../CustomScrollbars';
-import { RenderTileCellProps, VirtualTile } from '../tile';
+import { RenderWindowCellProps, VirtualWindow } from '../window';
 import { List, ListProps } from './List';
 
 export interface VirtualListProps extends ListProps {
@@ -13,7 +13,7 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
         return this.props.layout === 'horizontal';
     }
 
-    private tableRef = React.createRef<VirtualTile>();
+    private tableRef = React.createRef<VirtualWindow>();
 
     public refresh() {
         if (this.tableRef.current) {
@@ -38,7 +38,7 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
 
     public render() {
         return (
-            <VirtualTile
+            <VirtualWindow
 
                 ref={this.tableRef}
 
@@ -61,11 +61,11 @@ export class VirtualList extends React.PureComponent<VirtualListProps> implement
                 overscanRowCount={this.isHorizontal ? 0 : this.props.overscan}
             >
                 {cellProps => this.renderRow(cellProps)}
-            </VirtualTile>
+            </VirtualWindow>
         );
     }
 
-    private renderRow(cellProps: RenderTileCellProps) {
+    private renderRow(cellProps: RenderWindowCellProps) {
         const index = (this.props.layout === 'horizontal' ? cellProps.colIndex : cellProps.rowIndex);
         const row = this.props.children(index);
 

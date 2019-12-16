@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DocDir, ScrollEvent, SizeCallback } from '../../types';
-import { VirtualTile, VirtualTileProps, WindowCalculator } from '../tile';
 import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
+import { VirtualWindow, VirtualWindowProps, WindowCalculator } from '../window';
 
 export enum TileKey {
     HeaderLeft = 'Header_Left',
@@ -86,12 +86,12 @@ export class VirtualGridProps {
 }
 
 interface TileEntry {
-    ref: React.RefObject<VirtualTile>;
+    ref: React.RefObject<VirtualWindow>;
     position: TilePosition;
     tileRowTop: number;
     rowIndexOffset: number;
     columnIndexOffset: number;
-    props: Omit<VirtualTileProps, "children">;
+    props: Omit<VirtualWindowProps, "children">;
 }
 
 type TilesMap = {
@@ -219,7 +219,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     private renderTile = (tileKey: TileKey): React.ReactNode => {
         const { ref, props, rowIndexOffset, columnIndexOffset } = this.tiles[tileKey];
         return (
-            <VirtualTile
+            <VirtualWindow
                 key={tileKey}
                 ref={ref}
                 {...props}
@@ -234,7 +234,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     height: renderProps.height,
                     width: renderProps.width
                 })}
-            </VirtualTile>
+            </VirtualWindow>
         );
     };
 
@@ -353,7 +353,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
             const isCorner = isVerticalFixed && isHorizontalFixed;
 
             return {
-                ref: React.createRef<VirtualTile>(),
+                ref: React.createRef<VirtualWindow>(),
 
                 position: {
                     vertical,
