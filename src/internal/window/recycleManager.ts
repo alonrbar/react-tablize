@@ -1,11 +1,5 @@
 import { IMap } from '../../types';
 
-/**
- * Note: In few places the recycling logic leverages the fact that in JavaScript
- * when object keys are integers they are iterated in ascending numeric order
- * (except for IE of course...). See:
- * https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order.
- */
 export class RecycleManager {
 
     private stableKeySource = 0;
@@ -16,10 +10,12 @@ export class RecycleManager {
     // public methods
     //
 
-    public freeUnusedKeys(nextOriginalKeys: IMap<boolean>) {
+    public freeUnusedKeys(nextOriginalKeys: React.Key[]): void {
 
-        const nextKeys = Object.keys(nextOriginalKeys);
+        const nextKeys = nextOriginalKeys.slice();
+        nextKeys.sort();
         const prevKeys = Object.keys(this.usedKeysOriginalToStable);
+        prevKeys.sort();
 
         let nextIndex = nextKeys.length - 1;
         let prevIndex = prevKeys.length - 1;
@@ -54,7 +50,7 @@ export class RecycleManager {
             this.freeUnusedKey(prevOriginal);
             prevIndex--;
         }
-    }    
+    }
 
     public getStableKey(originalKey: React.Key): React.Key {
 

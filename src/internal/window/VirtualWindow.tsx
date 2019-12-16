@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DocDir, IMap, ScrollDirection, ScrollEvent, SizeCallback } from '../../types';
-import { areShallowEqual, NormalizedScrollEvent, ScrollUtils } from '../utils';
+import { DocDir, ScrollDirection, ScrollEvent, SizeCallback } from '../../types';
+import { areShallowEqual, NormalizedScrollEvent, ReactUtils, ScrollUtils } from '../utils';
 import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';
 import { ElementInfo, WindowCalculator } from './windowCalculator';
@@ -209,7 +209,6 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     private renderCells() {
 
         // get cell indexes to render
-
         const columns = this.windowCalc.elementsInRange(
             'column',
             this.state.scrollLeft,
@@ -229,44 +228,38 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
             this.props.rowCount
         );
 
+        // always render the same amount of items (important for recycling)
         this.minColumnsToRender = columns.length;
         this.minRowsToRender = rows.length;
 
         // free unused stable keys before rendering
-
-        const originalKeys: IMap<boolean> = {};
+        const originalKeys: React.Key[] = [];
         for (const row of rows) {
             for (const col of columns) {
-                const originalKey = this.getCellOriginalKey(col.index, row.index);
-                originalKeys[originalKey] = true;
+                originalKeys.push(this.getCellOriginalKey(col.index, row.index));
             }
         }
         this.recycler.freeUnusedKeys(originalKeys);
 
         // render cells
-
-        const cellsByKey: IMap<React.ReactNode> = {};
+        const cells: React.ReactElement[] = [];
         for (const row of rows) {
             for (const col of columns) {
 
                 const originalKey = this.getCellOriginalKey(col.index, row.index);
                 const stableKey = this.recycler.getStableKey(originalKey);
 
-                cellsByKey[stableKey] = this.renderCell(col, row, stableKey);
+                cells.push(this.renderCell(col, row, stableKey));
             }
         }
 
         // sort the cells by key order (important for recycling)
-        // https://stackoverflow.com/questions/5525795/does-javascript-guarantee-object-property-order
-        const cells: React.ReactNode[] = [];
-        for (const key of Object.keys(cellsByKey)) {
-            cells.push(cellsByKey[key]);
-        }
+        cells.sort((a, b) => ReactUtils.compareKeys(a.key, b.key));
 
         return cells;
     }
 
-    private renderCell(col: ElementInfo, row: ElementInfo, stableKey: React.Key): React.ReactNode {
+    private renderCell(col: ElementInfo, row: ElementInfo, stableKey: React.Key): React.ReactElement {
         return (
             <VirtualCell
                 className={this.className + '_Cell'}
@@ -356,8 +349,7 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     // render helpers
     //
 
-    private getCellOriginalKey(colIndex: number, rowIndex: number): number {
-        const rowCountDigits = this.props.rowCount.toString().length;
-        return colIndex * Math.pow(10, rowCountDigits) + rowIndex;;
+    private getCellOriginalKey(colIndex: number, rowIndex: number): React.Key {
+        return `${colIndex}, ${rowIndex}`;
     }
 }

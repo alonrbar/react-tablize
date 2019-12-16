@@ -10,7 +10,7 @@ export class ReactUtils {
             const propsToAdd = createPropsToAdd(child, index);
             return React.cloneElement(child, propsToAdd);
         });
-    }    
+    }
 
     public static childrenOfType<T>(parentElement: any, type: Constructor<T>): T[] {
         const children = ReactUtils.childrenArray(parentElement);
@@ -37,6 +37,15 @@ export class ReactUtils {
             throw new Error(`Only one ${type.name} child element is allowed.`);
 
         return matchingChildren[0] as any;
+    }
+
+    public static compareKeys(a: React.Key, b: React.Key): number {
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
+        }
+        return 0;
     }
 
     //
@@ -69,5 +78,5 @@ export class ReactUtils {
         return elem.type === type ||
             elem.type.prototype instanceof type ||
             Object.prototype.isPrototypeOf.call(type, elem.type);
-    }    
+    }
 }
