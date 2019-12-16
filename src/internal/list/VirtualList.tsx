@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { RenderTileCellProps, VirtualTile } from '../grid';
-import { CustomScrollbars } from '../internal';
+import { CustomScrollbars } from '../CustomScrollbars';
+import { RenderTileCellProps, VirtualTile } from '../tile';
 import { List, ListProps } from './List';
 
 export interface VirtualListProps extends ListProps {

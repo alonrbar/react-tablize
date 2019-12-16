@@ -1,9 +1,9 @@
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { ErrorBoundary } from '../internal';
+import { ErrorBoundary } from '../internal/ErrorBoundary';
+import { VirtualGrid, VirtualGridProps } from '../internal/grid';
+import { SizeUtils } from '../internal/utils';
 import { DocDir } from '../types';
-import { SizeUtils } from '../utils';
-import { VirtualGridProps, VirtualGrid } from './VirtualGrid';
 
 export interface GridViewProps extends Omit<VirtualGridProps, 'height' | 'width'> {
     height?: string | number;

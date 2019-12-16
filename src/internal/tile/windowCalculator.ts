@@ -1,4 +1,4 @@
-import { IMap, SizeCallback } from '../types';
+import { IMap, SizeCallback } from '../../types';
 
 export type ElementType = 'column' | 'row';
 

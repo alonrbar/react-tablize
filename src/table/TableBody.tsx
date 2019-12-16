@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isNullOrUndefined } from '../utils';
+import { isNullOrUndefined } from '../internal/utils';
 import { RowRender } from './TableRow';
 
 export class TableBodyProps {

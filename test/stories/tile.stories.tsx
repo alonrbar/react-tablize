@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { VirtualTile } from 'src/grid';
+import { VirtualTile } from 'src/internal/tile';
 
 const stories = storiesOf('VirtualTile', module);
 

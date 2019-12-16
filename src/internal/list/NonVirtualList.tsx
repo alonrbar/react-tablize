@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CustomScrollbars } from '../internal';
+import { CustomScrollbars } from '../CustomScrollbars';
 import { ListProps } from './List';
 
 export class NonVirtualList extends React.PureComponent<ListProps> {

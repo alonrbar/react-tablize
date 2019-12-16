@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { DocDir, ScrollEvent, SizeCallback } from '../types';
+import { DocDir, ScrollEvent, SizeCallback } from '../../types';
+import { VirtualTile, VirtualTileProps, WindowCalculator } from '../tile';
 import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
-import { VirtualTile, VirtualTileProps } from './VirtualTile';
-import { WindowCalculator } from './windowCalculator';
 
 export enum TileKey {
     HeaderLeft = 'Header_Left',

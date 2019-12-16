@@ -1,4 +1,4 @@
-import { DocDir } from '../types';
+import { DocDir } from '../../types';
 import { DomUtils } from './domUtils';
 
 export interface NormalizedScrollEvent {

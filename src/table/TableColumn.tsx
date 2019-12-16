@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactUtils } from '../utils';
+import { ReactUtils } from '../internal/utils';
 import { ColumnBody } from './ColumnBody';
 import { ColumnHead } from './ColumnHead';
 import { TableBody } from './TableBody';

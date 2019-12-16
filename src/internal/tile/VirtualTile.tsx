@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir, IMap, ScrollDirection, ScrollEvent, SizeCallback } from '../types';
+import { DocDir, IMap, ScrollDirection, ScrollEvent, SizeCallback } from '../../types';
 import { areShallowEqual, NormalizedScrollEvent, ScrollUtils } from '../utils';
 import { RecycleManager } from './recycleManager';
 import { VirtualCell } from './VirtualCell';

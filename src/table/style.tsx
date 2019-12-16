@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { DomUtils } from '../utils';
+import { DomUtils } from '../internal/utils';
 
 export const StyledTableView = styled.div`
     width: 100%;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocDir } from '../types';
+import { DocDir } from '../../types';
 
 export interface VirtualCellProps {
     /**

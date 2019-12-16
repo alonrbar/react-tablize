@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ErrorBoundary } from '../internal';
+import { ErrorBoundary } from '../internal/ErrorBoundary';
 import { OneOrMore } from '../types';
 import { StyledTableRow } from './style';
 import { CellContent, TableCell } from './TableCell';

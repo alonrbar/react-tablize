@@ -1,4 +1,4 @@
-import { IMap } from '../types';
+import { IMap } from '../../types';
 
 /**
  * Note: In few places the recycling logic leverages the fact that in JavaScript
