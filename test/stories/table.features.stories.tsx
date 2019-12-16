@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { RowAutoSize, TableBody, TableHead, TableRow, TableView, TableCell } from 'src/table';
+import { RowAutoSize, TableBody, TableCell, TableHead, TableRow, TableView } from 'src';
 
 const stories = storiesOf('TableView features', module);
 

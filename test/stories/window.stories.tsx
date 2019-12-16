@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { VirtualWindow } from 'src/internal/window';
+import { RenderWindowCellProps, VirtualWindow } from 'src/internal/window';
 
 const stories = storiesOf('VirtualWindow', module);
 
@@ -26,11 +26,7 @@ stories.add('simple window - grid', () => (
         columnWidth={80}
         rowHeight={40}
     >
-        {cellProps => (
-            <div style={{ textAlign: 'center' }}>
-                {`${cellProps.rowIndex}, ${cellProps.colIndex}`}
-            </div>
-        )}
+        {renderCell}
     </VirtualWindow>
 ));
 
@@ -44,11 +40,7 @@ stories.add('simple window - grid - rtl', () => (
         columnWidth={80}
         rowHeight={40}
     >
-        {cellProps => (
-            <div style={{ direction: 'ltr', textAlign: 'center' }}>
-                {`${cellProps.colIndex}, ${cellProps.rowIndex}`}
-            </div>
-        )}
+        {renderCell}
     </VirtualWindow>
 ));
 
@@ -61,7 +53,7 @@ stories.add('simple window - list', () => (
         columnWidth={400}
         rowHeight={40}
     >
-        {cellProps => `${cellProps.colIndex}, ${cellProps.rowIndex}`}
+        {renderCell}
     </VirtualWindow>
 ));
 
@@ -76,6 +68,27 @@ stories.add('simple window - list - rtl', () => (
         columnWidth={400}
         rowHeight={40}
     >
-        {cellProps => `${cellProps.colIndex}, ${cellProps.rowIndex}`}
+        {renderCell}
     </VirtualWindow>
 ));
+
+function renderCell(cellProps: RenderWindowCellProps): React.ReactNode {
+    
+    const cellStyle: React.CSSProperties = {
+        background: 'beige',
+        direction: 'ltr',
+        height: '100%',
+        width: '100%',
+        boxSizing: 'border-box',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5
+    };
+
+    return (
+        <div style={cellStyle}>
+            {cellProps.colIndex}, {cellProps.rowIndex}
+        </div>
+    );
+}

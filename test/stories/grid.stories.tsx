@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { GridView } from 'src/grid';
+import { GridView, RenderCellProps } from 'src';
 
 const stories = storiesOf('GridView', module);
 
@@ -29,11 +29,7 @@ stories.add('simple grid', () => (
         fixedRightWidth={80}
         fixedLeftWidth={80}
     >
-        {cellProps => (
-            <div style={{ direction: 'ltr', textAlign: 'center' }}>
-                {`${cellProps.absColIndex}, ${cellProps.absRowIndex}`}
-            </div>
-        )}
+        {renderCell}
     </GridView>
 ));
 
@@ -44,20 +40,13 @@ stories.add('simple grid - list', () => (
         columnWidth={400}
         rowHeight={40}
     >
-        {cellProps => `${cellProps.absColIndex}, ${cellProps.absRowIndex}`}
+        {renderCell}
     </GridView>
 ));
 
 stories.add('dynamic width', () => {
     const colCount = 3;
-    const cellStyle: React.CSSProperties = {
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        boxSizing: 'border-box',
-        alignItems: 'center',
-        padding: 5
-    };
+    
     return (
         <GridView
             style={{
@@ -81,30 +70,43 @@ stories.add('dynamic width', () => {
             fixedFooterHeight={70}
             fixedLeftWidth={120}
         >
-            {cellProps => {
-
-                if (cellProps.tilePosition.vertical === 'header') {
-                    return (
-                        <div style={{ background: 'beige', ...cellStyle }}>
-                            {cellProps.absColIndex}, {cellProps.absRowIndex}
-                        </div>
-                    );
-                }
-
-                if (cellProps.tilePosition.vertical === 'footer') {
-                    return (
-                        <div style={{ background: 'beige', ...cellStyle }}>
-                            {cellProps.absColIndex}, {cellProps.absRowIndex}
-                        </div>
-                    );
-                }
-
-                return (
-                    <div style={{ background: 'antiquewhite', ...cellStyle }}>
-                        {cellProps.absColIndex}, {cellProps.absRowIndex}
-                    </div>
-                );
-            }}
+            {renderCell}
         </GridView>
     );
 });
+
+function renderCell(cellProps: RenderCellProps): React.ReactNode {
+    
+    const cellStyle: React.CSSProperties = {
+        direction: 'ltr',
+        height: '100%',
+        width: '100%',
+        boxSizing: 'border-box',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5
+    };
+
+    if (cellProps.tilePosition.horizontal !== 'center') {
+        return (
+            <div style={{ background: 'lightyellow', ...cellStyle }}>
+                {cellProps.absColIndex}, {cellProps.absRowIndex}
+            </div>
+        );
+    }
+
+    if (cellProps.tilePosition.vertical !== 'body') {
+        return (
+            <div style={{ background: 'beige', ...cellStyle }}>
+                {cellProps.absColIndex}, {cellProps.absRowIndex}
+            </div>
+        );
+    }
+
+    return (
+        <div style={{ background: 'antiquewhite', ...cellStyle }}>
+            {cellProps.absColIndex}, {cellProps.absRowIndex}
+        </div>
+    );
+}

@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { ColumnBody, ColumnHead, TableBody, TableCell, TableColumn, TableHead, TableRow, TableView } from 'src/table';
+import { ColumnBody, ColumnHead, TableBody, TableCell, TableColumn, TableHead, TableRow, TableView } from 'src';
 
 const stories = storiesOf('TableView syntax', module);
 
