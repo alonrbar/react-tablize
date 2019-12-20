@@ -1,5 +1,3 @@
-import { Theme } from '@emotion/styled';
-import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
@@ -137,18 +135,16 @@ export class TableView extends React.PureComponent<TableViewProps> {
         // render
         return (
             <ErrorBoundary>
-                <ThemeProvider theme={this.getTheme()}>
-                    <StyledTableView
-                        className={this.props.className}
-                        style={{
-                            ...this.props.style,
-                            ...SizeUtils.getElementHeights(this, TableView.defaultHeight)
-                        }}
-                    >
-                        {this.renderTableHead(head)}
-                        {this.renderTableBody(head, body)}
-                    </StyledTableView>
-                </ThemeProvider>
+                <StyledTableView
+                    className={this.props.className}
+                    style={{
+                        ...this.props.style,
+                        ...SizeUtils.getElementHeights(this, TableView.defaultHeight)
+                    }}
+                >
+                    {this.renderTableHead(head)}
+                    {this.renderTableBody(head, body)}
+                </StyledTableView>
             </ErrorBoundary>
         );
     }
@@ -162,9 +158,9 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
         return (
             <StyledTableHead
+                dir={this.props.dir as any}
                 {...divProps}
                 style={{
-                    direction: this.props.dir,
                     ...head.props.style,
                     ...SizeUtils.getElementHeights(head, TableView.defaultHeadHeight)
                 }}
@@ -283,12 +279,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
     //
     // helpers
     //
-
-    private getTheme(): Theme {
-        return {
-            dir: this.props.dir
-        };
-    }
 
     private getListComponent() {
         return this.props.isVirtual !== false ?
