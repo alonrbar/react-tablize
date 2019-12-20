@@ -70,10 +70,6 @@ export class WindowCalculator {
         }
         this.data[elementType].lastFromPosition = fromPosition;
 
-        // Prevent range error
-        fromIndex = Math.max(0, fromIndex);
-        toIndex = Math.min(toIndex, totalElementsCount - 1);
-
         // Enforce "minElementsCountToReturn"
         while (toIndex - fromIndex + 1 < minElementsCountToReturn) {
             if (toIndex + 1 < totalElementsCount) {
@@ -82,6 +78,10 @@ export class WindowCalculator {
                 fromIndex--;
             }
         }
+
+        // Prevent range error
+        fromIndex = Math.max(0, fromIndex);
+        toIndex = Math.min(toIndex, totalElementsCount - 1);
 
         // Get elements info
         const info: ElementInfo[] = [];
