@@ -9,7 +9,7 @@ export interface TableRowProps extends React.DivProps {
     children?: RowContent;
 }
 export declare class TableRow extends React.PureComponent<TableRowProps> {
-    static defaultProps: TableRowProps;
+    static defaultProps: unknown;
     static isTableRow(row: unknown): row is React.ReactElement<TableRowProps>;
     static getRowProps(row: unknown): TableRowProps;
     static getRowContent(row: unknown): RowContent;

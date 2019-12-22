@@ -1,16 +1,23 @@
 # React Tablize - Change Log
 
-## [Unreleased](https://github.com/alonrbar/react-tablize/tree/develop)
+## [1.0.0 - 2019-12-22](https://github.com/alonrbar/react-tablize/tree/v1.0.0)
 
 ### Added
 
-- Support custom styling with `emotion` and similar libraries.
+- Support custom styling with `emotion` and other styled-components libraries.
+- Option to disable default TableView style using the `TableView.defaultStyle` prop.
+
+### Changed
+
+- **BREAKING**: Entirely new `GridView`.
+- **BREAKING**: Replaced `TableView.emptyMessage` with `TableView.placeholder` which is now a `ReactNode`.
+- Some small changes to the default style.
+- Significant performance improvement (using cell recycling under the hood).
 
 ### Removed
 
-- **BREAKING**: Entirely new `GridView`.
-- **BREAKING**: Remove default table style.
-- **BREAKING**: Remove the `TableView.hairlines` property.
+- **BREAKING**: Remove `TableView.keyScroll` prop.
+- Removed `react-window` dependency.
 
 ## [0.15.0 - 2019-10-07](https://github.com/alonrbar/react-tablize/tree/v0.15.0)
 

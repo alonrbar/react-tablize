@@ -14,6 +14,7 @@ export declare class VirtualGrid extends React.PureComponent<VirtualGridProps, V
     private tiles;
     private initialCalculator;
     constructor(props: VirtualGridProps);
+    refresh(): void;
     componentDidUpdate(prevProps: VirtualGridProps): void;
     render(): JSX.Element;
     private renderTilesRow;

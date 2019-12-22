@@ -20,18 +20,6 @@ export declare class VirtualWindowProps {
     rowCount: number;
     columnWidth: number | SizeCallback;
     rowHeight: number | SizeCallback;
-    /**
-     * If `columnWidth` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll width.
-     */
-    estimatedColumnWidth?: number;
-    /**
-     * If `rowHeight` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll height.
-     */
-    estimatedRowHeight?: number;
     overscanColumnsCount?: number;
     overscanRowCount?: number;
     /**

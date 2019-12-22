@@ -26,9 +26,9 @@ export declare class TableViewProps {
      * Default: 50
      */
     rowHeight?: number | SizeCallback;
-    emptyMessage?: string;
+    placeholder?: React.ReactNode;
+    defaultStyle?: boolean;
     customScrollbars?: boolean;
-    keyScroll?: boolean;
     /**
      * Number of extra buffer items to render above/below the visible items.
      * Tweaking this can help reduce scroll flickering on certain
@@ -46,7 +46,7 @@ export declare class TableView extends React.PureComponent<TableViewProps> {
     static Row: typeof TableRow;
     static Cell: typeof TableCell;
     static Column: typeof TableColumn;
-    static defaultProps: TableViewProps;
+    static defaultProps: unknown;
     private tableElement;
     refresh(): void;
     render(): JSX.Element;
@@ -56,6 +56,7 @@ export declare class TableView extends React.PureComponent<TableViewProps> {
     private renderBodyRow;
     private renderCell;
     private renderItemsPlaceHolder;
+    private getTheme;
     private getListComponent;
     private getRowKey;
     private getRowHeight;

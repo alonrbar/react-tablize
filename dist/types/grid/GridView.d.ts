@@ -7,5 +7,7 @@ export interface GridViewProps extends Omit<VirtualGridProps, 'height' | 'width'
 export declare class GridView extends React.PureComponent<GridViewProps> {
     static readonly defaultHeight = "35vh";
     private get direction();
+    private gridRef;
+    refresh(): void;
     render(): JSX.Element;
 }

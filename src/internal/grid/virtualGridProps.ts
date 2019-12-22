@@ -37,7 +37,15 @@ export interface RenderCellProps {
     relRowIndex: number;
     tileKey: TileKey;
     tilePosition: TilePosition;
+    /**
+     * The height of the rendered cell.  
+     * You don't have to do anything with it, it's just an informative prop.
+     */
     height: number;
+    /**
+     * The width of the rendered cell.  
+     * You don't have to do anything with it, it's just an informative prop.
+     */
     width: number;
 }
 
@@ -66,7 +74,6 @@ export class VirtualGridProps {
     public fixedRightWidth?= 0;
 
     public style?: React.CSSProperties;
-    public tileStyle?: (tileKey: TileKey) => React.CSSProperties;
 
     public children: (props: RenderCellProps) => React.ReactNode;
 }

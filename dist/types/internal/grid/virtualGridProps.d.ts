@@ -34,7 +34,15 @@ export interface RenderCellProps {
     relRowIndex: number;
     tileKey: TileKey;
     tilePosition: TilePosition;
+    /**
+     * The height of the rendered cell.
+     * You don't have to do anything with it, it's just an informative prop.
+     */
     height: number;
+    /**
+     * The width of the rendered cell.
+     * You don't have to do anything with it, it's just an informative prop.
+     */
     width: number;
 }
 export declare class VirtualGridProps {
@@ -51,18 +59,6 @@ export declare class VirtualGridProps {
     rowCount: number;
     columnWidth: number | SizeCallback;
     rowHeight: number | SizeCallback;
-    /**
-     * If `columnWidth` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll width.
-     */
-    estimatedColumnWidth?: number;
-    /**
-     * If `rowHeight` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll height.
-     */
-    estimatedRowHeight?: number;
     overscanColumnsCount?: number;
     overscanRowCount?: number;
     fixedHeaderHeight?: number;
@@ -70,6 +66,5 @@ export declare class VirtualGridProps {
     fixedLeftWidth?: number;
     fixedRightWidth?: number;
     style?: React.CSSProperties;
-    tileStyle?: (tileKey: TileKey) => React.CSSProperties;
     children: (props: RenderCellProps) => React.ReactNode;
 }

@@ -1,6 +1,6 @@
 # react-tablize
 
-Virtual table and grid components for React.
+High performance virtual table and grid components for React.
 
 [![npm version](https://img.shields.io/npm/v/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
 [![npm license](https://img.shields.io/npm/l/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
@@ -13,6 +13,7 @@ Virtual table and grid components for React.
 - [GridView](#gridview)
   - [Examples](#grid-examples)
   - [Props](#grid-props)
+- [Prior art and motivation](#prior-art-and-motivation)
 - [Changelog](#changelog)
 
 ## TableView
@@ -127,16 +128,14 @@ const people: Person[];
 
 | Name | Type | Default | Required | Description |
 |-|-|-|-|-|
-| isVirtual | boolean | true | no | Whether to use a virtual table (using [react-window](https://github.com/bvaughn/react-window)) or simple divs. Useful for performance comparison and optimization. |
 | rowCount | number || yes | The number of rows in the table. |
+| rowHeight | `number` \| `(rowIndex: number) => number` | 50 | no | Row height in pixels. |
 | rowKey | `(rowIndex: number) => React.Key` | | no | React key for each row. |
+| overscanCount | number | 20 | no | Number of rows to render ahead. |
 | dir | `'rtl'` \| `'ltr'` | `'ltr'` | no ||
 | className | string || no ||
 | style | React.CSSProperties || no ||
-| rowHeight | `number` \| `(rowIndex: number) => number` | 50 | no | Row height in pixels. |
-| emptyMessage | string | "No Items to Display" | no | What to display when there are no items. |
-| keyScroll | boolean | true | no | Enables table scrolling using the `PageUp`, `PageDown`, `Home` and `End` keys. |
-| overscanCount | number | 20 | no ||
+| placeholder | React.ReactNode | | no | What to display when there are no items. |
 
 ## GridView
 
@@ -148,8 +147,8 @@ const people: Person[];
 <GridView
     columnCount={1000}
     rowCount={10}
-    estimatedColumnWidth={100}
-    estimatedRowHeight={40}
+    columnWidth={100}
+    rowHeight={40}
 >
     {cellProps => (
         `${cellProps.absRowIndex}, ${cellProps.absColIndex}`
@@ -163,8 +162,8 @@ const people: Person[];
 <GridView
     columnCount={1000}
     rowCount={10}
-    estimatedColumnWidth={100}
-    estimatedRowHeight={40}
+    columnWidth={100}
+    rowHeight={40}
     fixedHeaderHeight={50}
     fixedLeftWidth={100}
 >
@@ -200,9 +199,7 @@ const people: Person[];
 <GridView
     columnCount={1000}
     rowCount={10}
-    estimatedColumnWidth={75}
     columnWidth={columnIndex => columnIndex === 0 ? 50 : 100}
-    estimatedRowHeight={60}
     rowHeight={rowIndex => rowIndex === 0 ? 80 : 40}
 >
     {cellProps => (
@@ -233,7 +230,15 @@ interface RenderCellProps {
     relRowIndex: number;
     tileKey: TileKey;
     tilePosition: TilePosition;
+    /**
+     * The height of the rendered cell.  
+     * You don't have to do anything with it, it's just an informative prop.
+     */
     height: number;
+    /**
+     * The width of the rendered cell.  
+     * You don't have to do anything with it, it's just an informative prop.
+     */
     width: number;
 }
 
@@ -267,17 +272,17 @@ some are a complete ripoff of these libraries:
 
 Thank you!
 
-If so many virtual scrolling libraries exist, why did I create another one?  
-Well, each of these libraries implement only part of what I needed in my
-projects so I've created a library that combines the best of all:
+If there are so many virtual scrolling libraries out there, why do I need another one?  
+Well, each of these libraries implements only part of what I personally needed
+so I've created a library that combines the best of all:
 
 | Library | Grid component | Fixed rows and columns | RTL | Recycling |
 |-|-|-|-|-|
-| react-window | ✔ | ❌ | ✔ | ❌ |
-| sticky-table | ✔ | ✔ | ❌ | ❌ |
-| react-virtual-grid | ✔ | ✔ | ❔ | ❌ |
-| recyclerlistview | ❌ | ❔ | ❔ | ✔ |
-| react-tablize | ✔ | ✔ | ✔ | ✔ |
+| react-window | ✔ | ✖ | ✔ | ✖ |
+| sticky-table | ✔ | ✔ | ✖ | ✖ |
+| react-virtual-grid | ✔ | ✔ | ? | ✖ |
+| recyclerlistview | ✖ | ? | ? | ✔ |
+| **react-tablize** | ✔ | ✔ | ✔ | ✔ |
 
 ## Changelog
 

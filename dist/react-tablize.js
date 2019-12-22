@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -505,10 +505,6 @@ var VirtualGridProps = function VirtualGridProps() {
 
   _defineProperty(this, "rowHeight", void 0);
 
-  _defineProperty(this, "estimatedColumnWidth", void 0);
-
-  _defineProperty(this, "estimatedRowHeight", void 0);
-
   _defineProperty(this, "overscanColumnsCount", 0);
 
   _defineProperty(this, "overscanRowCount", 0);
@@ -522,8 +518,6 @@ var VirtualGridProps = function VirtualGridProps() {
   _defineProperty(this, "fixedRightWidth", 0);
 
   _defineProperty(this, "style", void 0);
-
-  _defineProperty(this, "tileStyle", void 0);
 
   _defineProperty(this, "children", void 0);
 };
@@ -1053,10 +1047,6 @@ var VirtualWindowProps = function VirtualWindowProps() {
 
   VirtualWindow_defineProperty(this, "rowHeight", void 0);
 
-  VirtualWindow_defineProperty(this, "estimatedColumnWidth", void 0);
-
-  VirtualWindow_defineProperty(this, "estimatedRowHeight", void 0);
-
   VirtualWindow_defineProperty(this, "overscanColumnsCount", 0);
 
   VirtualWindow_defineProperty(this, "overscanRowCount", 0);
@@ -1149,12 +1139,14 @@ function (_React$PureComponent) {
   }, {
     key: "getScrollableHeight",
     value: function getScrollableHeight() {
-      return this.windowCalc.getTotalSize('row', this.props.rowHeight, this.props.estimatedRowHeight, this.props.rowCount);
+      return this.windowCalc.getTotalSize('row', this.props.rowHeight, null, // this.props.estimatedRowHeight,
+      this.props.rowCount);
     }
   }, {
     key: "getScrollableWidth",
     value: function getScrollableWidth() {
-      return this.windowCalc.getTotalSize('column', this.props.columnWidth, this.props.estimatedColumnWidth, this.props.columnCount);
+      return this.windowCalc.getTotalSize('column', this.props.columnWidth, null, // this.props.estimatedColumnWidth,
+      this.props.columnCount);
     }
   }, {
     key: "clearCache",
@@ -1454,7 +1446,7 @@ module.exports = require("react-virtualized-auto-sizer");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomScrollbars; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+/* harmony import */ var react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
 /* harmony import */ var react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_custom_scrollbars__WEBPACK_IMPORTED_MODULE_1__);
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -1674,7 +1666,7 @@ function (_React$PureComponent) {
 
         return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
           key: index,
-          style: (_ref = {}, _defineProperty(_ref, _this2.isHorizontal ? 'minWidth' : 'minHeight', _this2.props.itemSize(index)), _defineProperty(_ref, _this2.isHorizontal ? 'height' : 'width', _this2.isHorizontal ? _this2.props.height : _this2.props.width), _ref)
+          style: (_ref = {}, _defineProperty(_ref, _this2.isHorizontal ? 'width' : 'height', _this2.props.itemSize(index)), _defineProperty(_ref, _this2.isHorizontal ? 'height' : 'width', _this2.isHorizontal ? _this2.props.height : _this2.props.width), _ref)
         }, _this2.props.children(index));
       }));
     }
@@ -2012,6 +2004,7 @@ var styled_base_default = /*#__PURE__*/__webpack_require__.n(styled_base_);
 function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop)."; }
 
 
+var tableBorder = '1px solid #ddd';
 var StyledTableView = styled_base_default()("div", {
   target: "ea4b5ar0",
   label: "StyledTableView"
@@ -2019,32 +2012,34 @@ var StyledTableView = styled_base_default()("div", {
   name: "1bhr7rw",
   styles: "width:100%;overflow-y:hidden;"
 } : undefined);
-var StyledTableHead = styled_base_default()("div", {
+var StyledTableCell = styled_base_default()("div", {
   target: "ea4b5ar1",
+  label: "StyledTableCell"
+})("flex:1;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box;", function (props) {
+  return props.theme.defaultTheme ? "\n        padding: 8px;\n        vertical-align: middle;\n        " : '';
+}, ";" + ( true ? "" : undefined));
+var StyledTableHead = styled_base_default()("div", {
+  target: "ea4b5ar2",
   label: "StyledTableHead"
 })("direction:", function (props) {
-  return props.dir;
+  return props.theme.dir;
 }, ";display:flex;overflow-y:hidden;", function (props) {
-  return props.dir === 'rtl' ? 'padding-left' : 'padding-right';
-}, ":", utils["a" /* DomUtils */].scrollbarWidth, "px;" + ( true ? "" : undefined));
+  return props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right';
+}, ":", utils["a" /* DomUtils */].scrollbarWidth, "px;", function (props) {
+  return props.theme.defaultTheme ? "\n        border-bottom: ".concat(tableBorder, ";\n        ") : '';
+}, ";& ", StyledTableCell, "{", function (props) {
+  return props.theme.defaultTheme ? "\n            vertical-align: bottom;\n            font-weight: bold;\n            " : '';
+}, "}" + ( true ? "" : undefined));
 var StyledTableBody = styled_base_default()("div", {
-  target: "ea4b5ar2",
+  target: "ea4b5ar3",
   label: "StyledTableBody"
 })( true ? "" : undefined);
 var StyledTableRow = styled_base_default()("div", {
-  target: "ea4b5ar3",
-  label: "StyledTableRow"
-})( true ? {
-  name: "k008qs",
-  styles: "display:flex;"
-} : undefined);
-var StyledTableCell = styled_base_default()("div", {
   target: "ea4b5ar4",
-  label: "StyledTableCell"
-})( true ? {
-  name: "n7ngvn",
-  styles: "flex:1;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box;"
-} : undefined);
+  label: "StyledTableRow"
+})("display:flex;justify-content:stretch;height:100%;width:100%;", function (props) {
+  return props.theme.defaultTheme ? "\n        border-top: ".concat(props.index === 0 ? 'none' : tableBorder, ";\n        ") : '';
+}, "}" + ( true ? "" : undefined));
 // CONCATENATED MODULE: ./src/table/TableCell.tsx
 function TableCell_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableCell_typeof = function _typeof(obj) { return typeof obj; }; } else { TableCell_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableCell_typeof(obj); }
 
@@ -2216,6 +2211,8 @@ function (_React$PureComponent) {
 // CONCATENATED MODULE: ./src/table/TableRow.tsx
 function TableRow_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableRow_typeof = function _typeof(obj) { return typeof obj; }; } else { TableRow_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableRow_typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function TableRow_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function TableRow_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -2238,7 +2235,7 @@ function TableRow_defineProperty(obj, key, value) { if (key in obj) { Object.def
 
 
 
-var flattenDeep = __webpack_require__(18);
+var flattenDeep = __webpack_require__(19);
 
 var TableRowSymbol = '__ReactTablize__TableRow__';
 /**
@@ -2259,7 +2256,9 @@ function (_React$PureComponent) {
   TableRow_createClass(TableRow, [{
     key: "render",
     value: function render() {
-      return external_react_["createElement"](StyledTableRow, this.props, external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, this.props.children));
+      return external_react_["createElement"](StyledTableRow, _extends({}, this.props, {
+        index: this.props.key
+      }), external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, this.props.children));
     }
   }], [{
     key: "isTableRow",
@@ -2293,6 +2292,9 @@ function (_React$PureComponent) {
 }(external_react_["PureComponent"]);
 
 TableRow_defineProperty(TableRow_TableRow, "defaultProps", TableRow_defineProperty({}, TableRowSymbol, true));
+// EXTERNAL MODULE: external "emotion-theming"
+var external_emotion_theming_ = __webpack_require__(15);
+
 // EXTERNAL MODULE: external "react-virtualized-auto-sizer"
 var external_react_virtualized_auto_sizer_ = __webpack_require__(6);
 var external_react_virtualized_auto_sizer_default = /*#__PURE__*/__webpack_require__.n(external_react_virtualized_auto_sizer_);
@@ -2303,7 +2305,7 @@ var list = __webpack_require__(8);
 // CONCATENATED MODULE: ./src/table/TableView.tsx
 function TableView_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { TableView_typeof = function _typeof(obj) { return typeof obj; }; } else { TableView_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return TableView_typeof(obj); }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function TableView_extends() { TableView_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return TableView_extends.apply(this, arguments); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
@@ -2343,6 +2345,7 @@ function TableView_defineProperty(obj, key, value) { if (key in obj) { Object.de
 
 
 
+
 /**
  * Applicable only on non-virtual tables.
  */
@@ -2368,11 +2371,11 @@ var TableViewProps = function TableViewProps() {
 
   TableView_defineProperty(this, "rowHeight", 50);
 
-  TableView_defineProperty(this, "emptyMessage", "No Items to Display");
+  TableView_defineProperty(this, "placeholder", void 0);
+
+  TableView_defineProperty(this, "defaultStyle", true);
 
   TableView_defineProperty(this, "customScrollbars", void 0);
-
-  TableView_defineProperty(this, "keyScroll", void 0);
 
   TableView_defineProperty(this, "overscanCount", 20);
 };
@@ -2434,10 +2437,12 @@ function (_React$PureComponent) {
       } // render
 
 
-      return external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, external_react_["createElement"](StyledTableView, {
+      return external_react_["createElement"](external_emotion_theming_["ThemeProvider"], {
+        theme: this.getTheme()
+      }, external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, external_react_["createElement"](StyledTableView, {
         className: this.props.className,
         style: _objectSpread({}, this.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(this, TableView.defaultHeight))
-      }, this.renderTableHead(head), this.renderTableBody(head, body)));
+      }, this.renderTableHead(head), this.renderTableBody(head, body))));
     }
   }, {
     key: "renderTableHead",
@@ -2448,7 +2453,7 @@ function (_React$PureComponent) {
           children = _head$props.children,
           divProps = _objectWithoutProperties(_head$props, ["children"]);
 
-      return external_react_["createElement"](StyledTableHead, _extends({
+      return external_react_["createElement"](StyledTableHead, TableView_extends({
         dir: this.props.dir
       }, divProps, {
         style: _objectSpread({}, head.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(head, TableView.defaultHeadHeight))
@@ -2543,15 +2548,24 @@ function (_React$PureComponent) {
   }, {
     key: "renderItemsPlaceHolder",
     value: function renderItemsPlaceHolder() {
+      if (this.props.placeholder) return this.props.placeholder;
       return external_react_["createElement"]("div", null, external_react_["createElement"]("div", {
         style: {
           textAlign: 'center'
         }
-      }, this.props.emptyMessage));
+      }, "No Items to Display"));
     } //
     // helpers
     //
 
+  }, {
+    key: "getTheme",
+    value: function getTheme() {
+      return {
+        dir: this.props.dir,
+        defaultTheme: this.props.defaultStyle
+      };
+    }
   }, {
     key: "getListComponent",
     value: function getListComponent() {
@@ -2832,18 +2846,23 @@ function (_React$PureComponent) {
     _this.state = new VirtualGridState();
     _this.tiles = _this.createTilesMap();
     return _this;
-  } //
-  // life cycle
-  //
-
+  }
 
   _createClass(VirtualGrid, [{
+    key: "refresh",
+    value: function refresh() {
+      this.initialCalculator = new internal_window["b" /* WindowCalculator */]();
+      this.tiles = this.createTilesMap();
+      this.forceUpdate();
+    } //
+    // life cycle
+    //
+
+  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
       if (!Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
-        this.initialCalculator = new internal_window["b" /* WindowCalculator */]();
-        this.tiles = this.createTilesMap();
-        this.forceUpdate();
+        this.refresh();
       }
     } //
     // render methods
@@ -2889,6 +2908,7 @@ function (_React$PureComponent) {
         return total + cur;
       }, 0);
       return external_react_["createElement"]("div", {
+        className: this.createClassName('TilesRow'),
         style: (_ref = {
           display: 'flex',
           position: position,
@@ -2993,8 +3013,6 @@ function (_React$PureComponent) {
             rowCount: vertical === 'header' ? 1 : vertical === 'body' ? _this6.props.rowCount : 1,
             columnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.columnWidth : rightWidth,
             rowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.rowHeight : footerHeight,
-            estimatedColumnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.estimatedColumnWidth : rightWidth,
-            estimatedRowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.estimatedRowHeight : footerHeight,
             overscanColumnsCount: horizontal === 'left' ? 0 : horizontal === 'center' ? _this6.props.overscanColumnsCount : 0,
             overscanRowCount: vertical === 'header' ? 0 : vertical === 'body' ? _this6.props.overscanRowCount : 0
           }
@@ -3083,7 +3101,8 @@ function (_React$PureComponent) {
       // Not so DRY, breaks encapsulation and not very efficient either but I
       // couldn't find a better way to do that which is not terribly ugly...
 
-      return this.initialCalculator.getTotalSize('row', this.props.rowHeight, this.props.estimatedRowHeight, this.props.rowCount);
+      return this.initialCalculator.getTotalSize('row', this.props.rowHeight, null, // this.props.estimatedRowHeight,
+      this.props.rowCount);
     }
   }, {
     key: "getBodyScrollableWidth",
@@ -3095,7 +3114,8 @@ function (_React$PureComponent) {
       // Not so DRY, breaks encapsulation and not very efficient either but I
       // couldn't find a better way to do that which is not terribly ugly...
 
-      return this.initialCalculator.getTotalSize('column', this.props.columnWidth, this.props.estimatedColumnWidth, this.props.columnCount);
+      return this.initialCalculator.getTotalSize('column', this.props.columnWidth, null, // this.props.estimatedColumnWidth,
+      this.props.columnCount);
     }
   }, {
     key: "getVerticalScrollbarWidth",
@@ -3146,9 +3166,9 @@ function GridView_createClass(Constructor, protoProps, staticProps) { if (protoP
 
 function GridView_possibleConstructorReturn(self, call) { if (call && (GridView_typeof(call) === "object" || typeof call === "function")) { return call; } return GridView_assertThisInitialized(self); }
 
-function GridView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function GridView_getPrototypeOf(o) { GridView_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return GridView_getPrototypeOf(o); }
+
+function GridView_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function GridView_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) GridView_setPrototypeOf(subClass, superClass); }
 
@@ -3167,15 +3187,34 @@ function (_React$PureComponent) {
   GridView_inherits(GridView, _React$PureComponent);
 
   function GridView() {
+    var _getPrototypeOf2;
+
+    var _this;
+
     GridView_classCallCheck(this, GridView);
 
-    return GridView_possibleConstructorReturn(this, GridView_getPrototypeOf(GridView).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = GridView_possibleConstructorReturn(this, (_getPrototypeOf2 = GridView_getPrototypeOf(GridView)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    GridView_defineProperty(GridView_assertThisInitialized(_this), "gridRef", external_react_["createRef"]());
+
+    return _this;
   }
 
   GridView_createClass(GridView, [{
+    key: "refresh",
+    value: function refresh() {
+      var _this$gridRef$current;
+
+      (_this$gridRef$current = this.gridRef.current) === null || _this$gridRef$current === void 0 ? void 0 : _this$gridRef$current.refresh();
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
       return external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, external_react_["createElement"]("div", {
         style: GridView_objectSpread({
@@ -3185,7 +3224,8 @@ function (_React$PureComponent) {
       }, external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
         var width = _ref.width,
             height = _ref.height;
-        return external_react_["createElement"](VirtualGrid_VirtualGrid, GridView_extends({}, _this.props, {
+        return external_react_["createElement"](VirtualGrid_VirtualGrid, GridView_extends({}, _this2.props, {
+          ref: _this2.gridRef,
           height: height,
           width: width
         }));
@@ -3212,17 +3252,23 @@ GridView_defineProperty(GridView_GridView, "defaultHeight", '35vh');
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-custom-scrollbars");
+module.exports = require("emotion-theming");
 
 /***/ }),
 /* 16 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__(17);
-
+module.exports = require("react-custom-scrollbars");
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(18);
+
+
+/***/ }),
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3271,7 +3317,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("lodash.flattendeep");
