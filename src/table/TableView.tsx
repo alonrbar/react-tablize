@@ -51,7 +51,7 @@ export class TableViewProps {
      * Default: 50
      */
     public rowHeight?: number | SizeCallback = 50;
-    public emptyMessage?= "No Items to Display";
+    public placeholder?: React.ReactNode;
     public customScrollbars?: boolean;
 
     //
@@ -267,10 +267,14 @@ export class TableView extends React.PureComponent<TableViewProps> {
     }
 
     private renderItemsPlaceHolder() {
+        
+        if (this.props.placeholder)
+            return this.props.placeholder;
+
         return (
             <div>
                 <div style={{ textAlign: 'center' }}>
-                    {this.props.emptyMessage}
+                    No Items to Display
                 </div>
             </div>
         );
