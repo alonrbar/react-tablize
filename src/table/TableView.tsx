@@ -1,3 +1,5 @@
+import { Theme } from '@emotion/styled';
+import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
@@ -52,6 +54,7 @@ export class TableViewProps {
      */
     public rowHeight?: number | SizeCallback = 50;
     public placeholder?: React.ReactNode;
+    public defaultStyle?= true;
     public customScrollbars?: boolean;
 
     //
@@ -134,18 +137,20 @@ export class TableView extends React.PureComponent<TableViewProps> {
 
         // render
         return (
-            <ErrorBoundary>
-                <StyledTableView
-                    className={this.props.className}
-                    style={{
-                        ...this.props.style,
-                        ...SizeUtils.getElementHeights(this, TableView.defaultHeight)
-                    }}
-                >
-                    {this.renderTableHead(head)}
-                    {this.renderTableBody(head, body)}
-                </StyledTableView>
-            </ErrorBoundary>
+            <ThemeProvider theme={this.getTheme()}>
+                <ErrorBoundary>
+                    <StyledTableView
+                        className={this.props.className}
+                        style={{
+                            ...this.props.style,
+                            ...SizeUtils.getElementHeights(this, TableView.defaultHeight)
+                        }}
+                    >
+                        {this.renderTableHead(head)}
+                        {this.renderTableBody(head, body)}
+                    </StyledTableView>
+                </ErrorBoundary>
+            </ThemeProvider>
         );
     }
 
@@ -267,7 +272,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
     }
 
     private renderItemsPlaceHolder() {
-        
+
         if (this.props.placeholder)
             return this.props.placeholder;
 
@@ -283,6 +288,13 @@ export class TableView extends React.PureComponent<TableViewProps> {
     //
     // helpers
     //
+
+    private getTheme(): Theme {
+        return {
+            dir: this.props.dir,
+            defaultTheme: this.props.defaultStyle
+        };
+    }
 
     private getListComponent() {
         return this.props.isVirtual !== false ?

@@ -135,6 +135,33 @@ stories.add('style with emotion', () => {
     );
 });
 
+stories.add('no default style', () => {
+    const items = getTestItems('no default style');
+
+    return (
+        <TableView
+            rowCount={items.length}
+            defaultStyle={false}
+        >
+            <TableHead>
+                {['Name', 'Age']}
+            </TableHead>
+            <TableBody>
+                {index => (
+                    <TableRow>
+                        <TableCell>
+                            {items[index].name}
+                        </TableCell>
+                        <TableCell>
+                            {items[index].age}
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </TableView>
+    );
+});
+
 stories.add('scroll by keys', () => {
     return (
         <TableView

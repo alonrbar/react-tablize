@@ -1,31 +1,11 @@
 import styled from '@emotion/styled';
 import { DomUtils } from '../internal/utils';
-import { DocDir } from '../types';
 
-export interface ThemeProps {
-    dir: DocDir;
-}
+const tableBorder = '1px solid #ddd';
 
 export const StyledTableView = styled.div`
     width: 100%;
     overflow-y: hidden;
-`;
-
-export const StyledTableHead = styled.div<ThemeProps>`
-    direction: ${props => props.dir};
-    display: flex;
-    overflow-y: hidden;
-    
-    /* add padding to compensate for scrollbar width */
-    ${props => (props.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${DomUtils.scrollbarWidth}px;
-`;
-
-export const StyledTableBody = styled.div`
-    /* no style... */
-`;
-
-export const StyledTableRow = styled.div`
-    display: flex;
 `;
 
 export const StyledTableCell = styled.div`
@@ -33,4 +13,53 @@ export const StyledTableCell = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     box-sizing: border-box;
+
+    ${props => props.theme.defaultTheme ? `
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        vertical-align: middle;
+        ` : ''};
+`;
+
+export const StyledTableHead = styled.div`
+    direction: ${props => props.theme.dir};
+
+    display: flex;
+    overflow-y: hidden;
+
+    /* add padding to compensate for scrollbar width */
+    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${DomUtils.scrollbarWidth}px;
+    
+    ${props => props.theme.defaultTheme ? `
+        border-bottom: ${tableBorder};
+        ` : ''};
+
+    & ${StyledTableCell} {
+        ${props => props.theme.defaultTheme ? `
+            align-items: flex-end;
+            vertical-align: bottom;
+            font-weight: bold;
+            ` : ''}
+    }
+`;
+
+export const StyledTableBody = styled.div`
+    /* no style... */
+`;
+
+export interface RowProps {
+    index: number;
+}
+
+export const StyledTableRow = styled.div<RowProps>`
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    ${props => props.theme.defaultTheme ? `
+        justify-content: stretch;
+        border-top: ${props.index === 0 ? 'none' : tableBorder};
+        ` : ''}
+    }
 `;

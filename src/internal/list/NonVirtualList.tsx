@@ -59,7 +59,7 @@ export class NonVirtualList extends React.PureComponent<ListProps> {
                 <div
                     key={index}
                     style={{
-                        [this.isHorizontal ? 'minWidth' : 'minHeight']: this.props.itemSize(index),
+                        [this.isHorizontal ? 'width' : 'height']: this.props.itemSize(index),
                         [this.isHorizontal ? 'height' : 'width']: (this.isHorizontal ? this.props.height : this.props.width)
                     }}
                 >

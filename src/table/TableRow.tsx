@@ -18,7 +18,7 @@ export interface TableRowProps extends React.DivProps {
 
 export class TableRow extends React.PureComponent<TableRowProps> {
 
-    public static defaultProps: TableRowProps = {
+    public static defaultProps: unknown = {
         [TableRowSymbol as any]: true
     };
 
@@ -48,7 +48,10 @@ export class TableRow extends React.PureComponent<TableRowProps> {
 
     public render() {
         return (
-            <StyledTableRow {...this.props}>
+            <StyledTableRow
+                {...this.props}
+                index={this.props.key as number}
+            >
                 <ErrorBoundary>
                     {this.props.children}
                 </ErrorBoundary>
