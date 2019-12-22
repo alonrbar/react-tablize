@@ -58,12 +58,6 @@ export class TableViewProps {
     public customScrollbars?: boolean;
 
     //
-    // behavior
-    //
-
-    public keyScroll?: boolean;
-
-    //
     // virtualization
     //
 
