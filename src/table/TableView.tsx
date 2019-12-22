@@ -97,7 +97,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
     // component code
     //
 
-    public static defaultProps = new TableViewProps();
+    public static defaultProps: unknown = new TableViewProps();
 
     private tableElement = React.createRef<List>();
 
