@@ -18,6 +18,12 @@ export class GridView extends React.PureComponent<GridViewProps> {
         return this.props.style?.direction === 'rtl' ? 'rtl' : 'ltr';
     }
 
+    private gridRef = React.createRef<VirtualGrid>();
+
+    public refresh() {
+        this.gridRef.current?.refresh();
+    }
+
     public render() {
         return (
             <ErrorBoundary>
@@ -33,6 +39,7 @@ export class GridView extends React.PureComponent<GridViewProps> {
                         {({ width, height }) => (
                             <VirtualGrid 
                                 {...this.props}
+                                ref={this.gridRef}
                                 height={height}
                                 width={width}
                             />

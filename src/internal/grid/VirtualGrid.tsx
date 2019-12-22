@@ -56,15 +56,19 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         this.tiles = this.createTilesMap();
     }
 
+    public refresh() {
+        this.initialCalculator = new WindowCalculator();
+        this.tiles = this.createTilesMap();
+        this.forceUpdate();
+    }
+
     //
     // life cycle
     //
 
     public componentDidUpdate(prevProps: VirtualGridProps) {
         if (!areShallowEqual(this.props, prevProps)) {
-            this.initialCalculator = new WindowCalculator();
-            this.tiles = this.createTilesMap();
-            this.forceUpdate();
+            this.refresh();
         }
     }
 
@@ -120,6 +124,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         return (
             <div
+                className={this.createClassName('TilesRow')}
                 style={{
                     display: 'flex',
                     position,
