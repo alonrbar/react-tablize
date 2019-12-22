@@ -5,55 +5,19 @@ import { RowAutoSize, TableBody, TableCell, TableHead, TableRow, TableView } fro
 
 const stories = storiesOf('TableView features', module);
 
-interface Person {
-    id: number;
-    name: string;
-    age: number;
-}
-
-function getTestItems(postfix: string): Person[] {
-    const people: Person[] = [
-        {
-            id: 1,
-            name: 'First Dude',
-            age: 34
-        },
-        {
-            id: 2,
-            name: 'Second Dude',
-            age: 31
-        },
-        {
-            id: 3,
-            name: 'Third Dude',
-            age: 62
-        },
-        {
-            id: 4,
-            name: 'Fourth Dude',
-            age: 62
-        }
-    ];
-    return people.map(p => ({
-        ...p,
-        name: `${p.name} (${postfix})`
-    }));
-}
-
 stories.add('variable sized rows', () => {
-    const items = getTestItems('variable sized rows');
     return (
         <TableView
-            rowCount={items.length}
-            rowHeight={index => (index + 1) * 40}
+            rowCount={1000}
+            rowHeight={index => (index % 4 + 1) * 40}
         >
             <TableHead>
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
-                    items[index].name,
-                    items[index].age
+                    index + 1,
+                    index + 1
                 ])}
             </TableBody>
         </TableView>
@@ -61,19 +25,18 @@ stories.add('variable sized rows', () => {
 });
 
 stories.add('custom scrollbars', () => {
-    const items = getTestItems('custom scrollbars');
     return (
         <TableView
-            rowCount={items.length}
+            rowCount={1000}
             customScrollbars={true}
         >
             <TableHead>
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
-                    items[index].name,
-                    items[index].age
+                    index + 1,
+                    index + 1
                 ])}
             </TableBody>
         </TableView>
@@ -81,9 +44,8 @@ stories.add('custom scrollbars', () => {
 });
 
 stories.add('head style', () => {
-    const items = getTestItems('head style');
     return (
-        <TableView rowCount={items.length}>
+        <TableView rowCount={1000}>
             <TableHead
                 style={{
                     color: 'red',
@@ -91,12 +53,12 @@ stories.add('head style', () => {
                     height: 70
                 }}
             >
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
-                    items[index].name,
-                    items[index].age
+                    index + 1,
+                    index + 1
                 ])}
             </TableBody>
         </TableView>
@@ -104,8 +66,6 @@ stories.add('head style', () => {
 });
 
 stories.add('style with emotion', () => {
-    const items = getTestItems('style with emotion');
-
     const MyCustomTableRow = styled(TableRow)`
         color: green;
     `;
@@ -115,18 +75,18 @@ stories.add('style with emotion', () => {
     `;
 
     return (
-        <TableView rowCount={items.length}>
+        <TableView rowCount={1000}>
             <TableHead>
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => (
                     <MyCustomTableRow>
                         <TableCell>
-                            {items[index].name}
+                            {index + 1}
                         </TableCell>
                         <MyCustomTableCell>
-                            {items[index].age}
+                            {index + 1}
                         </MyCustomTableCell>
                     </MyCustomTableRow>
                 )}
@@ -136,27 +96,19 @@ stories.add('style with emotion', () => {
 });
 
 stories.add('no default style', () => {
-    const items = getTestItems('no default style');
-
     return (
         <TableView
-            rowCount={items.length}
+            rowCount={1000}
             defaultStyle={false}
         >
             <TableHead>
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
-                {index => (
-                    <TableRow>
-                        <TableCell>
-                            {items[index].name}
-                        </TableCell>
-                        <TableCell>
-                            {items[index].age}
-                        </TableCell>
-                    </TableRow>
-                )}
+                {index => ([
+                    index + 1,
+                    index + 1
+                ])}
             </TableBody>
         </TableView>
     );
@@ -171,7 +123,7 @@ stories.add('scroll by keys', () => {
         >
             <TableHead
             >
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
@@ -191,7 +143,7 @@ stories.add('non virtual', () => {
         >
             <TableHead
             >
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
@@ -212,7 +164,7 @@ stories.add('non virtual - auto-sized rows', () => {
         >
             <TableHead
             >
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
@@ -233,7 +185,7 @@ stories.add('non virtual - custom scrollbars', () => {
         >
             <TableHead
             >
-                {['Name', 'Age']}
+                {['Header 1', 'Header 2']}
             </TableHead>
             <TableBody>
                 {index => ([
