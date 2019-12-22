@@ -328,14 +328,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                         vertical === 'body' ? this.props.rowHeight :
                             footerHeight,
 
-                    estimatedColumnWidth: horizontal === 'left' ? leftWidth :
-                        horizontal === 'center' ? this.props.estimatedColumnWidth :
-                            rightWidth,
-
-                    estimatedRowHeight: vertical === 'header' ? headerHeight :
-                        vertical === 'body' ? this.props.estimatedRowHeight :
-                            footerHeight,
-
                     overscanColumnsCount: horizontal === 'left' ? 0 :
                         horizontal === 'center' ? this.props.overscanColumnsCount :
                             0,
@@ -405,7 +397,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         return this.initialCalculator.getTotalSize(
             'row',
             this.props.rowHeight,
-            this.props.estimatedRowHeight,
+            null, // this.props.estimatedRowHeight,
             this.props.rowCount
         );
     }
@@ -421,7 +413,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         return this.initialCalculator.getTotalSize(
             'column',
             this.props.columnWidth,
-            this.props.estimatedColumnWidth,
+            null, // this.props.estimatedColumnWidth,
             this.props.columnCount
         );
     }

@@ -57,18 +57,6 @@ export class VirtualGridProps {
     public rowCount: number;
     public columnWidth: number | SizeCallback;
     public rowHeight: number | SizeCallback;
-    /**
-     * If `columnWidth` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll width.
-     */
-    public estimatedColumnWidth?: number;
-    /**
-     * If `rowHeight` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll height.
-     */
-    public estimatedRowHeight?: number;
     public overscanColumnsCount?= 0;
     public overscanRowCount?= 0;
 

@@ -25,18 +25,6 @@ export class VirtualWindowProps {
     public rowCount: number;
     public columnWidth: number | SizeCallback;
     public rowHeight: number | SizeCallback;
-    /**
-     * If `columnWidth` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll width.
-     */
-    public estimatedColumnWidth?: number;
-    /**
-     * If `rowHeight` is a function and this prop is not specified will use
-     * eager evaluation (invoke the method for all cells on component mount) to
-     * calculate the total scroll height.
-     */
-    public estimatedRowHeight?: number;
     public overscanColumnsCount?= 0;
     public overscanRowCount?= 0;
 
@@ -123,7 +111,7 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
         return this.windowCalc.getTotalSize(
             'row',
             this.props.rowHeight,
-            this.props.estimatedRowHeight,
+            null, // this.props.estimatedRowHeight,
             this.props.rowCount
         );
     }
@@ -132,7 +120,7 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
         return this.windowCalc.getTotalSize(
             'column',
             this.props.columnWidth,
-            this.props.estimatedColumnWidth,
+            null, // this.props.estimatedColumnWidth,
             this.props.columnCount
         );
     }
