@@ -16,8 +16,6 @@ export const StyledTableCell = styled.div`
 
     ${props => props.theme.defaultTheme ? `
         padding: 8px;
-        display: flex;
-        align-items: center;
         vertical-align: middle;
         ` : ''};
 `;
@@ -37,7 +35,6 @@ export const StyledTableHead = styled.div`
 
     & ${StyledTableCell} {
         ${props => props.theme.defaultTheme ? `
-            align-items: flex-end;
             vertical-align: bottom;
             font-weight: bold;
             ` : ''}
@@ -54,11 +51,11 @@ export interface RowProps {
 
 export const StyledTableRow = styled.div<RowProps>`
     display: flex;
+    justify-content: stretch;
     height: 100%;
     width: 100%;
 
     ${props => props.theme.defaultTheme ? `
-        justify-content: stretch;
         border-top: ${props.index === 0 ? 'none' : tableBorder};
         ` : ''}
     }
