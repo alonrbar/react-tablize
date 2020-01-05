@@ -60,6 +60,7 @@ export class VirtualWindowProps {
 class VirtualWindowState {
     public scrollTop = 0;
     public scrollLeft = 0;
+    public opacity: any;
 }
 
 export class VirtualWindow extends React.PureComponent<VirtualWindowProps, VirtualWindowState> {
@@ -143,7 +144,7 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     public componentDidUpdate(prevProps: VirtualWindowProps) {
         if (!areShallowEqual(this.props, prevProps)) {
             this.clearCache();
-            this.forceUpdate();
+            this.forceRedraw();
         }
         if (this.props.outerRef) {
             (this.props.outerRef as any).current = this.containerElement.current;
@@ -173,7 +174,8 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
                         width: this.props.width,
                         position: 'relative',
                         overflow,
-                        ...this.props.style
+                        ...this.props.style,
+                        opacity: this.state.opacity
                     },
                     onScroll: onScroll,
                 },
@@ -339,5 +341,21 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
 
     private getCellOriginalKey(colIndex: number, rowIndex: number): React.Key {
         return `${colIndex}, ${rowIndex}`;
+    }
+
+    private forceRedraw() {
+        
+        if (this.props.direction !== 'rtl') {
+            this.forceUpdate();
+            return;
+        }
+
+        // For some reason Chrome does not correctly redraw in RTL mode...
+        // https://stackoverflow.com/questions/8840580/force-dom-redraw-refresh-on-chrome-mac#29946331
+        const opacity = ((this.props.style?.opacity as number) ?? 1) - 0.01;
+        this.setState(
+            { opacity },
+            () => setTimeout(() => this.setState({ opacity: undefined }), 0)
+        );
     }
 }
