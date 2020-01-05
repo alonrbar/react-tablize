@@ -51,6 +51,7 @@ export declare class VirtualWindowProps {
 declare class VirtualWindowState {
     scrollTop: number;
     scrollLeft: number;
+    opacity: any;
 }
 export declare class VirtualWindow extends React.PureComponent<VirtualWindowProps, VirtualWindowState> {
     static defaultProps: unknown;
@@ -82,5 +83,6 @@ export declare class VirtualWindow extends React.PureComponent<VirtualWindowProp
     private containerElementScroll;
     private setScrollState;
     private getCellOriginalKey;
+    private forceRedraw;
 }
 export {};

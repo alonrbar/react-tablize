@@ -1072,6 +1072,8 @@ var VirtualWindowState = function VirtualWindowState() {
   VirtualWindow_defineProperty(this, "scrollTop", 0);
 
   VirtualWindow_defineProperty(this, "scrollLeft", 0);
+
+  VirtualWindow_defineProperty(this, "opacity", void 0);
 };
 
 var VirtualWindow_VirtualWindow =
@@ -1169,7 +1171,7 @@ function (_React$PureComponent) {
     value: function componentDidUpdate(prevProps) {
       if (!Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
         this.clearCache();
-        this.forceUpdate();
+        this.forceRedraw();
       }
 
       if (this.props.outerRef) {
@@ -1194,7 +1196,9 @@ function (_React$PureComponent) {
             width: this.props.width,
             position: 'relative',
             overflow: overflow
-          }, this.props.style),
+          }, this.props.style, {
+            opacity: this.state.opacity
+          }),
           onScroll: onScroll
         }, // inner element - scrollable area
         external_react_["createElement"](this.props.innerElementType, {
@@ -1408,6 +1412,31 @@ function (_React$PureComponent) {
     key: "getCellOriginalKey",
     value: function getCellOriginalKey(colIndex, rowIndex) {
       return "".concat(colIndex, ", ").concat(rowIndex);
+    }
+  }, {
+    key: "forceRedraw",
+    value: function forceRedraw() {
+      var _ref,
+          _this$props$style,
+          _this3 = this;
+
+      if (this.props.direction !== 'rtl') {
+        this.forceUpdate();
+        return;
+      } // For some reason Chrome does not correctly redraw in RTL mode...
+      // https://stackoverflow.com/questions/8840580/force-dom-redraw-refresh-on-chrome-mac#29946331
+
+
+      var opacity = ((_ref = (_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.opacity) !== null && _ref !== void 0 ? _ref : 1) - 0.01;
+      this.setState({
+        opacity: opacity
+      }, function () {
+        return setTimeout(function () {
+          return _this3.setState({
+            opacity: undefined
+          });
+        }, 0);
+      });
     }
   }]);
 

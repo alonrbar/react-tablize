@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [1.0.1 - 2020-01-05](https://github.com/alonrbar/react-tablize/tree/v1.0.1)
+
+### Fixed
+
+- Fix component update when direction is "rtl".
+
 ## [1.0.0 - 2019-12-22](https://github.com/alonrbar/react-tablize/tree/v1.0.0)
 
 ### Added
