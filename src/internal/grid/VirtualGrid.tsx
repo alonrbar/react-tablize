@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DocDir } from '../../types';
 import { areShallowEqual, DomUtils, ScrollUtils } from '../utils';
 import { VirtualWindow, VirtualWindowProps, WindowCalculator } from '../window';
-import { TileKey, TilePosition, VirtualGridProps } from './virtualGridProps';
+import { TileKey, TilePosition, TileVerticalPosition, VirtualGridProps } from './virtualGridProps';
 
 interface TileEntry {
     ref: React.RefObject<VirtualWindow>;
@@ -33,18 +33,6 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
     private get activeTiles(): TileKey[] {
         return Object.keys(this.tiles) as TileKey[];
-    }
-
-    private get headerTiles(): TileKey[] {
-        return this.activeTiles.filter(key => this.tiles[key].position.vertical === 'header');
-    }
-
-    private get bodyTiles(): TileKey[] {
-        return this.activeTiles.filter(key => this.tiles[key].position.vertical === 'body');
-    }
-
-    private get footerTiles(): TileKey[] {
-        return this.activeTiles.filter(key => this.tiles[key].position.vertical === 'footer');
     }
 
     private tiles: Partial<TilesMap> = {};
@@ -98,15 +86,16 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                         width: this.getScrollableWidth()
                     }}
                 >
-                    {this.renderTilesRow(this.headerTiles)}
-                    {this.renderTilesRow(this.bodyTiles)}
-                    {this.renderTilesRow(this.footerTiles)}
+                    {this.renderTilesRow('header')}
+                    {this.renderTilesRow('body')}
+                    {this.renderTilesRow('footer')}
                 </div>
             </div>
         );
     }
 
-    private renderTilesRow(tileKeys: TileKey[]) {
+    private renderTilesRow(rowKey: TileVerticalPosition) {
+        const tileKeys = this.getTilesInRow(rowKey);
         if (!tileKeys?.length)
             return null;
 
@@ -195,6 +184,10 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
     //
     // render helpers
     //
+
+    private getTilesInRow(rowKey: TileVerticalPosition): TileKey[] {
+        return this.activeTiles.filter(key => this.tiles[key].position.vertical === rowKey);
+    }
 
     private createTilesMap(): Partial<TilesMap> {
         this.resetTiles();
