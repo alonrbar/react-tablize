@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [1.0.2 - 2020-02-14](https://github.com/alonrbar/react-tablize/tree/v1.0.2)
+
+### Fixed
+
+- Unable to click some cells when direction is "rtl".
+
 ## [1.0.1 - 2020-01-05](https://github.com/alonrbar/react-tablize/tree/v1.0.1)
 
 ### Fixed

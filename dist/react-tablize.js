@@ -2751,7 +2751,9 @@ var VirtualGridState = function VirtualGridState() {
 
   _defineProperty(this, "scrollTop", 0);
 
-  _defineProperty(this, "scrollLeft", 0);
+  _defineProperty(this, "normalizedScrollLeft", 0);
+
+  _defineProperty(this, "rawScrollLeft", 0);
 };
 
 var VirtualGrid_VirtualGrid =
@@ -2770,33 +2772,6 @@ function (_React$PureComponent) {
     key: "activeTiles",
     get: function get() {
       return Object.keys(this.tiles);
-    }
-  }, {
-    key: "headerTiles",
-    get: function get() {
-      var _this2 = this;
-
-      return this.activeTiles.filter(function (key) {
-        return _this2.tiles[key].position.vertical === 'header';
-      });
-    }
-  }, {
-    key: "bodyTiles",
-    get: function get() {
-      var _this3 = this;
-
-      return this.activeTiles.filter(function (key) {
-        return _this3.tiles[key].position.vertical === 'body';
-      });
-    }
-  }, {
-    key: "footerTiles",
-    get: function get() {
-      var _this4 = this;
-
-      return this.activeTiles.filter(function (key) {
-        return _this4.tiles[key].position.vertical === 'footer';
-      });
     }
   }]);
 
@@ -2836,12 +2811,14 @@ function (_React$PureComponent) {
 
     _defineProperty(_assertThisInitialized(_this), "handleScroll", function (e) {
       var normalized = utils["c" /* ScrollUtils */].normalizeScrollEvent(e, _this.direction);
+      var isRtl = _this.direction === 'rtl';
 
-      if (!utils["a" /* DomUtils */].isPositionStickySupported) {
+      if (!utils["a" /* DomUtils */].isPositionStickySupported || isRtl) {
         // Need to restore tiles position
         _this.setState({
           scrollTop: normalized.scrollTop,
-          scrollLeft: normalized.normalizedScrollLeft
+          normalizedScrollLeft: normalized.normalizedScrollLeft,
+          rawScrollLeft: normalized.rawScrollLeft
         });
       } // Scroll tiles content
 
@@ -2916,23 +2893,27 @@ function (_React$PureComponent) {
           height: this.getScrollableHeight(),
           width: this.getScrollableWidth()
         }
-      }, this.renderTilesRow(this.headerTiles), this.renderTilesRow(this.bodyTiles), this.renderTilesRow(this.footerTiles)));
+      }, this.renderTilesRow('header'), this.renderTilesRow('body'), this.renderTilesRow('footer')));
     }
   }, {
     key: "renderTilesRow",
-    value: function renderTilesRow(tileKeys) {
-      var _this5 = this,
+    value: function renderTilesRow(rowKey) {
+      var _this2 = this,
           _ref;
 
+      var tileKeys = this.getTilesInRow(rowKey);
       if (!(tileKeys === null || tileKeys === void 0 ? void 0 : tileKeys.length)) return null;
       var firstTile = this.tiles[tileKeys[0]];
-      var rightOrLeft = this.direction === 'rtl' ? 'right' : 'left';
+      var isRtl = this.direction === 'rtl';
+      var rightOrLeft = isRtl ? 'right' : 'left';
       var isSticky = utils["a" /* DomUtils */].isPositionStickySupported;
       var position = isSticky ? 'sticky' : 'absolute';
       var topOffset = isSticky ? 0 : this.state.scrollTop;
-      var leftOffset = isSticky ? 0 : this.state.scrollLeft;
+      var leftOffset = isSticky ? 0 : this.state.normalizedScrollLeft; // https://stackoverflow.com/questions/58578298/position-sticky-with-direction-rtl-not-working
+
+      var marginLeft = isSticky && isRtl ? this.state.rawScrollLeft : 0;
       var width = tileKeys.map(function (key) {
-        return _this5.tiles[key].props.width;
+        return _this2.tiles[key].props.width;
       }).reduce(function (total, cur) {
         return total + cur;
       }, 0);
@@ -2942,14 +2923,23 @@ function (_React$PureComponent) {
           display: 'flex',
           position: position,
           top: firstTile.tileRowTop + topOffset
-        }, _defineProperty(_ref, rightOrLeft, 0 + leftOffset), _defineProperty(_ref, "height", firstTile.props.height), _defineProperty(_ref, "width", width), _ref)
+        }, _defineProperty(_ref, rightOrLeft, 0 + leftOffset), _defineProperty(_ref, "marginLeft", marginLeft), _defineProperty(_ref, "height", firstTile.props.height), _defineProperty(_ref, "width", width), _ref)
       }, tileKeys.map(this.renderTile));
     }
   }, {
-    key: "createTilesMap",
+    key: "getTilesInRow",
     //
     // render helpers
     //
+    value: function getTilesInRow(rowKey) {
+      var _this3 = this;
+
+      return this.activeTiles.filter(function (key) {
+        return _this3.tiles[key].position.vertical === rowKey;
+      });
+    }
+  }, {
+    key: "createTilesMap",
     value: function createTilesMap() {
       this.resetTiles();
       var map = {};
@@ -3000,7 +2990,7 @@ function (_React$PureComponent) {
   }, {
     key: "createTileMapEntryFactory",
     value: function createTileMapEntryFactory() {
-      var _this6 = this;
+      var _this4 = this;
 
       // calculate base dimensions
       var horizontalScrollbarWidth = this.getHorizontalScrollbarWidth();
@@ -3015,9 +3005,9 @@ function (_React$PureComponent) {
       var centerWidth = containerWidth - verticalScrollbarWidth - leftWidth - rightWidth; // create factory method
 
       return function (tileKey) {
-        var _this6$getTilePositio = _this6.getTilePosition(tileKey),
-            vertical = _this6$getTilePositio.vertical,
-            horizontal = _this6$getTilePositio.horizontal;
+        var _this4$getTilePositio = _this4.getTilePosition(tileKey),
+            vertical = _this4$getTilePositio.vertical,
+            horizontal = _this4$getTilePositio.horizontal;
 
         var isVerticalFixed = vertical === 'header' || vertical === 'footer';
         var isHorizontalFixed = horizontal === 'left' || horizontal === 'right';
@@ -3029,21 +3019,21 @@ function (_React$PureComponent) {
             horizontal: horizontal
           },
           tileRowTop: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight : headerHeight + bodyHeight,
-          rowIndexOffset: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight && 1 : _this6.props.rowCount + (headerHeight && 1),
-          columnIndexOffset: horizontal === 'left' ? 0 : horizontal === 'center' ? leftWidth && 1 : _this6.props.columnCount + (leftWidth && 1),
+          rowIndexOffset: vertical === 'header' ? 0 : vertical === 'body' ? headerHeight && 1 : _this4.props.rowCount + (headerHeight && 1),
+          columnIndexOffset: horizontal === 'left' ? 0 : horizontal === 'center' ? leftWidth && 1 : _this4.props.columnCount + (leftWidth && 1),
           props: {
-            className: _this6.createClassName(tileKey),
+            className: _this4.createClassName(tileKey),
             controlledScroll: true,
             scrollDirection: isCorner ? 'none' : isVerticalFixed ? 'horizontal' : isHorizontalFixed ? 'vertical' : 'both',
-            direction: _this6.direction,
+            direction: _this4.direction,
             height: vertical === 'header' ? headerHeight : vertical === 'body' ? bodyHeight : footerHeight,
             width: horizontal === 'left' ? leftWidth : horizontal === 'center' ? centerWidth : rightWidth,
-            columnCount: horizontal === 'left' ? 1 : horizontal === 'center' ? _this6.props.columnCount : 1,
-            rowCount: vertical === 'header' ? 1 : vertical === 'body' ? _this6.props.rowCount : 1,
-            columnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this6.props.columnWidth : rightWidth,
-            rowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this6.props.rowHeight : footerHeight,
-            overscanColumnsCount: horizontal === 'left' ? 0 : horizontal === 'center' ? _this6.props.overscanColumnsCount : 0,
-            overscanRowCount: vertical === 'header' ? 0 : vertical === 'body' ? _this6.props.overscanRowCount : 0
+            columnCount: horizontal === 'left' ? 1 : horizontal === 'center' ? _this4.props.columnCount : 1,
+            rowCount: vertical === 'header' ? 1 : vertical === 'body' ? _this4.props.rowCount : 1,
+            columnWidth: horizontal === 'left' ? leftWidth : horizontal === 'center' ? _this4.props.columnWidth : rightWidth,
+            rowHeight: vertical === 'header' ? headerHeight : vertical === 'body' ? _this4.props.rowHeight : footerHeight,
+            overscanColumnsCount: horizontal === 'left' ? 0 : horizontal === 'center' ? _this4.props.overscanColumnsCount : 0,
+            overscanRowCount: vertical === 'header' ? 0 : vertical === 'body' ? _this4.props.overscanRowCount : 0
           }
         };
       };

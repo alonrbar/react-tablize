@@ -2,15 +2,13 @@ import * as React from 'react';
 import { VirtualGridProps } from './virtualGridProps';
 declare class VirtualGridState {
     scrollTop: number;
-    scrollLeft: number;
+    normalizedScrollLeft: number;
+    rawScrollLeft: number;
 }
 export declare class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGridState> {
     static defaultProps: unknown;
     private get direction();
     private get activeTiles();
-    private get headerTiles();
-    private get bodyTiles();
-    private get footerTiles();
     private tiles;
     private initialCalculator;
     constructor(props: VirtualGridProps);
@@ -20,6 +18,7 @@ export declare class VirtualGrid extends React.PureComponent<VirtualGridProps, V
     private renderTilesRow;
     private renderTile;
     private handleScroll;
+    private getTilesInRow;
     private createTilesMap;
     private createTileMapEntryFactory;
     private getTilePosition;

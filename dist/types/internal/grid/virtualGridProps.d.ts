@@ -11,9 +11,11 @@ export declare enum TileKey {
     FooterCenter = "Footer_Center",
     FooterRight = "Footer_Right"
 }
+export declare type TileVerticalPosition = 'header' | 'body' | 'footer';
+export declare type TileHorizontalPosition = 'left' | 'center' | 'right';
 export interface TilePosition {
-    vertical: 'header' | 'body' | 'footer';
-    horizontal: 'left' | 'center' | 'right';
+    vertical: TileVerticalPosition;
+    horizontal: TileHorizontalPosition;
 }
 export interface RenderCellProps {
     /**
