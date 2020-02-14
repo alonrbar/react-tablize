@@ -2753,7 +2753,7 @@ var VirtualGridState = function VirtualGridState() {
 
   _defineProperty(this, "normalizedScrollLeft", 0);
 
-  _defineProperty(this, "rawScrollLeft", 0);
+  _defineProperty(this, "rawScrollLeft", void 0);
 };
 
 var VirtualGrid_VirtualGrid =
@@ -2899,6 +2899,7 @@ function (_React$PureComponent) {
     key: "renderTilesRow",
     value: function renderTilesRow(rowKey) {
       var _this2 = this,
+          _this$state$rawScroll,
           _ref;
 
       var tileKeys = this.getTilesInRow(rowKey);
@@ -2909,14 +2910,14 @@ function (_React$PureComponent) {
       var isSticky = utils["a" /* DomUtils */].isPositionStickySupported;
       var position = isSticky ? 'sticky' : 'absolute';
       var topOffset = isSticky ? 0 : this.state.scrollTop;
-      var leftOffset = isSticky ? 0 : this.state.normalizedScrollLeft; // https://stackoverflow.com/questions/58578298/position-sticky-with-direction-rtl-not-working
-
-      var marginLeft = isSticky && isRtl ? this.state.rawScrollLeft : 0;
+      var leftOffset = isSticky ? 0 : this.state.normalizedScrollLeft;
       var width = tileKeys.map(function (key) {
         return _this2.tiles[key].props.width;
       }).reduce(function (total, cur) {
         return total + cur;
-      }, 0);
+      }, 0); // https://stackoverflow.com/questions/58578298/position-sticky-with-direction-rtl-not-working
+
+      var marginLeft = isSticky && isRtl ? (_this$state$rawScroll = this.state.rawScrollLeft) !== null && _this$state$rawScroll !== void 0 ? _this$state$rawScroll : this.getScrollableWidth() - width : 0;
       return external_react_["createElement"]("div", {
         className: this.createClassName('TilesRow'),
         style: (_ref = {
