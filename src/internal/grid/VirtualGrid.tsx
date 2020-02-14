@@ -20,7 +20,7 @@ type TilesMap = {
 class VirtualGridState {
     public scrollTop = 0;
     public normalizedScrollLeft = 0;
-    public rawScrollLeft = 0;
+    public rawScrollLeft: number;
 }
 
 export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGridState> {
@@ -109,12 +109,14 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
         const topOffset = (isSticky ? 0 : this.state.scrollTop);
         const leftOffset = (isSticky ? 0 : this.state.normalizedScrollLeft);
 
-        // https://stackoverflow.com/questions/58578298/position-sticky-with-direction-rtl-not-working
-        const marginLeft = (isSticky && isRtl ? this.state.rawScrollLeft : 0);
-
         const width = tileKeys
             .map(key => this.tiles[key].props.width)
             .reduce((total, cur) => total + cur, 0);
+
+        // https://stackoverflow.com/questions/58578298/position-sticky-with-direction-rtl-not-working
+        const marginLeft = (isSticky && isRtl ?
+            (this.state.rawScrollLeft ?? (this.getScrollableWidth() - width)) :
+            0);
 
         return (
             <div
