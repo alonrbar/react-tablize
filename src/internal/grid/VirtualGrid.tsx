@@ -19,7 +19,8 @@ type TilesMap = {
 
 class VirtualGridState {
     public scrollTop = 0;
-    public scrollLeft = 0;
+    public normalizedScrollLeft = 0;
+    public rawScrollLeft = 0;
 }
 
 export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGridState> {
@@ -111,12 +112,16 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
         const firstTile = this.tiles[tileKeys[0]];
 
-        const rightOrLeft = this.direction === 'rtl' ? 'right' : 'left';
+        const isRtl = this.direction === 'rtl';
+        const rightOrLeft = isRtl ? 'right' : 'left';
 
         const isSticky = DomUtils.isPositionStickySupported;
         const position = isSticky ? 'sticky' : 'absolute';
         const topOffset = (isSticky ? 0 : this.state.scrollTop);
-        const leftOffset = (isSticky ? 0 : this.state.scrollLeft);
+        const leftOffset = (isSticky ? 0 : this.state.normalizedScrollLeft);
+
+        // https://stackoverflow.com/questions/58578298/position-sticky-with-direction-rtl-not-working
+        const marginLeft = (isSticky && isRtl ? this.state.rawScrollLeft : 0);
 
         const width = tileKeys
             .map(key => this.tiles[key].props.width)
@@ -130,6 +135,7 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
                     position,
                     top: firstTile.tileRowTop + topOffset,
                     [rightOrLeft]: 0 + leftOffset,
+                    marginLeft,
                     height: firstTile.props.height,
                     width
                 }}
@@ -167,12 +173,15 @@ export class VirtualGrid extends React.PureComponent<VirtualGridProps, VirtualGr
 
     private handleScroll = (e: React.UIEvent<HTMLDivElement>): void => {
         const normalized = ScrollUtils.normalizeScrollEvent(e, this.direction);
+        const isRtl = this.direction === 'rtl';
 
-        if (!DomUtils.isPositionStickySupported) {
+        if (!DomUtils.isPositionStickySupported || isRtl) {
+
             // Need to restore tiles position
             this.setState({
                 scrollTop: normalized.scrollTop,
-                scrollLeft: normalized.normalizedScrollLeft
+                normalizedScrollLeft: normalized.normalizedScrollLeft,
+                rawScrollLeft: normalized.rawScrollLeft
             });
         }
 
