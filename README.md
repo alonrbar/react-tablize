@@ -7,16 +7,16 @@ High performance virtual table and grid components for React.
 [![dependencies](https://david-dm.org/alonrbar/react-tablize.svg)](https://github.com/alonrbar/react-tablize)
 [![dependencies](https://david-dm.org/alonrbar/react-tablize/dev-status.svg)](https://github.com/alonrbar/react-tablize)
 
-- [TableView](#tableview)
+- [Table](#table)
   - [Examples](#table-examples)
   - [Props](#table-props)
-- [GridView](#gridview)
+- [Grid](#grid)
   - [Examples](#grid-examples)
   - [Props](#grid-props)
 - [Prior art and motivation](#prior-art-and-motivation)
 - [Changelog](#changelog)
 
-## TableView
+## Table
 
 ### Table Examples
 
@@ -26,7 +26,7 @@ High performance virtual table and grid components for React.
 
 const people: Person[];
 
-<TableView rowCount={people.length}>
+<Table rowCount={people.length}>
     <TableHead>
         {['Name', 'Age']}
     </TableHead>
@@ -36,7 +36,7 @@ const people: Person[];
             people[index].age
         ])}
     </TableBody>
-</TableView>
+</Table>
 ```
 
 #### Rows and cells syntax
@@ -45,7 +45,7 @@ const people: Person[];
 
 const people: Person[];
 
-<TableView rowCount={people.length}>
+<Table rowCount={people.length}>
     <TableHead>
         <TableCell>
             Name
@@ -66,7 +66,7 @@ const people: Person[];
             </TableRow>
         )}
     </TableBody>
-</TableView>
+</Table>
 ```
 
 #### Mixed syntax
@@ -75,7 +75,7 @@ const people: Person[];
 
 const people: Person[];
 
-<TableView rowCount={people.length}>
+<Table rowCount={people.length}>
     <TableHead>
         {[
             <TableCell key="name">
@@ -96,7 +96,7 @@ const people: Person[];
             </TableRow>
         )}
     </TableBody>
-</TableView>
+</Table>
 ```
 
 #### Columns syntax
@@ -105,7 +105,7 @@ const people: Person[];
 
 const people: Person[];
 
-<TableView rowCount={people.length}>
+<Table rowCount={people.length}>
 
     <TableColumn>
         <ColumnHead>Name</ColumnHead>
@@ -121,7 +121,7 @@ const people: Person[];
         </ColumnBody>
     </TableColumn>
 
-</TableView>
+</Table>
 ```
 
 ### Table Props
@@ -137,14 +137,14 @@ const people: Person[];
 | style | React.CSSProperties || no ||
 | placeholder | React.ReactNode | | no | What to display when there are no items. |
 
-## GridView
+## Grid
 
 ### Grid Examples
 
 #### Simple Grid
 
 ```jsx
-<GridView
+<Grid
     columnCount={1000}
     rowCount={10}
     columnWidth={100}
@@ -153,13 +153,13 @@ const people: Person[];
     {cellProps => (
         `${cellProps.absRowIndex}, ${cellProps.absColIndex}`
     )}
-</GridView>
+</Grid>
 ```
 
 #### Fixed Head and Columns
 
 ```jsx
-<GridView
+<Grid
     columnCount={1000}
     rowCount={10}
     columnWidth={100}
@@ -190,13 +190,13 @@ const people: Person[];
         // body
         return `${cellProps.absRowIndex}, ${cellProps.absColIndex}`;
     }}
-</GridView>
+</Grid>
 ```
 
 #### Variable Width and Height
 
 ```jsx
-<GridView
+<Grid
     columnCount={1000}
     rowCount={10}
     columnWidth={columnIndex => columnIndex === 0 ? 50 : 100}
@@ -205,7 +205,7 @@ const people: Person[];
     {cellProps => (
         `${cellProps.absRowIndex}, ${cellProps.absColIndex}`
     )}
-</GridView>
+</Grid>
 ```
 
 ### Grid Cell Render Props

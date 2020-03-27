@@ -3,10 +3,10 @@ import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
-import { List, NonVirtualList, VirtualList } from '../internal/list';
 import { asArray, ElementHeights, isNullOrUndefined, ReactUtils, SizeUtils } from '../internal/utils';
+import { List } from '../list';
 import { DocDir, OneOrMore, SizeCallback } from '../types';
-import { StyledTableBody, StyledTableHead, StyledTableView } from './style';
+import { StyledTable, StyledTableBody, StyledTableHead } from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -29,13 +29,12 @@ export const RowAutoSize = (): number => undefined;
 
 export type RowKeyCallback = (index: number) => React.Key;
 
-export class TableViewProps {
+export class TableProps {
 
     //
     // main props
     //
 
-    public isVirtual?: boolean;
     public rowCount: number;
     public rowKey?: RowKeyCallback;
     public children?: TableChildren_RowsSyntax | TableChildren_ColumnsSyntax;
@@ -71,7 +70,7 @@ export class TableViewProps {
     public overscanCount?= 20;
 }
 
-export class TableView extends React.PureComponent<TableViewProps> {
+export class Table extends React.PureComponent<TableProps> {
 
     public static readonly defaultHeight = '35vh';
     public static readonly defaultHeadHeight = '40px';
@@ -94,7 +93,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
     // component code
     //
 
-    public static defaultProps: unknown = new TableViewProps();
+    public static defaultProps: unknown = new TableProps();
 
     private tableElement = React.createRef<List>();
 
@@ -133,22 +132,22 @@ export class TableView extends React.PureComponent<TableViewProps> {
         return (
             <ThemeProvider theme={this.getTheme()}>
                 <ErrorBoundary>
-                    <StyledTableView
+                    <StyledTable
                         className={this.props.className}
                         style={{
                             ...this.props.style,
-                            ...SizeUtils.getElementHeights(this, TableView.defaultHeight)
+                            ...SizeUtils.getElementHeights(this, Table.defaultHeight)
                         }}
                     >
-                        {this.renderTableHead(head)}
-                        {this.renderTableBody(head, body)}
-                    </StyledTableView>
+                        {this.renderHead(head)}
+                        {this.renderBody(head, body)}
+                    </StyledTable>
                 </ErrorBoundary>
             </ThemeProvider>
         );
     }
 
-    private renderTableHead(head: TableHead) {
+    private renderHead(head: TableHead) {
 
         if (!head)
             return null;
@@ -161,7 +160,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 {...divProps}
                 style={{
                     ...head.props.style,
-                    ...SizeUtils.getElementHeights(head, TableView.defaultHeadHeight)
+                    ...SizeUtils.getElementHeights(head, Table.defaultHeadHeight)
                 }}
             >
                 {React.Children.map(children, this.renderCell)}
@@ -169,12 +168,15 @@ export class TableView extends React.PureComponent<TableViewProps> {
         );
     }
 
-    private renderTableBody(head: TableHead, body: TableBody) {
+    private renderBody(head: TableHead, body: TableBody) {
 
         const bodyHeights = this.getBodyHeights(this, head, {
-            total: TableView.defaultHeight,
-            head: TableView.defaultHeadHeight
+            total: Table.defaultHeight,
+            head: Table.defaultHeadHeight
         });
+
+        const showPlaceholder = (this.props.rowCount === 0 || !TableBody.hasChildren(body));
+        const rowRender = body?.props.children;
 
         return (
             <StyledTableBody
@@ -184,41 +186,29 @@ export class TableView extends React.PureComponent<TableViewProps> {
                 }}
             >
                 <ErrorBoundary>
-                    {this.renderTableRows(body)}
+                    {showPlaceholder && this.renderRowsPlaceholder()}
+                    {!showPlaceholder && (
+                        <AutoSizer>
+                            {({ width, height }) => (
+                                <List
+                                    ref={this.tableElement}
+                                    style={{ outline: 'none' }}
+                                    dir={this.props.dir}
+                                    layout="vertical"
+                                    height={height}
+                                    width={width}
+                                    itemCount={this.props.rowCount}
+                                    itemSize={this.getRowHeight}
+                                    overscan={this.props.overscanCount}
+                                    customScrollbar={this.props.customScrollbars}
+                                >
+                                    {index => this.renderBodyRow(index, rowRender)}
+                                </List>
+                            )}
+                        </AutoSizer>
+                    )}
                 </ErrorBoundary>
             </StyledTableBody>
-        );
-    }
-
-    private renderTableRows(body: TableBody) {
-
-        // placeholder
-        if (this.props.rowCount === 0 || !TableBody.hasChildren(body)) {
-            return this.renderItemsPlaceHolder();
-        }
-
-        // table rows
-        const rowRender = body.props.children;
-        const ListComponent = this.getListComponent();
-        return (
-            <AutoSizer>
-                {({ width, height }) => (
-                    <ListComponent
-                        ref={this.tableElement as React.Ref<any>}
-                        style={{ outline: 'none' }}
-                        dir={this.props.dir}
-                        layout="vertical"
-                        height={height}
-                        width={width}
-                        itemCount={this.props.rowCount}
-                        itemSize={this.getRowHeight}
-                        overscan={this.props.overscanCount}
-                        customScrollbar={this.props.customScrollbars}
-                    >
-                        {index => this.renderBodyRow(index, rowRender)}
-                    </ListComponent>
-                )}
-            </AutoSizer>
         );
     }
 
@@ -265,7 +255,7 @@ export class TableView extends React.PureComponent<TableViewProps> {
         );
     }
 
-    private renderItemsPlaceHolder() {
+    private renderRowsPlaceholder() {
 
         if (this.props.placeholder)
             return this.props.placeholder;
@@ -288,12 +278,6 @@ export class TableView extends React.PureComponent<TableViewProps> {
             dir: this.props.dir,
             defaultTheme: this.props.defaultStyle
         };
-    }
-
-    private getListComponent() {
-        return this.props.isVirtual !== false ?
-            VirtualList :
-            NonVirtualList;
     }
 
     private getRowKey(rowProps: TableRowProps, index: number): React.Key {

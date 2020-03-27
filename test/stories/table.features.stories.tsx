@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { RowAutoSize, TableBody, TableCell, TableHead, TableRow, TableView } from 'src';
+import { TableBody, TableCell, TableHead, TableRow, Table } from 'src';
 
-const stories = storiesOf('TableView features', module);
+const stories = storiesOf('Table features', module);
 
 stories.add('variable sized rows', () => {
     return (
-        <TableView
+        <Table
             rowCount={1000}
             rowHeight={index => (index % 4 + 1) * 40}
         >
@@ -20,13 +20,13 @@ stories.add('variable sized rows', () => {
                     index + 1
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('custom scrollbars', () => {
     return (
-        <TableView
+        <Table
             rowCount={1000}
             customScrollbars={true}
         >
@@ -39,13 +39,13 @@ stories.add('custom scrollbars', () => {
                     index + 1
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('head style', () => {
     return (
-        <TableView rowCount={1000}>
+        <Table rowCount={1000}>
             <TableHead
                 style={{
                     color: 'red',
@@ -61,7 +61,7 @@ stories.add('head style', () => {
                     index + 1
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
@@ -75,7 +75,7 @@ stories.add('style with emotion', () => {
     `;
 
     return (
-        <TableView rowCount={1000}>
+        <Table rowCount={1000}>
             <TableHead>
                 {['Header 1', 'Header 2']}
             </TableHead>
@@ -91,13 +91,13 @@ stories.add('style with emotion', () => {
                     </MyCustomTableRow>
                 )}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('no default style', () => {
     return (
-        <TableView
+        <Table
             rowCount={1000}
             defaultStyle={false}
         >
@@ -110,15 +110,14 @@ stories.add('no default style', () => {
                     index + 1
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('scroll by keys', () => {
     return (
-        <TableView
+        <Table
             rowCount={1000}
-            isVirtual={true}
             customScrollbars={true}
         >
             <TableHead
@@ -131,75 +130,13 @@ stories.add('scroll by keys', () => {
                     index + 1
                 ])}
             </TableBody>
-        </TableView>
-    );
-});
-
-stories.add('non virtual', () => {
-    return (
-        <TableView
-            rowCount={1000}
-            isVirtual={false}
-        >
-            <TableHead
-            >
-                {['Header 1', 'Header 2']}
-            </TableHead>
-            <TableBody>
-                {index => ([
-                    index + 1,
-                    index + 1
-                ])}
-            </TableBody>
-        </TableView>
-    );
-});
-
-stories.add('non virtual - auto-sized rows', () => {
-    return (
-        <TableView
-            rowCount={1000}
-            isVirtual={false}
-            rowHeight={RowAutoSize}
-        >
-            <TableHead
-            >
-                {['Header 1', 'Header 2']}
-            </TableHead>
-            <TableBody>
-                {index => ([
-                    index + 1,
-                    index + 1
-                ])}
-            </TableBody>
-        </TableView>
-    );
-});
-
-stories.add('non virtual - custom scrollbars', () => {
-    return (
-        <TableView
-            rowCount={1000}
-            isVirtual={false}
-            customScrollbars={true}
-        >
-            <TableHead
-            >
-                {['Header 1', 'Header 2']}
-            </TableHead>
-            <TableBody>
-                {index => ([
-                    index + 1,
-                    index + 1
-                ])}
-            </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('rtl', () => {
     return (
-        <TableView
+        <Table
             rowCount={1000}
             dir="rtl"
         >
@@ -212,6 +149,6 @@ stories.add('rtl', () => {
                     'גיל ' + (index + 1)
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });

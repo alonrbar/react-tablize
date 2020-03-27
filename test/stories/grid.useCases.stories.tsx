@@ -1,24 +1,24 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { GridView, RenderCellProps } from 'src';
+import { Grid, RenderCellProps } from 'src';
 
-const stories = storiesOf('GridView - use cases', module);
+const stories = storiesOf('Grid - use cases', module);
 
-class EditableGridViewState {
+class EditableGridState {
     public columnCount = 3;
 }
 
-class EditableGridView extends React.PureComponent<{}, EditableGridViewState> {
+class EditableGrid extends React.PureComponent<{}, EditableGridState> {
 
     constructor(props: any) {
         super(props);
-        this.state = new EditableGridViewState();
+        this.state = new EditableGridState();
     }
 
     public render() {
         return (
             <div>
-                <GridView
+                <Grid
                     style={{
                         direction: 'rtl',
                         height: 500,
@@ -40,7 +40,7 @@ class EditableGridView extends React.PureComponent<{}, EditableGridViewState> {
                     fixedLeftWidth={120}
                 >
                     {renderCell}
-                </GridView>
+                </Grid>
                 <div style={{ margin: 20 }}>
                     <button
                         onClick={() => this.setState(prevState => ({ columnCount: prevState.columnCount + 1 }))}
@@ -61,7 +61,7 @@ class EditableGridView extends React.PureComponent<{}, EditableGridViewState> {
 
 stories.add('rtl - dynamic width - add/remove columns', () => {
     return (
-        <EditableGridView />
+        <EditableGrid />
     );
 });
 

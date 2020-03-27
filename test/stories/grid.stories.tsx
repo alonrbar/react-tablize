@@ -1,22 +1,22 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { GridView, RenderCellProps } from 'src';
+import { Grid, RenderCellProps } from 'src';
 
-const stories = storiesOf('GridView', module);
+const stories = storiesOf('Grid', module);
 
 stories.add('empty grid', () => (
-    <GridView
+    <Grid
         columnCount={0}
         rowCount={0}
         columnWidth={1}
         rowHeight={1}
     >
         {() => null}
-    </GridView>
+    </Grid>
 ));
 
 stories.add('simple grid', () => (
-    <GridView
+    <Grid
         style={{
             direction: 'rtl',
             width: 500
@@ -30,25 +30,25 @@ stories.add('simple grid', () => (
         fixedLeftWidth={80}
     >
         {renderCell}
-    </GridView>
+    </Grid>
 ));
 
 stories.add('simple grid - list', () => (
-    <GridView
+    <Grid
         columnCount={1}
         rowCount={50}
         columnWidth={400}
         rowHeight={40}
     >
         {renderCell}
-    </GridView>
+    </Grid>
 ));
 
 stories.add('dynamic width', () => {
     const colCount = 3;
     
     return (
-        <GridView
+        <Grid
             style={{
                 direction: 'rtl',
                 width: 300
@@ -71,7 +71,7 @@ stories.add('dynamic width', () => {
             fixedLeftWidth={120}
         >
             {renderCell}
-        </GridView>
+        </Grid>
     );
 });
 

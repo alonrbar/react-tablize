@@ -1,8 +1,8 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import { ColumnBody, ColumnHead, TableBody, TableCell, TableColumn, TableHead, TableRow, TableView } from 'src';
+import { ColumnBody, ColumnHead, TableBody, TableCell, TableColumn, TableHead, TableRow, Table } from 'src';
 
-const stories = storiesOf('TableView syntax', module);
+const stories = storiesOf('Table syntax', module);
 
 interface Person {
     id: number;
@@ -40,13 +40,13 @@ function getTestItems(postfix: string): Person[] {
 }
 
 stories.add('empty table', () => (
-    <TableView rowCount={0} />
+    <Table rowCount={0} />
 ));
 
 stories.add('terse syntax', () => {
     const items = getTestItems('terse');
     return (
-        <TableView rowCount={items.length}>
+        <Table rowCount={items.length}>
             <TableHead>
                 {['Name', 'Age']}
             </TableHead>
@@ -56,28 +56,28 @@ stories.add('terse syntax', () => {
                     items[index].age
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('no head', () => {
     const items = getTestItems('no head');
     return (
-        <TableView rowCount={items.length}>
+        <Table rowCount={items.length}>
             <TableBody>
                 {index => ([
                     items[index].name,
                     items[index].age
                 ])}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('rows and cells syntax', () => {
     const items = getTestItems('rows and cells');
     return (
-        <TableView rowCount={items.length}>
+        <Table rowCount={items.length}>
             <TableHead>
                 <TableCell>
                     Name
@@ -98,14 +98,14 @@ stories.add('rows and cells syntax', () => {
                     </TableRow>
                 )}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('mixed syntax', () => {
     const items = getTestItems('mixed syntax');
     return (
-        <TableView rowCount={items.length}>
+        <Table rowCount={items.length}>
             <TableHead>
                 {['Name', 'Age']}
             </TableHead>
@@ -119,14 +119,14 @@ stories.add('mixed syntax', () => {
                     </TableRow>
                 )}
             </TableBody>
-        </TableView>
+        </Table>
     );
 });
 
 stories.add('columns syntax', () => {
     const items = getTestItems('columns');
     return (
-        <TableView rowCount={items.length}>
+        <Table rowCount={items.length}>
 
             <TableColumn>
                 <ColumnHead>Name</ColumnHead>
@@ -142,6 +142,6 @@ stories.add('columns syntax', () => {
                 </ColumnBody>
             </TableColumn>
 
-        </TableView>
+        </Table>
     );
 });

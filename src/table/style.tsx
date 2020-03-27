@@ -3,7 +3,7 @@ import { DomUtils } from '../internal/utils';
 
 const tableBorder = '1px solid #ddd';
 
-export const StyledTableView = styled.div`
+export const StyledTable = styled.div`
     width: 100%;
     overflow-y: hidden;
 `;

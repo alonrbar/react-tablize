@@ -1,14 +1,30 @@
 import * as React from 'react';
-import { CustomScrollbars } from '../CustomScrollbars';
-import { DomUtils } from '../utils';
-import { RenderWindowCellProps, VirtualWindow, WindowCalculator } from '../window';
-import { List, ListProps } from './List';
+import { CustomScrollbars } from '../internal/CustomScrollbars';
+import { DomUtils } from '../internal/utils';
+import { RenderWindowCellProps, VirtualWindow, WindowCalculator } from '../internal/window';
+import { DocDir, SizeCallback } from '../types';
 
-export interface VirtualListProps extends ListProps {
-    keyScroll?: boolean;
+export interface ListRowProps {
+    style?: React.CSSProperties;
 }
 
-export class VirtualList extends React.PureComponent<VirtualListProps> implements List {
+export type ListRowRender = (index: number) => React.ReactElement<ListRowProps>;
+
+export interface ListProps {
+    style?: React.CSSProperties;
+    dir: DocDir;
+    layout?: 'horizontal' | 'vertical';
+    height: number;
+    width: number;
+    itemCount: number;
+    itemSize: SizeCallback;
+    customScrollbar?: boolean;
+    overscan?: number;
+    onScroll?: (offset: number) => void;
+    children: ListRowRender;
+}
+
+export class List extends React.PureComponent<ListProps> {
 
     private get isHorizontal(): boolean {
         return this.props.layout === 'horizontal';
