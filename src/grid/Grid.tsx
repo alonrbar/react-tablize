@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { ErrorBoundary } from 'src/internal/ErrorBoundary';
+import { ErrorBoundary } from '../internal/ErrorBoundary';
 import { areShallowEqual, DomUtils, ScrollUtils, SizeUtils } from '../internal/utils';
 import { VirtualWindow, VirtualWindowProps, WindowCalculator } from '../internal/window';
 import { DocDir, ScrollEvent, SizeCallback } from '../types';

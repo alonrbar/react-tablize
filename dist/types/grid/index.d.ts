@@ -1,1 +1,1 @@
-export * from './GridView';
+export * from './Grid';

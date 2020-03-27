@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollEvent, SizeCallback } from '../../types';
+import { ScrollEvent, SizeCallback } from '../types';
 export declare enum TileKey {
     HeaderLeft = "Header_Left",
     HeaderCenter = "Header_Center",
@@ -47,10 +47,12 @@ export interface RenderCellProps {
      */
     width: number;
 }
-export declare class VirtualGridProps {
-    onScroll?: (e: ScrollEvent) => void;
-    height: number;
-    width: number;
+declare class GridState {
+    scrollTop: number;
+    normalizedScrollLeft: number;
+    rawScrollLeft: number;
+}
+export declare class GridProps {
     /**
      * Number of columns in the grid, excluding fixed columns.
      */
@@ -68,5 +70,42 @@ export declare class VirtualGridProps {
     fixedLeftWidth?: number;
     fixedRightWidth?: number;
     style?: React.CSSProperties;
+    onScroll?: (e: ScrollEvent) => void;
     children: (props: RenderCellProps) => React.ReactNode;
 }
+export declare class Grid extends React.PureComponent<GridProps, GridState> {
+    static readonly defaultHeight = "35vh";
+    static defaultProps: unknown;
+    private get direction();
+    private get activeTiles();
+    private width;
+    private height;
+    private tiles;
+    private initialCalculator;
+    constructor(props: GridProps);
+    refresh(): void;
+    componentDidUpdate(prevProps: GridProps): void;
+    render(): JSX.Element;
+    private renderGrid;
+    private renderTilesRow;
+    private renderTile;
+    private handleScroll;
+    private getTilesInRow;
+    private createTilesMap;
+    private createTileMapEntryFactory;
+    private getTilePosition;
+    private resetTiles;
+    private getContainerHeight;
+    private getContainerWidth;
+    private getScrollableHeight;
+    private getScrollableWidth;
+    private getBodyScrollableHeight;
+    private getBodyScrollableWidth;
+    private getVerticalScrollbarWidth;
+    private getHorizontalScrollbarWidth;
+    /**
+     * We are only using classes for easier debug inspection...
+     */
+    private createClassName;
+}
+export {};

@@ -12,8 +12,7 @@ declare type TableChildren_ColumnsSyntax = OneOrMore<React.SubComp<TableColumn>>
  */
 export declare const RowAutoSize: () => number;
 export declare type RowKeyCallback = (index: number) => React.Key;
-export declare class TableViewProps {
-    isVirtual?: boolean;
+export declare class TableProps {
     rowCount: number;
     rowKey?: RowKeyCallback;
     children?: TableChildren_RowsSyntax | TableChildren_ColumnsSyntax;
@@ -38,7 +37,7 @@ export declare class TableViewProps {
      */
     overscanCount?: number;
 }
-export declare class TableView extends React.PureComponent<TableViewProps> {
+export declare class Table extends React.PureComponent<TableProps> {
     static readonly defaultHeight = "35vh";
     static readonly defaultHeadHeight = "40px";
     static Head: typeof TableHead;
@@ -50,14 +49,12 @@ export declare class TableView extends React.PureComponent<TableViewProps> {
     private tableElement;
     refresh(): void;
     render(): JSX.Element;
-    private renderTableHead;
-    private renderTableBody;
-    private renderTableRows;
+    private renderHead;
+    private renderBody;
     private renderBodyRow;
     private renderCell;
-    private renderItemsPlaceHolder;
+    private renderRowsPlaceholder;
     private getTheme;
-    private getListComponent;
     private getRowKey;
     private getRowHeight;
     private getBodyHeights;

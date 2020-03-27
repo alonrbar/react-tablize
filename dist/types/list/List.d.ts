@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { DocDir, SizeCallback } from '../../types';
+import * as React from 'react';
+import { DocDir, SizeCallback } from '../types';
 export interface ListRowProps {
     style?: React.CSSProperties;
 }
@@ -17,7 +17,17 @@ export interface ListProps {
     onScroll?: (offset: number) => void;
     children: ListRowRender;
 }
-export interface List extends React.Component<ListProps> {
+export declare class List extends React.PureComponent<ListProps> {
+    private get isHorizontal();
+    private windowRef;
+    private initialCalculator;
     refresh(): void;
     scrollTo(offset: number): void;
+    render(): JSX.Element;
+    private renderRow;
+    private getVerticalScrollbarWidth;
+    private getHorizontalScrollbarWidth;
+    private getScrollableHeight;
+    private getScrollableWidth;
+    private getOuterElementType;
 }

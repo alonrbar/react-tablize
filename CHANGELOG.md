@@ -1,6 +1,23 @@
 # React Tablize - Change Log
 
+## [2.0.0 - 2020-03-27](https://github.com/alonrbar/react-tablize/tree/v2.0.0)
+
+### Added
+
+- Expose `List` component (was internal).
+
+### Changed
+
+- `TableView` renamed to `Table`.
+- `GridView` renamed to `Grid`.
+
+### Removed
+
+- Removed the `isVirtual` props - Table and Grid are always virtual now.
+
 ## [1.0.3 - 2020-02-14](https://github.com/alonrbar/react-tablize/tree/v1.0.3)
+
+### Fixed
 
 - Unable to click some cells when direction is "rtl" - before first scroll.
 
