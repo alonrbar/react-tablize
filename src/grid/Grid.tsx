@@ -467,7 +467,7 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
 
     private resetTiles() {
         for (const tileKey of this.activeTiles) {
-            this.tiles[tileKey].ref.current.clearCache();
+            this.tiles[tileKey].ref.current?.clearCache();
         }
         this.tiles = {};
     }
