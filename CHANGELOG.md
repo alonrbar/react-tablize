@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.0.1 - 2020-03-27](https://github.com/alonrbar/react-tablize/tree/v2.0.1)
+
+### Fixed
+
+- Grid refresh bug fix.
+
 ## [2.0.0 - 2020-03-27](https://github.com/alonrbar/react-tablize/tree/v2.0.0)
 
 ### Added

@@ -2872,8 +2872,10 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
 
       try {
         for (var _iterator2 = this.activeTiles[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _this$tiles$tileKey$r;
+
           var tileKey = _step2.value;
-          this.tiles[tileKey].ref.current.clearCache();
+          (_this$tiles$tileKey$r = this.tiles[tileKey].ref.current) === null || _this$tiles$tileKey$r === void 0 ? void 0 : _this$tiles$tileKey$r.clearCache();
         }
       } catch (err) {
         _didIteratorError2 = true;
