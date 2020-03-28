@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import * as React from 'react';
 import { Grid, RenderCellProps } from 'src';
 
-const stories = storiesOf('Grid - use cases', module);
+const stories = storiesOf('Grid - dynamic', module);
 
 class EditableGridState {
     public columnCount = 3;
@@ -59,7 +59,7 @@ class EditableGrid extends React.PureComponent<{}, EditableGridState> {
     }
 }
 
-stories.add('rtl - dynamic width - add/remove columns', () => {
+stories.add('dynamic grid', () => {
     return (
         <EditableGrid />
     );
