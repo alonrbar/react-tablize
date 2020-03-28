@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.1.0 - 2020-03-28](https://github.com/alonrbar/react-tablize/tree/v2.1.0)
+
+### Added
+
+- Grid `onClick` and `className`.
+
 ## [2.0.1 - 2020-03-27](https://github.com/alonrbar/react-tablize/tree/v2.0.1)
 
 ### Fixed

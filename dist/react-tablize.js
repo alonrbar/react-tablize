@@ -2533,6 +2533,10 @@ var GridProps = function GridProps() {
 
   _defineProperty(this, "style", void 0);
 
+  _defineProperty(this, "className", void 0);
+
+  _defineProperty(this, "onClick", void 0);
+
   _defineProperty(this, "onScroll", void 0);
 
   _defineProperty(this, "children", void 0);
@@ -2663,10 +2667,12 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
       var _this2 = this;
 
       return /*#__PURE__*/external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, /*#__PURE__*/external_react_["createElement"]("div", {
+        className: this.props.className,
         style: _objectSpread({
           direction: this.direction,
           width: '100%'
-        }, this.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(this, Grid.defaultHeight))
+        }, this.props.style, {}, utils["d" /* SizeUtils */].getElementHeights(this, Grid.defaultHeight)),
+        onClick: this.props.onClick
       }, /*#__PURE__*/external_react_["createElement"](external_react_virtualized_auto_sizer_default.a, null, function (_ref) {
         var width = _ref.width,
             height = _ref.height;

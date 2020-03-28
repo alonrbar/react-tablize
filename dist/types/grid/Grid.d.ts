@@ -70,6 +70,8 @@ export declare class GridProps {
     fixedLeftWidth?: number;
     fixedRightWidth?: number;
     style?: React.CSSProperties;
+    className?: string;
+    onClick?: React.MouseEventHandler<HTMLElement>;
     onScroll?: (e: ScrollEvent) => void;
     children: (props: RenderCellProps) => React.ReactNode;
 }
