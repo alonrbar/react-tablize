@@ -96,7 +96,9 @@ export class GridProps {
     public fixedRightWidth?= 0;
 
     public style?: React.CSSProperties;
+    public className?: string;
 
+    public onClick?: React.MouseEventHandler<HTMLElement>;
     public onScroll?: (e: ScrollEvent) => void;
 
     public children: (props: RenderCellProps) => React.ReactNode;
@@ -153,12 +155,14 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
         return (
             <ErrorBoundary>
                 <div
+                    className={this.props.className}
                     style={{
                         direction: this.direction,
                         width: '100%',
                         ...this.props.style,
                         ...SizeUtils.getElementHeights(this, Grid.defaultHeight)
                     }}
+                    onClick={this.props.onClick}
                 >
                     <AutoSizer>
                         {({ width, height }) => this.renderGrid(width, height)}
@@ -169,7 +173,7 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
     }
 
     private renderGrid(width: number, height: number) {
-        
+
         // assign width and height
         if (this.width !== width || this.height !== height) {
             setTimeout(() => this.refresh(), 0);
