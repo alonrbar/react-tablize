@@ -85,6 +85,8 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     private windowCalc = new WindowCalculator();
     private recycler = new RecycleManager();
 
+    private prevProps: VirtualWindowProps;
+
     private containerElement = React.createRef<HTMLDivElement>();
 
     constructor(props: VirtualWindowProps) {
@@ -136,15 +138,9 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     // life cycle
     //
 
-    public componentDidMount() {
-        this.clearCache();
-        this.forceUpdate();
-    }
-
     public componentDidUpdate(prevProps: VirtualWindowProps) {
-        if (!areShallowEqual(this.props, prevProps)) {
-            this.clearCache();
-            this.forceRedraw();
+        if (this.props.direction === 'rtl' && !areShallowEqual(this.props, prevProps)) {
+            this.rtlRedrawHack();
         }
         if (this.props.outerRef) {
             (this.props.outerRef as any).current = this.containerElement.current;
@@ -156,6 +152,11 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     //
 
     public render() {
+
+        if (!areShallowEqual(this.props, this.prevProps)) {
+            this.prevProps = this.props;
+            this.clearCache();
+        }
 
         const overflow = this.props.controlledScroll ? 'hidden' : 'auto';
         const onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
@@ -343,13 +344,8 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
         return `${colIndex}, ${rowIndex}`;
     }
 
-    private forceRedraw() {
-        
-        if (this.props.direction !== 'rtl') {
-            this.forceUpdate();
-            return;
-        }
-
+    private rtlRedrawHack() {
+        // There's an issue when dynamically removing columns in RTL.
         // For some reason Chrome does not correctly redraw in RTL mode...
         // https://stackoverflow.com/questions/8840580/force-dom-redraw-refresh-on-chrome-mac#29946331
         const opacity = ((this.props.style?.opacity as number) ?? 1) - 0.01;

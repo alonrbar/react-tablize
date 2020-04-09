@@ -84,14 +84,15 @@ export declare class Grid extends React.PureComponent<GridProps, GridState> {
     private height;
     private tiles;
     private initialCalculator;
+    private prevProps;
     constructor(props: GridProps);
     refresh(): void;
-    componentDidUpdate(prevProps: GridProps): void;
     render(): JSX.Element;
     private renderGrid;
     private renderTilesRow;
     private renderTile;
     private handleScroll;
+    private clearCache;
     private getTilesInRow;
     private createTilesMap;
     private createTileMapEntryFactory;

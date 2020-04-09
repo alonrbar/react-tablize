@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.1.1 - 2020-04-09](https://github.com/alonrbar/react-tablize/tree/v2.1.1)
+
+### Fixed
+
+- Remove unnecessary forced updates that caused property propagation issues.
+
 ## [2.1.0 - 2020-03-28](https://github.com/alonrbar/react-tablize/tree/v2.1.0)
 
 ### Added

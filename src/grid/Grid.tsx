@@ -125,6 +125,8 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
 
     private initialCalculator = new WindowCalculator();
 
+    private prevProps: GridProps;
+
     constructor(props: GridProps) {
         super(props);
         this.state = new GridState();
@@ -132,19 +134,8 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
     }
 
     public refresh() {
-        this.initialCalculator = new WindowCalculator();
-        this.tiles = this.createTilesMap();
+        this.clearCache();
         this.forceUpdate();
-    }
-
-    //
-    // life cycle
-    //
-
-    public componentDidUpdate(prevProps: GridProps) {
-        if (!areShallowEqual(this.props, prevProps)) {
-            this.refresh();
-        }
     }
 
     //
@@ -152,6 +143,12 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
     //
 
     public render() {
+
+        if (!areShallowEqual(this.props, this.prevProps)) {
+            this.prevProps = this.props;
+            this.clearCache();
+        }
+
         return (
             <ErrorBoundary>
                 <div
@@ -302,6 +299,11 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
     //
     // render helpers
     //
+
+    private clearCache() {
+        this.initialCalculator = new WindowCalculator();
+        this.tiles = this.createTilesMap();
+    }
 
     private getTilesInRow(rowKey: TileVerticalPosition): TileKey[] {
         return this.activeTiles.filter(key => this.tiles[key].position.vertical === rowKey);

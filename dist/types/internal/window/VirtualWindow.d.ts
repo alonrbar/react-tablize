@@ -68,13 +68,13 @@ export declare class VirtualWindow extends React.PureComponent<VirtualWindowProp
     private minRowsToRender;
     private windowCalc;
     private recycler;
+    private prevProps;
     private containerElement;
     constructor(props: VirtualWindowProps);
     scrollTo(e: NormalizedScrollEvent): void;
     getScrollableHeight(): number;
     getScrollableWidth(): number;
     clearCache(): void;
-    componentDidMount(): void;
     componentDidUpdate(prevProps: VirtualWindowProps): void;
     render(): React.ReactElement<any, string | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)>) | (new (props: any) => React.Component<any, any, any>)>;
     private renderCells;
@@ -83,6 +83,6 @@ export declare class VirtualWindow extends React.PureComponent<VirtualWindowProp
     private containerElementScroll;
     private setScrollState;
     private getCellOriginalKey;
-    private forceRedraw;
+    private rtlRedrawHack;
 }
 export {};

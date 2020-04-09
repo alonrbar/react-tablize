@@ -1040,6 +1040,8 @@ var VirtualWindow_VirtualWindow = /*#__PURE__*/function (_React$PureComponent) {
 
     VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "recycler", new RecycleManager());
 
+    VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "prevProps", void 0);
+
     VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "containerElement", external_react_["createRef"]());
 
     VirtualWindow_defineProperty(VirtualWindow_assertThisInitialized(_this), "handleScroll", function (e) {
@@ -1093,17 +1095,10 @@ var VirtualWindow_VirtualWindow = /*#__PURE__*/function (_React$PureComponent) {
     //
 
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.clearCache();
-      this.forceUpdate();
-    }
-  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      if (!Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
-        this.clearCache();
-        this.forceRedraw();
+      if (this.props.direction === 'rtl' && !Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
+        this.rtlRedrawHack();
       }
 
       if (this.props.outerRef) {
@@ -1116,6 +1111,11 @@ var VirtualWindow_VirtualWindow = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "render",
     value: function render() {
+      if (!Object(utils["e" /* areShallowEqual */])(this.props, this.prevProps)) {
+        this.prevProps = this.props;
+        this.clearCache();
+      }
+
       var overflow = this.props.controlledScroll ? 'hidden' : 'auto';
       var onScroll = this.props.controlledScroll ? undefined : this.handleScroll;
       return (// outer element - container
@@ -1346,19 +1346,15 @@ var VirtualWindow_VirtualWindow = /*#__PURE__*/function (_React$PureComponent) {
       return "".concat(colIndex, ", ").concat(rowIndex);
     }
   }, {
-    key: "forceRedraw",
-    value: function forceRedraw() {
+    key: "rtlRedrawHack",
+    value: function rtlRedrawHack() {
       var _ref,
           _this$props$style,
           _this3 = this;
 
-      if (this.props.direction !== 'rtl') {
-        this.forceUpdate();
-        return;
-      } // For some reason Chrome does not correctly redraw in RTL mode...
+      // There's an issue when dynamically removing columns in RTL.
+      // For some reason Chrome does not correctly redraw in RTL mode...
       // https://stackoverflow.com/questions/8840580/force-dom-redraw-refresh-on-chrome-mac#29946331
-
-
       var opacity = ((_ref = (_this$props$style = this.props.style) === null || _this$props$style === void 0 ? void 0 : _this$props$style.opacity) !== null && _ref !== void 0 ? _ref : 1) - 0.01;
       this.setState({
         opacity: opacity
@@ -2573,6 +2569,8 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
 
     _defineProperty(_assertThisInitialized(_this), "initialCalculator", new internal_window["b" /* WindowCalculator */]());
 
+    _defineProperty(_assertThisInitialized(_this), "prevProps", void 0);
+
     _defineProperty(_assertThisInitialized(_this), "renderTile", function (tileKey) {
       var _this$tiles$tileKey = _this.tiles[tileKey],
           ref = _this$tiles$tileKey.ref,
@@ -2644,19 +2642,8 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
   _createClass(Grid, [{
     key: "refresh",
     value: function refresh() {
-      this.initialCalculator = new internal_window["b" /* WindowCalculator */]();
-      this.tiles = this.createTilesMap();
+      this.clearCache();
       this.forceUpdate();
-    } //
-    // life cycle
-    //
-
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps) {
-      if (!Object(utils["e" /* areShallowEqual */])(this.props, prevProps)) {
-        this.refresh();
-      }
     } //
     // render methods
     //
@@ -2665,6 +2652,11 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
     key: "render",
     value: function render() {
       var _this2 = this;
+
+      if (!Object(utils["e" /* areShallowEqual */])(this.props, this.prevProps)) {
+        this.prevProps = this.props;
+        this.clearCache();
+      }
 
       return /*#__PURE__*/external_react_["createElement"](ErrorBoundary["a" /* ErrorBoundary */], null, /*#__PURE__*/external_react_["createElement"]("div", {
         className: this.props.className,
@@ -2745,10 +2737,16 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
       }, tileKeys.map(this.renderTile));
     }
   }, {
-    key: "getTilesInRow",
+    key: "clearCache",
     //
     // render helpers
     //
+    value: function clearCache() {
+      this.initialCalculator = new internal_window["b" /* WindowCalculator */]();
+      this.tiles = this.createTilesMap();
+    }
+  }, {
+    key: "getTilesInRow",
     value: function getTilesInRow(rowKey) {
       var _this5 = this;
 
