@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.1.2 - 2020-04-10](https://github.com/alonrbar/react-tablize/tree/v2.1.2)
+
+### Fixed
+
+- Replace some custom types with standard alternatives (Typescript).
+
 ## [2.1.1 - 2020-04-09](https://github.com/alonrbar/react-tablize/tree/v2.1.1)
 
 ### Fixed

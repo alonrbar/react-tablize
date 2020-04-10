@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare type Constructor<T> = new (...args: any[]) => T;
 export interface IMap<T> {
     [key: string]: T;
@@ -10,3 +11,6 @@ export interface ScrollEvent {
     scrollLeft: number;
 }
 export declare type ScrollDirection = 'vertical' | 'horizontal' | 'none' | 'both';
+export interface StyleProps {
+    style?: React.CSSProperties;
+}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 export declare type CellContent = React.ReactNode;
-export interface TableCellProps extends React.DivProps {
+export interface TableCellProps extends React.HTMLProps<HTMLDivElement> {
     children?: CellContent;
     visible?: boolean;
 }
