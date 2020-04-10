@@ -4,7 +4,7 @@ import Scrollbars from 'react-custom-scrollbars';
 export interface CustomScrollbarsProps {
     style?: React.CSSProperties;
     onScroll?: any;
-    forwardedRef: React.RefFunction<any> | React.RefObject<any>;
+    forwardedRef: React.Ref<any>;
     children?: React.ReactNode;
 }
 
@@ -42,6 +42,6 @@ class CustomScrollbarsInner extends React.PureComponent<CustomScrollbarsProps> {
 }
 
 export const CustomScrollbars = React.forwardRef((props, ref) => (
-    <CustomScrollbarsInner {...props} forwardedRef={ref as any} />
+    <CustomScrollbarsInner {...props} forwardedRef={ref} />
 ));
 CustomScrollbars.displayName = 'CustomScrollbars';

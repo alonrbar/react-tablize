@@ -56,6 +56,7 @@
     "@types/react-custom-scrollbars": "4.0.6",
     "@types/react-dom": "16.9.5",
     "@types/react-virtualized-auto-sizer": "1.0.0",
+    "@types/ts-nameof": "4.2.1",
     "@types/webpack-env": "1.15.1",
     "@typescript-eslint/eslint-plugin": "2.25.0",
     "@typescript-eslint/parser": "2.25.0",

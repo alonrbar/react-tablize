@@ -6,7 +6,7 @@ const TableCellSymbol = '__ReactTablize__TableCell__';
 
 export type CellContent = React.ReactNode;
 
-export interface TableCellProps extends React.DivProps {
+export interface TableCellProps extends React.HTMLProps<HTMLDivElement> {
     children?: CellContent;
     visible?: boolean;
 }

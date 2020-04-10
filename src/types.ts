@@ -16,3 +16,7 @@ export interface ScrollEvent {
 }
 
 export type ScrollDirection = 'vertical' | 'horizontal' | 'none' | 'both';
+
+export interface StyleProps {
+    style?: React.CSSProperties;
+}

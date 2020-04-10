@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { StyleProps } from '../../types';
 
 export interface ElementHeights {
     height: string | number;
@@ -14,7 +15,7 @@ export class SizeUtils {
         return size as string;
     }
 
-    public static getElementHeights(component: React.ComponentWithStyle, defaultHeight: number | string): ElementHeights {
+    public static getElementHeights(component: React.Component<StyleProps>, defaultHeight: number | string): ElementHeights {
         const style = (component && component.props.style) || {};
 
         let height = style.height;

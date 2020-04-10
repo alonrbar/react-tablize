@@ -2915,6 +2915,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/ts-nameof@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@types/ts-nameof/-/ts-nameof-4.2.1.tgz#21bd84748601f3a220812152dc9bae7dc3051fa0"
+  integrity sha512-NgMmD70b8NwX6BYhKh70xWkquAow6iq3kRAPp4sMAk4Mre9PrqZgvpq5+JbDLWIJPc4Q9ctkwSQjVAOlfuvlyQ==
+
 "@types/unist@*", "@types/unist@^2.0.0", "@types/unist@^2.0.2":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.3.tgz#9c088679876f374eb5983f150d4787aa6fb32d7e"

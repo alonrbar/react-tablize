@@ -12,7 +12,7 @@ const TableRowSymbol = '__ReactTablize__TableRow__';
  */
 export type RowContent = OneOrMore<React.SubComp<TableCell> | CellContent>;
 
-export interface TableRowProps extends React.DivProps {
+export interface TableRowProps extends React.HTMLProps<HTMLDivElement> {
     children?: RowContent;
 }
 

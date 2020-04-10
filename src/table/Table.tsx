@@ -5,7 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
 import { asArray, ElementHeights, isNullOrUndefined, ReactUtils, SizeUtils } from '../internal/utils';
 import { List } from '../list';
-import { DocDir, OneOrMore, SizeCallback } from '../types';
+import { DocDir, OneOrMore, SizeCallback, StyleProps } from '../types';
 import { StyledTable, StyledTableBody, StyledTableHead } from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
@@ -297,7 +297,7 @@ export class Table extends React.PureComponent<TableProps> {
         return this.props.rowHeight;
     };
 
-    private getBodyHeights(table: React.ComponentWithStyle, head: React.ComponentWithStyle, defaultHeights: TableHeights): ElementHeights {
+    private getBodyHeights(table: React.Component<StyleProps>, head: React.Component<StyleProps>, defaultHeights: TableHeights): ElementHeights {
 
         const totalHeights = SizeUtils.getElementHeights(table, defaultHeights.total);
         const headHeight = this.getHeadHeight(head, defaultHeights.head);
@@ -322,7 +322,7 @@ export class Table extends React.PureComponent<TableProps> {
         };
     }
 
-    private getHeadHeight(head: React.ComponentWithStyle, defaultHeight: string | number): string | number {
+    private getHeadHeight(head: React.Component<StyleProps>, defaultHeight: string | number): string | number {
         if (head) {
             return SizeUtils.getElementHeights(head, defaultHeight).height;
         }
