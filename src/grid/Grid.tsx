@@ -294,6 +294,8 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
             const { ref } = this.tiles[tileKey];
             ref.current.scrollTo(normalized);
         }
+
+        this.props.onScroll(e);
     };
 
     //
