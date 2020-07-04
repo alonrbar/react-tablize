@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.1.3 - 2020-07-04](https://github.com/alonrbar/react-tablize/tree/v2.1.3)
+
+### Fixed
+
+- Grid `onScroll` event.
+
 ## [2.1.2 - 2020-04-10](https://github.com/alonrbar/react-tablize/tree/v2.1.2)
 
 ### Fixed

@@ -2595,6 +2595,8 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleScroll", function (e) {
+      var _this$props$onScroll, _this$props;
+
       var normalized = utils["c" /* ScrollUtils */].normalizeScrollEvent(e, _this.direction);
       var isRtl = _this.direction === 'rtl';
 
@@ -2617,7 +2619,8 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
           var tileKey = _step.value;
           var ref = _this.tiles[tileKey].ref;
           ref.current.scrollTo(normalized);
-        }
+        } // Raise the onScroll event
+
       } catch (err) {
         _didIteratorError = true;
         _iteratorError = err;
@@ -2632,6 +2635,11 @@ var Grid_Grid = /*#__PURE__*/function (_React$PureComponent) {
           }
         }
       }
+
+      (_this$props$onScroll = (_this$props = _this.props).onScroll) === null || _this$props$onScroll === void 0 ? void 0 : _this$props$onScroll.call(_this$props, {
+        scrollTop: normalized.scrollTop,
+        scrollLeft: normalized.normalizedScrollLeft
+      });
     });
 
     _this.state = new GridState();
