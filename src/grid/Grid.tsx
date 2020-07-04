@@ -295,7 +295,11 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
             ref.current.scrollTo(normalized);
         }
 
-        this.props.onScroll(e);
+        // Raise the onScroll event
+        this.props.onScroll?.({
+            scrollTop: normalized.scrollTop,
+            scrollLeft: normalized.normalizedScrollLeft
+        });
     };
 
     //
