@@ -48,7 +48,7 @@ export declare class Table extends React.PureComponent<TableProps> {
     static defaultProps: unknown;
     private tableElement;
     refresh(): void;
-    render(): JSX.Element;
+    render(): React.ReactNode;
     private renderHead;
     private renderBody;
     private renderBodyRow;

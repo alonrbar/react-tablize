@@ -23,7 +23,7 @@ export interface VirtualCellProps {
  * https://github.com/Flipkart/recyclerlistview/blob/master/src/platform/web/viewrenderer/ViewRenderer.tsx
  */
 export class VirtualCell extends React.PureComponent<VirtualCellProps> {
-    public render() {
+    public render(): React.ReactNode {
 
         const rightOrLeft = this.props.direction === 'rtl' ? 'right' : 'left';
 

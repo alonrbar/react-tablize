@@ -1,5 +1,5 @@
 
-export function isNullOrUndefined(val: any): boolean {
+export function isNullOrUndefined(val: unknown): boolean {
     return val === null || val === undefined;
 }
 
@@ -15,7 +15,7 @@ export function range(count: number): number[] {
     return [...Array(count || 0).keys()];
 }
 
-export function areShallowEqual(a: object, b: object) {
+export function areShallowEqual(a: unknown, b: unknown): boolean {
     if (a === b) {
         return true;
     }

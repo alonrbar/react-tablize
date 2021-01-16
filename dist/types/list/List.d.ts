@@ -23,7 +23,7 @@ export declare class List extends React.PureComponent<ListProps> {
     private initialCalculator;
     refresh(): void;
     scrollTo(offset: number): void;
-    render(): JSX.Element;
+    render(): React.ReactNode;
     private renderRow;
     private getVerticalScrollbarWidth;
     private getHorizontalScrollbarWidth;

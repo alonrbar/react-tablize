@@ -3,7 +3,7 @@ import { Constructor } from '../../types';
 
 export class ReactUtils {
 
-    public static addPropsToChildren(children: React.ReactNode, createPropsToAdd: (child: React.ReactElement<any>, index?: number) => any) {
+    public static addPropsToChildren(children: React.ReactNode, createPropsToAdd: (child: React.ReactElement<any>, index?: number) => any): React.ReactNode {
 
         // https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
         return React.Children.map(children, (child: React.ReactElement<any>, index: number) => {
@@ -12,7 +12,7 @@ export class ReactUtils {
         });
     }
 
-    public static childrenOfType<T>(parentElement: any, type: Constructor<T>): T[] {
+    public static childrenOfType<T>(parentElement: unknown, type: Constructor<T>): T[] {
         const children = ReactUtils.childrenArray(parentElement);
         if (!children)
             return null;
@@ -28,7 +28,7 @@ export class ReactUtils {
      * @param parentElement 
      * @param type 
      */
-    public static singleChildOfType<T>(parentElement: any, type: Constructor<T>): T {
+    public static singleChildOfType<T>(parentElement: unknown, type: Constructor<T>): T {
         const matchingChildren = ReactUtils.childrenOfType(parentElement, type);
         if (!matchingChildren || !matchingChildren.length)
             return null;

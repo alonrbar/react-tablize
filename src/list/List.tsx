@@ -34,7 +34,7 @@ export class List extends React.PureComponent<ListProps> {
 
     private initialCalculator = new WindowCalculator();
 
-    public refresh() {
+    public refresh(): void {
         if (this.windowRef.current) {
             this.windowRef.current.clearCache();
         }
@@ -55,7 +55,7 @@ export class List extends React.PureComponent<ListProps> {
         }
     }
 
-    public render() {
+    public render(): React.ReactNode {
         return (
             <VirtualWindow
 

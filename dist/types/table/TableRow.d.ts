@@ -13,6 +13,6 @@ export declare class TableRow extends React.PureComponent<TableRowProps> {
     static isTableRow(row: unknown): row is React.ReactElement<TableRowProps>;
     static getRowProps(row: unknown): TableRowProps;
     static getRowContent(row: unknown): RowContent;
-    render(): JSX.Element;
+    render(): React.ReactNode;
 }
 export declare type RowRender = (index: number) => React.SubComp<TableRow> | RowContent;

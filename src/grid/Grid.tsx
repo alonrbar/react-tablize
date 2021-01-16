@@ -133,7 +133,7 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
         this.tiles = this.createTilesMap();
     }
 
-    public refresh() {
+    public refresh(): void {
         this.clearCache();
         this.forceUpdate();
     }
@@ -142,7 +142,7 @@ export class Grid extends React.PureComponent<GridProps, GridState> {
     // render methods
     //
 
-    public render() {
+    public render(): React.ReactNode {
 
         if (!areShallowEqual(this.props, this.prevProps)) {
             this.prevProps = this.props;

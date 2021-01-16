@@ -4,9 +4,9 @@ class ErrorBoundaryState {
     public hasError: boolean;
 }
 
-export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<unknown, ErrorBoundaryState> {
 
-    constructor(props: any) {
+    constructor(props: unknown) {
         super(props);
         this.state = { hasError: false };
     }
@@ -16,7 +16,7 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
         console.error(error);  // eslint-disable-line no-console
     }
 
-    public render() {
+    public render(): React.ReactNode {
         if (this.state.hasError) {
             return (
                 <span>X</span>

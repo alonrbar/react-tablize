@@ -8,7 +8,7 @@ class EditableGridState {
     public columnCount = 3;
 }
 
-class EditableGrid extends React.PureComponent<{}, EditableGridState> {
+class EditableGrid extends React.PureComponent<unknown, EditableGridState> {
 
     constructor(props: any) {
         super(props);

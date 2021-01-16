@@ -46,7 +46,7 @@ export class TableRow extends React.PureComponent<TableRowProps> {
         return content;
     }
 
-    public render() {
+    public render(): React.ReactNode {
         return (
             <StyledTableRow
                 {...this.props}
@@ -58,7 +58,6 @@ export class TableRow extends React.PureComponent<TableRowProps> {
             </StyledTableRow>
         );
     }
-
 }
 
 export type RowRender = (index: number) => React.SubComp<TableRow> | RowContent;

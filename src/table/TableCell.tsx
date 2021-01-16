@@ -31,7 +31,7 @@ export class TableCell extends React.PureComponent<TableCellProps> {
             cell;
     }
 
-    public render() {
+    public render(): React.ReactNode {
         return (
             <StyledTableCell {...this.props}>
                 <ErrorBoundary>

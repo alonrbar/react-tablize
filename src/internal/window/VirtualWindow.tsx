@@ -138,7 +138,7 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     // life cycle
     //
 
-    public componentDidUpdate(prevProps: VirtualWindowProps) {
+    public componentDidUpdate(prevProps: VirtualWindowProps): void {
         if (this.props.direction === 'rtl' && !areShallowEqual(this.props, prevProps)) {
             this.rtlRedrawHack();
         }
@@ -151,7 +151,7 @@ export class VirtualWindow extends React.PureComponent<VirtualWindowProps, Virtu
     // render methods
     //
 
-    public render() {
+    public render(): React.ReactNode {
 
         if (!areShallowEqual(this.props, this.prevProps)) {
             this.prevProps = this.props;

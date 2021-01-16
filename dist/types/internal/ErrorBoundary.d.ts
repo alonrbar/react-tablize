@@ -2,9 +2,9 @@ import * as React from 'react';
 declare class ErrorBoundaryState {
     hasError: boolean;
 }
-export declare class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
-    constructor(props: any);
+export declare class ErrorBoundary extends React.Component<unknown, ErrorBoundaryState> {
+    constructor(props: unknown);
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void;
-    render(): {};
+    render(): React.ReactNode;
 }
 export {};

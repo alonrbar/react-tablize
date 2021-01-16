@@ -21,5 +21,5 @@ export interface VirtualCellProps {
  * https://github.com/Flipkart/recyclerlistview/blob/master/src/platform/web/viewrenderer/ViewRenderer.tsx
  */
 export declare class VirtualCell extends React.PureComponent<VirtualCellProps> {
-    render(): JSX.Element;
+    render(): React.ReactNode;
 }

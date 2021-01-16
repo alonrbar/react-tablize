@@ -87,7 +87,7 @@ export declare class Grid extends React.PureComponent<GridProps, GridState> {
     private prevProps;
     constructor(props: GridProps);
     refresh(): void;
-    render(): JSX.Element;
+    render(): React.ReactNode;
     private renderGrid;
     private renderTilesRow;
     private renderTile;

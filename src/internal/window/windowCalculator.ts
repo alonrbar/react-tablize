@@ -46,7 +46,7 @@ export class WindowCalculator {
         elementSize: number | SizeCallback,
         minElementsCountToReturn: number,
         totalElementsCount: number
-    ) {
+    ): ElementInfo[] {
 
         let fromIndex = this.findNearestItem(
             elementType,
@@ -100,7 +100,7 @@ export class WindowCalculator {
         elementSize: number | SizeCallback,
         estimatedElementSize: null | number,
         elementsCount: number
-    ) {
+    ): number {
 
         // Handle unmeasured elements
         let lastMeasuredIndex: number;
@@ -172,7 +172,7 @@ export class WindowCalculator {
                 elementSize
             );
         }
-    };
+    }
 
     private findNearestItemBinarySearch(
         elementType: ElementType,
@@ -199,7 +199,7 @@ export class WindowCalculator {
         } else {
             return 0;
         }
-    };
+    }
 
     private findNearestItemExponentialSearch(
         elementType: ElementType,
@@ -225,7 +225,7 @@ export class WindowCalculator {
             position,
             elementSize
         );
-    };
+    }
 
     private getElementInfo(
         elementType: ElementType,

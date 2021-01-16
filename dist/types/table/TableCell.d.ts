@@ -9,7 +9,7 @@ export declare class TableCell extends React.PureComponent<TableCellProps> {
     static isTableCell(cell: unknown): cell is React.ReactElement<TableCellProps>;
     static getCellProps(cell: unknown): TableCellProps;
     static getCellContent(cell: unknown): CellContent;
-    render(): JSX.Element;
+    render(): React.ReactNode;
 }
 export interface CellRenderArgs {
     rowIndex: number;
