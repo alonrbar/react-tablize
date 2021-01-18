@@ -8,11 +8,11 @@ export default {
     input: 'src/index.ts',
     output: [
         {
-            file: 'dist/cjs/easy-template-x.js',
+            file: 'dist/cjs/react-tablize.js',
             format: 'cjs'
         },
         {
-            file: 'dist/es/easy-template-x.js',
+            file: 'dist/es/react-tablize.js',
             format: 'es'
         }
     ],
