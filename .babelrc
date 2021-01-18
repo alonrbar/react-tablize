@@ -5,9 +5,6 @@
         "@babel/react"
     ],
     "plugins": [
-        ["emotion", {
-            "autoLabel": true
-        }],
         "ts-nameof",
         "@babel/proposal-class-properties",
         "@babel/proposal-object-rest-spread",

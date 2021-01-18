@@ -30,7 +30,6 @@
     "release": "yarn quality && yarn clean && yarn build-types && yarn build-src"
   },
   "dependencies": {
-    "@emotion/styled": "^10.0.27",
     "lodash.flattendeep": "^4.4.0",
     "react-custom-scrollbars": "4.2.1",
     "react-virtualized-auto-sizer": "^1.0.2"
@@ -59,9 +58,7 @@
     "@typescript-eslint/eslint-plugin": "2.25.0",
     "@typescript-eslint/parser": "2.25.0",
     "babel-loader": "8.1.0",
-    "babel-plugin-emotion": "10.0.29",
     "babel-plugin-ts-nameof": "4.2.0",
-    "cross-env": "7.0.2",
     "eslint": "6.8.0",
     "eslint-plugin-react": "7.19.0",
     "rimraf": "3.0.2",

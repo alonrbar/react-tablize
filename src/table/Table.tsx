@@ -1,12 +1,10 @@
-import { Theme } from '@emotion/styled';
-import { ThemeProvider } from 'emotion-theming';
 import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
 import { asArray, ElementHeights, isNullOrUndefined, ReactUtils, SizeUtils } from '../internal/utils';
 import { List } from '../list';
 import { DocDir, OneOrMore, SizeCallback, StyleProps } from '../types';
-import { StyledTable, StyledTableBody, StyledTableHead } from './style';
+import * as style from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -101,7 +99,7 @@ export class Table extends React.PureComponent<TableProps> {
     // public methods
     //
 
-    public refresh() {
+    public refresh(): void {
         if (this.tableElement.current) {
             this.tableElement.current.refresh();
         }
@@ -112,7 +110,7 @@ export class Table extends React.PureComponent<TableProps> {
     // render methods
     //
 
-    public render() {
+    public render(): React.ReactNode {
 
         // head & body
         let head = ReactUtils.singleChildOfType(this, TableHead);
@@ -130,20 +128,19 @@ export class Table extends React.PureComponent<TableProps> {
 
         // render
         return (
-            <ThemeProvider theme={this.getTheme()}>
-                <ErrorBoundary>
-                    <StyledTable
-                        className={this.props.className}
-                        style={{
-                            ...this.props.style,
-                            ...SizeUtils.getElementHeights(this, Table.defaultHeight)
-                        }}
-                    >
-                        {this.renderHead(head)}
-                        {this.renderBody(head, body)}
-                    </StyledTable>
-                </ErrorBoundary>
-            </ThemeProvider>
+            <ErrorBoundary>
+                <div
+                    className={this.props.className}
+                    style={{
+                        ...style.table(),
+                        ...this.props.style,
+                        ...SizeUtils.getElementHeights(this, Table.defaultHeight)
+                    }}
+                >
+                    {this.renderHead(head)}
+                    {this.renderBody(head, body)}
+                </div>
+            </ErrorBoundary>
         );
     }
 
@@ -155,16 +152,17 @@ export class Table extends React.PureComponent<TableProps> {
         const { children, ...divProps } = head.props;
 
         return (
-            <StyledTableHead
+            <div
                 dir={this.props.dir as any}
                 {...divProps}
                 style={{
+                    ...style.tableHead(this.getTheme()),
                     ...head.props.style,
                     ...SizeUtils.getElementHeights(head, Table.defaultHeadHeight)
                 }}
             >
                 {React.Children.map(children, this.renderCell)}
-            </StyledTableHead>
+            </div>
         );
     }
 
@@ -179,8 +177,9 @@ export class Table extends React.PureComponent<TableProps> {
         const rowRender = body?.props.children;
 
         return (
-            <StyledTableBody
+            <div
                 style={{
+                    ...style.tableBody(),
                     direction: this.props.dir,
                     ...bodyHeights
                 }}
@@ -208,7 +207,7 @@ export class Table extends React.PureComponent<TableProps> {
                         </AutoSizer>
                     )}
                 </ErrorBoundary>
-            </StyledTableBody>
+            </div>
         );
     }
 
@@ -273,7 +272,7 @@ export class Table extends React.PureComponent<TableProps> {
     // helpers
     //
 
-    private getTheme(): Theme {
+    private getTheme(): style.Theme {
         return {
             dir: this.props.dir,
             defaultTheme: this.props.defaultStyle

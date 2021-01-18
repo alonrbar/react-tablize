@@ -1,62 +1,80 @@
-import styled from '@emotion/styled';
+import * as React from 'react';
 import { DomUtils } from '../internal/utils';
+import { DocDir } from '../types';
 
 const tableBorder = '1px solid #ddd';
 
-export const StyledTable = styled.div`
-    width: 100%;
-    overflow-y: hidden;
-`;
+export interface Theme {
+    dir: DocDir;
+    defaultTheme: boolean;
+}
 
-export const StyledTableCell = styled.div`
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    box-sizing: border-box;
+export const table = (): React.CSSProperties => ({
+    width: '100%',
+    overflowY: 'hidden'
+});
 
-    ${props => props.theme.defaultTheme ? `
-        padding: 8px;
-        vertical-align: middle;
-        ` : ''};
-`;
+export const tableCell = (theme: Theme): React.CSSProperties => {
+    const style: React.CSSProperties = {
+        flex: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        boxSizing: 'border-box'
+    };
+    if (theme.defaultTheme) {
+        style.padding = 8;
+        style.verticalAlign = 'middle';
+    }
+    return style;
+};
 
-export const StyledTableHead = styled.div`
-    direction: ${props => props.theme.dir};
-
-    display: flex;
-    overflow-y: hidden;
+export const tableHead = (theme: Theme): React.CSSProperties => {
+    const style: React.CSSProperties = {
+        direction: theme.dir,
+        display: 'flex',
+        overflowY: 'hidden'
+    };
 
     /* add padding to compensate for scrollbar width */
-    ${props => (props.theme.dir === 'rtl' ? 'padding-left' : 'padding-right')}: ${DomUtils.scrollbarWidth}px;
-    
-    ${props => props.theme.defaultTheme ? `
-        border-bottom: ${tableBorder};
-        ` : ''};
-
-    & ${StyledTableCell} {
-        ${props => props.theme.defaultTheme ? `
-            vertical-align: bottom;
-            font-weight: bold;
-            ` : ''}
+    if (theme.dir === 'rtl') {
+        style.paddingLeft = DomUtils.scrollbarWidth;
+    } else {
+        style.paddingRight = DomUtils.scrollbarWidth;
     }
-`;
 
-export const StyledTableBody = styled.div`
+    if (theme) {
+        style.borderBottom = tableBorder;
+    }
+   
+    return style;
+};
+
+export const tableHeadCell = (theme: Theme): React.CSSProperties => {
+    const style = tableCell(theme);
+    if (theme.defaultTheme) {
+        style.verticalAlign = 'bottom';
+        style.fontWeight = 'bold';
+    }
+    return style;
+};
+
+export const tableBody = (): React.CSSProperties => ({
     /* no style... */
-`;
+});
 
 export interface RowProps {
     index: number;
 }
 
-export const StyledTableRow = styled.div<RowProps>`
-    display: flex;
-    justify-content: stretch;
-    height: 100%;
-    width: 100%;
-
-    ${props => props.theme.defaultTheme ? `
-        border-top: ${props.index === 0 ? 'none' : tableBorder};
-        ` : ''}
+export const tableRow = (index: number, theme: Theme): React.CSSProperties => {
+    const style: React.CSSProperties = {
+        display: 'flex',
+        justifyContent: 'stretch',
+        height: '100%',
+        width: '100%'
+    };
+    if (theme.defaultTheme) {
+        style.borderTop = (index === 0 ? 'none' : tableBorder);
     }
-`;
+    return style;
+};

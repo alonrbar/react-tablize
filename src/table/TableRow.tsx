@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
 import { OneOrMore } from '../types';
-import { StyledTableRow } from './style';
+import * as style from './style';
 import { CellContent, TableCell } from './TableCell';
 const flattenDeep = require('lodash.flattendeep');
 
@@ -47,15 +47,19 @@ export class TableRow extends React.PureComponent<TableRowProps> {
     }
 
     public render(): React.ReactNode {
+        const rowIndex = this.props.key as number;
         return (
-            <StyledTableRow
+            <div
                 {...this.props}
-                index={this.props.key as number}
+                style={{
+                    ...style.tableRow(rowIndex, ({}) as any), // TODO: Use context for theme...
+                    ...this.props.style
+                }}
             >
                 <ErrorBoundary>
                     {this.props.children}
                 </ErrorBoundary>
-            </StyledTableRow>
+            </div>
         );
     }
 }
