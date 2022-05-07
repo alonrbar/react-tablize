@@ -155,7 +155,7 @@ export class Table extends React.PureComponent<TableProps> {
         const context = {
             theme: this.getTheme(),
             isHead: true,
-        }
+        };
 
         return (
             <TableContext.Provider value={context}>
@@ -187,7 +187,7 @@ export class Table extends React.PureComponent<TableProps> {
         const context = {
             theme: this.getTheme(),
             isHead: false,
-        }
+        };
 
         return (
             <TableContext.Provider value={context}>

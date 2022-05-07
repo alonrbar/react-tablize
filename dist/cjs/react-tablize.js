@@ -2137,8 +2137,18 @@ var tableHead = function tableHead(theme) {
     style.paddingRight = DomUtils.scrollbarWidth;
   }
 
-  if (theme) {
+  if (theme.defaultTheme) {
     style.borderBottom = tableBorder;
+  }
+
+  return style;
+};
+var tableHeadCell = function tableHeadCell(theme) {
+  var style = tableCell(theme);
+
+  if (theme.defaultTheme) {
+    style.verticalAlign = 'bottom';
+    style.fontWeight = 'bold';
   }
 
   return style;
@@ -2194,6 +2204,9 @@ var TableBody = /*#__PURE__*/function (_React$PureComponent) {
   return TableBody;
 }(React.PureComponent);
 
+var TableContext = React.createContext(undefined);
+TableContext.displayName = 'TableContext';
+
 var TableCellSymbol = '__ReactTablize__TableCell__';
 var TableCell = /*#__PURE__*/function (_React$PureComponent) {
   _inherits(TableCell, _React$PureComponent);
@@ -2209,9 +2222,13 @@ var TableCell = /*#__PURE__*/function (_React$PureComponent) {
   _createClass(TableCell, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", _extends({}, this.props, {
-        style: _objectSpread2({}, tableCell({}), {}, this.props.style)
-      }), /*#__PURE__*/React.createElement(ErrorBoundary, null, this.props.children));
+      var _this = this;
+
+      return /*#__PURE__*/React.createElement(TableContext.Consumer, null, function (ctx) {
+        return /*#__PURE__*/React.createElement("div", _extends({}, _this.props, {
+          style: _objectSpread2({}, ctx.isHead ? tableHeadCell(ctx.theme) : tableCell(ctx.theme), {}, _this.props.style)
+        }), /*#__PURE__*/React.createElement(ErrorBoundary, null, _this.props.children));
+      });
     }
   }], [{
     key: "isTableCell",
@@ -2320,10 +2337,14 @@ var TableRow = /*#__PURE__*/function (_React$PureComponent) {
   _createClass(TableRow, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
       var rowIndex = this.props.key;
-      return /*#__PURE__*/React.createElement("div", _extends({}, this.props, {
-        style: _objectSpread2({}, tableRow(rowIndex, {}), {}, this.props.style)
-      }), /*#__PURE__*/React.createElement(ErrorBoundary, null, this.props.children));
+      return /*#__PURE__*/React.createElement(TableContext.Consumer, null, function (ctx) {
+        return /*#__PURE__*/React.createElement("div", _extends({}, _this.props, {
+          style: _objectSpread2({}, tableRow(rowIndex, ctx.theme), {}, _this.props.style)
+        }), /*#__PURE__*/React.createElement(ErrorBoundary, null, _this.props.children));
+      });
     }
   }], [{
     key: "isTableRow",
@@ -2459,11 +2480,17 @@ var Table = /*#__PURE__*/function (_React$PureComponent) {
           children = _head$props.children,
           divProps = _objectWithoutProperties(_head$props, ["children"]);
 
-      return /*#__PURE__*/React.createElement("div", _extends({
+      var context = {
+        theme: this.getTheme(),
+        isHead: true
+      };
+      return /*#__PURE__*/React.createElement(TableContext.Provider, {
+        value: context
+      }, /*#__PURE__*/React.createElement("div", _extends({
         dir: this.props.dir
       }, divProps, {
         style: _objectSpread2({}, tableHead(this.getTheme()), {}, head.props.style, {}, SizeUtils.getElementHeights(head, Table.defaultHeadHeight))
-      }), React.Children.map(children, this.renderCell));
+      }), React.Children.map(children, this.renderCell)));
     }
   }, {
     key: "renderBody",
@@ -2476,7 +2503,13 @@ var Table = /*#__PURE__*/function (_React$PureComponent) {
       });
       var showPlaceholder = this.props.rowCount === 0 || !TableBody.hasChildren(body);
       var rowRender = body === null || body === void 0 ? void 0 : body.props.children;
-      return /*#__PURE__*/React.createElement("div", {
+      var context = {
+        theme: this.getTheme(),
+        isHead: false
+      };
+      return /*#__PURE__*/React.createElement(TableContext.Provider, {
+        value: context
+      }, /*#__PURE__*/React.createElement("div", {
         style: _objectSpread2({}, tableBody(), {
           direction: this.props.dir
         }, bodyHeights)
@@ -2499,7 +2532,7 @@ var Table = /*#__PURE__*/function (_React$PureComponent) {
         }, function (index) {
           return _this2.renderBodyRow(index, rowRender);
         });
-      })));
+      }))));
     }
   }, {
     key: "renderBodyRow",
