@@ -42,7 +42,7 @@ export const tableHead = (theme: Theme): React.CSSProperties => {
         style.paddingRight = DomUtils.scrollbarWidth;
     }
 
-    if (theme) {
+    if (theme.defaultTheme) {
         style.borderBottom = tableBorder;
     }
    

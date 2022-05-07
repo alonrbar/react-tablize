@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ErrorBoundary } from '../internal/ErrorBoundary';
 import * as style from './style';
+import { TableContext } from './tableContext';
 
 const TableCellSymbol = '__ReactTablize__TableCell__';
 
@@ -33,19 +34,21 @@ export class TableCell extends React.PureComponent<TableCellProps> {
 
     public render(): React.ReactNode {
         return (
-            <div 
-                {...this.props}
-                style={{
-                    // TODO: Use context for theme...
-                    // TODO: Use context for the head...
-                    ...style.tableCell(({}) as any),
-                    ...this.props.style
-                }}
-            >
-                <ErrorBoundary>
-                    {this.props.children}
-                </ErrorBoundary>
-            </div>
+            <TableContext.Consumer>
+                {ctx => (
+                    <div
+                        {...this.props}
+                        style={{
+                            ...(ctx.isHead ? style.tableHeadCell(ctx.theme) : style.tableCell(ctx.theme)),
+                            ...this.props.style
+                        }}
+                    >
+                        <ErrorBoundary>
+                            {this.props.children}
+                        </ErrorBoundary>
+                    </div>
+                )}
+            </TableContext.Consumer>
         );
     }
 }

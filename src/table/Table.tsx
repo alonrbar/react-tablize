@@ -8,6 +8,7 @@ import * as style from './style';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
+import { TableContext } from './tableContext';
 import { TableHead } from './TableHead';
 import { RowRender, TableRow, TableRowProps } from './TableRow';
 
@@ -151,18 +152,25 @@ export class Table extends React.PureComponent<TableProps> {
 
         const { children, ...divProps } = head.props;
 
+        const context = {
+            theme: this.getTheme(),
+            isHead: true,
+        }
+
         return (
-            <div
-                dir={this.props.dir as any}
-                {...divProps}
-                style={{
-                    ...style.tableHead(this.getTheme()),
-                    ...head.props.style,
-                    ...SizeUtils.getElementHeights(head, Table.defaultHeadHeight)
-                }}
-            >
-                {React.Children.map(children, this.renderCell)}
-            </div>
+            <TableContext.Provider value={context}>
+                <div
+                    dir={this.props.dir as any}
+                    {...divProps}
+                    style={{
+                        ...style.tableHead(this.getTheme()),
+                        ...head.props.style,
+                        ...SizeUtils.getElementHeights(head, Table.defaultHeadHeight)
+                    }}
+                >
+                    {React.Children.map(children, this.renderCell)}
+                </div>
+            </TableContext.Provider>
         );
     }
 
@@ -176,38 +184,45 @@ export class Table extends React.PureComponent<TableProps> {
         const showPlaceholder = (this.props.rowCount === 0 || !TableBody.hasChildren(body));
         const rowRender = body?.props.children;
 
+        const context = {
+            theme: this.getTheme(),
+            isHead: false,
+        }
+
         return (
-            <div
-                style={{
-                    ...style.tableBody(),
-                    direction: this.props.dir,
-                    ...bodyHeights
-                }}
-            >
-                <ErrorBoundary>
-                    {showPlaceholder && this.renderRowsPlaceholder()}
-                    {!showPlaceholder && (
-                        <AutoSizer>
-                            {({ width, height }) => (
-                                <List
-                                    ref={this.tableElement}
-                                    style={{ outline: 'none' }}
-                                    dir={this.props.dir}
-                                    layout="vertical"
-                                    height={height}
-                                    width={width}
-                                    itemCount={this.props.rowCount}
-                                    itemSize={this.getRowHeight}
-                                    overscan={this.props.overscanCount}
-                                    customScrollbar={this.props.customScrollbars}
-                                >
-                                    {index => this.renderBodyRow(index, rowRender)}
-                                </List>
-                            )}
-                        </AutoSizer>
-                    )}
-                </ErrorBoundary>
-            </div>
+            <TableContext.Provider value={context}>
+                <div
+                    style={{
+                        ...style.tableBody(),
+                        direction: this.props.dir,
+                        ...bodyHeights
+                    }}
+                >
+                    <ErrorBoundary>
+                        {showPlaceholder && this.renderRowsPlaceholder()}
+                        {!showPlaceholder && (
+                            <AutoSizer>
+                                {({ width, height }) => (
+                                    <List
+                                        ref={this.tableElement}
+                                        style={{ outline: 'none' }}
+                                        dir={this.props.dir}
+                                        layout="vertical"
+                                        height={height}
+                                        width={width}
+                                        itemCount={this.props.rowCount}
+                                        itemSize={this.getRowHeight}
+                                        overscan={this.props.overscanCount}
+                                        customScrollbar={this.props.customScrollbars}
+                                    >
+                                        {index => this.renderBodyRow(index, rowRender)}
+                                    </List>
+                                )}
+                            </AutoSizer>
+                        )}
+                    </ErrorBoundary>
+                </div>
+            </TableContext.Provider>
         );
     }
 

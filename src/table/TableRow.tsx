@@ -3,6 +3,7 @@ import { ErrorBoundary } from '../internal/ErrorBoundary';
 import { OneOrMore } from '../types';
 import * as style from './style';
 import { CellContent, TableCell } from './TableCell';
+import { TableContext } from './tableContext';
 const flattenDeep = require('lodash.flattendeep');
 
 const TableRowSymbol = '__ReactTablize__TableRow__';
@@ -49,17 +50,21 @@ export class TableRow extends React.PureComponent<TableRowProps> {
     public render(): React.ReactNode {
         const rowIndex = this.props.key as number;
         return (
-            <div
-                {...this.props}
-                style={{
-                    ...style.tableRow(rowIndex, ({}) as any), // TODO: Use context for theme...
-                    ...this.props.style
-                }}
-            >
-                <ErrorBoundary>
-                    {this.props.children}
-                </ErrorBoundary>
-            </div>
+            <TableContext.Consumer>
+                {ctx => (
+                    <div
+                        {...this.props}
+                        style={{
+                            ...style.tableRow(rowIndex, ctx.theme),
+                            ...this.props.style
+                        }}
+                    >
+                        <ErrorBoundary>
+                            {this.props.children}
+                        </ErrorBoundary>
+                    </div>
+                )}
+            </TableContext.Consumer>
         );
     }
 }
