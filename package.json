@@ -1,6 +1,6 @@
 {
   "name": "react-tablize",
-  "version": "2.2.0-next.0",
+  "version": "2.2.0",
   "description": "High performance virtual table and grid components for React",
   "author": "Alon Bar",
   "license": "MIT",

@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.2.0 - 2022-05-07](https://github.com/alonrbar/react-tablize/tree/v2.2.0)
+
+### Changed
+
+- Removed `emotion` dependency.
+
 ## [2.1.3 - 2020-07-04](https://github.com/alonrbar/react-tablize/tree/v2.1.3)
 
 ### Fixed
