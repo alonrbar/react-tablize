@@ -6,7 +6,7 @@ import { CellContent, TableCell } from './TableCell';
 import { TableContext } from './tableContext';
 const flattenDeep = require('lodash.flattendeep');
 
-const TableRowSymbol = '__ReactTablize__TableRow__';
+const TableRowSymbol = '__reacttablize__tablerow__';
 
 /**
  * One or more cells.
@@ -20,7 +20,7 @@ export interface TableRowProps extends React.HTMLProps<HTMLDivElement> {
 export class TableRow extends React.PureComponent<TableRowProps> {
 
     public static defaultProps: unknown = {
-        [TableRowSymbol as any]: true
+        [TableRowSymbol as any]: "true"
     };
 
     public static isTableRow(row: unknown): row is React.ReactElement<TableRowProps> {

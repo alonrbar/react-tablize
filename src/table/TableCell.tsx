@@ -3,7 +3,7 @@ import { ErrorBoundary } from '../internal/ErrorBoundary';
 import * as style from './style';
 import { TableContext } from './tableContext';
 
-const TableCellSymbol = '__ReactTablize__TableCell__';
+const TableCellSymbol = '__reacttablize__tablecell__';
 
 export type CellContent = React.ReactNode;
 
@@ -15,7 +15,7 @@ export interface TableCellProps extends React.HTMLProps<HTMLDivElement> {
 export class TableCell extends React.PureComponent<TableCellProps> {
 
     public static defaultProps: TableCellProps = {
-        [TableCellSymbol as any]: true
+        [TableCellSymbol as any]: "true"
     };
 
     public static isTableCell(cell: unknown): cell is React.ReactElement<TableCellProps> {
