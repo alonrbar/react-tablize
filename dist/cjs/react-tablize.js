@@ -2207,7 +2207,7 @@ var TableBody = /*#__PURE__*/function (_React$PureComponent) {
 var TableContext = React.createContext(undefined);
 TableContext.displayName = 'TableContext';
 
-var TableCellSymbol = '__ReactTablize__TableCell__';
+var TableCellSymbol = '__reacttablize__tablecell__';
 var TableCell = /*#__PURE__*/function (_React$PureComponent) {
   _inherits(TableCell, _React$PureComponent);
 
@@ -2250,7 +2250,7 @@ var TableCell = /*#__PURE__*/function (_React$PureComponent) {
   return TableCell;
 }(React.PureComponent);
 
-_defineProperty(TableCell, "defaultProps", _defineProperty({}, TableCellSymbol, true));
+_defineProperty(TableCell, "defaultProps", _defineProperty({}, TableCellSymbol, "true"));
 
 var TableHead = /*#__PURE__*/function (_React$PureComponent) {
   _inherits(TableHead, _React$PureComponent);
@@ -2318,7 +2318,7 @@ var TableColumn = /*#__PURE__*/function (_React$PureComponent) {
 
 var flattenDeep = require('lodash.flattendeep');
 
-var TableRowSymbol = '__ReactTablize__TableRow__';
+var TableRowSymbol = '__reacttablize__tablerow__';
 /**
  * One or more cells.
  */
@@ -2377,7 +2377,7 @@ var TableRow = /*#__PURE__*/function (_React$PureComponent) {
   return TableRow;
 }(React.PureComponent);
 
-_defineProperty(TableRow, "defaultProps", _defineProperty({}, TableRowSymbol, true));
+_defineProperty(TableRow, "defaultProps", _defineProperty({}, TableRowSymbol, "true"));
 
 /**
  * Applicable only on non-virtual tables.

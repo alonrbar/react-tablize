@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.2.2 - 2022-09-03](https://github.com/alonrbar/react-tablize/tree/v2.2.2)
+
+### Changed
+
+- Cast symbol props to lowercase so React won't complain.
+
 ## [2.2.1 - 2022-05-07](https://github.com/alonrbar/react-tablize/tree/v2.2.1)
 
 ### Changed
