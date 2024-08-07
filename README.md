@@ -3,9 +3,7 @@
 High performance virtual table and grid components for React.
 
 [![npm version](https://img.shields.io/npm/v/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
-[![npm license](https://img.shields.io/npm/l/react-tablize.svg)](https://www.npmjs.com/package/react-tablize)
-[![dependencies](https://david-dm.org/alonrbar/react-tablize.svg)](https://github.com/alonrbar/react-tablize)
-[![dependencies](https://david-dm.org/alonrbar/react-tablize/dev-status.svg)](https://github.com/alonrbar/react-tablize)
+[![license](https://img.shields.io/npm/l/react-tablize.svg)](https://github.com/alonrbar/react-tablize/blob/master/LICENSE)
 
 - [Table](#table)
   - [Examples](#table-examples)
