@@ -1,5 +1,11 @@
 # React Tablize - Change Log
 
+## [2.2.3 - 2024-08-07](https://github.com/alonrbar/peppermint-di/tree/v2.0.3)
+
+## Changed
+
+- Minor readme updates.
+
 ## [2.2.2 - 2022-09-03](https://github.com/alonrbar/react-tablize/tree/v2.2.2)
 
 ### Changed
